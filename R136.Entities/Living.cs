@@ -8,17 +8,39 @@ namespace R136.Entities
 {
 	public abstract class Living
 	{
-		public Room CurrentRoom { get; }
+		public RoomID CurrentRoom { get; }
 
-		public Living(Room startRoom) 
+		public Living(RoomID startRoom) 
 			=> CurrentRoom = startRoom;
+	
+		public enum Status
+		{
+			Initial,
+			PreparingFirstAttack,
+			Attack,
+			PreparingNextAttack,
+			Dying,
+			DyingSelfInjury,
+			FirstStep,
+			FirstWait,
+			SecondStep,
+			SecondWait,
+			Operating,
+			Done
+		}
 	}
 
 	public abstract class StrikableMonster : Living 
 	{
 		public int StrikesLeft { get; }
 
-		public StrikableMonster(Room startRoom, int strikeCount) : base(startRoom) 
+		public StrikableMonster(RoomID startRoom, int strikeCount) : base(startRoom) 
 			=> StrikesLeft = strikeCount;
+	}
+
+	public class LivingInitializer
+	{
+		string TypeName { get; set; }
+		Dictionary<Living.Status, string[]> StatusTexts { get; set; }
 	}
 }
