@@ -10,20 +10,96 @@ namespace R136.Tools
 {
 	class Program
 	{
+		private static JsonSerializerOptions _serializerOptions = null; // new JsonSerializerOptions() { WriteIndented = true };
+
 		static void Main(string[] args)
 		{
-			RoomInitializer[] rooms;
+			Console.Write("Process animates base? [y/N]: ");
+			if (Console.ReadLine().Trim().ToLower() == "y")
+			{
+				ProcessAnimates();
+				Console.WriteLine();
+			}
 
-			Console.Write("Enter JSON file path: ");
+			Console.Write("Process rooms base? [y/N]: ");
+			if (Console.ReadLine().Trim().ToLower() == "y")
+			{
+				ProcessRooms();
+				Console.WriteLine();
+			}
+
+		}
+
+		private static string GetOutputPath(string path)
+		{
+			string fileName = Path.GetFileNameWithoutExtension(path);
+
+			if (fileName.Length > 4 && fileName.ToLower().EndsWith("base"))
+				fileName = fileName.Substring(0, fileName.Length - 4) + ".json";
+			else
+				fileName += ".new.json";
+
+			Console.Write($"Output base filename, or Enter for {fileName} (.json added if omitted): ");
+			string userEntry = Console.ReadLine();
+
+			if (!string.IsNullOrWhiteSpace(userEntry))
+			{
+				if (!userEntry.ToLower().EndsWith(".json"))
+					userEntry += ".json";
+				
+				fileName = userEntry;
+			}
+							
+			return Path.Combine(Path.GetDirectoryName(path), fileName);
+		}
+
+		private static void ProcessAnimates()
+		{
+			Animate.Initializer[] animates;
+
+			Console.Write("Animates base JSON file path: ");
 			string jsonFilePath = Console.ReadLine().Trim();
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				rooms = JsonSerializer.Deserialize<RoomInitializer[]>(jsonString);
+				animates = JsonSerializer.Deserialize<Animate.Initializer[]>(jsonString);
 			}
 			catch (Exception e)
 			{
-				Console.Error.WriteLine($"Error while reading and parsing JSON file: {e}");
+				Console.Error.WriteLine($"Error while reading JSON file: {e}");
+				return;
+			}
+
+			jsonFilePath = GetOutputPath(jsonFilePath);
+			try
+			{
+				string jsonString = JsonSerializer.Serialize<Animate.Initializer[]>(animates, _serializerOptions);
+				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
+			}
+			catch (Exception e)
+			{
+				Console.Error.WriteLine($"Error while writing JSON file: {e}");
+				return;
+			}
+
+			Console.WriteLine($"Animates JSON file written to: {jsonFilePath}");
+
+		}
+
+		private static void ProcessRooms()
+		{
+			Room.Initializer[] rooms;
+
+			Console.Write("Rooms base JSON file path: ");
+			string jsonFilePath = Console.ReadLine().Trim();
+			try
+			{
+				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
+				rooms = JsonSerializer.Deserialize<Room.Initializer[]>(jsonString);
+			}
+			catch (Exception e)
+			{
+				Console.Error.WriteLine($"Error while reading JSON file: {e}");
 				return;
 			}
 
@@ -54,7 +130,7 @@ namespace R136.Tools
 			}
 
 			// Connect layers
-			for (int i = 0; i < LevelConnections.Length; i++) 
+			for (int i = 0; i < LevelConnections.Length; i++)
 			{
 				var connection = LevelConnections[i];
 				rooms[(int)connection.From].Connections[connection.Direction] = connection.To;
@@ -67,29 +143,39 @@ namespace R136.Tools
 				rooms[(int)blockedConnection.Key].Connections.Remove(blockedConnection.Value);
 			}
 
+			// Mark dark rooms
 			for (int i = 20; i < rooms.Length; i++)
 			{
 				rooms[i].IsDark = (i != (int)RoomID.TLCave && i != (int)RoomID.RadioactiveCave);
 			}
 
-			jsonFilePath += ".new";
-			Console.Write($"Output filename, or Enter for {Path.GetFileName(jsonFilePath)}: ");
-			string jsonFileName = Console.ReadLine();
-			if (!string.IsNullOrEmpty(jsonFileName))
-				jsonFilePath = Path.Combine(Path.GetDirectoryName(jsonFilePath), jsonFileName);
+			RoomID[] forest = new RoomID[] 
+			{
+				RoomID.Forest0, RoomID.Forest1, RoomID.Forest2, RoomID.Forest4,
+				RoomID.Forest5, RoomID.Forest7,
+				RoomID.Forest10, RoomID.Forest11,
+				RoomID.Forest15, RoomID.Forest16
+			};
+			
+			// Mark forest
+			foreach (var room in forest)
+			{
+				rooms[(int)room].IsForest = true;
+			}
 
+			jsonFilePath = GetOutputPath(jsonFilePath);
 			try
 			{
-				string jsonString = JsonSerializer.Serialize<RoomInitializer[]>(rooms, new JsonSerializerOptions() { WriteIndented = true });
+				string jsonString = JsonSerializer.Serialize<Room.Initializer[]>(rooms, _serializerOptions);
 				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Console.Error.WriteLine($"Error while writing JSON file: {e}");
 				return;
 			}
 
-			Console.WriteLine($"JSON file written to: {jsonFilePath}");
+			Console.WriteLine($"Rooms base JSON file written to: {jsonFilePath}");
 		}
 
 		private record LevelConnection {

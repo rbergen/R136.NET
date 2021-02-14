@@ -37,7 +37,10 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.
+					StatusManager?.ReleaseItem(ItemID.HoundMeat);
+					Status = AnimateStatus.Done;
+
+					break;
 			}
 
 			StatusTexts.TryGetValue(textStatus, out ICollection<string> texts);

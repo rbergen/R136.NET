@@ -22,11 +22,11 @@ namespace R136.Entities
 
 		static Animate() => Randomizer = new Random();
 
-		public static IDictionary<AnimateID, Animate> FromInitializers(IServiceProvider serviceProvider, ICollection<AnimateInitializer> animateInitializers)
+		public static IDictionary<AnimateID, Animate> FromInitializers(IServiceProvider serviceProvider, ICollection<Initializer> initializers)
 		{
-			Dictionary<AnimateID, Animate> animates = new Dictionary<AnimateID, Animate>(animateInitializers.Count);
+			Dictionary<AnimateID, Animate> animates = new Dictionary<AnimateID, Animate>(initializers.Count);
 
-			foreach (var initializer in animateInitializers)
+			foreach (var initializer in initializers)
 			{
 				Type animateType = AnimateTypeMap.FromID(initializer.ID);
 
@@ -36,14 +36,9 @@ namespace R136.Entities
 				if (initializer.Virtual)
 					continue;
 
-				if (animateType.IsAssignableTo(typeof(StrikableAnimate)))
-				{
-					animates[initializer.ID] = (Animate)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom, initializer.StrikeCount);
-				}
-				else
-				{
-					animates[initializer.ID] = (Animate)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom);
-				}
+				animates[initializer.ID] = animateType.IsAssignableTo(typeof(StrikableAnimate))
+					? (Animate)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom, initializer.StrikeCount)
+					: (Animate)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom);
 			}
 
 			return animates;
@@ -52,7 +47,9 @@ namespace R136.Entities
 		public Animate(IServiceProvider serviceProvider, RoomID startRoom) 
 			=> (_serviceProvider, CurrentRoom, Status) = (serviceProvider, startRoom, AnimateStatus.Initial);
 
-		public abstract ICollection<string> ProcessStatus();	
+		public abstract ICollection<string> ProcessStatus();
+
+		public abstract bool Used(ItemID item);
 
 		protected IStatusManager StatusManager
 		{
@@ -66,6 +63,39 @@ namespace R136.Entities
 				return _statusManager;
 			}
 		}
+
+		public class Initializer
+		{
+			public AnimateID ID { get; set; }
+			public RoomID StartRoom { get; set; }
+			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+			public int StrikeCount { get; set; }
+			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+			public bool Virtual { get; set; }
+			public Dictionary<AnimateStatus, string[]> StatusTexts { get; set; }
+		}
+	}
+
+	public abstract class StrikableAnimate : Animate
+	{
+		public int StrikesLeft { get; protected set; }
+
+		public StrikableAnimate(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom)
+			=> StrikesLeft = strikeCount;
+
+		public override bool Used(ItemID item)
+		{
+			if (item != ItemID.Sword)
+				return false;
+
+			if (--StrikesLeft == 0)
+			{
+				Status = AnimateStatus.Dying;
+				return true;
+			}
+
+			return false;
+		}
 	}
 
 	public enum AnimateStatus
@@ -75,21 +105,13 @@ namespace R136.Entities
 		Attack,
 		PreparingNextAttack,
 		Dying,
-		DyingSelfInjury,
+		SelfInjury,
 		FirstStep,
 		FirstWait,
 		SecondStep,
 		SecondWait,
 		Operating,
 		Done
-	}
-
-	public abstract class StrikableAnimate : Animate 
-	{
-		public int StrikesLeft { get; }
-
-		public StrikableAnimate(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom) 
-			=> StrikesLeft = strikeCount;
 	}
 
 	public enum AnimateID
@@ -128,17 +150,4 @@ namespace R136.Entities
 		public static Type FromID(AnimateID id) => _map[id];
 	}
 
-	public class AnimateInitializer
-	{
-		public AnimateID ID { get; set; }
-
-		public RoomID StartRoom { get; set; }
-
-		public int StrikeCount { get; set; }
-
-		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-		public bool Virtual { get; set; }
-
-		public Dictionary<AnimateStatus, string[]> StatusTexts { get; set; }
-	}
 }

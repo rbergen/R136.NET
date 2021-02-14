@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Linq;
 
 namespace R136.Entities
@@ -12,29 +13,46 @@ namespace R136.Entities
 
 		public bool IsDark { get; private set; }
 
+		public bool IsForest { get; private set; }
+
 		public Dictionary<Direction, Room> Connections { get; private set; }
 
-		public static Dictionary<RoomID, Room> FromInitializers(ICollection<RoomInitializer> roomInitializers)
+		public static Dictionary<RoomID, Room> FromInitializers(ICollection<Initializer> initializers)
 		{
-			Dictionary<RoomID, Room> rooms = new Dictionary<RoomID, Room>(roomInitializers.Count);
+			Dictionary<RoomID, Room> rooms = new Dictionary<RoomID, Room>(initializers.Count);
 
-			foreach(var initializer in roomInitializers)
+			foreach(var initializer in initializers)
 			{
 				rooms[initializer.ID] = new Room()
 				{
 					Name = initializer.Name,
 					Description = initializer.Description,
-					IsDark = initializer.IsDark
+					IsDark = initializer.IsDark,
+					IsForest = initializer.IsForest
 				};
 			}
 
-			foreach(var initializer in roomInitializers)
+			foreach(var initializer in initializers)
 			{
 				rooms[initializer.ID].Connections = initializer.Connections.ToDictionary(pair => pair.Key, pair => rooms[pair.Value]);
 			}
 
 			return rooms;
 		}
+
+		public class Initializer
+		{
+			public RoomID ID { get; set; }
+			public string Name { get; set; }
+			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+			public string Description { get; set; }
+			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+			public bool IsDark { get; set; }
+			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+			public bool IsForest { get; set; }
+			public Dictionary<Direction, RoomID> Connections { get; set; }
+		}
+
 	}
 
 	public enum RoomID
@@ -72,12 +90,4 @@ namespace R136.Entities
 		Down
 	}
 
-	public class RoomInitializer
-	{
-		public RoomID ID { get; set; }
-		public string Name { get; set; }
-		public string Description { get; set; }
-		public bool IsDark { get; set; }
-		public Dictionary<Direction, RoomID> Connections { get; set; }
-	}
 }

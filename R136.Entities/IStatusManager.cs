@@ -22,9 +22,13 @@ namespace R136.Entities
 		
 		public bool IsRoomDark { get; }
 
-		//		public bool IsItemInPosession(ItemID item);
-		//		public void ReleaseItem(ItemID item);
+		public bool IsItemInPosession(ItemID item);
+		public void ReleaseItem(ItemID item);
+		
 		public void OpenConnection(Direction direction, RoomID toRoom);
+
+		public void StartForestFire();
+		public bool IsForestBurned { get;	}
 
 		public bool EndRequested { get; set; }
 	}
