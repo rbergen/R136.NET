@@ -27,17 +27,14 @@ namespace R136.Tools
 				return;
 			}
 
-			// We're using int instead of RoomID because we'll have some out-of-bound RoomIDs at the beginning
-			var connectionsList = new Dictionary<Direction, int>[rooms.Length];
-
 			for (int i = 0; i < rooms.Length; i++)
 			{
-				connectionsList[i] = new Dictionary<Direction, int>(4)
+				rooms[i].Connections = new Dictionary<Direction, RoomID>(6)
 				{
-					[Direction.East] = i + 1,
-					[Direction.West] = i - 1,
-					[Direction.North] = i - 5,
-					[Direction.South] = i + 5
+					[Direction.East] = (RoomID)(i + 1),
+					[Direction.West] = (RoomID)(i - 1),
+					[Direction.North] = (RoomID)(i - 5),
+					[Direction.South] = (RoomID)(i + 5)
 				};
 			}
 
@@ -46,19 +43,14 @@ namespace R136.Tools
 			{
 				for (int j = 0; j < 16; j += 5)
 				{
-					connectionsList[i + j + 4].Remove(Direction.East);
-					connectionsList[i + j].Remove(Direction.West);
+					rooms[i + j + 4].Connections.Remove(Direction.East);
+					rooms[i + j].Connections.Remove(Direction.West);
 				}
 				for (int j = 0; j < 5; j++)
 				{
-					connectionsList[i + j].Remove(Direction.North);
-					connectionsList[i + j + 15].Remove(Direction.South);
+					rooms[i + j].Connections.Remove(Direction.North);
+					rooms[i + j + 15].Connections.Remove(Direction.South);
 				}
-			}
-
-			for (int i = 0; i < rooms.Length; i++)
-			{
-				rooms[i].Connections = connectionsList[i].ToDictionary(pair => pair.Key, pair => (RoomID)pair.Value);
 			}
 
 			// Connect layers
@@ -81,7 +73,7 @@ namespace R136.Tools
 			}
 
 			jsonFilePath += ".new";
-			Console.WriteLine($"Output filename, or Enter for {Path.GetFileName(jsonFilePath)}: ");
+			Console.Write($"Output filename, or Enter for {Path.GetFileName(jsonFilePath)}: ");
 			string jsonFileName = Console.ReadLine();
 			if (!string.IsNullOrEmpty(jsonFileName))
 				jsonFilePath = Path.Combine(Path.GetDirectoryName(jsonFilePath), jsonFileName);
