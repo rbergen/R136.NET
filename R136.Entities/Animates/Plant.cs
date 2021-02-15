@@ -7,36 +7,33 @@ using System.Threading.Tasks;
 
 namespace R136.Entities.Animates
 {
-	public class HellHound : StrikableAnimate
+	public class Plant : StrikableAnimate
 	{
-
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public HellHound(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom, strikeCount, StatusTexts) { }
+		public Plant(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom, strikeCount, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.Attack;
-
-					break;
-
 				case AnimateStatus.Attack:
 					StatusManager?.DecreaseHealth();
-					Status = AnimateStatus.PreparingNextAttack;
-					
+
+					Status = Randomizer.Next(2) == 0
+						? AnimateStatus.PreparingNextAttack
+						: AnimateStatus.Attack;
+
 					break;
 
 				case AnimateStatus.PreparingNextAttack:
-					if (Randomizer.Next(2) == 0)
 						Status = AnimateStatus.Attack;
 
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.ReleaseItem(ItemID.HoundMeat);
+					StatusManager?.OpenConnection(Direction.North, RoomID.SlimeCave);
 					Status = AnimateStatus.Done;
 
 					break;

@@ -5,20 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-
+using R136.Entities.Utilities;
+using R136.Entities.Animates;
+using System.Reflection;
 
 namespace R136.Entities
 {
 	public abstract class Animate
 	{
-		protected static Random Randomizer { get; }
-		private static IDictionary<AnimateStatus, ICollection<string>> StatusTexts { get; set; }
-		
-		public RoomID CurrentRoom { get; }
+		public AnimateID ID { get; private set; }
+		public RoomID CurrentRoom { get; set; }
 
-		private IStatusManager _statusManager = null;
-		private IServiceProvider _serviceProvider;
 		protected AnimateStatus Status { get; set; }
+		protected static Random Randomizer { get; }
+
+		private StatusTextMapper? StatusTexts { get; set;  } = null;
+
+		private IStatusManager? _statusManager = null;
+		private IServiceProvider? _serviceProvider;
 
 		static Animate() => Randomizer = new Random();
 
@@ -31,27 +35,60 @@ namespace R136.Entities
 				Type animateType = AnimateTypeMap.FromID(initializer.ID);
 
 				if (initializer.StatusTexts != null)
-					animateType.GetProperty(nameof(StatusTexts))?.SetValue(null, (IDictionary<AnimateStatus, ICollection<string>>)initializer.StatusTexts);
+				{
+					PropertyInfo? statusTextsProperty = animateType.GetProperty(nameof(StatusTexts), typeof(StatusTextMapper));
+					
+					if (statusTextsProperty != null && statusTextsProperty.CanRead && statusTextsProperty.CanWrite
+						&& statusTextsProperty.GetGetMethod()!.IsStatic && statusTextsProperty.GetValue(null) == null)
+					{
+						statusTextsProperty.SetValue(null, new StatusTextMapper((IDictionary<AnimateStatus, ICollection<string>>)initializer.StatusTexts));
+					}
+				}
 
 				if (initializer.Virtual)
 					continue;
 
-				animates[initializer.ID] = animateType.IsAssignableTo(typeof(StrikableAnimate))
-					? (Animate)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom, initializer.StrikeCount)
-					: (Animate)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom);
+				Animate? animate = animateType.IsAssignableTo(typeof(StrikableAnimate))
+					? (Animate?)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom, initializer.StrikeCount)
+					: (Animate?)Activator.CreateInstance(animateType, serviceProvider, initializer.StartRoom);
+
+				if (animate != null)
+				{
+					animate.ID = initializer.ID;
+					animates[initializer.ID] = animate;
+				}
 			}
 
 			return animates;
 		}
 
-		public Animate(IServiceProvider serviceProvider, RoomID startRoom) 
+		public Animate(IServiceProvider serviceProvider, RoomID startRoom, StatusTextMapper? statusTexts) 
+			=> (_serviceProvider, CurrentRoom, StatusTexts, Status) = (serviceProvider, startRoom, statusTexts, AnimateStatus.Initial);
+
+		public Animate(IServiceProvider serviceProvider, RoomID startRoom)
 			=> (_serviceProvider, CurrentRoom, Status) = (serviceProvider, startRoom, AnimateStatus.Initial);
 
-		public abstract ICollection<string> ProcessStatus();
+		protected ICollection<string>? GetTextsForStatus(AnimateStatus status)
+		{
+			ICollection<string>? texts = null;
+			StatusTexts?.Map.TryGetValue(status, out texts);
+			return texts;
+		}
 
-		public abstract bool Used(ItemID item);
+		public virtual ICollection<string>? ProcessStatus()
+		{
+			AnimateStatus textStatus = Status;
 
-		protected IStatusManager StatusManager
+			ProcessStatusInternal(textStatus);
+
+			return GetTextsForStatus(textStatus);
+		}
+
+		public virtual void ProcessStatusInternal(AnimateStatus status) { }
+
+		public virtual bool Used(ItemID item) => false;
+
+		protected IStatusManager? StatusManager
 		{
 			get
 			{
@@ -72,7 +109,7 @@ namespace R136.Entities
 			public int StrikeCount { get; set; }
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 			public bool Virtual { get; set; }
-			public Dictionary<AnimateStatus, string[]> StatusTexts { get; set; }
+			public Dictionary<AnimateStatus, string[]>? StatusTexts { get; set; }
 		}
 	}
 
@@ -80,7 +117,7 @@ namespace R136.Entities
 	{
 		public int StrikesLeft { get; protected set; }
 
-		public StrikableAnimate(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom)
+		public StrikableAnimate(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount, StatusTextMapper? textMapper) : base(serviceProvider, startRoom, textMapper)
 			=> StrikesLeft = strikeCount;
 
 		public override bool Used(ItemID item)
@@ -144,7 +181,28 @@ namespace R136.Entities
 	{
 		private static readonly Dictionary<AnimateID, Type> _map = new Dictionary<AnimateID, Type>(Enum.GetValues(typeof(AnimateID)).Length) 
 		{
-			[AnimateID.HellHound] = typeof(Animates.Hellhound),
+			[AnimateID.HellHound] = typeof(HellHound),
+			[AnimateID.RedTroll] = typeof(RedTroll),
+			[AnimateID.Plant] = typeof(Plant),
+			[AnimateID.Gnu] = typeof(Gnu),
+			[AnimateID.Dragon] = typeof(Dragon),
+			[AnimateID.Swelling] = typeof(Swelling),
+			[AnimateID.Door] = typeof(Door),
+			[AnimateID.Voices] = typeof(Voices),
+			[AnimateID.Barbecue] = typeof(Barbecue),
+			[AnimateID.Tree] = typeof(Tree),
+			[AnimateID.GreenCrystal] = typeof(GreenCrystal),
+			[AnimateID.Computer] = typeof(Computer),
+			[AnimateID.DragonHead] = typeof(DragonHead),
+			[AnimateID.Lava] = typeof(Lava),
+			[AnimateID.Vacuum] = typeof(Vacuum),
+			[AnimateID.PaperHatch] = typeof(PaperHatch),
+			[AnimateID.SwampBase] = typeof(Swamp),
+			[AnimateID.NorthSwamp] = typeof(Swamp),
+			[AnimateID.MiddleSwamp] = typeof(Swamp),
+			[AnimateID.SouthSwamp] = typeof(Swamp),
+			[AnimateID.Mist] = typeof(Mist),
+			[AnimateID.Teleporter] = typeof(Teleporter)
 		};
 
 		public static Type FromID(AnimateID id) => _map[id];

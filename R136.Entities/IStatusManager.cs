@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace R136.Entities
 {
-	public enum HealthSeverity
+	public enum HealthImpact
 	{
 		Normal,
-		Serious
+		Severe
 	}
 
 	public interface IStatusManager
 	{
 		public void DecreaseHealth();
 
-		public void DecreaseHealth(HealthSeverity severity);
+		public void DecreaseHealth(HealthImpact severity);
 
-		public RoomID CurrentRoomID { get; set; }
+		public RoomID CurrentRoom { get; set; }
 		
 		public bool IsRoomDark { get; }
 
@@ -30,6 +30,6 @@ namespace R136.Entities
 		public void StartForestFire();
 		public bool IsForestBurned { get;	}
 
-		public bool EndRequested { get; set; }
+		public bool RequestEnd { get; set; }
 	}
 }

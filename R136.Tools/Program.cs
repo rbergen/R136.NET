@@ -73,7 +73,7 @@ namespace R136.Tools
 			jsonFilePath = GetOutputPath(jsonFilePath);
 			try
 			{
-				string jsonString = JsonSerializer.Serialize<Animate.Initializer[]>(animates, _serializerOptions);
+				string jsonString = JsonSerializer.Serialize(animates, _serializerOptions);
 				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
 			}
 			catch (Exception e)
@@ -166,7 +166,7 @@ namespace R136.Tools
 			jsonFilePath = GetOutputPath(jsonFilePath);
 			try
 			{
-				string jsonString = JsonSerializer.Serialize<Room.Initializer[]>(rooms, _serializerOptions);
+				string jsonString = JsonSerializer.Serialize(rooms, _serializerOptions);
 				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
 			}
 			catch (Exception e)

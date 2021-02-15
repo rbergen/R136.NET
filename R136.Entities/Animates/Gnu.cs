@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace R136.Entities.Animates
 {
-	public class HellHound : StrikableAnimate
+	public class Gnu : Animate
 	{
-
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public HellHound(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom, strikeCount, StatusTexts) { }
+		public Gnu(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -25,22 +24,24 @@ namespace R136.Entities.Animates
 
 				case AnimateStatus.Attack:
 					StatusManager?.DecreaseHealth();
-					Status = AnimateStatus.PreparingNextAttack;
-					
-					break;
-
-				case AnimateStatus.PreparingNextAttack:
-					if (Randomizer.Next(2) == 0)
-						Status = AnimateStatus.Attack;
 
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.ReleaseItem(ItemID.HoundMeat);
+					StatusManager?.ReleaseItem(ItemID.RedCrystal);
 					Status = AnimateStatus.Done;
 
 					break;
 			}
+		}
+
+		public override bool Used(ItemID item)
+		{
+			if (item != ItemID.Pornbook)
+				return false;
+
+			Status = AnimateStatus.Dying;
+			return true;
 		}
 	}
 }
