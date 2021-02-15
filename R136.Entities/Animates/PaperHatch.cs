@@ -12,13 +12,13 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public PaperHatch(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public PaperHatch(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
 			if (status == AnimateStatus.Operating)
 			{
-				StatusManager?.ReleaseItem(ItemID.Paper);
+				StatusManager?.PutDown(ItemID.Paper);
 				Status = AnimateStatus.Done;
 			}
 		}

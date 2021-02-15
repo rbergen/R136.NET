@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public DragonHead(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public DragonHead(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -40,19 +40,12 @@ namespace R136.Entities.Animates
 			if (item != ItemID.GreenCrystal && item != ItemID.RedCrystal && item != ItemID.BlueCrystal)
 				return false;
 
-			switch (Status)
+			Status = Status switch
 			{
-				case AnimateStatus.Initial:
-					Status = AnimateStatus.FirstStep;
-					break;
-				case AnimateStatus.FirstWait:
-					Status = AnimateStatus.SecondStep;
-					break;
-				default:
-					Status = AnimateStatus.Operating;
-					break;
-			}
-
+				AnimateStatus.Initial => AnimateStatus.FirstStep,
+				AnimateStatus.FirstWait => AnimateStatus.SecondStep,
+				_ => AnimateStatus.Operating,
+			};
 			return true;
 		}
 	}

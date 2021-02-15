@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Lava(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Lava(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override ICollection<string>? ProcessStatus()
 		{
@@ -20,7 +20,7 @@ namespace R136.Entities.Animates
 			switch (textStatus)
 			{
 				case AnimateStatus.Initial:
-					if (StatusManager != null && !StatusManager.IsItemInPosession(ItemID.HeatSuit))
+					if (StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
 					{
 						textStatus = AnimateStatus.SelfInjury;
 						StatusManager.DecreaseHealth(HealthImpact.Severe);

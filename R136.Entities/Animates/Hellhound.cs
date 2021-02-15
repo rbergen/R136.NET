@@ -1,4 +1,5 @@
-﻿using R136.Entities.Utilities;
+﻿using R136.Entities.Global;
+using R136.Entities.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace R136.Entities.Animates
 
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public HellHound(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom, strikeCount, StatusTexts) { }
+		public HellHound(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -30,13 +31,13 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.PreparingNextAttack:
-					if (Randomizer.Next(2) == 0)
+					if (Facilities.Randomizer.Next(2) == 0)
 						Status = AnimateStatus.Attack;
 
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.ReleaseItem(ItemID.HoundMeat);
+					StatusManager?.PutDown(ItemID.HoundMeat);
 					Status = AnimateStatus.Done;
 
 					break;

@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Gnu(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Gnu(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -28,7 +28,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.ReleaseItem(ItemID.RedCrystal);
+					StatusManager?.PutDown(ItemID.RedCrystal);
 					Status = AnimateStatus.Done;
 
 					break;

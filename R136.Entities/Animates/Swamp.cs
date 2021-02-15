@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Swamp(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Swamp(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{

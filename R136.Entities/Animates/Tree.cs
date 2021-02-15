@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Tree(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Tree(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override ICollection<string>? ProcessStatus()
 		{
@@ -23,7 +23,7 @@ namespace R136.Entities.Animates
 
 			if (Status == AnimateStatus.Operating)
 			{
-				if (!(StatusManager?.IsItemInPosession(ItemID.HeatSuit) ?? false))
+				if (!(StatusManager?.IsInPosession(ItemID.HeatSuit) ?? false))
 				{
 					statusTexts = GetTextsForStatus(AnimateStatus.SelfInjury);
 					if (statusTexts != null)

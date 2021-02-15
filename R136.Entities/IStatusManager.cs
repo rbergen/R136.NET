@@ -16,19 +16,18 @@ namespace R136.Entities
 	{
 		public void DecreaseHealth();
 
-		public void DecreaseHealth(HealthImpact severity);
+		public void DecreaseHealth(HealthImpact impact);
 
 		public RoomID CurrentRoom { get; set; }
 		
-		public bool IsRoomDark { get; }
+		public bool IsInPosession(ItemID item);
+		public void RemoveFromPossession(ItemID item);
 
-		public bool IsItemInPosession(ItemID item);
-		public void ReleaseItem(ItemID item);
+		public void PutDown(ItemID item);
 		
 		public void OpenConnection(Direction direction, RoomID toRoom);
 
 		public void StartForestFire();
-		public bool IsForestBurned { get;	}
 
 		public bool RequestEnd { get; set; }
 	}

@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Swelling(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Swelling(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override ICollection<string>? ProcessStatus()
 		{
@@ -25,7 +25,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					if (!(StatusManager?.IsItemInPosession(ItemID.GasMask) ?? false))
+					if (!(StatusManager?.IsInPosession(ItemID.GasMask) ?? false))
 						textStatus = AnimateStatus.SelfInjury;
 
 					StatusManager?.OpenConnection(Direction.North, RoomID.DamnationCave);

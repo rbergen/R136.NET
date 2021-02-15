@@ -12,7 +12,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public GreenCrystal(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public GreenCrystal(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public void Trigger()
 		{

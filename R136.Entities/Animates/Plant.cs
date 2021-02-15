@@ -1,4 +1,5 @@
-﻿using R136.Entities.Utilities;
+﻿using R136.Entities.Global;
+using R136.Entities.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Plant(IServiceProvider serviceProvider, RoomID startRoom, int strikeCount) : base(serviceProvider, startRoom, strikeCount, StatusTexts) { }
+		public Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -21,7 +22,7 @@ namespace R136.Entities.Animates
 				case AnimateStatus.Attack:
 					StatusManager?.DecreaseHealth();
 
-					Status = Randomizer.Next(2) == 0
+					Status = Facilities.Randomizer.Next(2) == 0
 						? AnimateStatus.PreparingNextAttack
 						: AnimateStatus.Attack;
 

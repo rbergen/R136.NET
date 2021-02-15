@@ -10,7 +10,8 @@ namespace R136.Tools
 {
 	class Program
 	{
-		private static JsonSerializerOptions _serializerOptions = null; // new JsonSerializerOptions() { WriteIndented = true };
+		private static readonly JsonSerializerOptions _serializerOptions 
+			= new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true };
 
 		static void Main(string[] args)
 		{
@@ -35,11 +36,11 @@ namespace R136.Tools
 			string fileName = Path.GetFileNameWithoutExtension(path);
 
 			if (fileName.Length > 4 && fileName.ToLower().EndsWith("base"))
-				fileName = fileName.Substring(0, fileName.Length - 4) + ".json";
+				fileName = fileName[..^4] + ".json";
 			else
 				fileName += ".new.json";
 
-			Console.Write($"Output base filename, or Enter for {fileName} (.json added if omitted): ");
+			Console.Write($"Output base filename, or Enter for '{fileName}' (.json added if omitted): ");
 			string userEntry = Console.ReadLine();
 
 			if (!string.IsNullOrWhiteSpace(userEntry))

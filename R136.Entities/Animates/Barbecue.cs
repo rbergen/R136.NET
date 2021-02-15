@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Barbecue(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Barbecue(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -28,7 +28,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Operating:
-					StatusManager?.ReleaseItem(ItemID.Cookie);
+					StatusManager?.PutDown(ItemID.Cookie);
 					Status = AnimateStatus.Initial;
 
 					break;

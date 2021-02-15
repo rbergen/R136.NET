@@ -8,11 +8,8 @@ namespace R136.Entities
 	public class Room
 	{
 		public string Name { get; }
-
 		public string? Description { get; }
-
 		public bool IsDark { get; }
-
 		public bool IsForest { get; }
 
 		public Dictionary<Direction, Room> Connections { get; private set; } = null!;
@@ -47,10 +44,13 @@ namespace R136.Entities
 		{
 			public RoomID ID { get; set; }
 			public string Name { get; set; } = "";
+
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 			public string? Description { get; set; }
+
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 			public bool IsDark { get; set; }
+
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 			public bool IsForest { get; set; }
 			public Dictionary<Direction, RoomID>? Connections { get; set; }
@@ -65,7 +65,7 @@ namespace R136.Entities
 		Forest10 = 10, Forest11, EmptySpace12, SwampPath, EmptySpace14 = 14,
 		Forest15 = 15, Forest16, EmptySpace17, SouthSwamp, Ruin = 19,
 
-		SlimeCave = 20, BlackCave,	DrugCave, HornyCave, StraightjacketCave = 24,
+		SlimeCave = 20, BlackCave, DrugCave, HornyCave, StraightjacketCave = 24,
 		NeglectedCave = 25, EmptyCave26, MainCave, HieroglyphsCave, StenchCave = 29,
 		GloomyCave = 30, TLCave, SmallCave, IceCave, CactusCave = 34,
 		StalagmiteCave = 35, StormCave, MistCave, SpiralstaircaseCave1, TentacleCave = 39,

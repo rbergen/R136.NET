@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 	{
 		public static StatusTextMapper? StatusTexts { get; set; }
 
-		public Dragon(IServiceProvider serviceProvider, RoomID startRoom) : base(serviceProvider, startRoom, StatusTexts) { }
+		public Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
 
 		public override void ProcessStatusInternal(AnimateStatus status)
 		{
@@ -38,7 +38,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.SecondStep:
-					StatusManager?.ReleaseItem(ItemID.GasCanister);
+					StatusManager?.PutDown(ItemID.GasCanister);
 					Status = AnimateStatus.Done;
 
 					break;
