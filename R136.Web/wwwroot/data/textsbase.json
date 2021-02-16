@@ -1,9 +1,9 @@
 [
-	//{
-	//	"TypeName": "CompoundItem",
-	//	"ID": 0,
-	//	"Texts": [
-	//		"Je kunt een voorwerp niet met zichzelf combineren"
-	//	]
-	//},
+	{
+		"TypeName": "Bandage",
+		"ID": 0,
+		"Texts": [
+			"Je bent nog helemaal heel!"
+		]
+	}
 ]

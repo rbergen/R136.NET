@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Web", "R136.Web\R136.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Entities", "R136.Entities\R136.Entities.csproj", "{CB341DF9-1ECF-4ABC-AACB-EAFE4A866910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R136.Tools", "R136.Tools\R136.Tools.csproj", "{4FA7BD6A-CD6B-4D92-97D1-7D725C5E51A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Tools", "R136.Tools\R136.Tools.csproj", "{4FA7BD6A-CD6B-4D92-97D1-7D725C5E51A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BA6446B-7152-4330-8367-E400419C8492}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

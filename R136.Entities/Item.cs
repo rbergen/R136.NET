@@ -1,5 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Entities.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,38 +31,38 @@ namespace R136.Entities
 			var compoundInitializers = new List<Initializer>();
 			var typedInitializers = new Dictionary<Initializer, Type>();
 
-			foreach(var initializer in initializers)
+			foreach (var initializer in initializers)
 			{
 				Type? itemType = ToType(initializer.ID);
 
 				if (itemType != null)
 					typedInitializers[initializer] = itemType;
 
-				else if (initializer.Components != null && initializer.Components.Length == 2)
-					compoundInitializers.Add(initializer);
-
-				else
+				else if (initializer.UsableOn != null && initializer.UsableOn.Length > 0)
 				{
-					items[initializer.ID] = (initializer.UsableOn != null && initializer.UsableOn.Length > 0)
-						? UsableItem.FromInitializer(initializer, animates)
-						: FromInitializer(initializer);
+					if (initializer.Components != null && initializer.Components.Length == 2)
+						compoundInitializers.Add(initializer);
+					else
+						items[initializer.ID] = UsableItem.FromInitializer(initializer, animates);
 				}
+				else
+					items[initializer.ID] = FromInitializer(initializer);
 			}
 
-			foreach(var initializer in compoundInitializers)
-				items[initializer.ID] = CompoundItem.FromInitializer(initializer, items);
+			foreach (var initializer in compoundInitializers)
+				items[initializer.ID] = CompoundItem.FromInitializer(initializer, animates, items);
 
-			foreach(var initializerType in typedInitializers)
+			foreach (var initializerType in typedInitializers)
 			{
 				var initializer = initializerType.Key;
 
 				var method = initializerType.Value.GetMethod(nameof(FromInitializer),
-					new Type[] { typeof(Initializer), typeof(IDictionary<ItemID, Item>), typeof(IDictionary<AnimateID, Animate>) });
+					new Type[] { typeof(Initializer), typeof(IDictionary<AnimateID, Animate>), typeof(IDictionary<ItemID, Item>) });
 
 				if (method != null && method.IsStatic && method.ReturnType.IsAssignableTo(typeof(Item)))
 				{
-					Item? item = (Item?)method.Invoke(null, new object[] { initializer, items, animates });
-					
+					Item? item = (Item?)method.Invoke(null, new object[] { initializer, animates, items });
+
 					if (item != null)
 						items[initializer.ID] = item;
 				}
@@ -73,6 +74,8 @@ namespace R136.Entities
 		public Item(ItemID id, string name, string description, RoomID startRoom, ICollection<string>? useTexts, bool isWearable, bool isPutdownAllowed)
 			=> (ID, Name, Description, CurrentRoom, UseTexts, IsWearable, IsPutdownAllowed) 
 			= (id, name, description, startRoom, useTexts, isWearable, isPutdownAllowed);
+
+		public virtual Result Use() => new Result(ResultCode.Success, UseTexts);
 
 		public class Initializer
 		{
@@ -92,7 +95,10 @@ namespace R136.Entities
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 			public ItemID[]? Components { get; set; }
-			
+
+			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+			public ICollection<string>? CombineTexts { get; set; }
+
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 			public AnimateID[]? UsableOn { get; set; } = null;
 			
@@ -101,50 +107,47 @@ namespace R136.Entities
 		}
 
 		private static Type? ToType(ItemID id) => id switch {
+			ItemID.TNT => typeof(Tnt),
 			_ => null
 		};
 	}
 
-	public class CompoundItem : Item {
-		public ICollection<Item> Components;
+	public interface IUsable<T>
+	{
+		public ICollection<T> UsableOn { get; }
 
-		public static CompoundItem FromInitializer(Initializer initializer, IDictionary<ItemID, Item> items)
-			=> new CompoundItem(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, 
-					initializer.Components!.Select(itemID => items[itemID]).ToArray(), initializer.UseTexts, initializer.Wearable, !initializer.BlockPutdown);
-
-		public CompoundItem(ItemID id, string name, string description, RoomID startRoom, ICollection<Item> compoundItems, ICollection<string>? useTexts, bool isWearable, bool isPutdownAllowed)
-			: base(id, name, description, startRoom, useTexts, isWearable, isPutdownAllowed) => Components = compoundItems;
-
-		public Result Combine(Item first, Item second)
-		{
-			if (!Components.Contains(first) || !Components.Contains(second) || first == second)
-				return Result.Failure;
-
-			if (first != this)
-				StatusManager?.RemoveFromPossession(first.ID);
-			if (second != this)
-				StatusManager?.RemoveFromPossession(second.ID);
-
-			return Result.Success;
-		}
-
-		private enum TextID
-		{
-			CantCombineWithItself = 0,
-		}
+		public Result UseOn(T subject);
 	}
 
-	public class UsableItem : Item
+	public class UsableItem : Item, IUsable<Animate>
 	{
 		public ICollection<Animate> UsableOn { get; }
 		public bool KeepAfterUse { get; }
 
-		public static UsableItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates) 
-			=> new UsableItem(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom,
-						initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), initializer.UseTexts, initializer.Wearable, !initializer.BlockPutdown, initializer.KeepAfterUse);
+		public static UsableItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates)
+			=> new UsableItem(
+				initializer.ID, 
+				initializer.Name, 
+				initializer.Description, 
+				initializer.StartRoom,
+				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), 
+				initializer.UseTexts, 
+				initializer.Wearable, 
+				!initializer.BlockPutdown, 
+				initializer.KeepAfterUse
+			);
 
-		public UsableItem(ItemID id, string name, string description, RoomID startRoom, ICollection<Animate> usableOn, ICollection<string>? useTexts, bool isWearable, bool isPutdownAllowed, bool keepAfterUse)
-			: base(id, name, description, startRoom, useTexts, isWearable, isPutdownAllowed) 
+		public UsableItem(
+			ItemID id, 
+			string name, 
+			string description, 
+			RoomID startRoom, 
+			ICollection<Animate> usableOn, 
+			ICollection<string>? useTexts, 
+			bool isWearable, 
+			bool isPutdownAllowed, 
+			bool keepAfterUse
+		) : base(id, name, description, startRoom, useTexts, isWearable, isPutdownAllowed)
 			=> (UsableOn, KeepAfterUse) = (usableOn, keepAfterUse);
 
 		public virtual Result UseOn(Animate animate)
@@ -161,6 +164,66 @@ namespace R136.Entities
 			}
 
 			return Result.Failure;
+		}
+	}
+
+	public interface ICompound<T>
+	{
+		public ICollection<T> Components { get;  }
+		public Result Combine(T first, T second);
+	}
+
+	public class CompoundItem : UsableItem, ICompound<Item> {
+		public ICollection<Item> Components { get; }
+		public ICollection<string>? CombineTexts { get; }
+
+		public static CompoundItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
+			=> new CompoundItem(
+				initializer.ID, 
+				initializer.Name, 
+				initializer.Description, 
+				initializer.StartRoom, 
+				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), 
+				initializer.UseTexts,
+				initializer.Components!.Select(itemID => items[itemID]).ToArray(),
+				initializer.CombineTexts,
+				initializer.Wearable, 
+				!initializer.BlockPutdown, 
+				initializer.KeepAfterUse
+			);
+
+		public CompoundItem(
+			ItemID id, 
+			string name, 
+			string description, 
+			RoomID startRoom, 
+			ICollection<Animate> usableOn, 
+			ICollection<string>? useTexts,
+			ICollection<Item> compoundItems,
+			ICollection<string>? combineTexts,
+			bool isWearable, 
+			bool isPutdownAllowed, 
+			bool keepAfterUse
+		)
+			: base(id, name, description, startRoom, usableOn, useTexts, isWearable, isPutdownAllowed, keepAfterUse) 
+			=> (Components, CombineTexts) = (compoundItems, combineTexts);
+
+		public Result Combine(Item first, Item second)
+		{
+			if (!Components.Contains(first) || !Components.Contains(second) || first == second)
+				return Result.Failure;
+
+			if (first != this)
+				StatusManager?.RemoveFromPossession(first.ID);
+			if (second != this)
+				StatusManager?.RemoveFromPossession(second.ID);
+
+			return new Result(ResultCode.Success, CombineTexts);
+		}
+
+		private enum TextID
+		{
+			CantCombineWithItself = 0,
 		}
 	}
 

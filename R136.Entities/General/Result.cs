@@ -29,7 +29,7 @@ namespace R136.Entities.General
 		public Result(ResultCode code, ICollection<string>? message)
 			=> (Code, Message) = (code, message);
 
-		public Result(ResultCode code, ICollection<string>? message, ContinuationStatus status)
-			=> (Code, Message, ContinuationStatus) = (code, message, status);
+		public Result(ContinuationStatus status, ICollection<string>? message)
+			=> (Code, Message, ContinuationStatus) = (ResultCode.ContinuationRequested, message, status);
 	}
 }

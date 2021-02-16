@@ -15,10 +15,12 @@ namespace R136.Entities.Global
 
 		public static TextsMap TextsMap { get; }
 
+		public static Configuration Configuration { get; set; }
 		static Facilities()
 		{
 			Randomizer = new Random();
 			TextsMap = new TextsMap();
+			Configuration = new Configuration();
 		}
 	}
 }

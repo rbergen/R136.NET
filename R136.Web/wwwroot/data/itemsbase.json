@@ -15,7 +15,9 @@
 		"Description": "Dit aluminiumkleurig pak beschermt je tegen grote hitte of kou.",
 		"StartRoom": 4,
 		"Wearable": true,
-		"UseTexts": "Je hebt het pak al aan."
+		"UseTexts": [
+			"Je hebt het pak al aan." 
+		]
 	},
 	{
 		"ID": 2,
@@ -43,8 +45,8 @@
 		"Description": "Het is een menselijk, verbleekt dijbeen, dat er sterk uit ziet. Je kunt er veel kracht mee zetten.",
 		"StartRoom": 13,
 		"UseTexts": [
-			""
-		]
+			"Je laat een uiteinde van het bot een paar keer op je hoofd stuiteren. Het klinkt wat hol."
+		],
 		"UsableOn": [ 6 ],
 		"KeepAfterUse": true
 	},
@@ -53,6 +55,9 @@
 		"Name": "de diskette",
 		"Description": "Het is een grijze 3,5 inch diskette van het merk 'Spirits' met daarop waarschijnlijk belangrijke data.",
 		"StartRoom": 20,
+		"UseTexts": [
+			"Je schuift het metalen klepje aan de kant. Er lijkt dun magnetisch plastic achter te zitten."
+		],
 		"UsableOn": [ 11 ]
 	},
 	{
@@ -60,6 +65,9 @@
 		"Name": "de hasj",
 		"Description": "Het is een zakje met spul dat lijkt op tabak.",
 		"StartRoom": 22,
+		"UseTexts": [
+			"Je wrijft het zakje heen weer tussen je vingers. De inhoud verbrokkelt wat."
+		],
 		"UsableOn": [ 8 ]
 	},
 	{
@@ -67,6 +75,9 @@
 		"Name": "het rode kristal",
 		"Description": "Het is een helder, roodgekleurd kristal. Even zie je een mysterieuze twinkeling.",
 		"StartRoom": 80,
+		"UseTexts": [
+			"Je knijpt in het kristal. Er komt geen bloed uit."
+		],
 		"UsableOn": [ 12 ]
 	},
 	{
@@ -74,14 +85,20 @@
 		"Name": "de slaapmuts",
 		"Description": "Het is een Mickey Mouse-slaapmuts met vrolijke kleuren.",
 		"StartRoom": 24,
-		"UsableOn": 4
+		"UseTexts": [
+			"Je zet de slaapmuts op je hoofd. Hij past niet en zakt er weer af."
+		],
+		"UsableOn": [ 4 ]
 	},
 	{
 		"ID": 9,
 		"Name": "de noekietronenbom",
 		"Description": "De bom bestaat uit een aantal dunne buizen in een cilinder. Daaromheen zitten een aantal slangetjes. Er klinkt een vreemd gebrom dat uit een rooster komt. Er zit een bordje op: -5° - 105°, Codenaam: R136.",
 		"StartRoom": 27,
-		"UsableOn": 13
+		"UseTexts": [
+			"Je kunt geen knop vinden waarop je kunt drukken."
+		],
+		"UsableOn": [ 13 ]
 	},
 	{
 		"ID": 10,
@@ -89,10 +106,10 @@
 		"Description": "Het is een zwarte, aluminium zaklamp met een halogeenlampje erin.",
 		"StartRoom": 31,
 		"BlockPutdown": true,
-		"UseTexts": [
+		"Components": [ 10, 18 ],
+		"CombineTexts": [
 			"Je schroeft de zaklamp open en schudt totdat de oude batterijen er uit komen vallen. Daarna steek je de \"trommelbatterijen\" erin en schroeft de lamp weer dicht. Nadat je een paar keer op de zaklantaarn hebt geslagen zie je dat hij het doet."
 		],
-		"Components": [ 10, 18 ],
 		"KeepAfterUse": true
 	},
 	{
@@ -112,8 +129,8 @@
 		"StartRoom": 40,
 		"UseTexts": [
 			"Je pielt wat aan de trekker. \"Pfft\", zegt de vlammenwerper."
-		]
-		"UsableOn": 9,
+		],
+		"UsableOn": [ 9 ],
 		"KeepAfterUse": true
 	},
 	{
@@ -123,142 +140,116 @@
 		"StartRoom": 43,
 		"UseTexts": [
 			"Je draait het kookboek ondersteboven. Het valt je op dat de tekst nu op zijn kop staat."
-		],
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		]
 	},
 	{
 		"ID": 14,
 		"Name": "de tnt",
-		"Description": "De T.N.T. is een bosje rode staven met een velletje waarop staat: 'Pas op!\nSchokgevoelig!'",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"Description": "De T.N.T. is een bosje rode staven met een velletje waarop staat: 'Pas op! Schokgevoelig!'",
+		"StartRoom": 51,
+		"UseTexts": [
+			"Je pakt een staafje en gooit het op de grond. Er volgt een explosie die samengaat met een harde knal. Je wordt even verblind door de flits van de ontploffing. Door de klap val je even flauw."
+		]
 	},
 	{
 		"ID": 15,
 		"Name": "het mosterdgaspatroon",
-		"Description": "Het is een patroon dat mosterdgas onder druk bevat. Er zitten draadjes aan, en\nje kunt niets vinden om hem te activeren.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"Description": "Het is een patroon dat mosterdgas onder druk bevat. Er zitten draadjes aan en je kunt niets vinden om hem te activeren.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"Je schudt wat met het patroon. Je hoort niets."
+		]
 	},
 	{
 		"ID": 16,
 		"Name": "het giftige vlees",
-		"Description": "Het is een stuk vlees dat er op zich lekker uit ziet, maar een paar groene\nvlekken heeft. Er zit een dode mier op.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"Description": "Het is een stuk vlees dat er op zich lekker uit ziet, maar een paar groene vlekken heeft. Er zit een dode mier op.",
+		"StartRoom": 52,
+		"UseTexts": [
+			"Dat lijkt me niet verstandig."
+		],
+		"UsableOn": [ 3 ]
 	},
 	{
 		"ID": 17,
 		"Name": "de ontsteking",
 		"Description": "De ontsteking is een kastje met een T-vormige hendel erop.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"StartRoom": 60,
+		"UseTexts": [
+			"Je drukt de hendel omlaag, maar er gebeurt niets. Misschien ontbreekt er nog iets?"
+		]
 	},
 	{
 		"ID": 18,
 		"Name": "het pakje batterijen",
 		"Description": "Het is een pakketje met penlights. Konijntjes kunnen er uren mee trommelen.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"StartRoom": 61,
+		"BlockPutdown": true,
+		"UseTexts": [
+			"Je steekt twee batterijen in je neusgaten en de andere twee in je oren. Je wordt er niet warm of koud van, dus je steekt de batterijen weer in het pakje."
+		]
 	},
 	{
 		"ID": 19,
 		"Name": "het gasmasker",
 		"Description": "Het is een groen masker met een rond filter en 2 plastic ooggaten.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"StartRoom": 62,
+		"Wearable": true,
+		"UseTexts": [
+			"Je hebt het gasmasker al op."
+		]
 	},
 	{
 		"ID": 20,
 		"Name": "het papier",
-		"Description": "Het is een geel vel papier met gekrulde hoeken. Het handschrift is bijna on-\nleesbaar, en met moeite ontcijfer je: 'Voed de drakekop met de 3 gekleurde\nkristallen'.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"Description": "Het is een geel vel papier met gekrulde hoeken. Het handschrift is bijna onleesbaar, en met moeite ontcijfer je: 'Voed de drakekop met de 3 gekleurde kristallen'.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"Je probeert er een vliegtuigje van te vouwen, maar ontdekt dat je vergeten bent hoe dat moet."
+		]
 	},
 	{
 		"ID": 21,
 		"Name": "het boekje",
-		"Description": "Het is een vies, kleverig boekje met op de voorkant een ontklede trol. Je\nkrijgt kotsneigingen.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"Description": "Het is een vies, kleverig boekje met op de voorkant een ontklede trol. Je krijgt kotsneigingen.",
+		"StartRoom": 70,
+		"UseTexts": [
+			"Je kunt je niet indenken wat je hiermee aan moet."
+		],
+		"UsableOn": [ 1 ]
 	},
 	{
 		"ID": 22,
 		"Name": "het blauwe kristal",
-		"Description": "Het is een helder, blauwgekleurd kristal. Even zie je een mysterieuze twinke-\nling.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"Description": "Het is een helder, blauwgekleurd kristal. Even zie je een mysterieuze twinkeling.",
+		"StartRoom": 72,
+		"UseTexts": [
+			"Je krabt je achterhoofd met een punt van het kristal."
+		],
+		"UsableOn": [ 12 ]
 	},
 	{
 		"ID": 23,
 		"Name": "het koekje",
 		"Description": "Het is een rond koekje dat naar ammoniak stinkt.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"StartRoom": 80,
+		"UseTexts": [
+			"Je ruikt eens aan het koekje en besluit het daarbij maar te laten"
+		],
+		"UsableOn": [ 4 ]
 	},
 	{
 		"ID": 24,
 		"Name": "de mosterdgasgranaat",
 		"Description": "Door het indrukken van de hendel kan het mosterdgas ontstnappen.",
-		"StartRoom":,
-		"BlockPutdown":,
-		"Wearable":,
-		"UseTexts":,
-		"Components":,
-		"UsableOn":,
-		"KeepAfterUse":
+		"StartRoom": 80,
+		"UseTexts": [
+			"Dat lijkt me hier geen goed idee."
+		],
+		"Components": [ 15, 17 ],
+		"CombineTexts": [
+			"Je plaatst de ontsteker op het mosterdgaspatroon. Na enig friemelen is het resultaat een werkende mosterdgasgranaat."
+		],
+		"UsableOn": [ 5 ]
 	}
-
 ]

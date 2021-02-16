@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using R136.Entities;
+using R136.Entities.Utilities;
 
 namespace R136.Tools
 {
@@ -13,22 +14,19 @@ namespace R136.Tools
 		private static readonly JsonSerializerOptions _serializerOptions 
 			= new JsonSerializerOptions() { ReadCommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true };
 
+#pragma warning disable IDE0060 // Remove unused parameter
 		static void Main(string[] args)
+#pragma warning restore IDE0060 // Remove unused parameter
 		{
-			Console.Write("Process animates base? [y/N]: ");
-			if (Console.ReadLine().Trim().ToLower() == "y")
-			{
-				ProcessAnimates();
-				Console.WriteLine();
-			}
+			ProcessEntity<Animate.Initializer[]>("Animates");
+			
+			ProcessEntity<Item.Initializer[]>("Items");
 
-			Console.Write("Process rooms base? [y/N]: ");
-			if (Console.ReadLine().Trim().ToLower() == "y")
-			{
-				ProcessRooms();
-				Console.WriteLine();
-			}
+			ProcessRooms();
 
+			ProcessEntity<TextsMap.Initializer[]>("Texts");
+
+			ReadEntity<Configuration>("Configuration");
 		}
 
 		private static string GetOutputPath(string path)
@@ -54,16 +52,53 @@ namespace R136.Tools
 			return Path.Combine(Path.GetDirectoryName(path), fileName);
 		}
 
-		private static void ProcessAnimates()
+		private static bool Confirm(string prompt)
 		{
-			Animate.Initializer[] animates;
+			Console.Write($"{prompt} [y/N]: ");
+			return Console.ReadLine().Trim().ToLower() == "y";
+		}
 
-			Console.Write("Animates base JSON file path: ");
+		private static void ReadEntity<T>(string name)
+		{
+			if (!Confirm($"Read {name}?"))
+				return;
+
+			T entity;
+
+			Console.Write($"{name} JSON file path: ");
 			string jsonFilePath = Console.ReadLine().Trim();
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				animates = JsonSerializer.Deserialize<Animate.Initializer[]>(jsonString);
+				entity = JsonSerializer.Deserialize<T>(jsonString);
+			}
+			catch (Exception e)
+			{
+				Console.Error.WriteLine($"Error while reading JSON file: {e}");
+				return;
+			}
+
+			if (!Confirm($"Print {name}?"))
+				return;
+
+			Console.WriteLine(ObjectDumper.Dump(entity));
+			Console.WriteLine();
+		}
+
+		private static void ProcessEntity<T>(string name)
+		{
+			Console.Write($"Process {name} base? [y/N]: ");
+			if (Console.ReadLine().Trim().ToLower() != "y")
+				return;
+
+			T entity;
+
+			Console.Write($"{name} base JSON file path: ");
+			string jsonFilePath = Console.ReadLine().Trim();
+			try
+			{
+				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
+				entity = JsonSerializer.Deserialize<T>(jsonString);
 			}
 			catch (Exception e)
 			{
@@ -74,7 +109,7 @@ namespace R136.Tools
 			jsonFilePath = GetOutputPath(jsonFilePath);
 			try
 			{
-				string jsonString = JsonSerializer.Serialize(animates, _serializerOptions);
+				string jsonString = JsonSerializer.Serialize(entity, _serializerOptions);
 				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
 			}
 			catch (Exception e)
@@ -83,12 +118,16 @@ namespace R136.Tools
 				return;
 			}
 
-			Console.WriteLine($"Animates JSON file written to: {jsonFilePath}");
-
+			Console.WriteLine($"{name} JSON file written to: {jsonFilePath}");
+			Console.WriteLine();
 		}
 
 		private static void ProcessRooms()
 		{
+			Console.Write("Process Rooms base? [y/N]: ");
+			if (Console.ReadLine().Trim().ToLower() != "y")
+				return;
+
 			Room.Initializer[] rooms;
 
 			Console.Write("Rooms base JSON file path: ");
@@ -177,6 +216,7 @@ namespace R136.Tools
 			}
 
 			Console.WriteLine($"Rooms base JSON file written to: {jsonFilePath}");
+			Console.WriteLine();
 		}
 
 		private record LevelConnection {
