@@ -1,9 +1,5 @@
 ﻿using R136.Entities.General;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.Items
 {
@@ -19,7 +15,7 @@ namespace R136.Entities.Items
 			string name,
 			string description,
 			RoomID startRoom,
-			ICollection<string>? useTexts, 
+			ICollection<string>? useTexts,
 			bool isWearable,
 			bool isPutdownAllowed
 		) : base(id, name, description, startRoom, useTexts, isWearable, isPutdownAllowed) { }
@@ -27,7 +23,7 @@ namespace R136.Entities.Items
 		public override Result Use()
 		{
 			StatusManager?.DecreaseHealth();
-			
+
 			return base.Use();
 		}
 	}

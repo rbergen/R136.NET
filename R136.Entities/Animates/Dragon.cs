@@ -1,19 +1,10 @@
-﻿using R136.Entities.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace R136.Entities.Animates
+﻿namespace R136.Entities.Animates
 {
 	public class Dragon : Animate
 	{
-		public static StatusTextMapper? StatusTexts { get; set; }
+		public Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
-
-		public override void ProcessStatusInternal(AnimateStatus status)
+		public override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -33,7 +24,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.FirstStep:
-						Status = AnimateStatus.FirstWait;
+					Status = AnimateStatus.FirstWait;
 
 					break;
 

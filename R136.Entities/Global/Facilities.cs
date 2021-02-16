@@ -1,9 +1,6 @@
-﻿using R136.Entities.Utilities;
+﻿
+using R136.Entities.General;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.Global
 {
@@ -13,13 +10,19 @@ namespace R136.Entities.Global
 
 		public static Random Randomizer { get; }
 
-		public static TextsMap TextsMap { get; }
+		public static TypedTextsMap<int> TextsMap { get; }
+
+		public static TypedTextsMap<AnimateStatus> AnimateStatusTextsMap { get; }
+
+		public static TypedTextsMap<Item.TextType> ItemTextsMap { get; }
 
 		public static Configuration Configuration { get; set; }
 		static Facilities()
 		{
 			Randomizer = new Random();
-			TextsMap = new TextsMap();
+			TextsMap = new TypedTextsMap<int>();
+			AnimateStatusTextsMap = new TypedTextsMap<AnimateStatus>();
+			ItemTextsMap = new TypedTextsMap<Item.TextType>();
 			Configuration = new Configuration();
 		}
 	}

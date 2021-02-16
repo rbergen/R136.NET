@@ -1,22 +1,25 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.Items
 {
 	public class Flashlight : Item, ICompound<Item>
 	{
-		public ICollection<Item> Components { get; private set;  }
-		public ICollection<string>? CombineTexts { get; }
+		public bool IsOn { get; private set; }
+
+		public int? LampPoints { get; private set; }
+		public ICollection<Item> Components { get; private set; }
+		public ICollection<string>? CombineTexts
+		{
+			get => Facilities.ItemTextsMap[this, TextType.Combine];
+		}
 
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Flashlight FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
-			=> new Flashlight(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, 
-				initializer.Components!, items, initializer.CombineTexts, initializer.Wearable, !initializer.BlockPutdown);
+			=> new Flashlight(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom,
+				initializer.Wearable, !initializer.BlockPutdown, items, initializer.Components!);
 #pragma warning restore IDE0060 // Remove unused parameter
 
 		public Flashlight(
@@ -24,31 +27,41 @@ namespace R136.Entities.Items
 			string name,
 			string description,
 			RoomID startRoom,
-			ICollection<ItemID> componentIDs,
-			IDictionary<ItemID, Item> items,
-			ICollection<string>? combineTexts,
 			bool isWearable,
-			bool isPutdownAllowed
-		) : base(id, name, description, startRoom, null, isWearable, isPutdownAllowed)
-		{
-			CombineTexts = combineTexts;
-			Components = componentIDs.Select(itemID => itemID == id ? this : items[itemID]).ToArray();
-		}
-			
+			bool isPutdownAllowed,
+			IDictionary<ItemID, Item> items,
+			ICollection<ItemID> components
+		) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
+			=> (IsOn, LampPoints, Components)
+			= (false, Facilities.Configuration.LampPoints, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
+
+
+		private ICollection<string>? GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
 
 		public override Result Use()
 		{
-			if (StatusManager != null && StatusManager.LifePoints == Facilities.Configuration.LifePoints)
-				return new Result(ResultCode.Success, Facilities.TextsMap[this, (int)TextID.FullHealth]);
+			if (IsOn)
+			{
+				IsOn = false;
 
-			StatusManager?.RestoreHealth();
-			return base.Use();
+				var isDark = StatusManager?.IsDark ?? true;
+
+				return new Result(ResultCode.Success, GetTexts(isDark ? TextID.LightOffInDark : TextID.LightOff));
+			}
+
+			if (LampPoints == null || LampPoints-- > 0)
+			{
+				IsOn = true;
+				return new Result(ResultCode.Success, GetTexts(TextID.LightOn));
+			}
+
+			return new Result(ResultCode.Success, GetTexts(TextID.NeedBatteries));
 		}
 
 		public Result Combine(Item first, Item second)
 		{
 			if (!Components.Contains(first) || !Components.Contains(second) || first == second)
-				return Result.Failure;
+				return Result.Failure();
 
 			if (first != this)
 				StatusManager?.RemoveFromPossession(first.ID);
@@ -57,9 +70,13 @@ namespace R136.Entities.Items
 
 			return new Result(ResultCode.Success, CombineTexts);
 		}
+
 		private enum TextID
 		{
-			LightOn
+			LightOff,
+			LightOffInDark,
+			LightOn,
+			NeedBatteries
 		}
 	}
 }

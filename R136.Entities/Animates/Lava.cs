@@ -1,19 +1,12 @@
-﻿using R136.Entities.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
 	public class Lava : Animate
 	{
-		public static StatusTextMapper? StatusTexts { get; set; }
+		public Lava(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public Lava(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
-
-		public override ICollection<string>? ProcessStatus()
+		public override ICollection<string>? ProgressStatus()
 		{
 			AnimateStatus textStatus = Status;
 

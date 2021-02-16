@@ -1,12 +1,8 @@
-﻿using System;
+﻿using R136.Entities.Animates;
+using R136.Entities.Global;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using R136.Entities.Utilities;
-using R136.Entities.Animates;
-using System.Reflection;
 
 namespace R136.Entities
 {
@@ -16,8 +12,6 @@ namespace R136.Entities
 		public RoomID CurrentRoom { get; set; }
 
 		protected AnimateStatus Status { get; set; }
-
-		private StatusTextMapper? StatusTexts { get; } = null;
 
 		public static IDictionary<AnimateID, Animate> FromInitializers(ICollection<Initializer> initializers)
 		{
@@ -31,15 +25,7 @@ namespace R136.Entities
 					continue;
 
 				if (initializer.StatusTexts != null)
-				{
-					PropertyInfo? statusTextsProperty = animateType.GetProperty(nameof(StatusTexts), typeof(StatusTextMapper));
-					
-					if (statusTextsProperty != null && statusTextsProperty.CanRead && statusTextsProperty.CanWrite
-						&& statusTextsProperty.GetGetMethod()!.IsStatic && statusTextsProperty.GetValue(null) == null)
-					{
-						statusTextsProperty.SetValue(null, new StatusTextMapper((IDictionary<AnimateStatus, ICollection<string>>)initializer.StatusTexts));
-					}
-				}
+					Facilities.AnimateStatusTextsMap[animateType] = (IDictionary<AnimateStatus, ICollection<string>>)initializer.StatusTexts;
 
 				if (initializer.Virtual)
 					continue;
@@ -59,31 +45,26 @@ namespace R136.Entities
 			return animates;
 		}
 
-		public Animate(AnimateID id, RoomID startRoom, StatusTextMapper? statusTexts) 
-			=> (ID, CurrentRoom, StatusTexts, Status) = (id, startRoom, statusTexts, AnimateStatus.Initial);
-
 		public Animate(AnimateID id, RoomID startRoom)
 			=> (ID, CurrentRoom, Status) = (id, startRoom, AnimateStatus.Initial);
 
 		protected ICollection<string>? GetTextsForStatus(AnimateStatus status)
-		{
-			ICollection<string>? texts = null;
-			StatusTexts?.Map.TryGetValue(status, out texts);
-			return texts;
-		}
+			=> Facilities.AnimateStatusTextsMap[this, status];
 
-		public virtual ICollection<string>? ProcessStatus()
+		public virtual ICollection<string>? ProgressStatus()
 		{
 			AnimateStatus textStatus = Status;
 
-			ProcessStatusInternal(textStatus);
+			ProgressStatusInternal(textStatus);
 
 			return GetTextsForStatus(textStatus);
 		}
 
-		public virtual void ProcessStatusInternal(AnimateStatus status) { }
+		public virtual void ProgressStatusInternal(AnimateStatus status) { }
 
 		public virtual bool Used(ItemID item) => false;
+
+		public virtual bool Used(Item item) => Used(item.ID);
 
 		public class Initializer
 		{
@@ -128,7 +109,7 @@ namespace R136.Entities
 	{
 		public int StrikesLeft { get; protected set; }
 
-		public StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount, StatusTextMapper? textMapper) : base(id, startRoom, textMapper)
+		public StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
 			=> StrikesLeft = strikeCount;
 
 		public override bool Used(ItemID item)
@@ -164,27 +145,27 @@ namespace R136.Entities
 
 	public enum AnimateID
 	{
-		HellHound			=  0,
-		RedTroll			=  1,
-		Plant					=  2,
-		Gnu						=	 3,
-		Dragon				=  4,
-		Swelling			=  5,
-		Door					=  6,
-		Voices				=  7,
-		Barbecue			=  8,
-		Tree					=  9,
-		GreenCrystal	= 10,
-		Computer			= 11,
-		DragonHead		= 12,
-		Lava					= 13,
-		Vacuum				= 14,
-		PaperHatch		=	15,
-		NorthSwamp		= 16,
-		MiddleSwamp		= 17,
-		SouthSwamp		= 18,
-		Mist					= 19,
-		Teleporter		= 20,
-		SwampBase			= 21
+		HellHound = 0,
+		RedTroll = 1,
+		Plant = 2,
+		Gnu = 3,
+		Dragon = 4,
+		Swelling = 5,
+		Door = 6,
+		Voices = 7,
+		Barbecue = 8,
+		Tree = 9,
+		GreenCrystal = 10,
+		Computer = 11,
+		DragonHead = 12,
+		Lava = 13,
+		Vacuum = 14,
+		PaperHatch = 15,
+		NorthSwamp = 16,
+		MiddleSwamp = 17,
+		SouthSwamp = 18,
+		Mist = 19,
+		Teleporter = 20,
+		SwampBase = 21
 	}
 }

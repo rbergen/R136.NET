@@ -1,20 +1,12 @@
 ﻿using R136.Entities.Global;
-using R136.Entities.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.Animates
 {
 	public class Plant : StrikableAnimate
 	{
-		public static StatusTextMapper? StatusTexts { get; set; }
+		public Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
 
-		public Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount, StatusTexts) { }
-
-		public override void ProcessStatusInternal(AnimateStatus status)
+		public override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -29,7 +21,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.PreparingNextAttack:
-						Status = AnimateStatus.Attack;
+					Status = AnimateStatus.Attack;
 
 					break;
 

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
@@ -18,7 +17,7 @@ namespace R136.Entities
 		{
 			Dictionary<RoomID, Room> rooms = new Dictionary<RoomID, Room>(initializers.Count);
 
-			foreach(var initializer in initializers)
+			foreach (var initializer in initializers)
 			{
 				rooms[initializer.ID] = new Room(
 					initializer.Name,
@@ -28,7 +27,7 @@ namespace R136.Entities
 				);
 			}
 
-			foreach(var initializer in initializers)
+			foreach (var initializer in initializers)
 			{
 				rooms[initializer.ID].Connections = initializer.Connections?.ToDictionary(pair => pair.Key, pair => rooms[pair.Value]) ?? new Dictionary<Direction, Room>();
 			}
@@ -73,8 +72,8 @@ namespace R136.Entities
 		GarbageCave = 40, EchoCave, SecretCave, FoodCave, GnuCave = 44,
 		EmptyCave45 = 45, EyeCave, RockCave, Emptiness, Sandbank = 49,
 		TortureCave = 50, EmptyCave51, SafeCave, NarrowCleft, OilCave = 54,
-		EmptyCave55 = 55,	SpiralstaircaseCave2, SpiderCave, TalkingCave, LavaPit = 59,
-		
+		EmptyCave55 = 55, SpiralstaircaseCave2, SpiderCave, TalkingCave, LavaPit = 59,
+
 		ScoobyCave = 60, RadioactiveCave, ICave, PCave, ACave = 64,
 		DeathCave = 65, RCave, ECave, SpiralstaircaseCave3, CapitalPCave = 69,
 		DamnationCave = 70, VacuumCave, RedCave, NeonCave, BloodCave = 74,

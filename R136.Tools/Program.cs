@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using R136.Entities;
-using R136.Entities.Utilities;
+using R136.Entities.General;
+using R136.Entities.Global;
 
 namespace R136.Tools
 {
@@ -24,7 +25,7 @@ namespace R136.Tools
 
 			ProcessRooms();
 
-			ProcessEntity<TextsMap.Initializer[]>("Texts");
+			ProcessEntity<TypedTextsMap<int>.Initializer[]>("Texts");
 
 			ReadEntity<Configuration>("Configuration");
 		}

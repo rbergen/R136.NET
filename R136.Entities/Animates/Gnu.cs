@@ -1,19 +1,14 @@
-﻿using R136.Entities.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using R136.Entities.Global;
 
 namespace R136.Entities.Animates
 {
-	public class Gnu : Animate
+	public class Gnu : Animate, INotifyRoomChangeRequested
 	{
-		public static StatusTextMapper? StatusTexts { get; set; }
+		RoomChangeRequestedHandler INotifyRoomChangeRequested.Handler => RoomChangeRequestedHandler;
 
-		public Gnu(AnimateID id, RoomID startRoom) : base(id, startRoom, StatusTexts) { }
+		public Gnu(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProcessStatusInternal(AnimateStatus status)
+		public override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -41,6 +36,14 @@ namespace R136.Entities.Animates
 				return false;
 
 			Status = AnimateStatus.Dying;
+			return true;
+		}
+
+		private bool RoomChangeRequestedHandler(object sender, RoomChangeRequestedEventArgs e)
+		{
+			if (e.From == CurrentRoom && Status != AnimateStatus.Done)
+				CurrentRoom = Facilities.Configuration.GnuRoamingRooms[Facilities.Randomizer.Next(5)];
+
 			return true;
 		}
 	}
