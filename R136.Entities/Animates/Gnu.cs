@@ -1,12 +1,13 @@
 ﻿using R136.Entities.Global;
+using System;
 
 namespace R136.Entities.Animates
 {
 	public class Gnu : Animate, INotifyRoomChangeRequested
 	{
-		RoomChangeRequestedHandler INotifyRoomChangeRequested.Handler => RoomChangeRequestedHandler;
-
 		public Gnu(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+
+		public Func<RequestedRoomChange, bool> RoomChangeRequestedHandler => RoomChangeRequested;
 
 		public override void ProgressStatusInternal(AnimateStatus status)
 		{
@@ -39,9 +40,9 @@ namespace R136.Entities.Animates
 			return true;
 		}
 
-		private bool RoomChangeRequestedHandler(object sender, RoomChangeRequestedEventArgs e)
+		private bool RoomChangeRequested(RequestedRoomChange change)
 		{
-			if (e.From == CurrentRoom && Status != AnimateStatus.Done)
+			if (change.From == CurrentRoom && Status != AnimateStatus.Done)
 				CurrentRoom = Facilities.Configuration.GnuRoamingRooms[Facilities.Randomizer.Next(5)];
 
 			return true;

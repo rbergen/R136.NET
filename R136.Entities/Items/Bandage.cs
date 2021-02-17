@@ -23,7 +23,7 @@ namespace R136.Entities.Items
 		public override Result Use()
 		{
 			if (StatusManager != null && StatusManager.LifePoints == Facilities.Configuration.LifePoints)
-				return new Result(ResultCode.Success, Facilities.TextsMap[this, (int)TextID.FullHealth]);
+				return Result.Success(Facilities.TextsMap[this, (int)TextID.FullHealth]);
 
 			StatusManager?.RestoreHealth();
 			return base.Use();

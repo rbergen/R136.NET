@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using R136.Entities.General;
+using System;
+using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
 	public class Tree : Animate
 	{
+		public event Action? Burned;
+
 		public Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		public override ICollection<string>? ProgressStatus()
@@ -23,7 +27,8 @@ namespace R136.Entities.Animates
 						texts.AddRange(statusTexts);
 				}
 
-				StatusManager?.StartForestFire();
+				Burned?.Invoke();
+
 				Status = AnimateStatus.Done;
 			}
 

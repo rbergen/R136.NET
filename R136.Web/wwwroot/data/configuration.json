@@ -1,7 +1,15 @@
 {
 	"LifePoints": 20,
-	"Immortal": false,
 	"LampPoints": 60,
+	"MaxInventory": 10,
+	"GnuRoamingRooms": [ 44, 47, 48, 49, 54 ],
+	"PaperRoute": [ 69, 64, 63, 62, 67, 66 ],
+	"YesNoInputSpecs": {
+		"MaxLength": 1,
+		"PermittedCharacters": "JjNn"
+	},
+	"YesInput": "j",
+	"Immortal": false,
 	"FreezeAnimates": false,
 	"AutoReleaseItems": false
 }

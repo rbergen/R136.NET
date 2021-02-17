@@ -1,11 +1,6 @@
 ﻿namespace R136.Entities
 {
-	public enum HealthImpact
-	{
-		Normal,
-		Severe
-	}
-
+	
 	public interface IStatusManager
 	{
 		public void DecreaseHealth();
@@ -21,8 +16,6 @@
 
 		public void PutDown(ItemID item);
 		public void OpenConnection(Direction direction, RoomID toRoom);
-
-		public void StartForestFire();
 
 		public bool RequestEnd { get; set; }
 	}

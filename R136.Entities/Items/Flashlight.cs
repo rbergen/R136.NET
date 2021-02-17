@@ -1,11 +1,12 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace R136.Entities.Items
 {
-	public class Flashlight : Item, ICompound<Item>
+	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding
 	{
 		public bool IsOn { get; private set; }
 
@@ -15,6 +16,8 @@ namespace R136.Entities.Items
 		{
 			get => Facilities.ItemTextsMap[this, TextType.Combine];
 		}
+
+		public Func<ICollection<string>?> TurnEndingHandler => TurnEnding;
 
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Flashlight FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
@@ -46,16 +49,16 @@ namespace R136.Entities.Items
 
 				var isDark = StatusManager?.IsDark ?? true;
 
-				return new Result(ResultCode.Success, GetTexts(isDark ? TextID.LightOffInDark : TextID.LightOff));
+				return Result.Success(GetTexts(isDark ? TextID.LightOffInDark : TextID.LightOff));
 			}
 
-			if (LampPoints == null || LampPoints-- > 0)
+			if (LampPoints == null || LampPoints > 0)
 			{
 				IsOn = true;
-				return new Result(ResultCode.Success, GetTexts(TextID.LightOn));
+				return Result.Success(GetTexts(TextID.LightOn));
 			}
 
-			return new Result(ResultCode.Success, GetTexts(TextID.NeedBatteries));
+			return Result.Success(GetTexts(TextID.NeedBatteries));
 		}
 
 		public Result Combine(Item first, Item second)
@@ -68,7 +71,27 @@ namespace R136.Entities.Items
 			if (second != this)
 				StatusManager?.RemoveFromPossession(second.ID);
 
-			return new Result(ResultCode.Success, CombineTexts);
+			return Result.Success(CombineTexts);
+		}
+
+		private ICollection<string>? TurnEnding()
+		{
+			if (!IsOn)
+				return null;
+
+			if (LampPoints != null && LampPoints > 0)
+				LampPoints--;
+
+			if (LampPoints == 10)
+				return Facilities.TextsMap[this, (int)TextID.BatteriesLow];
+
+			if (LampPoints == 0)
+			{
+				IsOn = false;
+				return Facilities.TextsMap[this, (int)TextID.BatteriesEmpty];
+			}
+
+			return null;
 		}
 
 		private enum TextID
@@ -76,7 +99,9 @@ namespace R136.Entities.Items
 			LightOff,
 			LightOffInDark,
 			LightOn,
-			NeedBatteries
+			NeedBatteries,
+			BatteriesLow,
+			BatteriesEmpty
 		}
 	}
 }

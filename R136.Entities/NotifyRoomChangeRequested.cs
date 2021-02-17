@@ -2,19 +2,17 @@
 
 namespace R136.Entities
 {
-	public class RoomChangeRequestedEventArgs : EventArgs
+	public class RequestedRoomChange
 	{
 		public RoomID From { get; }
 		public RoomID To { get; }
 
-		public RoomChangeRequestedEventArgs(RoomID from, RoomID to)
+		public RequestedRoomChange(RoomID from, RoomID to)
 			=> (From, To) = (from, to);
 	}
 
-	public delegate bool RoomChangeRequestedHandler(object sender, RoomChangeRequestedEventArgs e);
-
 	interface INotifyRoomChangeRequested
 	{
-		public RoomChangeRequestedHandler Handler { get; }
+		public Func<RequestedRoomChange, bool> RoomChangeRequestedHandler { get; }
 	}
 }

@@ -83,7 +83,7 @@ namespace R136.Entities
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
 			= (id, name, description, startRoom, isWearable, isPutdownAllowed);
 
-		public virtual Result Use() => new Result(ResultCode.Success, UseTexts);
+		public virtual Result Use() => Result.Success(UseTexts);
 
 		public ICollection<string>? UseTexts
 		{
@@ -231,7 +231,7 @@ namespace R136.Entities
 			if (second != this)
 				StatusManager?.RemoveFromPossession(second.ID);
 
-			return new Result(ResultCode.Success, CombineTexts);
+			return Result.Success(CombineTexts);
 		}
 
 		private enum TextID
@@ -267,5 +267,12 @@ namespace R136.Entities
 		BlueCrystal = 22,
 		Cookie = 23,
 		GasGrenade = 24
+	}
+
+	public enum FindResult
+	{
+		Found,
+		NotFound,
+		Ambiguous
 	}
 }

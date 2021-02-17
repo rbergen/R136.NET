@@ -33,5 +33,34 @@
 		"Texts": [
 			"Zonder nieuwe batterijen doet-ie het niet..."
 		]
+	},
+	{
+		"Type": "Flashlight",
+		"ID": 4,
+		"Texts": [
+			"De zaklamp gaat zwakker branden."
+		]
+	},
+	{
+		"Type": "Flashlight",
+		"ID": 5,
+		"Texts": [
+			"De batterijen van de zaklamp zijn uitgeput. Langzaam dooft hij."
+		]
+	},
+	{
+		"Type": "Player",
+		"ID": 0,
+		"Texts": [
+			"Je zakken zitten tsjokvol, en je krijgt {item} er niet in."
+		]
+	},
+	{
+		"Type": "Player",
+		"ID": 1,
+		"Texts": [
+			"Je pakt {item} op en steekt deze in een van je zakken."
+		]
 	}
+
 ]
