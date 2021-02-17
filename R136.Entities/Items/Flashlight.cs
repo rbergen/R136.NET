@@ -6,18 +6,14 @@ using System.Linq;
 
 namespace R136.Entities.Items
 {
-	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding
+	class Flashlight : Item, ICompound<Item>, INotifyTurnEnding
 	{
 		public bool IsOn { get; private set; }
 
 		public int? LampPoints { get; private set; }
 		public ICollection<Item> Components { get; private set; }
 		public ICollection<string>? CombineTexts
-		{
-			get => Facilities.ItemTextsMap[this, TextType.Combine];
-		}
-
-		public Func<ICollection<string>?> TurnEndingHandler => TurnEnding;
+			=> Facilities.ItemTextsMap[this, TextType.Combine];
 
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Flashlight FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
@@ -25,7 +21,7 @@ namespace R136.Entities.Items
 				initializer.Wearable, !initializer.BlockPutdown, items, initializer.Components!);
 #pragma warning restore IDE0060 // Remove unused parameter
 
-		public Flashlight(
+		private Flashlight(
 			ItemID id,
 			string name,
 			string description,
@@ -74,7 +70,7 @@ namespace R136.Entities.Items
 			return Result.Success(CombineTexts);
 		}
 
-		private ICollection<string>? TurnEnding()
+		public ICollection<string>? TurnEnding()
 		{
 			if (!IsOn)
 				return null;

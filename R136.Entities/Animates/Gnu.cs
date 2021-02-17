@@ -4,13 +4,11 @@ using System;
 
 namespace R136.Entities.Animates
 {
-	public class Gnu : Animate, INotifyRoomChangeRequested
+	class Gnu : Animate, INotifyRoomChangeRequested
 	{
 		public Gnu(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public Func<RequestedRoomChange, bool> RoomChangeRequestedHandler => RoomChangeRequested;
-
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -41,9 +39,9 @@ namespace R136.Entities.Animates
 			return Result.Success();
 		}
 
-		private bool RoomChangeRequested(RequestedRoomChange change)
+		public bool RoomChangeRequested(RoomID from, RoomID to)
 		{
-			if (change.From == CurrentRoom && Status != AnimateStatus.Done)
+			if (from == CurrentRoom && Status != AnimateStatus.Done)
 				CurrentRoom = Facilities.Configuration.GnuRoamingRooms[Facilities.Randomizer.Next(5)];
 
 			return true;

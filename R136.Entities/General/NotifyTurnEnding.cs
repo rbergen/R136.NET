@@ -8,6 +8,6 @@ namespace R136.Entities.General
 {
 	interface INotifyTurnEnding
 	{
-		public Func<ICollection<string>?> TurnEndingHandler { get; }
+		ICollection<string>? TurnEnding();
 	}
 }

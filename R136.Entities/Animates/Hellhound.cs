@@ -2,12 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class HellHound : StrikableAnimate
+	class HellHound : StrikableAnimate
 	{
-
 		public HellHound(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{

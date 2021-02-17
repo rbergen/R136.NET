@@ -63,6 +63,13 @@
 		]
 	},
 	{
+		"Type": "Player",
+		"ID": 2,
+		"Texts": [
+			"Je pakt {item} op en doet hem aan."
+		]
+	},
+	{
 		"Type": "GeneralCommandProcessor",
 		"ID": 0,
 		"Texts": [
@@ -81,6 +88,34 @@
 		"ID": 1,
 		"Texts": [
 			"Daar kun je niet heen."
+		]
+	},
+	{
+		"Type": "ItemCommandProcessor",
+		"ID": 0,
+		"Texts": [
+			"Syntax: {command} <voorwerp>"
+		]
+	},
+	{
+		"Type": "ItemCommandProcessor",
+		"ID": 1,
+		"Texts": [
+			"Je hebt geen \"{param}\"."
+		]
+	},
+	{
+		"Type": "ItemCommandProcessor",
+		"ID": 2,
+		"Texts": [
+			"De afkorting {param} is dubbelzinnig."
+		]
+	},
+	{
+		"Type": "ItemCommandProcessor.",
+		"ID": 3,
+		"Texts": [
+			"Je ziet hier geen \"{param}\" die je kunt meenemen."
 		]
 	}
 ]

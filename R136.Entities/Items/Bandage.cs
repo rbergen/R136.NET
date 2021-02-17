@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace R136.Entities.Items
 {
-	public class Bandage : Item
+	class Bandage : Item
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Bandage FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
 			=> new Bandage(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
 #pragma warning restore IDE0060 // Remove unused parameter
 
-		public Bandage(
+		private Bandage(
 			ItemID id,
 			string name,
 			string description,

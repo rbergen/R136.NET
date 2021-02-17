@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace R136.Entities
 {
-	public class Player
+	class Player
 	{
 		public int LifePoints { get; private set; }
 		public Room CurrentRoom { get; set; }
@@ -24,12 +24,12 @@ namespace R136.Entities
 
 		public Result AddToInventory(Item item)
 		{
-			if (Facilities.Configuration.MaxInventory != null && _inventory.Count == Facilities.Configuration.MaxInventory)
+			if (Facilities.Configuration.MaxInventory != null && _inventory.Where(item => !item.IsWearable).ToArray().Length == Facilities.Configuration.MaxInventory)
 				return Result.Failure(GetNamedTexts(TextID.InventoryFull, item));
 
 			_inventory.Add(item);
 
-			return Result.Success(GetNamedTexts(TextID.AddedToInventory, item));
+			return Result.Success(GetNamedTexts(item.IsWearable ? TextID.StartedWearing : TextID.AddedToInventory, item));
 		}
 
 		public Item? FindInInventory(ItemID id) 
@@ -58,7 +58,8 @@ namespace R136.Entities
 		private enum TextID
 		{
 			InventoryFull,
-			AddedToInventory
+			AddedToInventory,
+			StartedWearing
 		}
 	}
 

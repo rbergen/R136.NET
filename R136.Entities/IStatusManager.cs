@@ -3,18 +3,18 @@
 	
 	public interface IStatusManager
 	{
-		public void DecreaseHealth();
-		public void DecreaseHealth(HealthImpact impact);
-		public void RestoreHealth();
-		public int LifePoints { get; }
+		void DecreaseHealth();
+		void DecreaseHealth(HealthImpact impact);
+		void RestoreHealth();
+		int LifePoints { get; }
 
-		public RoomID CurrentRoom { get; set; }
-		public bool IsDark { get; }
+		RoomID CurrentRoom { get; set; }
+		bool IsDark { get; }
 
-		public bool IsInPosession(ItemID item);
-		public void RemoveFromPossession(ItemID item);
+		bool IsInPosession(ItemID item);
+		void RemoveFromPossession(ItemID item);
 
-		public void PutDown(ItemID item);
-		public void OpenConnection(Direction direction, RoomID toRoom);
+		void PutDown(ItemID item);
+		void OpenConnection(Direction direction, RoomID toRoom);
 	}
 }

@@ -1,10 +1,10 @@
 ﻿namespace R136.Entities.Animates
 {
-	public class Teleporter : Animate
+	class Teleporter : Animate
 	{
 		public Teleporter(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			if (StatusManager != null)
 			{

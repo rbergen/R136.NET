@@ -6,20 +6,22 @@ namespace R136.Entities
 {
 	public class Room
 	{
+		public RoomID ID { get; }
 		public string Name { get; }
 		public string? Description { get; }
 		public bool IsDark { get; }
 		public bool IsForest { get; }
 
-		public Dictionary<Direction, Room> Connections { get; private set; } = null!;
+		public IReadOnlyDictionary<Direction, Room> Connections { get; private set; } = null!;
 
-		public static Dictionary<RoomID, Room> FromInitializers(ICollection<Initializer> initializers)
+		public static IReadOnlyDictionary<RoomID, Room> FromInitializers(ICollection<Initializer> initializers)
 		{
 			Dictionary<RoomID, Room> rooms = new Dictionary<RoomID, Room>(initializers.Count);
 
 			foreach (var initializer in initializers)
 			{
 				rooms[initializer.ID] = new Room(
+					initializer.ID,
 					initializer.Name,
 					initializer.Description,
 					initializer.IsDark,
@@ -36,8 +38,8 @@ namespace R136.Entities
 
 		}
 
-		private Room(string name, string? description, bool isDark, bool isForest)
-			=> (Name, Description, IsDark, IsForest) = (name, description, isDark, isForest);
+		private Room(RoomID id, string name, string? description, bool isDark, bool isForest)
+			=> (ID, Name, Description, IsDark, IsForest) = (id, name, description, isDark, isForest);
 
 		public class Initializer
 		{

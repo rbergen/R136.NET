@@ -2,11 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class Plant : StrikableAnimate
+	class Plant : StrikableAnimate
 	{
 		public Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{

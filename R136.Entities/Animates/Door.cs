@@ -2,11 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class Door : Animate
+	class Door : Animate
 	{
 		public Door(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			if (status == AnimateStatus.Operating)
 			{
@@ -18,7 +18,7 @@ namespace R136.Entities.Animates
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Bone)
-				return Result.Failure();
+				return Result.Error();
 
 			Status = AnimateStatus.Operating;
 			return Result.Success();

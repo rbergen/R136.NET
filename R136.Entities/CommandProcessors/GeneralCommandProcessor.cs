@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace R136.Entities.CommandProcessors
 {
-	public class GeneralCommandProcessor : CommandProcessor, IContinuable
+	class GeneralCommandProcessor : CommandProcessor, IContinuable
 	{
 		private const int Default = 0;
 
@@ -20,7 +20,7 @@ namespace R136.Entities.CommandProcessors
 				CommandID.Wait => ExecuteWait(name, parameters),
 				CommandID.Status => ExecuteStatus(name, parameters, player),
 				CommandID.End => ExecuteEnd(name, parameters),
-				_ => Result.Failure()
+				_ => Result.Error()
 			};
 
 		private static ICollection<string>? GetTexts(CommandID commandId, int textId) 
@@ -38,7 +38,7 @@ namespace R136.Entities.CommandProcessors
 			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, (int)id, tag, content));
 
 		private Result? ValidateParameters(string name, string? parameters)
-			=> parameters == null ? null : Result.Failure(Facilities.TextsMap[this, (int)TextID.CommandSyntax]?.ReplaceInAll("{command}", name));
+			=> parameters == null ? null : Result.Error(Facilities.TextsMap[this, (int)TextID.CommandSyntax]?.ReplaceInAll("{command}", name));
 
 		private static Result ExecuteHelp() 
 			=> Result.Success(GetTexts(CommandID.Help, Default));
@@ -96,7 +96,7 @@ namespace R136.Entities.CommandProcessors
 		public Result Continue(object? statusData, string input)
 		{
 			if (statusData != this)
-				return Result.Failure();
+				return Result.Error();
 
 			return input.ToLower() == Facilities.Configuration.YesInput 
 				? Result.EndRequested() 

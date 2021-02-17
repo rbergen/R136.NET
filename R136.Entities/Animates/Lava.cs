@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
-	public class Lava : Animate
+	class Lava : Animate
 	{
 		public Lava(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
@@ -24,7 +24,7 @@ namespace R136.Entities.Animates
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Bomb)
-				return Result.Failure();
+				return Result.Error();
 
 			Status = AnimateStatus.Operating;
 

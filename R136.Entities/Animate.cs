@@ -46,7 +46,7 @@ namespace R136.Entities
 			return animates;
 		}
 
-		public Animate(AnimateID id, RoomID startRoom)
+		protected Animate(AnimateID id, RoomID startRoom)
 			=> (ID, CurrentRoom, Status) = (id, startRoom, AnimateStatus.Initial);
 
 		protected ICollection<string>? GetTextsForStatus(AnimateStatus status)
@@ -61,7 +61,7 @@ namespace R136.Entities
 			return GetTextsForStatus(textStatus);
 		}
 
-		public virtual void ProgressStatusInternal(AnimateStatus status) { }
+		protected virtual void ProgressStatusInternal(AnimateStatus status) { }
 
 		public virtual Result Used(ItemID item) => Result.Failure();
 
@@ -106,17 +106,17 @@ namespace R136.Entities
 		};
 	}
 
-	public abstract class StrikableAnimate : Animate
+	abstract class StrikableAnimate : Animate
 	{
-		public int StrikesLeft { get; protected set; }
+		protected internal int StrikesLeft { get; protected set; }
 
-		public StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
+		protected StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
 			=> StrikesLeft = strikeCount;
 
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Sword)
-				return Result.Failure();
+				return Result.Error();
 
 			if (--StrikesLeft == 0)
 			{

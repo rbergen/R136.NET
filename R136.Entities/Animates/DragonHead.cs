@@ -2,11 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class DragonHead : Animate
+	class DragonHead : Animate
 	{
 		public DragonHead(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -31,7 +31,7 @@ namespace R136.Entities.Animates
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.GreenCrystal && item != ItemID.RedCrystal && item != ItemID.BlueCrystal)
-				return Result.Failure();
+				return Result.Error();
 
 			Status = Status switch
 			{
@@ -39,7 +39,8 @@ namespace R136.Entities.Animates
 				AnimateStatus.FirstWait => AnimateStatus.SecondStep,
 				_ => AnimateStatus.Operating,
 			};
-			return Result.Failure();
+
+			return Result.Success();
 		}
 	}
 }

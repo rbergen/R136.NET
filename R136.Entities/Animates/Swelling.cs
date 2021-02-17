@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
-	public class Swelling : Animate
+	class Swelling : Animate
 	{
 		public Swelling(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
@@ -34,7 +34,7 @@ namespace R136.Entities.Animates
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.GasGrenade)
-				return Result.Failure();
+				return Result.Error();
 
 			Status = AnimateStatus.Dying;
 			return Result.Success();

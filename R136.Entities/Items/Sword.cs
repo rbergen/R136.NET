@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace R136.Entities.Items
 {
-	public class Sword : UsableItem, IContinuable
+	class Sword : UsableItem, IContinuable
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Sword FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
@@ -14,7 +14,7 @@ namespace R136.Entities.Items
 				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), initializer.Wearable, !initializer.BlockPutdown, initializer.KeepAfterUse);
 #pragma warning restore IDE0060 // Remove unused parameter
 
-		public Sword(
+		private Sword(
 			ItemID id,
 			string name,
 			string description,

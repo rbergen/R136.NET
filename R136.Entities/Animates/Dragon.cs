@@ -2,11 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class Dragon : Animate
+	class Dragon : Animate
 	{
 		public Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -40,6 +40,9 @@ namespace R136.Entities.Animates
 
 		public override Result Used(ItemID item)
 		{
+			if (item != ItemID.Cookie && item != ItemID.Nightcap)
+				return Result.Error();
+
 			if (item == ItemID.Cookie)
 			{
 				Status = AnimateStatus.FirstStep;

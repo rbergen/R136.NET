@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
-	public class Tree : Animate
+	class Tree : Animate
 	{
-		public event Action? Burned;
+		event Action? Burned;
 
 		public Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
@@ -38,7 +38,7 @@ namespace R136.Entities.Animates
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Flamethrower)
-				return Result.Failure();
+				return Result.Error();
 
 			Status = AnimateStatus.Operating;
 

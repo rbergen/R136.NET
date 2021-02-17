@@ -37,11 +37,33 @@
 	},
 	{
 		"ID": 9,
-		"Name": "leg"
+		"Name": "leg",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"Je bent inmiddels zo aan {item} gehecht geraakt dat je hem niet meer kunt missen."
+				]
+			},
+			{
+				"ID": 1,
+				"Texts": [
+					"Je legt {item} neer."
+				]
+			}
+		]
 	},
 	{
 		"ID": 10,
-		"Name": "bekijk"
+		"Name": "bekijk",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"Het is veel te donker om wat dan ook te bekijken."
+				]
+			}
+		]
 	},
 	{
 		"ID": 11,

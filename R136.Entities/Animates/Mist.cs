@@ -2,11 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class Mist : Animate
+	class Mist : Animate
 	{
 		public Mist(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			if (StatusManager != null)
 			{

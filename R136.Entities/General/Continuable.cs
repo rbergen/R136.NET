@@ -10,6 +10,6 @@
 
 	public interface IContinuable
 	{
-		public Result Continue(object statusData, string input);
+		Result Continue(object statusData, string input);
 	}
 }

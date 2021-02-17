@@ -2,7 +2,7 @@
 
 namespace R136.Entities.Animates
 {
-	public class GreenCrystal : Animate, ITriggerable
+	class GreenCrystal : Animate, ITriggerable
 	{
 		public GreenCrystal(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 

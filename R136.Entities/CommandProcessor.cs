@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace R136.Entities
 {
-	public abstract class CommandProcessor : EntityBase {
-		public static CommandProcessorMap FromInitializers(ICollection<CommandInitializer> initializers, ICollection<Item> items, ICollection<Animate> animates)
+	abstract class CommandProcessor : EntityBase {
+		public static CommandProcessorMap FromInitializers(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, 
+			IReadOnlyCollection<INotifyRoomChangeRequested> roomChangeNotifiees, ITriggerable? paperrouteTriggerable)
 		{
-			var map = new CommandProcessorMap(initializers, items, animates);
+			var map = new CommandProcessorMap(initializers, items, roomChangeNotifiees, paperrouteTriggerable);
 
 			foreach(var initializer in initializers)
 			{
@@ -29,18 +30,19 @@ namespace R136.Entities
 		public abstract Result Execute(CommandID id, string name, string? parameters, Player player, ICollection<Item> presentItems, Animate? presentAnimate);
 	}
 
-	public class CommandProcessorMap 
+	class CommandProcessorMap 
 	{
 		private readonly Dictionary<string, CommandID> _nameIdMap;
 		private readonly ItemCommandProcessor _itemProcessor;
 		private readonly LocationCommandProcessor _locationProcessor;
 		private readonly GeneralCommandProcessor _generalProcessor;
 
-		public CommandProcessorMap(ICollection<CommandInitializer> initializers, ICollection<Item> items, ICollection<Animate> animates)
+		public CommandProcessorMap(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, 
+			IReadOnlyCollection<INotifyRoomChangeRequested> roomChangeNotifiees, ITriggerable? paperrouteTriggerable)
 		{
 			_nameIdMap = new Dictionary<string, CommandID>();
-			_itemProcessor = new ItemCommandProcessor();
-			_locationProcessor = new LocationCommandProcessor(items, animates);
+			_itemProcessor = new ItemCommandProcessor(items);
+			_locationProcessor = new LocationCommandProcessor(roomChangeNotifiees, paperrouteTriggerable);
 			_generalProcessor = new GeneralCommandProcessor();
 
 			foreach (var initializer in initializers)
@@ -57,7 +59,7 @@ namespace R136.Entities
 				CommandID.Use => _itemProcessor,
 				CommandID.Combine => _itemProcessor,
 				CommandID.Pickup => _itemProcessor,
-				CommandID.PutDowm => _itemProcessor,
+				CommandID.PutDown => _itemProcessor,
 				CommandID.Inspect => _itemProcessor,
 				_ => _generalProcessor
 			};
@@ -78,7 +80,8 @@ namespace R136.Entities
 				: (null, null, result);
 		}
 	}
-	public class CommandInitializer
+	
+	class CommandInitializer
 	{
 		public CommandID ID { get; set; }
 		public string Name { get; set; } = "";
@@ -102,7 +105,7 @@ namespace R136.Entities
 		Use,
 		Combine,
 		Pickup,
-		PutDowm,
+		PutDown,
 		Inspect,
 		Wait,
 		End,

@@ -4,7 +4,7 @@ using System;
 
 namespace R136.Entities.Global
 {
-	public class Facilities
+	public static class Facilities
 	{
 		public static IServiceProvider? ServiceProvider { get; set; }
 		public static Random Randomizer { get; }

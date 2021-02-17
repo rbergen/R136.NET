@@ -17,11 +17,10 @@ namespace R136.Entities
 		public bool IsPutdownAllowed { get; }
 		public bool IsWearable { get; }
 
-
-		public static Item FromInitializer(Initializer initializer)
+		static Item FromInitializer(Initializer initializer)
 			=> new Item(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
 
-		public static IReadOnlyDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IDictionary<AnimateID, Animate> animates)
+		static IReadOnlyDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IDictionary<AnimateID, Animate> animates)
 		{
 			Dictionary<ItemID, Item> items = new Dictionary<ItemID, Item>(initializers.Count);
 
@@ -79,13 +78,13 @@ namespace R136.Entities
 			return item;
 		}
 
-		public Item(ItemID id, string name, string description, RoomID startRoom, bool isWearable, bool isPutdownAllowed)
+		protected Item(ItemID id, string name, string description, RoomID startRoom, bool isWearable, bool isPutdownAllowed)
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
 			= (id, name, description, startRoom, isWearable, isPutdownAllowed);
 
 		public virtual Result Use() => Result.Success(UseTexts);
 
-		public ICollection<string>? UseTexts
+		protected ICollection<string>? UseTexts
 		{
 			get => Facilities.ItemTextsMap[this, TextType.Use];
 		}
@@ -135,17 +134,17 @@ namespace R136.Entities
 		};
 	}
 
-	public interface IUsable<T>
+	interface IUsable<T>
 	{
-		public ICollection<T> UsableOn { get; }
+		ICollection<T> UsableOn { get; }
 
-		public Result UseOn(T subject);
+		Result UseOn(T subject);
 	}
 
-	public class UsableItem : Item, IUsable<Animate>
+	class UsableItem : Item, IUsable<Animate>
 	{
 		public ICollection<Animate> UsableOn { get; }
-		public bool KeepAfterUse { get; }
+		bool KeepAfterUse { get; }
 
 		public static UsableItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates)
 			=> new UsableItem(
@@ -159,7 +158,7 @@ namespace R136.Entities
 				initializer.KeepAfterUse
 			);
 
-		public UsableItem(
+		protected UsableItem(
 			ItemID id,
 			string name,
 			string description,
@@ -183,19 +182,16 @@ namespace R136.Entities
 		}
 	}
 
-	public interface ICompound<T>
+	interface ICompound<T>
 	{
-		public ICollection<T> Components { get; }
-		public Result Combine(T first, T second);
+		ICollection<T> Components { get; }
+		Result Combine(T first, T second);
 	}
 
-	public class CompoundItem : UsableItem, ICompound<Item>
+	class CompoundItem : UsableItem, ICompound<Item>
 	{
 		public ICollection<Item> Components { get; }
-		public ICollection<string>? CombineTexts
-		{
-			get => Facilities.ItemTextsMap[this, TextType.Combine];
-		}
+		protected ICollection<string>? CombineTexts => Facilities.ItemTextsMap[this, TextType.Combine];
 
 		public static CompoundItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
 			=> new CompoundItem(
@@ -210,7 +206,7 @@ namespace R136.Entities
 				initializer.KeepAfterUse
 			);
 
-		public CompoundItem(
+		protected CompoundItem(
 			ItemID id,
 			string name,
 			string description,

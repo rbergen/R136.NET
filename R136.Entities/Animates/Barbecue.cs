@@ -2,11 +2,11 @@
 
 namespace R136.Entities.Animates
 {
-	public class Barbecue : Animate
+	class Barbecue : Animate
 	{
 		public Barbecue(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override void ProgressStatusInternal(AnimateStatus status)
+		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			switch (status)
 			{
@@ -31,7 +31,7 @@ namespace R136.Entities.Animates
 		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Hashies && item != ItemID.HoundMeat)
-				return Result.Failure();
+				return Result.Error();
 
 			Status = Status switch
 			{
