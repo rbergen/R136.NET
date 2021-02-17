@@ -1,4 +1,6 @@
-﻿namespace R136.Entities.Animates
+﻿using R136.Entities.General;
+
+namespace R136.Entities.Animates
 {
 	public class Door : Animate
 	{
@@ -13,13 +15,13 @@
 			}
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Bone)
-				return false;
+				return Result.Failure();
 
 			Status = AnimateStatus.Operating;
-			return true;
+			return Result.Success();
 		}
 	}
 }

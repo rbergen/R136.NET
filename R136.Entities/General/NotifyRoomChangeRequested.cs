@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace R136.Entities
+namespace R136.Entities.General
 {
 	public class RequestedRoomChange
 	{

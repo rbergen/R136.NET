@@ -1,5 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,39 +30,42 @@ namespace R136.Entities.Items
 			if (animate is not StrikableAnimate strikable || !UsableOn.Contains(animate))
 				return Use();
 
-			List<string> texts = new List<string>();
+			var texts = new List<string>();
 
 			if (Facilities.Randomizer.NextDouble() > .7)
-				texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)TextID.Miss]);
+				AddTexts(texts, TextID.Miss);
 
 			else
 			{
-				texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)TextID.Hit]);
+				AddTexts(texts, TextID.Hit);
 
-				if (strikable.Used(this))
+				if (strikable.Used(this).IsSuccess)
 					return Result.Success(texts);
 			}
 
 			if (strikable.StrikesLeft == 1)
 			{
 				texts.Add(string.Empty);
-				texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)TextID.SeriouslyInjured]);
+				AddTexts(texts, TextID.SeriouslyInjured);
 			}
 
 			if (Facilities.Randomizer.NextDouble() > .3)
 				return Result.Success(texts);
 
 			texts.Add(string.Empty);
-			texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)TextID.CanStrikeAgain]);
-			return Result.ContinuationRequested(new ContinuationStatus(this, strikable), Facilities.Configuration.YesNoInputSpecs, texts);
+			AddTexts(texts, TextID.CanStrikeAgain);
+			return Result.ContinuationRequested(new ContinuationStatus(this, Tuple.Create(this, strikable)), Facilities.Configuration.YesNoInputSpecs, texts);
 		}
+
+		private void AddTexts(List<string> texts, TextID id)
+			=> texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)id]);
 
 		public Result Continue(object statusData, string input)
 		{
-			if (statusData is Animate animate && input.ToLower() == Facilities.Configuration.YesInput)
-				return UseOn(animate);
+			if (statusData is Tuple<Sword, StrikableAnimate> statusTuple && statusTuple.Item1 == this)
+				return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(statusTuple.Item2) : Result.Success();
 
-			return Result.Success();
+			return Result.Failure();
 		}
 
 		private enum TextID

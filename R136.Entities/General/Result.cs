@@ -7,7 +7,8 @@ namespace R136.Entities.General
 	{
 		Success,
 		Failure,
-		ContinuationRequested
+		ContinuationRequested,
+		EndRequested
 	}
 
 	public class Result
@@ -19,6 +20,7 @@ namespace R136.Entities.General
 		public static Result Success(ICollection<string>? message) => new Result(ResultCode.Success, message);
 		public static Result Failure() => _failure;
 		public static Result Failure(ICollection<string>? message) => new Result(ResultCode.Failure, message);
+		public static Result EndRequested() => new Result(ResultCode.EndRequested);
 		public static Result ContinuationRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
 			=> new Result(status, specs, message);
 
@@ -27,6 +29,10 @@ namespace R136.Entities.General
 		public ContinuationStatus? ContinuationStatus { get; }
 
 		public InputSpecs? InputSpecs { get; }
+		public bool IsSuccess => Code == ResultCode.Success;
+		public bool IsFailure => Code == ResultCode.Failure;
+		public bool IsContinuationRequest => Code == ResultCode.ContinuationRequested;
+		public bool IsEndRequest => Code == ResultCode.EndRequested;
 
 		public Result(ResultCode code)
 			=> Code = code;

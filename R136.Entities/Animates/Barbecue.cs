@@ -1,4 +1,6 @@
-﻿namespace R136.Entities.Animates
+﻿using R136.Entities.General;
+
+namespace R136.Entities.Animates
 {
 	public class Barbecue : Animate
 	{
@@ -26,16 +28,18 @@
 			}
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Hashies && item != ItemID.HoundMeat)
-				return false;
+				return Result.Failure();
 
-			Status = (Status == AnimateStatus.Initial)
-								? (item == ItemID.Hashies ? AnimateStatus.FirstStep : AnimateStatus.SecondStep)
-								: AnimateStatus.Operating;
+			Status = Status switch
+			{
+				AnimateStatus.Initial => item == ItemID.Hashies ? AnimateStatus.FirstStep : AnimateStatus.SecondStep,
+				_ => AnimateStatus.Operating
+			};
 
-			return true;
+			return Result.Success();
 		}
 	}
 }

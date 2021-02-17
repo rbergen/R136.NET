@@ -1,4 +1,5 @@
 ﻿using R136.Entities.Animates;
+using R136.Entities.General;
 using R136.Entities.Global;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,13 @@ namespace R136.Entities
 
 		protected AnimateStatus Status { get; set; }
 
-		public static IDictionary<AnimateID, Animate> FromInitializers(ICollection<Initializer> initializers)
+		public static IReadOnlyDictionary<AnimateID, Animate> FromInitializers(ICollection<Initializer> initializers)
 		{
 			Dictionary<AnimateID, Animate> animates = new Dictionary<AnimateID, Animate>(initializers.Count);
 
 			foreach (var initializer in initializers)
 			{
-				Type? animateType = ToType(initializer.ID);
+				var animateType = ToType(initializer.ID);
 
 				if (animateType == null)
 					continue;
@@ -62,9 +63,9 @@ namespace R136.Entities
 
 		public virtual void ProgressStatusInternal(AnimateStatus status) { }
 
-		public virtual bool Used(ItemID item) => false;
+		public virtual Result Used(ItemID item) => Result.Failure();
 
-		public virtual bool Used(Item item) => Used(item.ID);
+		public virtual Result Used(Item item) => Used(item.ID);
 
 		public class Initializer
 		{
@@ -112,18 +113,18 @@ namespace R136.Entities
 		public StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
 			=> StrikesLeft = strikeCount;
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Sword)
-				return false;
+				return Result.Failure();
 
 			if (--StrikesLeft == 0)
 			{
 				Status = AnimateStatus.Dying;
-				return true;
+				return Result.Success();
 			}
 
-			return false;
+			return Result.Failure();
 		}
 	}
 

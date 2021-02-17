@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace R136.Entities
+namespace R136.Entities.CommandProcessors
 {
-	interface INotifyTurnEnding
+	public class ItemCommandProcessor : CommandProcessor
 	{
-		public Func<ICollection<string>?> TurnEndingHandler { get; }
 	}
 }

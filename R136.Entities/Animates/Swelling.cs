@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using R136.Entities.General;
+using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
@@ -8,7 +9,7 @@ namespace R136.Entities.Animates
 
 		public override ICollection<string>? ProgressStatus()
 		{
-			AnimateStatus textStatus = Status;
+			var textStatus = Status;
 
 			switch (textStatus)
 			{
@@ -30,13 +31,13 @@ namespace R136.Entities.Animates
 			return GetTextsForStatus(textStatus);
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.GasGrenade)
-				return false;
+				return Result.Failure();
 
 			Status = AnimateStatus.Dying;
-			return true;
+			return Result.Success();
 		}
 	}
 }

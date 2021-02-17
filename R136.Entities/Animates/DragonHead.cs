@@ -1,4 +1,6 @@
-﻿namespace R136.Entities.Animates
+﻿using R136.Entities.General;
+
+namespace R136.Entities.Animates
 {
 	public class DragonHead : Animate
 	{
@@ -26,10 +28,10 @@
 			}
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.GreenCrystal && item != ItemID.RedCrystal && item != ItemID.BlueCrystal)
-				return false;
+				return Result.Failure();
 
 			Status = Status switch
 			{
@@ -37,7 +39,7 @@
 				AnimateStatus.FirstWait => AnimateStatus.SecondStep,
 				_ => AnimateStatus.Operating,
 			};
-			return true;
+			return Result.Failure();
 		}
 	}
 }

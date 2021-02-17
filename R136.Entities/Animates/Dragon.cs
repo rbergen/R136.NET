@@ -1,4 +1,6 @@
-﻿namespace R136.Entities.Animates
+﻿using R136.Entities.General;
+
+namespace R136.Entities.Animates
 {
 	public class Dragon : Animate
 	{
@@ -36,21 +38,21 @@
 			}
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item == ItemID.Cookie)
 			{
 				Status = AnimateStatus.FirstStep;
-				return true;
+				return Result.Success();
 			}
 
 			if (item == ItemID.Nightcap && Status == AnimateStatus.FirstWait)
 			{
 				Status = AnimateStatus.SecondStep;
-				return true;
+				return Result.Success();
 			}
 
-			return false;
+			return Result.Failure();
 		}
 	}
 }

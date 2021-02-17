@@ -12,9 +12,9 @@ namespace R136.Entities.Animates
 
 		public override ICollection<string>? ProgressStatus()
 		{
-			List<string> texts = new List<string>();
+			var texts = new List<string>();
 
-			ICollection<string>? statusTexts = GetTextsForStatus(Status);
+			var statusTexts = GetTextsForStatus(Status);
 			if (statusTexts != null)
 				texts.AddRange(statusTexts);
 
@@ -35,14 +35,14 @@ namespace R136.Entities.Animates
 			return texts.Count > 0 ? texts : null;
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Flamethrower)
-				return false;
+				return Result.Failure();
 
 			Status = AnimateStatus.Operating;
 
-			return true;
+			return Result.Success();
 		}
 	}
 }

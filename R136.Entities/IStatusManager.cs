@@ -16,7 +16,5 @@
 
 		public void PutDown(ItemID item);
 		public void OpenConnection(Direction direction, RoomID toRoom);
-
-		public bool RequestEnd { get; set; }
 	}
 }

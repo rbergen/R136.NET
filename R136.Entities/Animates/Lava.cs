@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using R136.Entities.General;
+using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
@@ -8,38 +9,26 @@ namespace R136.Entities.Animates
 
 		public override ICollection<string>? ProgressStatus()
 		{
-			AnimateStatus textStatus = Status;
+			var textStatus = Status;
 
-			switch (textStatus)
+			if (textStatus == AnimateStatus.Initial && StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
 			{
-				case AnimateStatus.Initial:
-					if (StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
-					{
-						textStatus = AnimateStatus.SelfInjury;
-						StatusManager.DecreaseHealth(HealthImpact.Severe);
-						StatusManager.CurrentRoom = RoomID.OilCave;
-					}
-
-					break;
-
-				case AnimateStatus.Operating:
-					if (StatusManager != null)
-						StatusManager.RequestEnd = true;
-
-					break;
+				textStatus = AnimateStatus.SelfInjury;
+				StatusManager.DecreaseHealth(HealthImpact.Severe);
+				StatusManager.CurrentRoom = RoomID.OilCave;
 			}
 
 			return GetTextsForStatus(textStatus);
 		}
 
-		public override bool Used(ItemID item)
+		public override Result Used(ItemID item)
 		{
 			if (item != ItemID.Bomb)
-				return false;
+				return Result.Failure();
 
 			Status = AnimateStatus.Operating;
 
-			return true;
+			return Result.EndRequested();
 		}
 	}
 }

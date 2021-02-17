@@ -21,7 +21,7 @@ namespace R136.Entities
 		public static Item FromInitializer(Initializer initializer)
 			=> new Item(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
 
-		public static IDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IDictionary<AnimateID, Animate> animates)
+		public static IReadOnlyDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IDictionary<AnimateID, Animate> animates)
 		{
 			Dictionary<ItemID, Item> items = new Dictionary<ItemID, Item>(initializers.Count);
 
@@ -30,7 +30,7 @@ namespace R136.Entities
 
 			foreach (var initializer in initializers)
 			{
-				Type? itemType = ToType(initializer.ID);
+				var itemType = ToType(initializer.ID);
 
 				if (itemType != null)
 					typedInitializers[initializer] = itemType;
@@ -58,7 +58,7 @@ namespace R136.Entities
 
 				if (method != null && method.IsStatic && method.ReturnType.IsAssignableTo(typeof(Item)))
 				{
-					Item? item = (Item?)method.Invoke(null, new object[] { initializer, animates, items });
+					var item = (Item?)method.Invoke(null, new object[] { initializer, animates, items });
 
 					if (item != null)
 						items[initializer.ID] = RegisterTexts(item, initializer);
@@ -128,6 +128,9 @@ namespace R136.Entities
 		private static Type? ToType(ItemID id) => id switch
 		{
 			ItemID.TNT => typeof(Tnt),
+			ItemID.Flashlight => typeof(Flashlight),
+			ItemID.Bandage => typeof(Bandage),
+			ItemID.Sword => typeof(Sword),
 			_ => null
 		};
 	}
@@ -173,7 +176,7 @@ namespace R136.Entities
 			if (!UsableOn.Contains(animate))
 				return Use();
 
-			if (animate.Used(ID) && !KeepAfterUse)
+			if (animate.Used(ID).IsSuccess && !KeepAfterUse)
 				StatusManager?.RemoveFromPossession(ID);
 
 			return Result.Success();

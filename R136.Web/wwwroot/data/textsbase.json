@@ -61,6 +61,26 @@
 		"Texts": [
 			"Je pakt {item} op en steekt deze in een van je zakken."
 		]
+	},
+	{
+		"Type": "GeneralCommandProcessor",
+		"ID": 0,
+		"Texts": [
+			"Syntax: {command}"
+		]
+	},
+	{
+		"Type": "LocationCommandProcessor",
+		"ID": 0,
+		"Texts": [
+			"Syntax: {command}"
+		]
+	},
+	{
+		"Type": "LocationCommandProcessor",
+		"ID": 1,
+		"Texts": [
+			"Daar kun je niet heen."
+		]
 	}
-
 ]
