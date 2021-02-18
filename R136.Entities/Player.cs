@@ -10,7 +10,9 @@ namespace R136.Entities
 {
 	class Player
 	{
-		public int LifePoints { get; private set; }
+		private int? _lifePoints;
+		private int? _lifePointsFromConfig;
+
 		public Room CurrentRoom { get; set; }
 
 		public IReadOnlyList<Item> Inventory => _inventory;
@@ -18,7 +20,25 @@ namespace R136.Entities
 		private readonly List<Item> _inventory;
 
 		public Player(Room startRoom)
-			=> (LifePoints, CurrentRoom, _inventory) = (Facilities.Configuration.LifePoints, startRoom, new List<Item>());
+			=> (_lifePoints, _lifePointsFromConfig, CurrentRoom, _inventory) = (null, null, startRoom, new List<Item>());
+
+		public int LifePoints
+		{
+			get
+			{
+				if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)
+				{
+					_lifePoints = _lifePointsFromConfig = Facilities.Configuration.LifePoints;
+				}
+
+				return _lifePoints!.Value;
+			}
+
+			private set
+			{
+				_lifePoints = value;
+			}
+		}
 
 		private ICollection<string>? GetNamedTexts(TextID id, Item item) => Facilities.TextsMap[this, (int)id].ReplaceInAll("{item}", item.Name);
 

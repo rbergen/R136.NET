@@ -10,10 +10,9 @@ using System.Threading.Tasks;
 namespace R136.Entities
 {
 	abstract class CommandProcessor : EntityBase {
-		public static CommandProcessorMap FromInitializers(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, 
-			IReadOnlyCollection<INotifyRoomChangeRequested> roomChangeNotifiees, ITriggerable? paperrouteTriggerable)
+		public static CommandProcessorMap FromInitializers(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
-			var map = new CommandProcessorMap(initializers, items, roomChangeNotifiees, paperrouteTriggerable);
+			var map = new CommandProcessorMap(initializers, items, animates);
 
 			foreach(var initializer in initializers)
 			{
@@ -27,26 +26,27 @@ namespace R136.Entities
 			return map;
 		}
 
-		public abstract Result Execute(CommandID id, string name, string? parameters, Player player, ICollection<Item> presentItems, Animate? presentAnimate);
+		public abstract Result Execute(CommandID id, string command, string? parameters, Player player);
 	}
 
 	class CommandProcessorMap 
 	{
-		private readonly Dictionary<string, CommandID> _nameIdMap;
+		private readonly Dictionary<string, CommandID> _commandIdMap;
 		private readonly ItemCommandProcessor _itemProcessor;
 		private readonly LocationCommandProcessor _locationProcessor;
 		private readonly GeneralCommandProcessor _generalProcessor;
+		private readonly InternalCommandProcessor _internalProcessor;
 
-		public CommandProcessorMap(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, 
-			IReadOnlyCollection<INotifyRoomChangeRequested> roomChangeNotifiees, ITriggerable? paperrouteTriggerable)
+		public CommandProcessorMap(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
-			_nameIdMap = new Dictionary<string, CommandID>();
-			_itemProcessor = new ItemCommandProcessor(items);
-			_locationProcessor = new LocationCommandProcessor(roomChangeNotifiees, paperrouteTriggerable);
+			_commandIdMap = new Dictionary<string, CommandID>();
+			_itemProcessor = new ItemCommandProcessor(items, animates);
+			_locationProcessor = new LocationCommandProcessor(items, animates);
 			_generalProcessor = new GeneralCommandProcessor();
+			_internalProcessor = new InternalCommandProcessor();
 
 			foreach (var initializer in initializers)
-				_nameIdMap[initializer.Name] = initializer.ID;
+				_commandIdMap[initializer.Name] = initializer.ID;
 		}
 
 		public CommandProcessor this[CommandID id]
@@ -61,12 +61,14 @@ namespace R136.Entities
 				CommandID.Pickup => _itemProcessor,
 				CommandID.PutDown => _itemProcessor,
 				CommandID.Inspect => _itemProcessor,
+				CommandID.ConfigGet => _internalProcessor,
+				CommandID.ConfigSet => _internalProcessor,
 				_ => _generalProcessor
 			};
 			
 		public (string? name, CommandProcessor? processor, FindResult result) FindByName(string s)
 		{
-			var foundItems = _nameIdMap.Where(pair => pair.Key.Contains(s)).ToArray();
+			var foundItems = _commandIdMap.Where(pair => pair.Key.Contains(s)).ToArray();
 
 			FindResult result = foundItems.Length switch
 			{
@@ -81,10 +83,20 @@ namespace R136.Entities
 		}
 	}
 	
+	abstract class ActingCommandProcessor: CommandProcessor
+	{
+		protected IReadOnlyDictionary<ItemID, Item> Items { get; }
+		protected IReadOnlyDictionary<AnimateID, Animate> Animates { get; }
+
+		public ActingCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates)
+			=> (Items, Animates) = (items, animates);
+	}
+
 	class CommandInitializer
 	{
 		public CommandID ID { get; set; }
 		public string Name { get; set; } = "";
+		public bool FullMatch { get; set; } = false;
 		public IDTextMap[]? TextMap { get; set; }
 	
 		public class IDTextMap
@@ -110,6 +122,8 @@ namespace R136.Entities
 		Wait,
 		End,
 		Status,
-		Help
+		Help,
+		ConfigGet,
+		ConfigSet
 	}
 }

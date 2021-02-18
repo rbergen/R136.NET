@@ -8,19 +8,23 @@ using System.Threading.Tasks;
 
 namespace R136.Entities.CommandProcessors
 {
-	class LocationCommandProcessor : CommandProcessor
+	class LocationCommandProcessor : ActingCommandProcessor
 	{
-		private readonly IReadOnlyCollection<INotifyRoomChangeRequested> _notifiees;
-		private readonly ITriggerable? _paperrouteTriggerable;
+		public event Action? PaperRouteCompleted;
+		public event Action<RoomID, RoomID>? RoomChanged;
+
 		private int _paperrouteIndex = 0;
 
-		public LocationCommandProcessor(IReadOnlyCollection<INotifyRoomChangeRequested> notifiees, ITriggerable? paperrouteTriggerable)
-			=> (_notifiees, _paperrouteTriggerable) = (notifiees, paperrouteTriggerable);
+		public LocationCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(items, animates) 
+		{
+			RegisterRoomChangedListeners(items);
+			RegisterRoomChangedListeners(animates);
+		}
 
-		public override Result Execute(CommandID id, string name, string? parameters, Player player, ICollection<Item> presentItems, Animate? presentAnimate)
+		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 		{
 			if (parameters != null)
-				Result.Error(GetTexts(TextID.CommandSyntax)?.ReplaceInAll("{command}", name));
+				Result.Error(GetTexts(TextID.CommandSyntax)?.ReplaceInAll("{command}", command));
 
 			Direction? direction = CommandToDirection(id);
 
@@ -30,21 +34,36 @@ namespace R136.Entities.CommandProcessors
 			if (!player.CurrentRoom.Connections.ContainsKey(direction.Value))
 				return Result.Failure(GetTexts(TextID.CantGoThere));
 
+			var fromRoom = player.CurrentRoom;
 			var toRoom = player.CurrentRoom.Connections[direction.Value];
 
-			var proceed = true;
-
-			foreach (var requestNotifiee in _notifiees)
-				proceed &= requestNotifiee.RoomChangeRequested(player.CurrentRoom.ID, toRoom.ID);
-
-			if (!proceed)
+			if (!NotifyRoomChangeRequested(Items, fromRoom.ID, toRoom.ID) || !NotifyRoomChangeRequested(Animates, fromRoom.ID, toRoom.ID))
 				return Result.Failure();
 
 			player.CurrentRoom = toRoom;
 
+			RoomChanged?.Invoke(fromRoom.ID, toRoom.ID);
+
 			CheckPaperRoute(toRoom.ID);
 
 			return Result.Success();
+		}
+
+		private static bool NotifyRoomChangeRequested<TEntityKey, TEntityValue>(IReadOnlyDictionary<TEntityKey, TEntityValue> entities, RoomID fromRoom, RoomID toRoom)
+		{
+			foreach (var requestNotifiee in entities.Values.Where(entity => entity is INotifyRoomChangeRequested).Cast<INotifyRoomChangeRequested>())
+			{
+				if (!requestNotifiee.RoomChangeRequested(fromRoom, toRoom))
+					return false;
+			}
+			
+			return true;
+		}
+
+		private void RegisterRoomChangedListeners<TEntityKey, TEntityValue>(IReadOnlyDictionary<TEntityKey, TEntityValue> entities)
+		{
+			foreach (var requestNotifiee in entities.Values.Where(entity => entity is INotifyRoomChangeRequested).Cast<INotifyRoomChangeRequested>())
+				RoomChanged += requestNotifiee.RoomChanged;
 		}
 
 		private static Direction? CommandToDirection(CommandID id) => id switch
@@ -68,8 +87,8 @@ namespace R136.Entities.CommandProcessors
 				else
 					_paperrouteIndex = 0;
 
-				if (_paperrouteIndex == paperroute.Length && _paperrouteTriggerable != null)
-					_paperrouteTriggerable.Trigger();
+				if (_paperrouteIndex == paperroute.Length)
+					PaperRouteCompleted?.Invoke();
 			}
 		}
 

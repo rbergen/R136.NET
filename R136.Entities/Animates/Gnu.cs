@@ -41,10 +41,13 @@ namespace R136.Entities.Animates
 
 		public bool RoomChangeRequested(RoomID from, RoomID to)
 		{
+			return true;
+		}
+
+		public void RoomChanged(RoomID from, RoomID to) 
+		{
 			if (from == CurrentRoom && Status != AnimateStatus.Done)
 				CurrentRoom = Facilities.Configuration.GnuRoamingRooms[Facilities.Randomizer.Next(5)];
-
-			return true;
 		}
 	}
 }

@@ -29,7 +29,28 @@
 	},
 	{
 		"ID": 7,
-		"Name": "combineer"
+		"Name": "combineer",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"Syntax: {command} <voorwerp> en/met <voorwerp>"
+				]
+			},
+			{
+				"ID": 0,
+				"Texts": [
+					" en ",
+					" met "
+				]
+			},
+			{
+				"ID": 0,
+				"Texts": [
+
+				]
+			}
+		]
 	},
 	{
 		"ID": 8,
@@ -42,7 +63,7 @@
 			{
 				"ID": 0,
 				"Texts": [
-					"Je bent inmiddels zo aan {item} gehecht geraakt dat je hem niet meer kunt missen."
+					"Je bent inmiddels zo aan {item} gehecht geraakt dat je deze niet meer kunt missen."
 				]
 			},
 			{
@@ -176,5 +197,32 @@
 				]
 			}
 		]
+	},
+	{
+		"ID": 15,
+		"Name": "configget",
+		"FullMatch":  true,
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"{setting}: {value}."
+				]
+			}
+		]
+	},
+	{
+		"ID": 16,
+		"Name": "configset",
+		"FullMatch": true,
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"{setting}: {oldvalue} => {newvalue}."
+				]
+			}
+		]
 	}
+
 ]

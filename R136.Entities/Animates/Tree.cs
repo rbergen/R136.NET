@@ -6,7 +6,7 @@ namespace R136.Entities.Animates
 {
 	class Tree : Animate
 	{
-		event Action? Burned;
+		public event Action? Burned;
 
 		public Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 

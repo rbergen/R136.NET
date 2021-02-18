@@ -184,6 +184,7 @@ namespace R136.Entities
 
 	interface ICompound<T>
 	{
+		T Self { get; }
 		ICollection<T> Components { get; }
 		Result Combine(T first, T second);
 	}
@@ -192,6 +193,8 @@ namespace R136.Entities
 	{
 		public ICollection<Item> Components { get; }
 		protected ICollection<string>? CombineTexts => Facilities.ItemTextsMap[this, TextType.Combine];
+
+		public Item Self => this;
 
 		public static CompoundItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
 			=> new CompoundItem(
@@ -222,15 +225,9 @@ namespace R136.Entities
 
 		public Result Combine(Item first, Item second)
 		{
-			if (!Components.Contains(first) || !Components.Contains(second) || first == second)
-				return Result.Failure();
-
-			if (first != this)
-				StatusManager?.RemoveFromPossession(first.ID);
-			if (second != this)
-				StatusManager?.RemoveFromPossession(second.ID);
-
-			return Result.Success(CombineTexts);
+			return !Components.Contains(first) || !Components.Contains(second) || first == second 
+				? Result.Failure()
+				: Result.Success(CombineTexts);
 		}
 
 		private enum TextID

@@ -8,9 +8,11 @@ namespace R136.Entities.Items
 {
 	class Flashlight : Item, ICompound<Item>, INotifyTurnEnding
 	{
+		private int? _lampPoints;
+		private int? _lampPointsFromConfig;
+
 		public bool IsOn { get; private set; }
 
-		public int? LampPoints { get; private set; }
 		public ICollection<Item> Components { get; private set; }
 		public ICollection<string>? CombineTexts
 			=> Facilities.ItemTextsMap[this, TextType.Combine];
@@ -31,9 +33,28 @@ namespace R136.Entities.Items
 			IDictionary<ItemID, Item> items,
 			ICollection<ItemID> components
 		) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
-			=> (IsOn, LampPoints, Components)
-			= (false, Facilities.Configuration.LampPoints, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
+			=> (IsOn, _lampPoints, _lampPointsFromConfig, Components)
+			= (false, null, null, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
 
+		public int? LampPoints
+		{
+			get
+			{
+				if (_lampPointsFromConfig != Facilities.Configuration.LampPoints)
+				{
+					_lampPoints = _lampPointsFromConfig = Facilities.Configuration.LampPoints;
+				}
+
+				return _lampPoints!.Value;
+			}
+
+			private set
+			{
+				_lampPoints = value;
+			}
+		}
+
+		public Item Self => this;
 
 		private ICollection<string>? GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
 
@@ -59,15 +80,9 @@ namespace R136.Entities.Items
 
 		public Result Combine(Item first, Item second)
 		{
-			if (!Components.Contains(first) || !Components.Contains(second) || first == second)
-				return Result.Failure();
-
-			if (first != this)
-				StatusManager?.RemoveFromPossession(first.ID);
-			if (second != this)
-				StatusManager?.RemoveFromPossession(second.ID);
-
-			return Result.Success(CombineTexts);
+			return !Components.Contains(first) || !Components.Contains(second) || first == second 
+				? Result.Failure()
+				:	Result.Success(CombineTexts);
 		}
 
 		public ICollection<string>? TurnEnding()

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace R136.Entities.General
 {
-	public static class CollectionHelper
+	public static class ExtensionMethods
 	{
 		public static void AddRangeIfNotNull<T>(this List<T> list, IEnumerable<T>? collection)
 		{
@@ -26,6 +26,21 @@ namespace R136.Entities.General
 			};
 
 			return ((result == FindResult.Found ? foundItems[0] : null), result);
+		}
+
+		public static (int index, string? found) IndexOfAny(this string subject, ICollection<string>? substrings)
+		{
+			if (substrings == null)
+				return (-1, null);
+
+			foreach (var substring in substrings)
+			{
+				var index = subject.IndexOf(substring);
+				if (index >= 0)
+					return (index, substring);
+			}
+
+			return (-1, null);
 		}
 	}
 }

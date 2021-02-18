@@ -13,13 +13,13 @@ namespace R136.Entities.CommandProcessors
 	{
 		private const int Default = 0;
 
-		public override Result Execute(CommandID id, string name, string? parameters, Player player, ICollection<Item> presentItems, Animate? presentAnimate)
+		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 			=> id switch
 			{
 				CommandID.Help => ExecuteHelp(),
-				CommandID.Wait => ExecuteWait(name, parameters),
-				CommandID.Status => ExecuteStatus(name, parameters, player),
-				CommandID.End => ExecuteEnd(name, parameters),
+				CommandID.Wait => ExecuteWait(command, parameters),
+				CommandID.Status => ExecuteStatus(command, parameters, player),
+				CommandID.End => ExecuteEnd(command, parameters),
 				_ => Result.Error()
 			};
 
@@ -37,15 +37,15 @@ namespace R136.Entities.CommandProcessors
 		private static void AddStatusTexts(List<string> list, StatusTextID id, string tag, string content)
 			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, (int)id, tag, content));
 
-		private Result? ValidateParameters(string name, string? parameters)
-			=> parameters == null ? null : Result.Error(Facilities.TextsMap[this, (int)TextID.CommandSyntax]?.ReplaceInAll("{command}", name));
+		private Result? ValidateParameters(string command, string? parameters)
+			=> parameters == null ? null : Result.Error(Facilities.TextsMap[this, (int)TextID.CommandSyntax]?.ReplaceInAll("{command}", command));
 
 		private static Result ExecuteHelp() 
 			=> Result.Success(GetTexts(CommandID.Help, Default));
 
-		private Result ExecuteWait(string name, string? parameters)
+		private Result ExecuteWait(string command, string? parameters)
 		{
-			var validateResult = ValidateParameters(name, parameters);
+			var validateResult = ValidateParameters(command, parameters);
 
 			if (validateResult != null)
 				return validateResult;
@@ -55,9 +55,9 @@ namespace R136.Entities.CommandProcessors
 			return waitTexts == null ? Result.Success() : Result.Success(new string[] { waitTexts[Facilities.Randomizer.Next(waitTexts.Length)] });
 		}
 
-		private Result ExecuteStatus(string name, string? parameters, Player player)
+		private Result ExecuteStatus(string command, string? parameters, Player player)
 		{
-			var validateResult = ValidateParameters(name, parameters);
+			var validateResult = ValidateParameters(command, parameters);
 
 			if (validateResult != null)
 				return validateResult;
@@ -83,9 +83,9 @@ namespace R136.Entities.CommandProcessors
 			return Result.Success(texts);
 		}
 
-		private Result ExecuteEnd(string name, string? parameters)
+		private Result ExecuteEnd(string command, string? parameters)
 		{
-			var validateResult = ValidateParameters(name, parameters);
+			var validateResult = ValidateParameters(command, parameters);
 
 			if (validateResult != null)
 				return validateResult;
