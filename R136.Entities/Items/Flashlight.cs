@@ -18,12 +18,27 @@ namespace R136.Entities.Items
 			=> Facilities.ItemTextsMap[this, TextType.Combine];
 
 #pragma warning disable IDE0060 // Remove unused parameter
-		public static Flashlight FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
-			=> new Flashlight(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom,
-				initializer.Wearable, !initializer.BlockPutdown, items, initializer.Components!);
+		public static Flashlight FromInitializer
+			(
+			Initializer initializer, 
+			IDictionary<AnimateID, Animate> animates, 
+			IDictionary<ItemID, Item> items
+			)
 #pragma warning restore IDE0060 // Remove unused parameter
+			=> new Flashlight
+			(
+			initializer.ID, 
+			initializer.Name, 
+			initializer.Description, 
+			initializer.StartRoom,
+			initializer.Wearable, 
+			!initializer.BlockPutdown, 
+			items, 
+			initializer.Components!
+			);
 
-		private Flashlight(
+		private Flashlight
+			(
 			ItemID id,
 			string name,
 			string description,
@@ -32,7 +47,7 @@ namespace R136.Entities.Items
 			bool isPutdownAllowed,
 			IDictionary<ItemID, Item> items,
 			ICollection<ItemID> components
-		) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
+			) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
 			=> (IsOn, _lampPoints, _lampPointsFromConfig, Components)
 			= (false, null, null, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
 

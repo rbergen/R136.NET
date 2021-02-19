@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace R136.Tools
+namespace R136.Entities.General
 {
   public class ObjectDumper
   {
@@ -20,18 +20,18 @@ namespace R136.Tools
       _hashListOfFoundElements = new List<int>();
     }
 
-    public static string Dump(object element)
+    public static string Dump(object? element)
     {
       return Dump(element, 2);
     }
 
-    public static string Dump(object element, int indentSize)
+    public static string Dump(object? element, int indentSize)
     {
       var instance = new ObjectDumper(indentSize);
       return instance.DumpElement(element);
     }
 
-    private string DumpElement(object element)
+    private string DumpElement(object? element)
     {
       if (element == null || element is ValueType || element is string)
       {
@@ -42,7 +42,7 @@ namespace R136.Tools
         var objectType = element.GetType();
         if (!typeof(IEnumerable).IsAssignableFrom(objectType))
         {
-          Write("{{{0}}}", objectType.FullName);
+//          Write("{{{0}}}", objectType.FullName);
           _hashListOfFoundElements.Add(element.GetHashCode());
           _level++;
         }
@@ -61,8 +61,8 @@ namespace R136.Tools
 						{
 							if (!AlreadyTouched(item))
 								DumpElement(item);
-							else
-								Write("{{{0}}} <-- bidirectional reference found", item.GetType().FullName);
+//							else
+//								Write("{{{0}}} <-- bidirectional reference found", item.GetType().FullName);
 						}
 					}
 				}
@@ -77,10 +77,10 @@ namespace R136.Tools
 						if (fieldInfo == null && propertyInfo == null)
 							continue;
 
-						var type = fieldInfo != null ? fieldInfo.FieldType : propertyInfo.PropertyType;
-						object value = fieldInfo != null
+						var type = fieldInfo != null ? fieldInfo.FieldType : propertyInfo!.PropertyType;
+						object? value = fieldInfo != null
 															 ? fieldInfo.GetValue(element)
-															 : propertyInfo.GetValue(element, null);
+															 : propertyInfo!.GetValue(element, null);
 
 						if (type.IsValueType || type == typeof(string))
 						{
@@ -95,8 +95,8 @@ namespace R136.Tools
 							_level++;
 							if (!alreadyTouched)
 								DumpElement(value);
-							else
-								Write("{{{0}}} <-- bidirectional reference found", value.GetType().FullName);
+//							else
+//								Write("{{{0}}} <-- bidirectional reference found", value!.GetType().FullName);
 							_level--;
 						}
 					}
@@ -111,7 +111,7 @@ namespace R136.Tools
       return _stringBuilder.ToString();
     }
 
-    private bool AlreadyTouched(object value)
+    private bool AlreadyTouched(object? value)
     {
       if (value == null)
         return false;
@@ -125,7 +125,7 @@ namespace R136.Tools
       return false;
     }
 
-    private void Write(string value, params object[] args)
+    private void Write(string value, params object?[] args)
     {
       var space = new string(' ', _level * _indentSize);
 
@@ -135,7 +135,7 @@ namespace R136.Tools
       _stringBuilder.AppendLine(space + value);
     }
 
-    private static string FormatValue(object o)
+    private static string FormatValue(object? o)
     {
       if (o == null)
         return ("null");
@@ -150,7 +150,7 @@ namespace R136.Tools
         return string.Empty;
 
       if (o is ValueType)
-        return (o.ToString());
+        return o.ToString() ?? string.Empty;
 
       if (o is IEnumerable)
         return ("...");

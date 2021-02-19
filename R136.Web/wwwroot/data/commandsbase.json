@@ -38,16 +38,22 @@
 				]
 			},
 			{
-				"ID": 0,
+				"ID": 1,
 				"Texts": [
 					" en ",
 					" met "
 				]
 			},
 			{
-				"ID": 0,
+				"ID": 2,
 				"Texts": [
-
+					"Je kunt een voorwerp niet met zichzelf combineren."
+				]
+			},
+			{
+				"ID": 3,
+				"Texts": [
+					"Dat levert niets bruikbaars op."
 				]
 			}
 		]
@@ -206,7 +212,7 @@
 			{
 				"ID": 0,
 				"Texts": [
-					"{setting}: {value}."
+					"{setting}: {value}"
 				]
 			}
 		]
@@ -219,7 +225,7 @@
 			{
 				"ID": 0,
 				"Texts": [
-					"{setting}: {oldvalue} => {newvalue}."
+					"{setting}: {oldvalue} => {newvalue}"
 				]
 			}
 		]

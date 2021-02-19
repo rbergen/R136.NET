@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 namespace R136.Entities
 {
 	abstract class CommandProcessor : EntityBase {
-		public static CommandProcessorMap FromInitializers(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static CommandProcessorMap FromInitializers
+			(
+			ICollection<CommandInitializer> initializers, 
+			IReadOnlyDictionary<ItemID, Item> items, 
+			IReadOnlyDictionary<AnimateID, Animate> animates
+			)
 		{
 			var map = new CommandProcessorMap(initializers, items, animates);
 
@@ -31,22 +36,27 @@ namespace R136.Entities
 
 	class CommandProcessorMap 
 	{
-		private readonly Dictionary<string, CommandID> _commandIdMap;
+		private readonly Dictionary<(string Command, bool FullMatch), CommandID> _commandIdMap;
 		private readonly ItemCommandProcessor _itemProcessor;
 		private readonly LocationCommandProcessor _locationProcessor;
 		private readonly GeneralCommandProcessor _generalProcessor;
 		private readonly InternalCommandProcessor _internalProcessor;
 
-		public CommandProcessorMap(ICollection<CommandInitializer> initializers, IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public CommandProcessorMap
+			(
+			ICollection<CommandInitializer> initializers, 
+			IReadOnlyDictionary<ItemID, Item> items, 
+			IReadOnlyDictionary<AnimateID, Animate> animates
+			)
 		{
-			_commandIdMap = new Dictionary<string, CommandID>();
+			_commandIdMap = new Dictionary<(string, bool), CommandID>();
 			_itemProcessor = new ItemCommandProcessor(items, animates);
 			_locationProcessor = new LocationCommandProcessor(items, animates);
 			_generalProcessor = new GeneralCommandProcessor();
 			_internalProcessor = new InternalCommandProcessor();
 
 			foreach (var initializer in initializers)
-				_commandIdMap[initializer.Name] = initializer.ID;
+				_commandIdMap[(initializer.Name, initializer.FullMatch)] = initializer.ID;
 		}
 
 		public CommandProcessor this[CommandID id]
@@ -68,7 +78,7 @@ namespace R136.Entities
 			
 		public (string? name, CommandProcessor? processor, FindResult result) FindByName(string s)
 		{
-			var foundItems = _commandIdMap.Where(pair => pair.Key.Contains(s)).ToArray();
+			var foundItems = _commandIdMap.Where(pair => pair.Key.FullMatch ? pair.Key.Command == s : pair.Key.Command.StartsWith(s)).ToArray();
 
 			FindResult result = foundItems.Length switch
 			{
@@ -78,7 +88,7 @@ namespace R136.Entities
 			};
 
 			return result == FindResult.Found 
-				? (foundItems[0].Key, this[foundItems[0].Value], result)
+				? (foundItems[0].Key.Command, this[foundItems[0].Value], result)
 				: (null, null, result);
 		}
 	}
@@ -92,7 +102,7 @@ namespace R136.Entities
 			=> (Items, Animates) = (items, animates);
 	}
 
-	class CommandInitializer
+	public class CommandInitializer
 	{
 		public CommandID ID { get; set; }
 		public string Name { get; set; } = "";

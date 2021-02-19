@@ -147,18 +147,20 @@ namespace R136.Entities
 		bool KeepAfterUse { get; }
 
 		public static UsableItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates)
-			=> new UsableItem(
-				initializer.ID,
-				initializer.Name,
-				initializer.Description,
-				initializer.StartRoom,
-				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
-				initializer.Wearable,
-				!initializer.BlockPutdown,
-				initializer.KeepAfterUse
+			=> new UsableItem
+			(
+			initializer.ID,
+			initializer.Name,
+			initializer.Description,
+			initializer.StartRoom,
+			initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
+			initializer.Wearable,
+			!initializer.BlockPutdown,
+			initializer.KeepAfterUse
 			);
 
-		protected UsableItem(
+		protected UsableItem
+			(
 			ItemID id,
 			string name,
 			string description,
@@ -167,7 +169,8 @@ namespace R136.Entities
 			bool isWearable,
 			bool isPutdownAllowed,
 			bool keepAfterUse
-		) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
+			)
+			: base(id, name, description, startRoom, isWearable, isPutdownAllowed)
 			=> (UsableOn, KeepAfterUse) = (usableOn, keepAfterUse);
 
 		public virtual Result UseOn(Animate animate)
@@ -197,19 +200,21 @@ namespace R136.Entities
 		public Item Self => this;
 
 		public static CompoundItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
-			=> new CompoundItem(
-				initializer.ID,
-				initializer.Name,
-				initializer.Description,
-				initializer.StartRoom,
-				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
-				initializer.Components!.Select(itemID => items[itemID]).ToArray(),
-				initializer.Wearable,
-				!initializer.BlockPutdown,
-				initializer.KeepAfterUse
+			=> new CompoundItem
+			(
+			initializer.ID,
+			initializer.Name,
+			initializer.Description,
+			initializer.StartRoom,
+			initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
+			initializer.Components!.Select(itemID => items[itemID]).ToArray(),
+			initializer.Wearable,
+			!initializer.BlockPutdown,
+			initializer.KeepAfterUse
 			);
 
-		protected CompoundItem(
+		protected CompoundItem
+			(
 			ItemID id,
 			string name,
 			string description,
@@ -219,7 +224,7 @@ namespace R136.Entities
 			bool isWearable,
 			bool isPutdownAllowed,
 			bool keepAfterUse
-		)
+			)
 			: base(id, name, description, startRoom, usableOn, isWearable, isPutdownAllowed, keepAfterUse)
 			=> Components = components;
 

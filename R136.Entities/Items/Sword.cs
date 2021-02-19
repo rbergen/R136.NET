@@ -10,11 +10,21 @@ namespace R136.Entities.Items
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Sword FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
-			=> new Sword(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom,
-				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), initializer.Wearable, !initializer.BlockPutdown, initializer.KeepAfterUse);
+			=> new Sword
+			(
+			initializer.ID, 
+			initializer.Name, 
+			initializer.Description, 
+			initializer.StartRoom,
+			initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), 
+			initializer.Wearable, 
+			!initializer.BlockPutdown, 
+			initializer.KeepAfterUse
+			);
 #pragma warning restore IDE0060 // Remove unused parameter
 
-		private Sword(
+		private Sword
+			(
 			ItemID id,
 			string name,
 			string description,
@@ -23,7 +33,8 @@ namespace R136.Entities.Items
 			bool isWearable,
 			bool isPutdownAllowed,
 			bool keepAfterUse
-		) : base(id, name, description, startRoom, usableOn, isWearable, isPutdownAllowed, keepAfterUse) { }
+			) 
+			: base(id, name, description, startRoom, usableOn, isWearable, isPutdownAllowed, keepAfterUse) { }
 
 		public override Result UseOn(Animate animate)
 		{
@@ -54,7 +65,7 @@ namespace R136.Entities.Items
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);
-			return Result.ContinuationRequested(new ContinuationStatus(this, Tuple.Create(this, strikable)), Facilities.Configuration.YesNoInputSpecs, texts);
+			return Result.ContinuationRequested(new ContinuationStatus(this, (this, strikable)), Facilities.Configuration.YesNoInputSpecs, texts);
 		}
 
 		private void AddTexts(List<string> texts, TextID id)
@@ -62,7 +73,7 @@ namespace R136.Entities.Items
 
 		public Result Continue(object statusData, string input)
 		{
-			if (statusData is Tuple<Sword, StrikableAnimate> statusTuple && statusTuple.Item1 == this)
+			if (statusData is ValueTuple<Sword, StrikableAnimate> statusTuple && statusTuple.Item1 == this)
 				return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(statusTuple.Item2) : Result.Success();
 
 			return Result.Failure();

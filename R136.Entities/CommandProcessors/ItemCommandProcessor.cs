@@ -99,7 +99,7 @@ namespace R136.Entities.CommandProcessors
 			}
 
 			if (items.Distinct().Count() != items.Length)
-				return Result.Failure(GetTexts(CombineTextID.CantCombineWithSelf));
+				return Result.Failure(GetTexts(CombineTextID.CantCombineWithItself));
 
 			var combineItem = Items.Values
 				.Where(item => item is ICompound<Item>)
@@ -194,7 +194,7 @@ namespace R136.Entities.CommandProcessors
 		{
 			NoParametersGiven,
 			ItemSeparators,
-			CantCombineWithSelf,
+			CantCombineWithItself,
 			DoesntCombine
 		}
 

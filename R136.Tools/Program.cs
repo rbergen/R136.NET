@@ -20,7 +20,9 @@ namespace R136.Tools
 #pragma warning restore IDE0060 // Remove unused parameter
 		{
 			ProcessEntity<Animate.Initializer[]>("Animates");
-			
+
+			ProcessEntity<CommandInitializer[]>("Commands");
+
 			ProcessEntity<Item.Initializer[]>("Items");
 
 			ProcessRooms();
@@ -61,13 +63,13 @@ namespace R136.Tools
 
 		private static void ReadEntity<T>(string name)
 		{
-			if (!Confirm($"Read {name}?"))
-				return;
-
 			T entity;
 
-			Console.Write($"{name} JSON file path: ");
+			Console.Write($"{name} JSON file path (Enter to skip): ");
 			string jsonFilePath = Console.ReadLine().Trim();
+			if (jsonFilePath == string.Empty)
+				return;
+
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
@@ -88,14 +90,13 @@ namespace R136.Tools
 
 		private static void ProcessEntity<T>(string name)
 		{
-			Console.Write($"Process {name} base? [y/N]: ");
-			if (Console.ReadLine().Trim().ToLower() != "y")
-				return;
-
 			T entity;
 
-			Console.Write($"{name} base JSON file path: ");
+			Console.Write($"{name} base JSON file path (Enter to skip): ");
 			string jsonFilePath = Console.ReadLine().Trim();
+			if (jsonFilePath == string.Empty)
+				return;
+
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
@@ -125,14 +126,13 @@ namespace R136.Tools
 
 		private static void ProcessRooms()
 		{
-			Console.Write("Process Rooms base? [y/N]: ");
-			if (Console.ReadLine().Trim().ToLower() != "y")
-				return;
-
 			Room.Initializer[] rooms;
 
-			Console.Write("Rooms base JSON file path: ");
+			Console.Write("Rooms base JSON file path (Enter to skip): ");
 			string jsonFilePath = Console.ReadLine().Trim();
+			if (jsonFilePath == string.Empty)
+				return;
+
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
