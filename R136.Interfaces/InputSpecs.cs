@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace R136.Entities.General
+namespace R136.Interfaces
 {
 	public class InputSpecs
 	{

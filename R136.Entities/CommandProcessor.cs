@@ -1,6 +1,7 @@
 ﻿using R136.Entities.CommandProcessors;
 using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,22 @@ using System.Threading.Tasks;
 
 namespace R136.Entities
 {
-	abstract class CommandProcessor : EntityBase {
+	public abstract class CommandProcessor : EntityBase
+	{
 		public static CommandProcessorMap FromInitializers
 			(
-			ICollection<CommandInitializer> initializers, 
-			IReadOnlyDictionary<ItemID, Item> items, 
+			ICollection<CommandInitializer> initializers,
+			IReadOnlyDictionary<ItemID, Item> items,
 			IReadOnlyDictionary<AnimateID, Animate> animates
 			)
 		{
 			var map = new CommandProcessorMap(initializers, items, animates);
 
-			foreach(var initializer in initializers)
+			foreach (var initializer in initializers)
 			{
 				if (initializer.TextMap != null)
 				{
-					foreach(var mapping in initializer.TextMap)
+					foreach (var mapping in initializer.TextMap)
 						Facilities.CommandTextsMap[initializer.ID, mapping.ID] = mapping.Texts;
 				}
 			}
@@ -34,9 +36,9 @@ namespace R136.Entities
 		public abstract Result Execute(CommandID id, string command, string? parameters, Player player);
 	}
 
-	class CommandProcessorMap 
+	public class CommandProcessorMap
 	{
-		private readonly Dictionary<(string Command, bool FullMatch), CommandID> _commandIdMap;
+		private readonly Dictionary<(string command, bool fullMatch), CommandID> _commandIdMap;
 		private readonly ItemCommandProcessor _itemProcessor;
 		private readonly LocationCommandProcessor _locationProcessor;
 		private readonly GeneralCommandProcessor _generalProcessor;
@@ -44,8 +46,8 @@ namespace R136.Entities
 
 		public CommandProcessorMap
 			(
-			ICollection<CommandInitializer> initializers, 
-			IReadOnlyDictionary<ItemID, Item> items, 
+			ICollection<CommandInitializer> initializers,
+			IReadOnlyDictionary<ItemID, Item> items,
 			IReadOnlyDictionary<AnimateID, Animate> animates
 			)
 		{
@@ -75,10 +77,10 @@ namespace R136.Entities
 				CommandID.ConfigSet => _internalProcessor,
 				_ => _generalProcessor
 			};
-			
-		public (string? name, CommandProcessor? processor, FindResult result) FindByName(string s)
+
+		public (string? command, CommandProcessor? processor, FindResult result) FindByName(string s)
 		{
-			var foundItems = _commandIdMap.Where(pair => pair.Key.FullMatch ? pair.Key.Command == s : pair.Key.Command.StartsWith(s)).ToArray();
+			var foundItems = _commandIdMap.Where(pair => pair.Key.fullMatch ? pair.Key.command == s : pair.Key.command.StartsWith(s)).ToArray();
 
 			FindResult result = foundItems.Length switch
 			{
@@ -87,13 +89,13 @@ namespace R136.Entities
 				_ => FindResult.Ambiguous
 			};
 
-			return result == FindResult.Found 
-				? (foundItems[0].Key.Command, this[foundItems[0].Value], result)
+			return result == FindResult.Found
+				? (foundItems[0].Key.command, this[foundItems[0].Value], result)
 				: (null, null, result);
 		}
 	}
-	
-	abstract class ActingCommandProcessor: CommandProcessor
+
+	abstract class ActingCommandProcessor : CommandProcessor
 	{
 		protected IReadOnlyDictionary<ItemID, Item> Items { get; }
 		protected IReadOnlyDictionary<AnimateID, Animate> Animates { get; }
@@ -108,7 +110,7 @@ namespace R136.Entities
 		public string Name { get; set; } = "";
 		public bool FullMatch { get; set; } = false;
 		public IDTextMap[]? TextMap { get; set; }
-	
+
 		public class IDTextMap
 		{
 			public int ID { get; set; }

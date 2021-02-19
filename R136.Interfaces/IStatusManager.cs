@@ -1,6 +1,5 @@
-﻿namespace R136.Entities
+﻿namespace R136.Interfaces
 {
-	
 	public interface IStatusManager
 	{
 		void DecreaseHealth();

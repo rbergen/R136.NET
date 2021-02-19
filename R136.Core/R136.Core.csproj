@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+		<Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\R136.Entities\R136.Entities.csproj" />
+    <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R136.Entities\R136.Entities.csproj" />
+    <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using System.Text.Json;
 using R136.Entities;
 using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Interfaces;
 
 namespace R136.Tools
 {
@@ -19,6 +20,9 @@ namespace R136.Tools
 		static void Main(string[] args)
 #pragma warning restore IDE0060 // Remove unused parameter
 		{
+			ObjectDumper.WriteBidirectionalReferences = false;
+			ObjectDumper.WriteClassType = false;
+
 			ProcessEntity<Animate.Initializer[]>("Animates");
 
 			ProcessEntity<CommandInitializer[]>("Commands");

@@ -1,5 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,6 @@ namespace R136.Entities.CommandProcessors
 	class InternalCommandProcessor : CommandProcessor
 	{
 		private const int Default = 0;
-		private const string Null = "null";
 
 		public override Result Execute(CommandID id, string name, string? parameters, Player player)
 			=> parameters == null
@@ -52,7 +52,7 @@ namespace R136.Entities.CommandProcessors
 					SetValue(property, propertyValue);
 
 				else if (property.PropertyType == typeof(int?))
-					SetValue(property, propertyValue == Null ? null : (int?)int.Parse(propertyValue));
+					SetValue(property, propertyValue == ObjectDumper.Null ? null : (int?)int.Parse(propertyValue));
 
 				var newValue = property.GetValue(Facilities.Configuration);
 

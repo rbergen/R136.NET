@@ -1,4 +1,6 @@
-﻿namespace R136.Entities.Animates
+﻿using R136.Interfaces;
+
+namespace R136.Entities.Animates
 {
 	class Teleporter : Animate
 	{

@@ -1,5 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace R136.Entities
 {
-	class Player
+	public class Player
 	{
 		private int? _lifePoints;
 		private int? _lifePointsFromConfig;
@@ -27,9 +28,7 @@ namespace R136.Entities
 			get
 			{
 				if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)
-				{
 					_lifePoints = _lifePointsFromConfig = Facilities.Configuration.LifePoints;
-				}
 
 				return _lifePoints!.Value;
 			}
@@ -69,10 +68,23 @@ namespace R136.Entities
 
 		public void DecreaseHealth(HealthImpact impact)
 		{
+			if (Facilities.Configuration.Immortal)
+				return;
+
 			LifePoints -= (int)impact;
 
 			if (LifePoints < 0)
 				LifePoints = 0;
+		}
+
+		public void RestoreHealth()
+		{
+			if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)
+			{
+				_lifePointsFromConfig = Facilities.Configuration.LifePoints;
+			}
+
+			_lifePoints = _lifePointsFromConfig;
 		}
 
 		private enum TextID
@@ -81,11 +93,5 @@ namespace R136.Entities
 			AddedToInventory,
 			StartedWearing
 		}
-	}
-
-	public enum HealthImpact
-	{
-		Normal = 1,
-		Severe = 4
 	}
 }

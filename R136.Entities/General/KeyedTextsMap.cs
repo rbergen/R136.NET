@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,5 +60,9 @@ namespace R136.Entities.General
 				textMap[id] = value;
 			}
 		}
+
+		public int TextsMapCount => _map.Count;
+		public int TextValueCount => _map.Aggregate(0, (count, pair) => count += pair.Value.Count, total => total);
+
 	}
 }

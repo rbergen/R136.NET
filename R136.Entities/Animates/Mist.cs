@@ -1,4 +1,5 @@
 ﻿using R136.Entities.Global;
+using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {

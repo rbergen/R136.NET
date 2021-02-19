@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace R136.Entities.General
+namespace R136.Interfaces
 {
 	public enum ResultCode
 	{
@@ -20,10 +20,16 @@ namespace R136.Entities.General
 
 		public static Result Success() => _success;
 		public static Result Success(ICollection<string>? message) => new Result(ResultCode.Success, message);
+		public static Result Success(string message) => new Result(ResultCode.Success, new string[] { message });
+
 		public static Result Failure() => _failure;
 		public static Result Failure(ICollection<string>? message) => new Result(ResultCode.Failure, message);
+		public static Result Failure(string message) => new Result(ResultCode.Failure, new string[] { message });
+
 		public static Result Error() => _error;
 		public static Result Error(ICollection<string>? message) => new Result(ResultCode.Error, message);
+		public static Result Error(string message) => new Result(ResultCode.Error, new string[] { message });
+
 		public static Result EndRequested() => new Result(ResultCode.EndRequested);
 		public static Result ContinuationRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
 			=> new Result(status, specs, message);

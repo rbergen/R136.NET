@@ -6,8 +6,11 @@ namespace R136.Entities.General
 {
 	public class TypedTextsMap<TTextKey> : KeyedTextsMap<string, TTextKey> where TTextKey : struct
 	{
-		public void LoadInitializers(ICollection<Initializer> initializers)
+		public void LoadInitializers(ICollection<Initializer>? initializers)
 		{
+			if (initializers == null)
+				return;
+
 			foreach (var initializer in initializers)
 			{
 				if (initializer.Texts != null && initializer.Texts.Length > 0)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using R136.Interfaces;
+using System;
 
 namespace R136.Entities.General
 {

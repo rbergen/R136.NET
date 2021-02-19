@@ -1,5 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace R136.Entities.CommandProcessors
 				? result
 				: (StatusManager?.IsDark ?? false)
         ? Result.Failure(GetTexts(CommandID.Inspect, Default))
-        : Result.Success(new string[] { item.Description });
+        : Result.Success(item.Description);
 		}
 
 		private Result ExecutePutDown(string command, string? parameters, Player player)

@@ -1,4 +1,4 @@
-﻿namespace R136.Entities.General
+﻿namespace R136.Interfaces
 {
 	public class ContinuationStatus
 	{

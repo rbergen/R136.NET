@@ -1,6 +1,7 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Entities.Items;
+using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace R136.Entities.CommandProcessors
 
 			var waitTexts = GetTexts(CommandID.Wait, Default)?.ToArray();
 
-			return waitTexts == null ? Result.Success() : Result.Success(new string[] { waitTexts[Facilities.Randomizer.Next(waitTexts.Length)] });
+			return waitTexts == null ? Result.Success() : Result.Success(waitTexts[Facilities.Randomizer.Next(waitTexts.Length)]);
 		}
 
 		private Result ExecuteStatus(string command, string? parameters, Player player)
