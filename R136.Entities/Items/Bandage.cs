@@ -1,5 +1,4 @@
-﻿using R136.Entities.General;
-using R136.Entities.Global;
+﻿using R136.Entities.Global;
 using R136.Interfaces;
 using System.Collections.Generic;
 
@@ -11,8 +10,8 @@ namespace R136.Entities.Items
 		public static Bandage FromInitializer
 			(
 			Initializer initializer, 
-			IDictionary<AnimateID, Animate> animates, 
-			IDictionary<ItemID, Item> items
+			IReadOnlyDictionary<AnimateID, Animate> animates,
+			IReadOnlyDictionary<ItemID, Item> items
 			)
 #pragma warning restore IDE0060 // Remove unused parameter
 			=> new Bandage
@@ -41,7 +40,8 @@ namespace R136.Entities.Items
 				return Result.Success(Facilities.TextsMap[this, (int)TextID.FullHealth]);
 
 			StatusManager?.RestoreHealth();
-			return base.Use();
+
+			return Result.Success(UseTexts);
 		}
 
 		private enum TextID

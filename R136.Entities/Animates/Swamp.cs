@@ -4,7 +4,10 @@ namespace R136.Entities.Animates
 {
 	class Swamp : Animate
 	{
-		public Swamp(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Swamp(initializer.ID, initializer.StartRoom);
+
+		private Swamp(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

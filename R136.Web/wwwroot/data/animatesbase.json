@@ -1,4 +1,4 @@
-[
+ï»¿[
 	{
 		"ID": 0,
 		"StartRoom": 2,
@@ -28,7 +28,7 @@
 		"StartRoom": 23,
 		"StatusTexts": {
 			"Initial": [
-				"Je hebt de rust van de rode trol verstoord. Hij kijkt zwaar geërgerd."
+				"Je hebt de rust van de rode trol verstoord. Hij kijkt zwaar geÃ«rgerd."
 			],
 			"PreparingFirstAttack": [
 				"Nu is de trol pas echt goed wakker. Hij pakt zijn zweep en komt dreigend op je af."
@@ -84,7 +84,7 @@
 				"De gnoe neemt een sprong, en stoot met zijn grote kop hard in je maag. Je hebt het gevoel alsof je longen uit je lijf worden geperst. Versuft sta je weer op."
 			],
 			"Dying": [
-				"De gnoe ziet het vlees, snuffelt er aan, en slokt het in één hap naar binnen.",
+				"De gnoe ziet het vlees, snuffelt er aan, en slokt het in Ã©Ã©n hap naar binnen.",
 				"Je ziet hem langzaam opzwellen en zijn hersens komen door zijn oogkassen naar buiten. Hij zakt in elkaar en blijft roerloos liggen."
 			],
 			"Done": [
@@ -154,7 +154,7 @@
 				"In het noorden zit een grote, vastgeroeste deur. Hij is met blote handen niet meer open te krijgen."
 			],
 			"Operating": [
-				"Je zet één eind van het bot onder de deur, en op het andere begin je te duwen.",
+				"Je zet Ã©Ã©n eind van het bot onder de deur, en op het andere begin je te duwen.",
 				"Na lang wrikken begint de deur hevig te kraken en te piepen, en vormt zich een kier. Je geeft nog een duw, en langzaam draait de deur open."
 			],
 			"Done": [
@@ -193,8 +193,8 @@
 				"De barbecue brandt nog steeds, alleen iets onrustiger dan eerst."
 			],
 			"Operating": [
-				"Een grote rookontwikkeling treedt op wanneer het tweede ingrediënt in de barbecue belandt.",
-				"Knetterend smelten de 2 ingrediënten om tot een koekje."
+				"Een grote rookontwikkeling treedt op wanneer het tweede ingrediÃ«nt in de barbecue belandt.",
+				"Knetterend smelten de 2 ingrediÃ«nten om tot een koekje."
 			]
 		}
 	},
@@ -221,7 +221,7 @@
 		"StartRoom": 4,
 		"StatusTexts": {
 			"Initial": [
-				"Je struikelt over iets. Door de begroeïing zie je niet wat het is."
+				"Je struikelt over iets. Door de begroeÃ¯ing zie je niet wat het is."
 			]
 		}
 	},
@@ -339,7 +339,7 @@
 		"StartRoom": 37,
 		"StatusTexts": {
 			"Initial": [
-				"In deze grot hangt een vreemde, dichte mist, waardoor je geen hand voor ogen ziet. Je verliest je orïentatiegevoel en stommelt paniekerig door de grot, op zoek naar een uitgang.",
+				"In deze grot hangt een vreemde, dichte mist, waardoor je geen hand voor ogen ziet. Je verliest je orÃ¯entatiegevoel en stommelt paniekerig door de grot, op zoek naar een uitgang.",
 				"Net als je begint te denken dat je nooit een uitgang uit deze grot zult vinden, struikel je voorover een andere grot in."
 			]
 		}

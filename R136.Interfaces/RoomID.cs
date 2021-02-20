@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-
-namespace R136.Interfaces
+﻿namespace R136.Interfaces
 {
 	public enum RoomID
 	{

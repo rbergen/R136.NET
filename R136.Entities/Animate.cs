@@ -1,5 +1,4 @@
 ﻿using R136.Entities.Animates;
-using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
@@ -21,9 +20,10 @@ namespace R136.Entities
 
 			foreach (var initializer in initializers)
 			{
-				var animateType = ToType(initializer.ID);
+				var animateInitializerMethod = ToInitializerMethod(initializer.ID);
+				Type? animateType = animateInitializerMethod?.Method.DeclaringType;
 
-				if (animateType == null)
+				if (animateInitializerMethod == null || animateType == null)
 					continue;
 
 				if (initializer.StatusTexts != null)
@@ -32,16 +32,7 @@ namespace R136.Entities
 				if (initializer.Virtual)
 					continue;
 
-				Animate? animate = null;
-
-				if (animateType.IsAssignableTo(typeof(StrikableAnimate)) && animateType.GetConstructor(new Type[] { typeof(RoomID), typeof(int) }) != null)
-					animate = (Animate?)Activator.CreateInstance(animateType, initializer.StartRoom, initializer.StrikeCount);
-
-				else if (animateType.GetConstructor(new Type[] { typeof(RoomID) }) != null)
-					animate = (Animate?)Activator.CreateInstance(animateType, initializer.StartRoom);
-
-				if (animate != null)
-					animates[initializer.ID] = animate;
+				animates[initializer.ID] = animateInitializerMethod.Invoke(initializer);
 			}
 
 			return animates;
@@ -68,6 +59,33 @@ namespace R136.Entities
 
 		public virtual Result Used(Item item) => Used(item.ID);
 
+		private static Func<Initializer, Animate>? ToInitializerMethod(AnimateID id) => id switch
+		{
+			AnimateID.HellHound => HellHound.FromInitializer,
+			AnimateID.RedTroll => RedTroll.FromInitializer,
+			AnimateID.Plant => Plant.FromInitializer,
+			AnimateID.Gnu => Gnu.FromInitializer,
+			AnimateID.Dragon => Dragon.FromInitializer,
+			AnimateID.Swelling => Swelling.FromInitializer,
+			AnimateID.Door => Door.FromInitializer,
+			AnimateID.Voices => Voices.FromInitializer,
+			AnimateID.Barbecue => Barbecue.FromInitializer,
+			AnimateID.Tree => Tree.FromInitializer,
+			AnimateID.GreenCrystal => GreenCrystal.FromInitializer,
+			AnimateID.Computer => Computer.FromInitializer,
+			AnimateID.DragonHead => DragonHead.FromInitializer,
+			AnimateID.Lava => Lava.FromInitializer,
+			AnimateID.Vacuum => Vacuum.FromInitializer,
+			AnimateID.PaperHatch => PaperHatch.FromInitializer,
+			AnimateID.SwampBase => Swamp.FromInitializer,
+			AnimateID.NorthSwamp => Swamp.FromInitializer,
+			AnimateID.MiddleSwamp => Swamp.FromInitializer,
+			AnimateID.SouthSwamp => Swamp.FromInitializer,
+			AnimateID.Mist => Mist.FromInitializer,
+			AnimateID.Teleporter => Teleporter.FromInitializer,
+			_ => null
+		};
+
 		public class Initializer
 		{
 			public AnimateID ID { get; set; }
@@ -79,32 +97,6 @@ namespace R136.Entities
 			public Dictionary<AnimateStatus, string[]>? StatusTexts { get; set; }
 		}
 
-		private static Type? ToType(AnimateID id) => id switch
-		{
-			AnimateID.HellHound => typeof(HellHound),
-			AnimateID.RedTroll => typeof(RedTroll),
-			AnimateID.Plant => typeof(Plant),
-			AnimateID.Gnu => typeof(Gnu),
-			AnimateID.Dragon => typeof(Dragon),
-			AnimateID.Swelling => typeof(Swelling),
-			AnimateID.Door => typeof(Door),
-			AnimateID.Voices => typeof(Voices),
-			AnimateID.Barbecue => typeof(Barbecue),
-			AnimateID.Tree => typeof(Tree),
-			AnimateID.GreenCrystal => typeof(GreenCrystal),
-			AnimateID.Computer => typeof(Computer),
-			AnimateID.DragonHead => typeof(DragonHead),
-			AnimateID.Lava => typeof(Lava),
-			AnimateID.Vacuum => typeof(Vacuum),
-			AnimateID.PaperHatch => typeof(PaperHatch),
-			AnimateID.SwampBase => typeof(Swamp),
-			AnimateID.NorthSwamp => typeof(Swamp),
-			AnimateID.MiddleSwamp => typeof(Swamp),
-			AnimateID.SouthSwamp => typeof(Swamp),
-			AnimateID.Mist => typeof(Mist),
-			AnimateID.Teleporter => typeof(Teleporter),
-			_ => null
-		};
 	}
 
 	abstract class StrikableAnimate : Animate
@@ -143,31 +135,5 @@ namespace R136.Entities
 		SecondWait,
 		Operating,
 		Done
-	}
-
-	public enum AnimateID
-	{
-		HellHound = 0,
-		RedTroll = 1,
-		Plant = 2,
-		Gnu = 3,
-		Dragon = 4,
-		Swelling = 5,
-		Door = 6,
-		Voices = 7,
-		Barbecue = 8,
-		Tree = 9,
-		GreenCrystal = 10,
-		Computer = 11,
-		DragonHead = 12,
-		Lava = 13,
-		Vacuum = 14,
-		PaperHatch = 15,
-		NorthSwamp = 16,
-		MiddleSwamp = 17,
-		SouthSwamp = 18,
-		Mist = 19,
-		Teleporter = 20,
-		SwampBase = 21
 	}
 }

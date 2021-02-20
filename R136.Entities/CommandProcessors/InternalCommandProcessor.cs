@@ -3,10 +3,7 @@ using R136.Entities.Global;
 using R136.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.CommandProcessors
 {
@@ -26,7 +23,7 @@ namespace R136.Entities.CommandProcessors
 
 		private static Result ExecuteConfigSet(string parameters)
 		{
-			var terms = parameters.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			var terms = parameters.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 2)
 				return Result.Success();
 
@@ -36,7 +33,7 @@ namespace R136.Entities.CommandProcessors
 			if (property == null)
 				return Result.Success();
 
-			var propertyValue = terms[1];
+			var propertyValue = terms[1].Trim();
 
 			try
 			{
@@ -84,13 +81,18 @@ namespace R136.Entities.CommandProcessors
 			return Result.Success();
 		}
 
-		private static void SetValue<T>(PropertyInfo property, T value)
+		private static bool SetValue<T>(PropertyInfo property, T value)
 		{
 			try
 			{
 				property.SetValue(Facilities.Configuration, value);
 			}
-			catch { }
+			catch
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		private static ICollection<string>? GetTexts(string propertyName, object? value)

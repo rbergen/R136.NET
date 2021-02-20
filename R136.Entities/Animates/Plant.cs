@@ -5,7 +5,10 @@ namespace R136.Entities.Animates
 {
 	class Plant : StrikableAnimate
 	{
-		public Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Plant(initializer.ID, initializer.StartRoom, initializer.StrikeCount);
+
+		private Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

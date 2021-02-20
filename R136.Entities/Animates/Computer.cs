@@ -1,11 +1,13 @@
-﻿using R136.Entities.General;
-using R136.Interfaces;
+﻿using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class Computer : Animate
 	{
-		public Computer(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Computer(initializer.ID, initializer.StartRoom);
+
+		private Computer(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

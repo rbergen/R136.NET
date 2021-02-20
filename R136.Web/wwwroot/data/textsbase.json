@@ -1,4 +1,4 @@
-[
+﻿[
 	{
 		"Type": "Bandage",
 		"ID": 0,
@@ -73,14 +73,14 @@
 		"Type": "GeneralCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"Syntax: {command}"
+			"syntax: {command}"
 		]
 	},
 	{
 		"Type": "LocationCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"Syntax: {command}"
+			"syntax: {command}"
 		]
 	},
 	{
@@ -94,28 +94,97 @@
 		"Type": "ItemCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"Syntax: {command} <voorwerp>"
+			"syntax: {command} <voorwerp>"
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 1,
 		"Texts": [
-			"Je hebt geen \"{param}\"."
+			"je hebt geen \"{param}\""
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 2,
 		"Texts": [
-			"De afkorting {param} is dubbelzinnig."
+			"de afkorting \"{param}\" is dubbelzinnig"
 		]
 	},
 	{
-		"Type": "ItemCommandProcessor.",
+		"Type": "ItemCommandProcessor",
 		"ID": 3,
 		"Texts": [
-			"Je ziet hier geen \"{param}\" die je kunt meenemen."
+			"je ziet hier geen \"{param}\" die je kunt meenemen."
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 0,
+		"Texts": [
+			"geen commando gegeven"
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 1,
+		"Texts": [
+			"ongeldig commando gegeven"
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 2,
+		"Texts": [
+			"afkorting \"{command}\" is dubbelzinnig"
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 3,
+		"Texts": [
+			"Je bevindt je {room}."
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 4,
+		"Texts": [
+			"Het is stekedonker en je ziet geen hand voor ogen."
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 5,
+		"Texts": [
+			"Om je heen zie je de smeulende resten van wat eens bos was."
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 6,
+		"Texts": [
+			"Hier ligt {item}.",
+			"Hier liggen {items}.",
+			"{firstitem} en {seconditem}",
+			"{item}, "
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 7,
+		"Texts": [
+			"het oosten",
+			"het westen",
+			"het noorden",
+			"het zuiden",
+			"boven",
+			"beneden",
+			"Je kunt naar {directions}.",
+			"{firstdirection} en {seconddirection}",
+			"{direction}, "
 		]
 	}
+
+
 ]

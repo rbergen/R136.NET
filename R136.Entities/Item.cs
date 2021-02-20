@@ -1,5 +1,4 @@
-﻿using R136.Entities.General;
-using R136.Entities.Global;
+﻿using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
 using System;
@@ -21,19 +20,19 @@ namespace R136.Entities
 		static Item FromInitializer(Initializer initializer)
 			=> new Item(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
 
-		static IReadOnlyDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IDictionary<AnimateID, Animate> animates)
+		public static IReadOnlyDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
 			Dictionary<ItemID, Item> items = new Dictionary<ItemID, Item>(initializers.Count);
 
 			var compoundInitializers = new List<Initializer>();
-			var typedInitializers = new Dictionary<Initializer, Type>();
+			var typedInitializers = new Dictionary<Initializer, Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>>();
 
 			foreach (var initializer in initializers)
 			{
-				var itemType = ToType(initializer.ID);
+				var initializerMethod = ToFromInitializer(initializer.ID);
 
-				if (itemType != null)
-					typedInitializers[initializer] = itemType;
+				if (initializerMethod != null)
+					typedInitializers[initializer] = initializerMethod;
 
 				else if (initializer.UsableOn != null && initializer.UsableOn.Length > 0)
 				{
@@ -49,20 +48,11 @@ namespace R136.Entities
 			foreach (var initializer in compoundInitializers)
 				items[initializer.ID] = RegisterTexts(CompoundItem.FromInitializer(initializer, animates, items), initializer);
 
-			foreach (var initializerType in typedInitializers)
+			foreach (var initializerMethod in typedInitializers)
 			{
-				var initializer = initializerType.Key;
+				var initializer = initializerMethod.Key;
 
-				var method = initializerType.Value.GetMethod(nameof(FromInitializer),
-					new Type[] { typeof(Initializer), typeof(IDictionary<AnimateID, Animate>), typeof(IDictionary<ItemID, Item>) });
-
-				if (method != null && method.IsStatic && method.ReturnType.IsAssignableTo(typeof(Item)))
-				{
-					var item = (Item?)method.Invoke(null, new object[] { initializer, animates, items });
-
-					if (item != null)
-						items[initializer.ID] = RegisterTexts(item, initializer);
-				}
+				items[initializer.ID] = RegisterTexts(initializerMethod.Value.Invoke(initializer, animates, items), initializer);
 			}
 
 			return items;
@@ -83,12 +73,20 @@ namespace R136.Entities
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
 			= (id, name, description, startRoom, isWearable, isPutdownAllowed);
 
-		public virtual Result Use() => Result.Success(UseTexts);
+		public virtual Result Use() => Result.Failure(UseTexts);
 
 		protected ICollection<string>? UseTexts
 		{
 			get => Facilities.ItemTextsMap[this, TextType.Use];
 		}
+		private static Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>? ToFromInitializer(ItemID id) => id switch
+		{
+			ItemID.TNT => Tnt.FromInitializer,
+			ItemID.Flashlight => Flashlight.FromInitializer,
+			ItemID.Bandage => Bandage.FromInitializer,
+			ItemID.Sword => Sword.FromInitializer,
+			_ => null
+		};
 
 		public class Initializer
 		{
@@ -124,15 +122,6 @@ namespace R136.Entities
 			Use,
 			Combine
 		}
-
-		private static Type? ToType(ItemID id) => id switch
-		{
-			ItemID.TNT => typeof(Tnt),
-			ItemID.Flashlight => typeof(Flashlight),
-			ItemID.Bandage => typeof(Bandage),
-			ItemID.Sword => typeof(Sword),
-			_ => null
-		};
 	}
 
 	interface IUsable<T>
@@ -147,7 +136,7 @@ namespace R136.Entities
 		public ICollection<Animate> UsableOn { get; }
 		bool KeepAfterUse { get; }
 
-		public static UsableItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates)
+		public static UsableItem FromInitializer(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
 			=> new UsableItem
 			(
 			initializer.ID,
@@ -179,10 +168,12 @@ namespace R136.Entities
 			if (!UsableOn.Contains(animate))
 				return Use();
 
-			if (animate.Used(ID).IsSuccess && !KeepAfterUse)
+			var result = animate.Used(ID);
+
+			if (result.IsSuccess && !KeepAfterUse)
 				StatusManager?.RemoveFromPossession(ID);
 
-			return Result.Success();
+			return Result.Success(result.Message);
 		}
 	}
 
@@ -200,7 +191,7 @@ namespace R136.Entities
 
 		public Item Self => this;
 
-		public static CompoundItem FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
+		public static CompoundItem FromInitializer(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
 			=> new CompoundItem
 			(
 			initializer.ID,

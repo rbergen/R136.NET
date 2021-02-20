@@ -1,4 +1,4 @@
-[
+ï»¿[
 	{
 		"ID": 0,
 		"Name": "het hellehondvlees",
@@ -93,7 +93,7 @@
 	{
 		"ID": 9,
 		"Name": "de noekietronenbom",
-		"Description": "De bom bestaat uit een aantal dunne buizen in een cilinder. Daaromheen zitten een aantal slangetjes. Er klinkt een vreemd gebrom dat uit een rooster komt. Er zit een bordje op: -5° - 105°, Codenaam: R136.",
+		"Description": "De bom bestaat uit een aantal dunne buizen in een cilinder. Daaromheen zitten een aantal slangetjes. Er klinkt een vreemd gebrom dat uit een rooster komt. Er zit een bordje op: -5Â° - 105Â°, Codenaam: R136.",
 		"StartRoom": 27,
 		"UseTexts": [
 			"Je kunt geen knop vinden waarop je kunt drukken."

@@ -4,12 +4,10 @@ using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.CommandProcessors
 {
-	class ItemCommandProcessor : ActingCommandProcessor
+	class ItemCommandProcessor : ActingCommandProcessor, IContinuable
 	{
 		private const int Default = 0;
 
@@ -122,7 +120,7 @@ namespace R136.Entities.CommandProcessors
 
 		private Result ExecuteUse(string command, string? parameters, Player player)
 		{
-			(Item? item, Result result) = FindOwnedItem(command, parameters, player);
+			(var item, var result) = FindOwnedItem(command, parameters, player);
 
 			if (item == null)
 				return result;
@@ -130,10 +128,20 @@ namespace R136.Entities.CommandProcessors
 			var presentAnimate = Animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
 
 			if (presentAnimate == null || item is not UsableItem usableItem || !usableItem.UsableOn.Contains(presentAnimate))
-				return item.Use();
+				return item.Use().WrapContinuationRequest(this);
 
-			return usableItem.UseOn(presentAnimate);
+			result = usableItem.UseOn(presentAnimate);
+
+			if (result.IsSuccess)
+			{
+				StatusManager?.MarkAnimateTriggered();
+				return result;
+			}
+
+			return result.WrapContinuationRequest(this);
 		}
+
+
 
 		private ICollection<string>? GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
@@ -182,6 +190,9 @@ namespace R136.Entities.CommandProcessors
 				_ => (item, Result.Success())
 			};
 		}
+
+		public Result Continue(object statusData, string input)
+			=> Result.ContinueWrappedContinuationData(this, statusData, input).WrapContinuationRequest(this);
 
 		private enum TextID
 		{

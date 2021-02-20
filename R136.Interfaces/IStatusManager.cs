@@ -15,5 +15,7 @@
 
 		void PutDown(ItemID item);
 		void OpenConnection(Direction direction, RoomID toRoom);
+
+		void MarkAnimateTriggered();
 	}
 }

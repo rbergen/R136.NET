@@ -5,7 +5,10 @@ namespace R136.Entities.Animates
 {
 	class HellHound : StrikableAnimate
 	{
-		public HellHound(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new HellHound(initializer.ID, initializer.StartRoom, initializer.StrikeCount);
+
+		private HellHound(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

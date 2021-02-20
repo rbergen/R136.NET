@@ -34,6 +34,26 @@ namespace R136.Interfaces
 		public static Result ContinuationRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
 			=> new Result(status, specs, message);
 
+		public Result WrapContinuationRequest(IContinuable wrappingObject)
+			=> IsContinuationRequest
+			? ContinuationRequested(new ContinuationStatus(wrappingObject, (wrappingObject, ContinuationStatus)), InputSpecs!, Message)
+			: this;
+
+		public static ContinuationStatus? UnwrapContinuationData(IContinuable wrappingObject, object data)
+			=> data is ValueTuple<IContinuable, ContinuationStatus> wrapped && wrapped.Item1 == wrappingObject
+			? wrapped.Item2
+			: null;
+
+		public static Result ContinueWrappedContinuationData(IContinuable wrappingObject, object data, string input)
+		{
+			var innerStatus = UnwrapContinuationData(wrappingObject, data);
+
+			if (innerStatus == null)
+				return Error();
+
+			return innerStatus.Continuable.Continue(innerStatus.Data, input);
+		}
+
 		public ResultCode Code { get; }
 		public ICollection<string>? Message { get; }
 		public ContinuationStatus? ContinuationStatus { get; }

@@ -1,5 +1,4 @@
-﻿using R136.Entities.General;
-using R136.Interfaces;
+﻿using R136.Interfaces;
 using System.Collections.Generic;
 
 namespace R136.Entities.Items
@@ -10,8 +9,8 @@ namespace R136.Entities.Items
 		public static Tnt FromInitializer
 			(
 			Initializer initializer, 
-			IDictionary<AnimateID, Animate> animates, 
-			IDictionary<ItemID, Item> items
+			IReadOnlyDictionary<AnimateID, Animate> animates, 
+			IReadOnlyDictionary<ItemID, Item> items
 			)
 #pragma warning restore IDE0060 // Remove unused parameter
 			=> new Tnt(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);

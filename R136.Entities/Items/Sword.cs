@@ -10,7 +10,7 @@ namespace R136.Entities.Items
 	class Sword : UsableItem, IContinuable
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
-		public static Sword FromInitializer(Initializer initializer, IDictionary<AnimateID, Animate> animates, IDictionary<ItemID, Item> items)
+		public static Sword FromInitializer(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
 			=> new Sword
 			(
 			initializer.ID, 

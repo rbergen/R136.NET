@@ -1,11 +1,13 @@
-﻿using R136.Entities.General;
-using R136.Interfaces;
+﻿using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class Dragon : Animate
 	{
-		public Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Dragon(initializer.ID, initializer.StartRoom);
+
+		private Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

@@ -21,9 +21,9 @@ namespace R136.Entities
 		{
 			get
 			{
-				if (_statusManager == null && Facilities.ServiceProvider != null)
+				if (_statusManager == null && Facilities.Services != null)
 				{
-					_statusManager = Facilities.ServiceProvider.GetService<IStatusManager>();
+					_statusManager = Facilities.Services.GetService<IStatusManager>();
 				}
 
 				return _statusManager;

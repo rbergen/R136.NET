@@ -3,9 +3,12 @@ using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
-	class GreenCrystal : Animate, ITriggerable
+	public class GreenCrystal : Animate, ITriggerable
 	{
-		public GreenCrystal(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new GreenCrystal(initializer.ID, initializer.StartRoom);
+
+		private GreenCrystal(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		public void Trigger()
 		{

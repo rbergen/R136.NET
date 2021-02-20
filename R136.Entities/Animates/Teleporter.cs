@@ -4,7 +4,10 @@ namespace R136.Entities.Animates
 {
 	class Teleporter : Animate
 	{
-		public Teleporter(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Teleporter(initializer.ID, initializer.StartRoom);
+
+		private Teleporter(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

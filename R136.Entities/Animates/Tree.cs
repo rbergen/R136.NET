@@ -1,15 +1,17 @@
-﻿using R136.Entities.General;
-using R136.Interfaces;
+﻿using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
-	class Tree : Animate
+	public class Tree : Animate
 	{
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Tree(initializer.ID, initializer.StartRoom);
+		
 		public event Action? Burned;
 
-		public Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		private Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		public override ICollection<string>? ProgressStatus()
 		{

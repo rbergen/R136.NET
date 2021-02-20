@@ -1,12 +1,14 @@
-﻿using R136.Entities.General;
-using R136.Interfaces;
+﻿using R136.Interfaces;
 using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
 	class Lava : Animate
 	{
-		public Lava(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Lava(initializer.ID, initializer.StartRoom);
+
+		private Lava(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		public override ICollection<string>? ProgressStatus()
 		{

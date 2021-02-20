@@ -1,12 +1,14 @@
-﻿using R136.Entities.General;
-using R136.Entities.Global;
+﻿using R136.Entities.Global;
 using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class RedTroll : Animate
 	{
-		public RedTroll(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new RedTroll(initializer.ID, initializer.StartRoom);
+
+		private RedTroll(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

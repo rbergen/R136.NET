@@ -5,7 +5,10 @@ namespace R136.Entities.Animates
 {
 	class Mist : Animate
 	{
-		public Mist(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Mist(initializer.ID, initializer.StartRoom);
+
+		private Mist(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

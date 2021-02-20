@@ -1,11 +1,13 @@
-﻿using R136.Entities.General;
-using R136.Interfaces;
+﻿using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class Barbecue : Animate
 	{
-		public Barbecue(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		public static Animate FromInitializer(Initializer initializer)
+			=> new Barbecue(initializer.ID, initializer.StartRoom);
+
+		private Barbecue(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

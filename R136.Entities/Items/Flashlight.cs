@@ -1,7 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,8 +21,8 @@ namespace R136.Entities.Items
 		public static Flashlight FromInitializer
 			(
 			Initializer initializer, 
-			IDictionary<AnimateID, Animate> animates, 
-			IDictionary<ItemID, Item> items
+			IReadOnlyDictionary<AnimateID, Animate> animates, 
+			IReadOnlyDictionary<ItemID, Item> items
 			)
 #pragma warning restore IDE0060 // Remove unused parameter
 			=> new Flashlight
@@ -46,7 +45,7 @@ namespace R136.Entities.Items
 			RoomID startRoom,
 			bool isWearable,
 			bool isPutdownAllowed,
-			IDictionary<ItemID, Item> items,
+			IReadOnlyDictionary<ItemID, Item> items,
 			ICollection<ItemID> components
 			) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
 			=> (IsOn, _lampPoints, _lampPointsFromConfig, Components)
@@ -91,7 +90,7 @@ namespace R136.Entities.Items
 				return Result.Success(GetTexts(TextID.LightOn));
 			}
 
-			return Result.Success(GetTexts(TextID.NeedBatteries));
+			return Result.Failure(GetTexts(TextID.NeedBatteries));
 		}
 
 		public Result Combine(Item first, Item second)

@@ -4,15 +4,13 @@ using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.CommandProcessors
 {
-	class LocationCommandProcessor : ActingCommandProcessor
+	public class LocationCommandProcessor : ActingCommandProcessor
 	{
 		public event Action? PaperRouteCompleted;
-		public event Action<RoomID, RoomID>? RoomChanged;
+		private event Action<RoomID, RoomID>? RoomChanged;
 
 		private int _paperrouteIndex = 0;
 

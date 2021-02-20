@@ -5,8 +5,6 @@ using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities
 {
@@ -40,7 +38,7 @@ namespace R136.Entities
 	{
 		private readonly Dictionary<(string command, bool fullMatch), CommandID> _commandIdMap;
 		private readonly ItemCommandProcessor _itemProcessor;
-		private readonly LocationCommandProcessor _locationProcessor;
+		public LocationCommandProcessor LocationProcessor { get; private set; }
 		private readonly GeneralCommandProcessor _generalProcessor;
 		private readonly InternalCommandProcessor _internalProcessor;
 
@@ -53,7 +51,7 @@ namespace R136.Entities
 		{
 			_commandIdMap = new Dictionary<(string, bool), CommandID>();
 			_itemProcessor = new ItemCommandProcessor(items, animates);
-			_locationProcessor = new LocationCommandProcessor(items, animates);
+			LocationProcessor = new LocationCommandProcessor(items, animates);
 			_generalProcessor = new GeneralCommandProcessor();
 			_internalProcessor = new InternalCommandProcessor();
 
@@ -64,10 +62,10 @@ namespace R136.Entities
 		public CommandProcessor this[CommandID id]
 			=> id switch
 			{
-				CommandID.GoEast => _locationProcessor,
-				CommandID.GoWest => _locationProcessor,
-				CommandID.GoNorth => _locationProcessor,
-				CommandID.GoSouth => _locationProcessor,
+				CommandID.GoEast => LocationProcessor,
+				CommandID.GoWest => LocationProcessor,
+				CommandID.GoNorth => LocationProcessor,
+				CommandID.GoSouth => LocationProcessor,
 				CommandID.Use => _itemProcessor,
 				CommandID.Combine => _itemProcessor,
 				CommandID.Pickup => _itemProcessor,
@@ -78,7 +76,7 @@ namespace R136.Entities
 				_ => _generalProcessor
 			};
 
-		public (string? command, CommandProcessor? processor, FindResult result) FindByName(string s)
+		public (CommandProcessor? processor, CommandID? id, string? command, FindResult result) FindByName(string s)
 		{
 			var foundItems = _commandIdMap.Where(pair => pair.Key.fullMatch ? pair.Key.command == s : pair.Key.command.StartsWith(s)).ToArray();
 
@@ -90,12 +88,12 @@ namespace R136.Entities
 			};
 
 			return result == FindResult.Found
-				? (foundItems[0].Key.command, this[foundItems[0].Value], result)
-				: (null, null, result);
+				? (this[foundItems[0].Value], foundItems[0].Value, foundItems[0].Key.command, result)
+				: (null, null, null, result);
 		}
 	}
 
-	abstract class ActingCommandProcessor : CommandProcessor
+	public abstract class ActingCommandProcessor : CommandProcessor
 	{
 		protected IReadOnlyDictionary<ItemID, Item> Items { get; }
 		protected IReadOnlyDictionary<AnimateID, Animate> Animates { get; }

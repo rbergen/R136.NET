@@ -1,6 +1,6 @@
 ﻿namespace R136.Entities.General
 {
-	interface ITriggerable
+	public interface ITriggerable
 	{
 		void Trigger();
 	}

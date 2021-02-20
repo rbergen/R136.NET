@@ -5,8 +5,10 @@ namespace R136.Entities.Animates
 {
 	class PaperHatch : Animate, ITriggerable
 	{
+		public static Animate FromInitializer(Initializer initializer)
+			=> new PaperHatch(initializer.ID, initializer.StartRoom);
 
-		public PaperHatch(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
+		private PaperHatch(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace R136.Entities.General
 {
-  public class ObjectDumper
+	public class ObjectDumper
   {
     public static string Null { get; set; } = "null";
     public static string ClassMarker { get; set; } = "{ }";
