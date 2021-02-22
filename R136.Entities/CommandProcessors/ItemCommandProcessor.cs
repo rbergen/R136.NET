@@ -128,7 +128,7 @@ namespace R136.Entities.CommandProcessors
 			var presentAnimate = Animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
 
 			if (presentAnimate == null || item is not UsableItem usableItem || !usableItem.UsableOn.Contains(presentAnimate))
-				return item.Use().WrapContinuationRequest(this);
+				return item.Use().WrapInputRequest(this);
 
 			result = usableItem.UseOn(presentAnimate);
 
@@ -138,10 +138,8 @@ namespace R136.Entities.CommandProcessors
 				return result;
 			}
 
-			return result.WrapContinuationRequest(this);
+			return result.WrapInputRequest(this);
 		}
-
-
 
 		private ICollection<string>? GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
@@ -192,7 +190,7 @@ namespace R136.Entities.CommandProcessors
 		}
 
 		public Result Continue(object statusData, string input)
-			=> Result.ContinueWrappedContinuationData(this, statusData, input).WrapContinuationRequest(this);
+			=> Result.ContinueWrappedContinuationStatus(this, statusData, input).WrapInputRequest(this);
 
 		private enum TextID
 		{

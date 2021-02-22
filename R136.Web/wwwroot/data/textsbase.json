@@ -94,75 +94,82 @@
 		"Type": "ItemCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command} <voorwerp>"
+			"Syntax: {command} \\<voorwerp\\>"
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 1,
 		"Texts": [
-			"je hebt geen \"{param}\""
+			"Je hebt geen \"{param}\""
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 2,
 		"Texts": [
-			"de afkorting \"{param}\" is dubbelzinnig"
+			"De afkorting \"{param}\" is dubbelzinnig"
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 3,
 		"Texts": [
-			"je ziet hier geen \"{param}\" die je kunt meenemen."
+			"Je ziet hier geen \"{param}\" die je kunt meenemen."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 0,
 		"Texts": [
-			"geen commando gegeven"
+			"Geen commando gegeven"
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 1,
 		"Texts": [
-			"ongeldig commando gegeven"
+			"Ongeldig commando gegeven"
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 2,
 		"Texts": [
-			"afkorting \"{command}\" is dubbelzinnig"
+			"Afkorting \"{command}\" is dubbelzinnig"
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 3,
 		"Texts": [
-			"Je bevindt je {room}."
+			"Type h voor help."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 4,
 		"Texts": [
-			"Het is stekedonker en je ziet geen hand voor ogen."
+			"Je bevindt je {room}."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 5,
 		"Texts": [
-			"Om je heen zie je de smeulende resten van wat eens bos was."
+			"Het is stekedonker en je ziet geen hand voor ogen."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 6,
+		"Texts": [
+			"Om je heen zie je de smeulende resten van wat eens bos was."
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 7,
 		"Texts": [
 			"Hier ligt {item}.",
 			"Hier liggen {items}.",
@@ -172,7 +179,7 @@
 	},
 	{
 		"Type": "Engine",
-		"ID": 7,
+		"ID": 8,
 		"Texts": [
 			"het oosten",
 			"het westen",
@@ -180,11 +187,19 @@
 			"het zuiden",
 			"boven",
 			"beneden",
-			"Je kunt naar {directions}.",
-			"{firstdirection} en {seconddirection}",
-			"{direction}, "
+			"Je kunt naar {way}.",
+			"Je kunt naar {ways}.",
+			"{firstway} en {secondway}",
+			"{way}, "
+		]
+	},
+	{
+		"Type": "Engine",
+		"ID": 9,
+		"Texts": [
+			"Badend in je eigen bloed bezwijk je aan je verwondingen. Terwijl je liggend op de grond met moeite naar adem snakt, hoor je in de verte een luid gelach.",
+			"Dan zakken je ogen dicht en stopt je hart met kloppen.",
+			"Op hetzelfde moment ontploft de bom en sterft de aarde met jou."
 		]
 	}
-
-
 ]

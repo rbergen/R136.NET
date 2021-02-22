@@ -34,7 +34,7 @@
 			{
 				"ID": 0,
 				"Texts": [
-					"Syntax: {command} <voorwerp> en/met <voorwerp>"
+					"Syntax: {command} \\<voorwerp\\> en/met \\<voorwerp\\>"
 				]
 			},
 			{

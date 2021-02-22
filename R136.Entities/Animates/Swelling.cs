@@ -1,23 +1,28 @@
-﻿using R136.Interfaces;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
 using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
 	class Swelling : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Swelling(initializer.ID, initializer.StartRoom);
 
 		private Swelling(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		public override ICollection<string>? ProgressStatus()
 		{
+			if (Facilities.Configuration.AutoOpenConnections)
+				StatusManager?.OpenConnection(Direction.North, RoomID.DamnationCave);
+
 			var textStatus = Status;
 
 			switch (textStatus)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.FirstWait;
+					if (!Facilities.Configuration.FreezeAnimates)
+						Status = AnimateStatus.FirstWait;
 
 					break;
 
@@ -34,7 +39,7 @@ namespace R136.Entities.Animates
 			return GetTextsForStatus(textStatus);
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.GasGrenade)
 				return Result.Error();

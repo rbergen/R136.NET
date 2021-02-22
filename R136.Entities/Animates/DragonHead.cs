@@ -1,16 +1,20 @@
-﻿using R136.Interfaces;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class DragonHead : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new DragonHead(initializer.ID, initializer.StartRoom);
 
 		private DragonHead(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
+			if (Facilities.Configuration.AutoOpenConnections)
+				StatusManager?.OpenConnection(Direction.North, RoomID.MainCave);
+
 			switch (status)
 			{
 				case AnimateStatus.FirstStep:
@@ -31,7 +35,7 @@ namespace R136.Entities.Animates
 			}
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.GreenCrystal && item != ItemID.RedCrystal && item != ItemID.BlueCrystal)
 				return Result.Error();

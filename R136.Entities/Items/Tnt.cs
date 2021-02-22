@@ -6,7 +6,7 @@ namespace R136.Entities.Items
 	class Tnt : Item
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
-		public static Tnt FromInitializer
+		public static Tnt Create
 			(
 			Initializer initializer, 
 			IReadOnlyDictionary<AnimateID, Animate> animates, 

@@ -1,11 +1,12 @@
-﻿using R136.Interfaces;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
 using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
 	class Lava : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Lava(initializer.ID, initializer.StartRoom);
 
 		private Lava(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
@@ -14,7 +15,8 @@ namespace R136.Entities.Animates
 		{
 			var textStatus = Status;
 
-			if (textStatus == AnimateStatus.Initial && StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
+			if (!Facilities.Configuration.FreezeAnimates && textStatus == AnimateStatus.Initial 
+				&& StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
 			{
 				textStatus = AnimateStatus.SelfInjury;
 				StatusManager.DecreaseHealth(HealthImpact.Severe);
@@ -24,7 +26,7 @@ namespace R136.Entities.Animates
 			return GetTextsForStatus(textStatus);
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Bomb)
 				return Result.Error();

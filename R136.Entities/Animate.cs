@@ -2,6 +2,7 @@
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -14,25 +15,25 @@ namespace R136.Entities
 
 		protected AnimateStatus Status { get; set; }
 
-		public static IReadOnlyDictionary<AnimateID, Animate> FromInitializers(ICollection<Initializer> initializers)
+		public static IReadOnlyDictionary<AnimateID, Animate> CreateMap(ICollection<Initializer> initializers)
 		{
 			Dictionary<AnimateID, Animate> animates = new Dictionary<AnimateID, Animate>(initializers.Count);
 
 			foreach (var initializer in initializers)
 			{
-				var animateInitializerMethod = ToInitializerMethod(initializer.ID);
-				Type? animateType = animateInitializerMethod?.Method.DeclaringType;
+				var createMethod = GetCreateMethod(initializer.ID);
+				Type? animateType = createMethod?.Method.DeclaringType;
 
-				if (animateInitializerMethod == null || animateType == null)
+				if (createMethod == null || animateType == null)
 					continue;
 
 				if (initializer.StatusTexts != null)
-					Facilities.AnimateStatusTextsMap[animateType] = (IDictionary<AnimateStatus, ICollection<string>>)initializer.StatusTexts;
+					Facilities.AnimateStatusTextsMap[animateType] = initializer.StatusTexts.ToDictionary(pair => pair.Key, pair => (ICollection<string>)pair.Value);
 
 				if (initializer.Virtual)
 					continue;
 
-				animates[initializer.ID] = animateInitializerMethod.Invoke(initializer);
+				animates[initializer.ID] = createMethod.Invoke(initializer);
 			}
 
 			return animates;
@@ -55,34 +56,34 @@ namespace R136.Entities
 
 		protected virtual void ProgressStatusInternal(AnimateStatus status) { }
 
-		public virtual Result Used(ItemID item) => Result.Failure();
+		public virtual Result ApplyItem(ItemID item) => Result.Failure();
 
-		public virtual Result Used(Item item) => Used(item.ID);
+		public virtual Result ApplyItem(Item item) => ApplyItem(item.ID);
 
-		private static Func<Initializer, Animate>? ToInitializerMethod(AnimateID id) => id switch
+		private static Func<Initializer, Animate>? GetCreateMethod(AnimateID id) => id switch
 		{
-			AnimateID.HellHound => HellHound.FromInitializer,
-			AnimateID.RedTroll => RedTroll.FromInitializer,
-			AnimateID.Plant => Plant.FromInitializer,
-			AnimateID.Gnu => Gnu.FromInitializer,
-			AnimateID.Dragon => Dragon.FromInitializer,
-			AnimateID.Swelling => Swelling.FromInitializer,
-			AnimateID.Door => Door.FromInitializer,
-			AnimateID.Voices => Voices.FromInitializer,
-			AnimateID.Barbecue => Barbecue.FromInitializer,
-			AnimateID.Tree => Tree.FromInitializer,
-			AnimateID.GreenCrystal => GreenCrystal.FromInitializer,
-			AnimateID.Computer => Computer.FromInitializer,
-			AnimateID.DragonHead => DragonHead.FromInitializer,
-			AnimateID.Lava => Lava.FromInitializer,
-			AnimateID.Vacuum => Vacuum.FromInitializer,
-			AnimateID.PaperHatch => PaperHatch.FromInitializer,
-			AnimateID.SwampBase => Swamp.FromInitializer,
-			AnimateID.NorthSwamp => Swamp.FromInitializer,
-			AnimateID.MiddleSwamp => Swamp.FromInitializer,
-			AnimateID.SouthSwamp => Swamp.FromInitializer,
-			AnimateID.Mist => Mist.FromInitializer,
-			AnimateID.Teleporter => Teleporter.FromInitializer,
+			AnimateID.HellHound => HellHound.Create,
+			AnimateID.RedTroll => RedTroll.Create,
+			AnimateID.Plant => Plant.Create,
+			AnimateID.Gnu => Gnu.Create,
+			AnimateID.Dragon => Dragon.Create,
+			AnimateID.Swelling => Swelling.Create,
+			AnimateID.Door => Door.Create,
+			AnimateID.Voices => Voices.Create,
+			AnimateID.Barbecue => Barbecue.Create,
+			AnimateID.Tree => Tree.Create,
+			AnimateID.GreenCrystal => GreenCrystal.Create,
+			AnimateID.Computer => Computer.Create,
+			AnimateID.DragonHead => DragonHead.Create,
+			AnimateID.Lava => Lava.Create,
+			AnimateID.Vacuum => Vacuum.Create,
+			AnimateID.PaperHatch => PaperHatch.Create,
+			AnimateID.SwampBase => Swamp.Create,
+			AnimateID.NorthSwamp => Swamp.Create,
+			AnimateID.MiddleSwamp => Swamp.Create,
+			AnimateID.SouthSwamp => Swamp.Create,
+			AnimateID.Mist => Mist.Create,
+			AnimateID.Teleporter => Teleporter.Create,
 			_ => null
 		};
 
@@ -106,7 +107,7 @@ namespace R136.Entities
 		protected StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
 			=> StrikesLeft = strikeCount;
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Sword)
 				return Result.Error();

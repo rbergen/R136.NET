@@ -1,10 +1,11 @@
-﻿using R136.Interfaces;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class Computer : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Computer(initializer.ID, initializer.StartRoom);
 
 		private Computer(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
@@ -14,7 +15,8 @@ namespace R136.Entities.Animates
 			switch (status)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.FirstWait;
+					if (!Facilities.Configuration.FreezeAnimates)
+						Status = AnimateStatus.FirstWait;
 
 					break;
 
@@ -25,7 +27,7 @@ namespace R136.Entities.Animates
 			}
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Diskette)
 				return Result.Error();

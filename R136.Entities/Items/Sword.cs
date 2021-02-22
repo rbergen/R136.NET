@@ -10,7 +10,7 @@ namespace R136.Entities.Items
 	class Sword : UsableItem, IContinuable
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
-		public static Sword FromInitializer(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
+		public static Sword Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
 			=> new Sword
 			(
 			initializer.ID, 
@@ -51,7 +51,7 @@ namespace R136.Entities.Items
 			{
 				AddTexts(texts, TextID.Hit);
 
-				if (strikable.Used(this).IsSuccess)
+				if (strikable.ApplyItem(this).IsSuccess)
 					return Result.Success(texts);
 			}
 
@@ -66,7 +66,7 @@ namespace R136.Entities.Items
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);
-			return Result.ContinuationRequested(new ContinuationStatus(this, (this, strikable)), Facilities.Configuration.YesNoInputSpecs, texts);
+			return Result.InputRequested(new ContinuationStatus(this, (this, strikable)), Facilities.Configuration.YesNoInputSpecs, texts);
 		}
 
 		private void AddTexts(List<string> texts, TextID id)

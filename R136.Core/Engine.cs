@@ -5,6 +5,7 @@ using R136.Entities.Global;
 using R136.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace R136.Core
@@ -13,7 +14,7 @@ namespace R136.Core
 	{
 		public IServiceProvider? Services { get; set; }
 		public IStatusManager StatusManager => this;
-		public bool Initialized { get; private set; } = false;
+		public bool IsInitialized { get; private set; } = false;
 
 		private const string EngineNotInitialized = "Engine not initialized";
 		private const string IncorrectNextStep = "Step inconsistent with DoNext";
@@ -29,104 +30,158 @@ namespace R136.Core
 		private IReadOnlyDictionary<AnimateID, Animate>? _animates;
 		private Player? _player;
 		private CommandProcessorMap? _processors;
-		private bool _treeHasBurned = false;
+		private bool _hasTreeBurned = false;
 		private bool _isAnimateTriggered = false;
 
-		public NextStep DoNext { get; private set; } = NextStep.ShowRoomStatus;
+		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
 
 		public async Task<bool> Initialize()
 		{
-			if (Initialized)
+			try
+			{
+				if (IsInitialized)
+					return true;
+
+				if (Services == null)
+					return false;
+
+				Facilities.Services = Services;
+
+				var entityReader = (IEntityReader?)Services.GetService(typeof(IEntityReader));
+				if (entityReader == null)
+					return false;
+
+				var configurationTask = entityReader.ReadEntity<Configuration>(ConfigurationLabel);
+				var textsTask = entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(TextsLabel);
+				var commandsTask = entityReader.ReadEntity<CommandInitializer[]>(CommandsLabel);
+				var roomsTask = entityReader.ReadEntity<Room.Initializer[]>(RoomsLabel);
+				var animatesTask = entityReader.ReadEntity<Animate.Initializer[]>(AnimatesLabel);
+				var itemsTask = entityReader.ReadEntity<Item.Initializer[]>(ItemsLabel);
+
+				LogLine("loading configuration... ");
+				var configuration = await configurationTask;
+				LogLine($"configuration loaded: {ObjectDumper.Dump(configuration)}");
+
+				if (configuration != null)
+				{
+					Facilities.Configuration = configuration;
+					LogLine("successfully loaded configuration");
+				}
+
+				LogLine($"loading texts (map count: {Facilities.TextsMap.TextsMapCount})...");
+				if (Facilities.TextsMap.TextsMapCount == 0)
+				{
+					var texts = await textsTask;
+					LogLine($"text initializers loaded: {ObjectDumper.Dump(texts)}");
+					Facilities.TextsMap.LoadInitializers(texts);
+					LogLine($"successfully loaded texts (map count: {Facilities.TextsMap.TextsMapCount})");
+					LogLine(ObjectDumper.Dump(Facilities.TextsMap));
+				}
+
+				if (_rooms == null)
+				{
+					LogLine("loading rooms... ");
+					var rooms = await roomsTask;
+					if (rooms == null)
+					{
+						LogLine("rooms loading failed");
+						return false;
+					}
+					_rooms = Room.CreateMap(rooms);
+					LogLine("successfully loaded rooms");
+				}
+
+				if (_animates == null)
+				{
+					LogLine("loading animates... ");
+					var animates = await animatesTask;
+					if (animates == null)
+					{
+						LogLine("animates loading failed");
+						return false;
+					}
+
+					_animates = Animate.CreateMap(animates);
+					LogLine("successfully loaded rooms");
+				}
+
+				if (_items == null)
+				{
+					LogLine("loading items... ");
+					var items = await itemsTask;
+					if (items == null)
+					{
+						LogLine("items loading failed");
+						return false;
+					}
+
+					_items = Item.CreateMap(items, _animates);
+					LogLine("successfully loaded items");
+				}
+
+				if (_processors == null)
+				{
+					LogLine("loading commands... ");
+					var commands = await commandsTask;
+					if (commands == null)
+					{
+						LogLine("commands loading failed");
+						return false;
+					}
+
+					_processors = CommandProcessor.CreateMap(commands, _items, _animates);
+					LogLine("successfully loaded commands");
+				}
+
+				ObjectDumper.WriteClassType = false;
+				ObjectDumper.WriteBidirectionalReferences = false;
+
+				LogLine("creating player");
+
+				if (_player == null)
+					_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
+
+				LogLine("finalizing initialization");
+
+				if (_animates[AnimateID.Tree] is Tree tree)
+					tree.Burned += TreeHasBurned;
+
+				if (_animates[AnimateID.PaperHatch] is ITriggerable paperHatch)
+					_processors.LocationProcessor.PaperRouteCompleted += paperHatch.Trigger;
+
+				RegisterTurnEndingNotifiees(_items.Values);
+				RegisterTurnEndingNotifiees(_animates.Values);
+
+				LogLine("initialization complete");
+				IsInitialized = true;
 				return true;
-
-			if (Services == null)
+			}
+			catch (Exception e)
+			{
+				LogLine($"Exception during initialization: {e}");
 				return false;
-
-			Facilities.Services = Services;
-
-			var entityReader = (IEntityReader?)Services.GetService(typeof(IEntityReader));
-			if (entityReader == null)
-				return false;
-
-			var configurationTask = entityReader.ReadEntity<Configuration>(ConfigurationLabel);
-			var textsTask = entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(TextsLabel);
-			var commandsTask = entityReader.ReadEntity<CommandInitializer[]>(CommandsLabel);
-			var roomsTask = entityReader.ReadEntity<Room.Initializer[]>(RoomsLabel);
-			var animatesTask = entityReader.ReadEntity<Animate.Initializer[]>(AnimatesLabel);
-			var itemsTask = entityReader.ReadEntity<Item.Initializer[]>(ItemsLabel);
-
-			var configuration = await configurationTask;
-			if (configuration != null)
-				Facilities.Configuration = configuration;
-
-			if (Facilities.TextsMap.TextsMapCount == 0)
-				Facilities.TextsMap.LoadInitializers(await textsTask);
-
-			if (_rooms == null)
-			{
-				var rooms = await roomsTask;
-				if (rooms == null)
-					return false;
-
-				_rooms = Room.FromInitializers(rooms);
 			}
+		}
 
-			if (_animates == null)
+		public ICollection<string>? StartMessage
+		{
+			get
 			{
-				var animates = await animatesTask;
-				if (animates == null)
-					return false;
+				if (!ValidateStep(NextStep.ShowStartMessage))
+					return null;
 
-				_animates = Animate.FromInitializers(animates);
+				DoNext = NextStep.ShowRoomStatus;
+
+				return GetTexts(TextID.StartMessage);
 			}
-
-			if (_items == null)
-			{
-				var items = await itemsTask;
-				if (items == null)
-					return false;
-
-				_items = Item.FromInitializers(items, _animates);
-			}
-
-			if (_processors == null)
-			{
-				var commands = await commandsTask;
-				if (commands == null)
-					return false;
-
-				_processors = CommandProcessor.FromInitializers(commands, _items, _animates);
-			}
-
-			ObjectDumper.WriteClassType = false;
-			ObjectDumper.WriteBidirectionalReferences = false;
-
-			if (_player == null)
-				_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
-
-			if (_animates[AnimateID.Tree] is Tree tree)
-				tree.Burned += TreeHasBurned;
-
-			if (_animates[AnimateID.PaperHatch] is ITriggerable paperHatch)
-				_processors.LocationProcessor.PaperRouteCompleted += paperHatch.Trigger;
-
-
-			RegisterTurnEndingNotifiees(_items.Values);
-			RegisterTurnEndingNotifiees(_animates.Values);
-
-			Initialized = true;
-			return true;
 		}
 
 		public ICollection<string>? RoomStatus
 		{
 			get
 			{
-				if (!Initialized && !Initialize().Result)
-					throw new InvalidOperationException(EngineNotInitialized);
-
-				if (DoNext != NextStep.ShowRoomStatus)
+				if (!ValidateStep(NextStep.ShowRoomStatus))
 					return null;
 
 				List<string> texts = new List<string>();
@@ -139,20 +194,26 @@ namespace R136.Core
 
 				else
 				{
-					if (playerRoom.IsForest && _treeHasBurned)
+					if (playerRoom.IsForest && _hasTreeBurned)
 						texts.AddRangeIfNotNull(GetTexts(TextID.BurnedForestDescription));
 
 					else if (playerRoom.Description != null)
 						texts.Add(playerRoom.Description);
-
-					var itemLine = GetItemLine(playerRoom);
-					if (itemLine != null)
-						texts.Add(itemLine);
 				}
 
 				var wayLine = GetWayLine(playerRoom);
 				if (wayLine != null)
 					texts.Add(wayLine);
+
+				if (!IsDark)
+				{
+					var itemLine = GetItemLine(playerRoom);
+					if (itemLine != null)
+					{
+						texts.Add(string.Empty);
+						texts.Add(itemLine);
+					}
+				}
 
 				DoNext = IsAnimatePresent ? NextStep.ProgressAnimateStatus : NextStep.RunCommand;
 
@@ -160,17 +221,14 @@ namespace R136.Core
 			}
 		}
 
-		public Result ProgressAnimateStatus()
+		public ICollection<string>? ProgressAnimateStatus()
 		{
-			if (!Initialized && !Initialize().Result)
-				throw new InvalidOperationException(EngineNotInitialized);
-
-			if (DoNext != NextStep.ProgressAnimateStatus)
-				return Result.Error(IncorrectNextStep);
+			if (!ValidateStep(NextStep.ProgressAnimateStatus))
+				return null;
 
 			var presentAnimates = PresentAnimates;
 			if (presentAnimates.Count == 0)
-				return Result.Success();
+				return null;
 
 			var startRoom = CurrentRoom;
 
@@ -185,17 +243,16 @@ namespace R136.Core
 
 			DoNext = CurrentRoom != startRoom ? NextStep.ShowRoomStatus : NextStep.RunCommand;
 
-			return Result.Success(texts);
+			return texts.Count > 0 ? texts : null;
 		}
 
 		public Result Run(string input)
 		{
-			if (!Initialized && !Initialize().Result)
-				return Result.Error(EngineNotInitialized);
-
-			if (DoNext != NextStep.RunCommand)
+			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
+			if (_player!.LifePoints == 0)
+				return Result.EndRequested(GetTexts(TextID.PlayerDead));
 
 			var terms = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 
@@ -213,24 +270,15 @@ namespace R136.Core
 				_ => processor!.Execute(id!.Value, command!, terms.Length == 1 ? null : terms[1], _player!)
 			};
 
-			DoPostRunProcessing(result);
-
-			return result.WrapContinuationRequest(this);
+			return DoPostRunProcessing(result).WrapInputRequest(this);
 		}
 
 		public Result Continue(object statusData, string input)
 		{
-			if (!Initialized && !Initialize().Result)
-				return Result.Error(EngineNotInitialized);
-
-			if (DoNext != NextStep.RunCommand)
+			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
-			var result = Result.ContinueWrappedContinuationData(this, statusData, input);
-
-			DoPostRunProcessing(result);
-
-			return result.WrapContinuationRequest(this);
+			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(this, statusData, input)).WrapInputRequest(this);
 		}
 
 		private enum TextID
@@ -238,11 +286,13 @@ namespace R136.Core
 			NoCommand,
 			InvalidCommand,
 			AmbiguousCommand,
+			StartMessage,
 			YouAreAt,
 			TooDarkToSee,
 			BurnedForestDescription,
 			ItemLineTexts,
-			WayLineTexts
+			WayLineTexts,
+			PlayerDead
 		}
 	}
 }

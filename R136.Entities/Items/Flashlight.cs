@@ -15,10 +15,10 @@ namespace R136.Entities.Items
 
 		public ICollection<Item> Components { get; private set; }
 		public ICollection<string>? CombineTexts
-			=> Facilities.ItemTextsMap[this, TextType.Combine];
+			=> Facilities.ItemTextsMap[ID, TextType.Combine];
 
 #pragma warning disable IDE0060 // Remove unused parameter
-		public static Flashlight FromInitializer
+		public static Flashlight Create
 			(
 			Initializer initializer, 
 			IReadOnlyDictionary<AnimateID, Animate> animates, 

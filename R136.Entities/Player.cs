@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace R136.Entities
 {
-	public class Player
+	public class Player : EntityBase
 	{
 		private int? _lifePoints;
 		private int? _lifePointsFromConfig;
@@ -77,9 +77,7 @@ namespace R136.Entities
 		public void RestoreHealth()
 		{
 			if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)
-			{
 				_lifePointsFromConfig = Facilities.Configuration.LifePoints;
-			}
 
 			_lifePoints = _lifePointsFromConfig;
 		}

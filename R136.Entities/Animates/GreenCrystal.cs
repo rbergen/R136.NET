@@ -5,7 +5,7 @@ namespace R136.Entities.Animates
 {
 	public class GreenCrystal : Animate, ITriggerable
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new GreenCrystal(initializer.ID, initializer.StartRoom);
 
 		private GreenCrystal(AnimateID id, RoomID startRoom) : base(id, startRoom) { }

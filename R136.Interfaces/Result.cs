@@ -8,7 +8,7 @@ namespace R136.Interfaces
 		Success,
 		Failure,
 		Error,
-		ContinuationRequested,
+		InputRequested,
 		EndRequested
 	}
 
@@ -31,22 +31,24 @@ namespace R136.Interfaces
 		public static Result Error(string message) => new Result(ResultCode.Error, new string[] { message });
 
 		public static Result EndRequested() => new Result(ResultCode.EndRequested);
-		public static Result ContinuationRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
+		public static Result EndRequested(ICollection<string>? message) => new Result(ResultCode.EndRequested, message);
+
+		public static Result InputRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
 			=> new Result(status, specs, message);
 
-		public Result WrapContinuationRequest(IContinuable wrappingObject)
-			=> IsContinuationRequest
-			? ContinuationRequested(new ContinuationStatus(wrappingObject, (wrappingObject, ContinuationStatus)), InputSpecs!, Message)
+		public Result WrapInputRequest(IContinuable wrappingObject)
+			=> IsInputRequest
+			? InputRequested(new ContinuationStatus(wrappingObject, (wrappingObject, ContinuationStatus)), InputSpecs!, Message)
 			: this;
 
-		public static ContinuationStatus? UnwrapContinuationData(IContinuable wrappingObject, object data)
+		public static ContinuationStatus? UnwrapContinuationStatus(IContinuable wrappingObject, object data)
 			=> data is ValueTuple<IContinuable, ContinuationStatus> wrapped && wrapped.Item1 == wrappingObject
 			? wrapped.Item2
 			: null;
 
-		public static Result ContinueWrappedContinuationData(IContinuable wrappingObject, object data, string input)
+		public static Result ContinueWrappedContinuationStatus(IContinuable wrappingObject, object data, string input)
 		{
-			var innerStatus = UnwrapContinuationData(wrappingObject, data);
+			var innerStatus = UnwrapContinuationStatus(wrappingObject, data);
 
 			if (innerStatus == null)
 				return Error();
@@ -62,7 +64,7 @@ namespace R136.Interfaces
 		public bool IsSuccess => Code == ResultCode.Success;
 		public bool IsFailure => Code == ResultCode.Failure;
 		public bool IsError => Code == ResultCode.Error;
-		public bool IsContinuationRequest => Code == ResultCode.ContinuationRequested;
+		public bool IsInputRequest => Code == ResultCode.InputRequested;
 		public bool IsEndRequest => Code == ResultCode.EndRequested;
 
 		public Result(ResultCode code)
@@ -70,7 +72,7 @@ namespace R136.Interfaces
 
 		public Result(ResultCode code, ICollection<string>? message)
 		{
-			if (code == ResultCode.ContinuationRequested)
+			if (code == ResultCode.InputRequested)
 				throw new ArgumentException("ResultCode ContinuationRequested requires InputSpecs", nameof(code));
 
 			(Code, Message) = (code, message);
@@ -78,6 +80,6 @@ namespace R136.Interfaces
 
 		public Result(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
 			=> (Code, ContinuationStatus, InputSpecs, Message)
-			= (ResultCode.ContinuationRequested, status, specs, message);
+			= (ResultCode.InputRequested, status, specs, message);
 	}
 }

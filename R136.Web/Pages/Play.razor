@@ -1,0 +1,53 @@
+﻿@page "/play"
+
+@inject IConfiguration Configuration 
+
+<div class="row bg-dark" style="padding-bottom: 50px">
+	<div class="col">
+		<ShowContentLog ContentLog="ContentLog" BlockIDStart="@("content-block-id")" />
+	</div>
+</div>
+
+@if (!_ended)
+{
+	<div class="footer fixed-bottom">
+
+	@if (_pause)
+	{
+		<ProceedButtonBar OnProceedClicked="ProceedClicked" />
+	}
+	else
+	{
+		<div class="container bg-danger @(_error != null ? "visible" : "hidden")">
+			<div class="row pt-2 pb-2">
+				<div class="col pl-2 text-light">
+					<strong>@(_error ?? (MarkupString)string.Empty)</strong>
+				</div>
+				<div class="col-md-auto">
+					<button type="button" class="btn-close btn-close-white" @onclick="@(() => _error = null)" />
+				</div>
+			</div>
+		</div>
+
+		<form class="container bg-dark border-top border-danger" @onsubmit="@SubmitInput">
+			<div class="row pt-2 pb-2">
+				<div class="col">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">&gt;</span>
+						</div>
+						<input type="text" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)"/>
+					</div>
+				</div>
+				<div class="col-md-auto">
+					<input type="submit" class="btn btn-light" value="@Configuration["ProceedButtonLabel"]" />
+				</div>
+			</div>
+		</form>
+	}
+
+	</div>
+}
+
+@code {
+}

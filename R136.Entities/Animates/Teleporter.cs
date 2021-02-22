@@ -4,7 +4,7 @@ namespace R136.Entities.Animates
 {
 	class Teleporter : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Teleporter(initializer.ID, initializer.StartRoom);
 
 		private Teleporter(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
@@ -12,9 +12,7 @@ namespace R136.Entities.Animates
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			if (StatusManager != null)
-			{
 				StatusManager.CurrentRoom = RoomID.Forest1;
-			}
 		}
 	}
 }

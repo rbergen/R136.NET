@@ -13,7 +13,7 @@
 		bool IsInPosession(ItemID item);
 		void RemoveFromPossession(ItemID item);
 
-		void PutDown(ItemID item);
+		void Place(ItemID item);
 		void OpenConnection(Direction direction, RoomID toRoom);
 
 		void MarkAnimateTriggered();

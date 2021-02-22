@@ -75,9 +75,17 @@ namespace R136.Entities.General
 					continue;
 
 				var type = fieldInfo != null ? fieldInfo.FieldType : propertyInfo!.PropertyType;
-				object? value = fieldInfo != null
-													? fieldInfo.GetValue(element)
-													: propertyInfo!.GetValue(element, null);
+        object? value;
+        try
+        {
+          value = fieldInfo != null
+                            ? fieldInfo.GetValue(element)
+                            : propertyInfo!.GetValue(element, null);
+        }
+        catch (Exception)
+        {
+          continue;
+        }
 
 				if (type.IsValueType || type == typeof(string))
 					Write($"{memberInfo.Name}: {FormatValue(value)}");

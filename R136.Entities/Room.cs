@@ -15,7 +15,7 @@ namespace R136.Entities
 
 		public IDictionary<Direction, Room> Connections { get; private set; } = null!;
 
-		public static IReadOnlyDictionary<RoomID, Room> FromInitializers(ICollection<Initializer> initializers)
+		public static IReadOnlyDictionary<RoomID, Room> CreateMap(ICollection<Initializer> initializers)
 		{
 			Dictionary<RoomID, Room> rooms = new Dictionary<RoomID, Room>(initializers.Count);
 
@@ -31,9 +31,7 @@ namespace R136.Entities
 			}
 
 			foreach (var initializer in initializers)
-			{
 				rooms[initializer.ID].Connections = initializer.Connections?.ToDictionary(pair => pair.Key, pair => rooms[pair.Value]) ?? new Dictionary<Direction, Room>();
-			}
 
 			return rooms;
 

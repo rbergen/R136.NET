@@ -5,7 +5,7 @@ namespace R136.Entities.Animates
 {
 	class Mist : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Mist(initializer.ID, initializer.StartRoom);
 
 		private Mist(AnimateID id, RoomID startRoom) : base(id, startRoom) { }

@@ -6,17 +6,21 @@ namespace R136.Entities.Animates
 {
 	class Gnu : Animate, INotifyRoomChangeRequested
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Gnu(initializer.ID, initializer.StartRoom);
 
 		private Gnu(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
+			if (Facilities.Configuration.AutoPlaceItems)
+				StatusManager?.Place(ItemID.RedCrystal);
+
 			switch (status)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.Attack;
+					if (!Facilities.Configuration.FreezeAnimates)
+						Status = AnimateStatus.Attack;
 
 					break;
 
@@ -26,14 +30,14 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.PutDown(ItemID.RedCrystal);
+					StatusManager?.Place(ItemID.RedCrystal);
 					Status = AnimateStatus.Done;
 
 					break;
 			}
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Pornbook)
 				return Result.Failure();
@@ -42,10 +46,7 @@ namespace R136.Entities.Animates
 			return Result.Success();
 		}
 
-		public bool RoomChangeRequested(RoomID from, RoomID to)
-		{
-			return true;
-		}
+		public bool RoomChangeRequested(RoomID from, RoomID to) => true;
 
 		public void RoomChanged(RoomID from, RoomID to) 
 		{

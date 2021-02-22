@@ -88,7 +88,7 @@ namespace R136.Entities.CommandProcessors
 			if (validateResult != null)
 				return validateResult;
 
-			return Result.ContinuationRequested(new ContinuationStatus(this, this), Facilities.Configuration.YesNoInputSpecs, GetTexts(EndTextID.ConfirmEnd));
+			return Result.InputRequested(new ContinuationStatus(this, this), Facilities.Configuration.YesNoInputSpecs, GetTexts(EndTextID.ConfirmEnd));
 		}
 
 		public Result Continue(object? statusData, string input)

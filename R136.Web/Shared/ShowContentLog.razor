@@ -1,0 +1,47 @@
+﻿@if (ContentLog.IsTrimmed)
+{
+	<div class="row bg-dark">
+		<div class="col text-center text-white-50">
+			<h2><strong>. . .</strong></h2>
+		</div>
+	</div>
+}
+
+@for (int i = 0; i < ContentLog.Count; i++)
+{
+	var block = ContentLog[i];
+	_blockID = $"{BlockIDStart}-{i}";
+
+	switch (block.Type)
+	{
+		case ContentBlockType.Input:
+
+			<div class="row bg-dark p-0 m-0 g-0">
+				<div class="col p-0 m-0">
+					<div id="@(_blockID)" class="row bg-secondary border-top border-bottom border-light mb-2 gx-2 align-items-bottom">
+						<div class="col-md-auto text-light">
+							<h5>&gt;</h5>
+						</div>
+						<div class="col text-light">
+							<strong>@(block.Content)</strong>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			break;
+
+		default:
+
+			<div id="@(_blockID)" class="row bg-dark">
+				<div class="col text-light">
+					<p>@(block.Content)</p>
+				</div>
+			</div>
+
+			break;
+	}
+}
+
+@code {
+}

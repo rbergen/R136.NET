@@ -8,6 +8,8 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 
+#nullable enable
+
 namespace R136.Tools
 {
 	class Program
@@ -28,14 +30,14 @@ namespace R136.Tools
 
 			ProcessEntity<Item.Initializer[]>("Items");
 
-			ProcessRooms();
+			ProcessRooms("Rooms");
 
-			ProcessEntity<TypedTextsMap<int>.Initializer[]>("Texts");
+			ProcessTexts("Texts");
 
-			ReadEntity<Configuration>("Configuration");
+			ProcessConfiguration("Configuration");
 		}
 
-		private static string GetOutputPath(string path)
+		private static string GetOutputPath(string name, string path)
 		{
 			string fileName = Path.GetFileNameWithoutExtension(path);
 
@@ -44,46 +46,52 @@ namespace R136.Tools
 			else
 				fileName += ".new.json";
 
-			Console.Write($"Output base filename, or Enter for '{fileName}' (.json added if omitted): ");
-			string userEntry = Console.ReadLine();
+			Console.Write($"*{name}* output filename, (Enter for '{fileName}', - cancels, .json added if omitted): ");
+			string? userEntry = Console.ReadLine();
+
+			if (userEntry == null || userEntry == "-")
+				return string.Empty;
 
 			if (!string.IsNullOrWhiteSpace(userEntry))
 			{
 				if (!userEntry.ToLower().EndsWith(".json"))
 					userEntry += ".json";
-				
+
 				fileName = userEntry;
-			}
-							
-			return Path.Combine(Path.GetDirectoryName(path), fileName);
+			}			
+			return Path.Combine(Path.GetDirectoryName(path)!, fileName);
 		}
 
 		private static bool Confirm(string prompt)
 		{
 			Console.Write($"{prompt} [y/N]: ");
-			return Console.ReadLine().Trim().ToLower() == "y";
+			var input = Console.ReadLine();
+			return input != null && input.Trim().ToLower() == "y";
 		}
 
-		private static void ReadEntity<T>(string name)
+		private static (T? entity, string? path) ReadEntity<T>(string name) where T: class
 		{
-			T entity;
+			Console.Write($"*{name}* JSON file path (Enter to skip): ");
+			var input = Console.ReadLine();
+			if (string.IsNullOrWhiteSpace(input))
+				return (null, null);
 
-			Console.Write($"{name} JSON file path (Enter to skip): ");
-			string jsonFilePath = Console.ReadLine().Trim();
-			if (jsonFilePath == string.Empty)
-				return;
+			string jsonFilePath = input.Trim();
 
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				entity = JsonSerializer.Deserialize<T>(jsonString);
+				return (JsonSerializer.Deserialize<T>(jsonString), jsonFilePath);
 			}
 			catch (Exception e)
 			{
 				Console.Error.WriteLine($"Error while reading JSON file: {e}");
-				return;
+				return (null, null);
 			}
+		}
 
+		private static void Print<T>(T entity, string name)
+		{
 			if (!Confirm($"Print {name}?"))
 				return;
 
@@ -91,31 +99,26 @@ namespace R136.Tools
 			Console.WriteLine();
 		}
 
-		private static void ProcessEntity<T>(string name)
+		private static void ProcessEntity<T>(string name) where T: class
 		{
-			T entity;
+			(var entity, var path) = ReadEntity<T>(name);
 
-			Console.Write($"{name} base JSON file path (Enter to skip): ");
-			string jsonFilePath = Console.ReadLine().Trim();
-			if (jsonFilePath == string.Empty)
+			if (entity == null || path == null)
 				return;
 
-			try
-			{
-				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				entity = JsonSerializer.Deserialize<T>(jsonString);
-			}
-			catch (Exception e)
-			{
-				Console.Error.WriteLine($"Error while reading JSON file: {e}");
-				return;
-			}
+			WriteEntity(entity, name, path);
+		}
 
-			jsonFilePath = GetOutputPath(jsonFilePath);
+		private static void WriteEntity<T>(T entity, string name, string path) where T: class 
+		{
+			path = GetOutputPath(name, path);
+			if (path == string.Empty)
+				return;
+
 			try
 			{
 				string jsonString = JsonSerializer.Serialize(entity, _serializerOptions);
-				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
+				File.WriteAllText(path, jsonString, Encoding.UTF8);
 			}
 			catch (Exception e)
 			{
@@ -123,29 +126,41 @@ namespace R136.Tools
 				return;
 			}
 
-			Console.WriteLine($"{name} JSON file written to: {jsonFilePath}");
+			Console.WriteLine($"{name} JSON file written to: {path}");
 			Console.WriteLine();
 		}
 
-		private static void ProcessRooms()
+		private static void ProcessTexts(string name)
 		{
-			Room.Initializer[] rooms;
+			(var texts, var path) = ReadEntity<TypedTextsMap<int>.Initializer[]>(name);
 
-			Console.Write("Rooms base JSON file path (Enter to skip): ");
-			string jsonFilePath = Console.ReadLine().Trim();
-			if (jsonFilePath == string.Empty)
+			if (texts == null || path == null)
 				return;
 
-			try
-			{
-				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				rooms = JsonSerializer.Deserialize<Room.Initializer[]>(jsonString);
-			}
-			catch (Exception e)
-			{
-				Console.Error.WriteLine($"Error while reading JSON file: {e}");
+			var maps = new TypedTextsMap<int>();
+			maps.LoadInitializers(texts);
+			Console.WriteLine($"{name} map after load:");
+			Console.WriteLine(ObjectDumper.Dump(maps));
+
+			WriteEntity(texts, name, path);
+		}
+
+		private static void ProcessConfiguration(string name)
+		{
+			(var configuration, var jsonFilePath) = ReadEntity<Configuration>(name);
+
+			if (configuration == null || jsonFilePath == null)
 				return;
-			}
+
+			Print(configuration, name);
+		}
+
+		private static void ProcessRooms(string name)
+		{
+			(var rooms, var path) = ReadEntity<Room.Initializer[]>(name);
+
+			if (rooms == null || path == null)
+				return;
 
 			for (int i = 0; i < rooms.Length; i++)
 			{
@@ -163,13 +178,13 @@ namespace R136.Tools
 			{
 				for (int j = 0; j < 16; j += 5)
 				{
-					rooms[i + j + 4].Connections.Remove(Direction.East);
-					rooms[i + j].Connections.Remove(Direction.West);
+					rooms[i + j + 4].Connections!.Remove(Direction.East);
+					rooms[i + j].Connections!.Remove(Direction.West);
 				}
 				for (int j = 0; j < 5; j++)
 				{
-					rooms[i + j].Connections.Remove(Direction.North);
-					rooms[i + j + 15].Connections.Remove(Direction.South);
+					rooms[i + j].Connections!.Remove(Direction.North);
+					rooms[i + j + 15].Connections!.Remove(Direction.South);
 				}
 			}
 
@@ -177,14 +192,14 @@ namespace R136.Tools
 			for (int i = 0; i < LevelConnections.Length; i++)
 			{
 				var connection = LevelConnections[i];
-				rooms[(int)connection.From].Connections[connection.Direction] = connection.To;
+				rooms[(int)connection.From].Connections![connection.Direction] = connection.To;
 			}
 
 			// Blocked routes
 			for (int i = 0; i < BlockedConnections.Length; i++)
 			{
 				var blockedConnection = BlockedConnections[i];
-				rooms[(int)blockedConnection.Key].Connections.Remove(blockedConnection.Value);
+				rooms[(int)blockedConnection.Key].Connections!.Remove(blockedConnection.Value);
 			}
 
 			// Mark dark rooms
@@ -203,24 +218,9 @@ namespace R136.Tools
 			
 			// Mark forest
 			foreach (var room in forest)
-			{
 				rooms[(int)room].IsForest = true;
-			}
 
-			jsonFilePath = GetOutputPath(jsonFilePath);
-			try
-			{
-				string jsonString = JsonSerializer.Serialize(rooms, _serializerOptions);
-				File.WriteAllText(jsonFilePath, jsonString, Encoding.UTF8);
-			}
-			catch (Exception e)
-			{
-				Console.Error.WriteLine($"Error while writing JSON file: {e}");
-				return;
-			}
-
-			Console.WriteLine($"Rooms base JSON file written to: {jsonFilePath}");
-			Console.WriteLine();
+			WriteEntity(rooms, name, path);
 		}
 
 		private record LevelConnection {

@@ -4,29 +4,22 @@ using R136.Interfaces;
 
 namespace R136.Entities
 {
-	enum EntityType
-	{
-		Animate,
-		Item,
-		Room,
-		Action,
-		Text
-	}
-
 	public class EntityBase
 	{
-		private IStatusManager? _statusManager = null;
+		private static IStatusManager? _statusManager = null;
+		private readonly object _statusManagerLock = new object();
 
 		protected IStatusManager? StatusManager
 		{
 			get
 			{
-				if (_statusManager == null && Facilities.Services != null)
+				lock (_statusManagerLock)
 				{
-					_statusManager = Facilities.Services.GetService<IStatusManager>();
-				}
+					if (_statusManager == null && Facilities.Services != null)
+						_statusManager = Facilities.Services.GetService<IStatusManager>();
 
-				return _statusManager;
+					return _statusManager;
+				}
 			}
 		}
 	}

@@ -5,17 +5,21 @@ namespace R136.Entities.Animates
 {
 	class HellHound : StrikableAnimate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new HellHound(initializer.ID, initializer.StartRoom, initializer.StrikeCount);
 
 		private HellHound(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
+			if (Facilities.Configuration.AutoPlaceItems)
+				StatusManager?.Place(ItemID.HoundMeat);
+
 			switch (status)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.Attack;
+					if (!Facilities.Configuration.FreezeAnimates)
+						Status = AnimateStatus.Attack;
 
 					break;
 
@@ -32,7 +36,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.PutDown(ItemID.HoundMeat);
+					StatusManager?.Place(ItemID.HoundMeat);
 					Status = AnimateStatus.Done;
 
 					break;

@@ -15,22 +15,22 @@ namespace R136.Web
 {
 	public class Program
 	{
+
 		public static async Task Main(string[] args)
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("#app");
 
 			var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
-			var engine = new Engine();
 
-			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = baseUri });
-			builder.Services.AddSingleton(typeof(IEntityReader), new JsonEntityReader(new Uri(baseUri, "data")));
-			builder.Services.AddSingleton(typeof(IEngine), engine);
-			builder.Services.AddSingleton(typeof(IStatusManager), engine.StatusManager);
+			builder.Services
+			.AddScoped(sp => new HttpClient { BaseAddress = baseUri })
+			.AddSingleton(new MarkupContentLog(builder.Configuration.GetValue<int>("MaxContentLogBlockCount")))
+			.AddR136(() => new Uri(baseUri, "data/"));
 
 			var host = builder.Build();
-			engine.Services = host.Services;
 
+			await host.Services.InitializeR136Async();
 			await host.RunAsync();
 		}
 	}

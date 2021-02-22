@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Interfaces", "R136.Interfaces\R136.Interfaces.csproj", "{A5DB1389-AEFF-4080-8B5C-AA1C2B2DE965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R136.Core", "R136.Core\R136.Core.csproj", "{3B183D9F-4C79-41A1-9772-517696185F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Core", "R136.Core\R136.Core.csproj", "{3B183D9F-4C79-41A1-9772-517696185F0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

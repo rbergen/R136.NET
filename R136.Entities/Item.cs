@@ -17,10 +17,10 @@ namespace R136.Entities
 		public bool IsPutdownAllowed { get; }
 		public bool IsWearable { get; }
 
-		static Item FromInitializer(Initializer initializer)
+		static Item Create(Initializer initializer)
 			=> new Item(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
 
-		public static IReadOnlyDictionary<ItemID, Item> FromInitializers(ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static IReadOnlyDictionary<ItemID, Item> CreateMap(ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
 			Dictionary<ItemID, Item> items = new Dictionary<ItemID, Item>(initializers.Count);
 
@@ -29,24 +29,24 @@ namespace R136.Entities
 
 			foreach (var initializer in initializers)
 			{
-				var initializerMethod = ToFromInitializer(initializer.ID);
+				var createMethod = GetCreateMethod(initializer.ID);
 
-				if (initializerMethod != null)
-					typedInitializers[initializer] = initializerMethod;
+				if (createMethod != null)
+					typedInitializers[initializer] = createMethod;
 
 				else if (initializer.UsableOn != null && initializer.UsableOn.Length > 0)
 				{
 					if (initializer.Components != null && initializer.Components.Length == 2)
 						compoundInitializers.Add(initializer);
 					else
-						items[initializer.ID] = RegisterTexts(UsableItem.FromInitializer(initializer, animates), initializer);
+						items[initializer.ID] = RegisterTexts(UsableItem.Create(initializer, animates), initializer);
 				}
 				else
-					items[initializer.ID] = RegisterTexts(FromInitializer(initializer), initializer);
+					items[initializer.ID] = RegisterTexts(Create(initializer), initializer);
 			}
 
 			foreach (var initializer in compoundInitializers)
-				items[initializer.ID] = RegisterTexts(CompoundItem.FromInitializer(initializer, animates, items), initializer);
+				items[initializer.ID] = RegisterTexts(CompoundItem.Create(initializer, animates, items), initializer);
 
 			foreach (var initializerMethod in typedInitializers)
 			{
@@ -61,10 +61,10 @@ namespace R136.Entities
 		private static Item RegisterTexts(Item item, Initializer initializer)
 		{
 			if (initializer.UseTexts != null)
-				Facilities.ItemTextsMap[item, TextType.Use] = initializer.UseTexts;
+				Facilities.ItemTextsMap[initializer.ID, TextType.Use] = initializer.UseTexts;
 
 			if (initializer.CombineTexts != null)
-				Facilities.ItemTextsMap[item, TextType.Combine] = initializer.UseTexts;
+				Facilities.ItemTextsMap[initializer.ID, TextType.Combine] = initializer.CombineTexts;
 
 			return item;
 		}
@@ -73,18 +73,18 @@ namespace R136.Entities
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
 			= (id, name, description, startRoom, isWearable, isPutdownAllowed);
 
-		public virtual Result Use() => Result.Failure(UseTexts);
+		public virtual Result Use() => Result.Failure(UsageTexts);
 
-		protected ICollection<string>? UseTexts
+		protected ICollection<string>? UsageTexts
 		{
-			get => Facilities.ItemTextsMap[this, TextType.Use];
+			get => Facilities.ItemTextsMap[ID, TextType.Use];
 		}
-		private static Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>? ToFromInitializer(ItemID id) => id switch
+		private static Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>? GetCreateMethod(ItemID id) => id switch
 		{
-			ItemID.TNT => Tnt.FromInitializer,
-			ItemID.Flashlight => Flashlight.FromInitializer,
-			ItemID.Bandage => Bandage.FromInitializer,
-			ItemID.Sword => Sword.FromInitializer,
+			ItemID.TNT => Tnt.Create,
+			ItemID.Flashlight => Flashlight.Create,
+			ItemID.Bandage => Bandage.Create,
+			ItemID.Sword => Sword.Create,
 			_ => null
 		};
 
@@ -127,16 +127,15 @@ namespace R136.Entities
 	interface IUsable<T>
 	{
 		ICollection<T> UsableOn { get; }
-
 		Result UseOn(T subject);
 	}
 
 	class UsableItem : Item, IUsable<Animate>
 	{
 		public ICollection<Animate> UsableOn { get; }
-		bool KeepAfterUse { get; }
+		bool KeepsAfterUse { get; }
 
-		public static UsableItem FromInitializer(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static UsableItem Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
 			=> new UsableItem
 			(
 			initializer.ID,
@@ -161,16 +160,16 @@ namespace R136.Entities
 			bool keepAfterUse
 			)
 			: base(id, name, description, startRoom, isWearable, isPutdownAllowed)
-			=> (UsableOn, KeepAfterUse) = (usableOn, keepAfterUse);
+			=> (UsableOn, KeepsAfterUse) = (usableOn, keepAfterUse);
 
 		public virtual Result UseOn(Animate animate)
 		{
 			if (!UsableOn.Contains(animate))
 				return Use();
 
-			var result = animate.Used(ID);
+			var result = animate.ApplyItem(ID);
 
-			if (result.IsSuccess && !KeepAfterUse)
+			if (result.IsSuccess && !KeepsAfterUse)
 				StatusManager?.RemoveFromPossession(ID);
 
 			return Result.Success(result.Message);
@@ -187,11 +186,11 @@ namespace R136.Entities
 	class CompoundItem : UsableItem, ICompound<Item>
 	{
 		public ICollection<Item> Components { get; }
-		protected ICollection<string>? CombineTexts => Facilities.ItemTextsMap[this, TextType.Combine];
+		protected ICollection<string>? CombineTexts => Facilities.ItemTextsMap[ID, TextType.Combine];
 
 		public Item Self => this;
 
-		public static CompoundItem FromInitializer(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
+		public static CompoundItem Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
 			=> new CompoundItem
 			(
 			initializer.ID,

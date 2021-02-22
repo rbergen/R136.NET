@@ -1,21 +1,3 @@
 ﻿{
-	"StartRoom": 0,
-	"GreenCrystalRoom": 4,
-	"LifePoints": 20,
-	"LampPoints": 60,
-	"MaxInventory": 10,
-	"GnuRoamingRooms": [ 44, 47, 48, 49, 54 ],
-	"PaperRoute": [ 69, 64, 63, 62, 67, 66 ],
-	"YesNoInputSpecs": {
-		"MaxLength": 1,
-		"PermittedCharacters": "jn"
-	},
-	"CommandInputSpecs": {
-		"MaxLength": 65,
-		"PermittedCharacters": "abcdefghijklmnopqrstuvwxyz 1234567890"
-	},
-	"YesInput": "j",
-	"Immortal": false,
-	"FreezeAnimates": false,
-	"AutoReleaseItems": false
+	"LogToConsole": true
 }

@@ -11,11 +11,13 @@ namespace R136.Entities.Global
 		public int? MaxInventory { get; set; } = 10;
 		public RoomID[] GnuRoamingRooms { get; set; } = new RoomID[] { RoomID.GnuCave, RoomID.RockCave, RoomID.Emptiness, RoomID.Sandbank, RoomID.OilCave };
 		public RoomID[] PaperRoute { get; set; } = new RoomID[] { RoomID.CapitalPCave, RoomID.ACave, RoomID.PCave, RoomID.ICave, RoomID.ECave, RoomID.RCave };
-		public InputSpecs YesNoInputSpecs { get; set; } = new InputSpecs(1, "jn");
+		public InputSpecs YesNoInputSpecs { get; set; } = new InputSpecs(1, "jn", true);
 		public string YesInput { get; set; } = "j";
-		public InputSpecs CommandInputSpecs { get; set; } = new InputSpecs(65, " abcdefghijklmnopqrstuvwxyz1234567890");
+		public InputSpecs CommandInputSpecs { get; set; } = new InputSpecs(65, "abcdefghijklmnopqrstuvwxyz 1234567890", true);
 		public bool Immortal { get; set; } = false;
 		public bool FreezeAnimates { get; set; } = false;
-		public bool AutoReleaseItems { get; set; } = false;
+		public bool AutoPlaceItems { get; set; } = false;
+		public bool AutoOpenConnections { get; set; } = false;
+		public bool LogToConsole { get; set; } = false;
 	}
 }

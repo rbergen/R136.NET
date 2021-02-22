@@ -5,17 +5,21 @@ namespace R136.Entities.Animates
 {
 	class RedTroll : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new RedTroll(initializer.ID, initializer.StartRoom);
 
 		private RedTroll(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
+			if (Facilities.Configuration.AutoPlaceItems)
+				StatusManager?.Place(ItemID.RedCrystal);
+
 			switch (status)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.PreparingFirstAttack;
+					if (!Facilities.Configuration.FreezeAnimates)
+						Status = AnimateStatus.PreparingFirstAttack;
 
 					break;
 
@@ -37,14 +41,14 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.PutDown(ItemID.RedCrystal);
+					StatusManager?.Place(ItemID.RedCrystal);
 					Status = AnimateStatus.Done;
 
 					break;
 			}
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Pornbook)
 				return Result.Error();

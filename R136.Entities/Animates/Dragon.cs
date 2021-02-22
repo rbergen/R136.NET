@@ -1,20 +1,25 @@
-﻿using R136.Interfaces;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class Dragon : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Dragon(initializer.ID, initializer.StartRoom);
 
 		private Dragon(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
+			if (Facilities.Configuration.AutoPlaceItems)
+				StatusManager?.Place(ItemID.GasCanister);
+
 			switch (status)
 			{
 				case AnimateStatus.Initial:
-					Status = AnimateStatus.PreparingFirstAttack;
+					if (!Facilities.Configuration.FreezeAnimates)
+						Status = AnimateStatus.PreparingFirstAttack;
 
 					break;
 
@@ -34,14 +39,14 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.SecondStep:
-					StatusManager?.PutDown(ItemID.GasCanister);
+					StatusManager?.Place(ItemID.GasCanister);
 					Status = AnimateStatus.Done;
 
 					break;
 			}
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Cookie && item != ItemID.Nightcap)
 				return Result.Error();

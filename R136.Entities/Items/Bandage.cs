@@ -7,7 +7,7 @@ namespace R136.Entities.Items
 	class Bandage : Item
 	{
 #pragma warning disable IDE0060 // Remove unused parameter
-		public static Bandage FromInitializer
+		public static Bandage Create
 			(
 			Initializer initializer, 
 			IReadOnlyDictionary<AnimateID, Animate> animates,
@@ -41,7 +41,7 @@ namespace R136.Entities.Items
 
 			StatusManager?.RestoreHealth();
 
-			return Result.Success(UseTexts);
+			return Result.Success(UsageTexts);
 		}
 
 		private enum TextID

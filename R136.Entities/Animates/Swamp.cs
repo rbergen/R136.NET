@@ -4,7 +4,7 @@ namespace R136.Entities.Animates
 {
 	class Swamp : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Swamp(initializer.ID, initializer.StartRoom);
 
 		private Swamp(AnimateID id, RoomID startRoom) : base(id, startRoom) { }

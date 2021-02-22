@@ -1,16 +1,20 @@
-﻿using R136.Interfaces;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
 
 namespace R136.Entities.Animates
 {
 	class Barbecue : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Barbecue(initializer.ID, initializer.StartRoom);
 
 		private Barbecue(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
+			if (Facilities.Configuration.AutoPlaceItems)
+				StatusManager?.Place(ItemID.Cookie);
+
 			switch (status)
 			{
 				case AnimateStatus.FirstStep:
@@ -24,14 +28,14 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Operating:
-					StatusManager?.PutDown(ItemID.Cookie);
+					StatusManager?.Place(ItemID.Cookie);
 					Status = AnimateStatus.Initial;
 
 					break;
 			}
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Hashies && item != ItemID.HoundMeat)
 				return Result.Error();

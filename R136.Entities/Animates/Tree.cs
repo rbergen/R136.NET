@@ -6,7 +6,7 @@ namespace R136.Entities.Animates
 {
 	public class Tree : Animate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Tree(initializer.ID, initializer.StartRoom);
 		
 		public event Action? Burned;
@@ -38,7 +38,7 @@ namespace R136.Entities.Animates
 			return texts.Count > 0 ? texts : null;
 		}
 
-		public override Result Used(ItemID item)
+		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Flamethrower)
 				return Result.Error();

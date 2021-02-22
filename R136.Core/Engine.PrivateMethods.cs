@@ -11,12 +11,24 @@ namespace R136.Core
 {
 	public partial class Engine
 	{
-		private List<Func<ICollection<string>?>> _turnEndingNotifiees = new List<Func<ICollection<string>?>>();
+		private readonly List<Func<ICollection<string>?>> _turnEndingNotifiees = new List<Func<ICollection<string>?>>();
 
 		private void RegisterTurnEndingNotifiees<TEntity>(IEnumerable<TEntity> entities)
 		{
 			foreach (var notifiee in entities.Where(entity => entity is INotifyTurnEnding).Cast<INotifyTurnEnding>())
 				_turnEndingNotifiees.Add(notifiee.TurnEnding);
+		}
+		private void LogLine(string text)
+		{
+			Facilities.LogLine(this, text);
+		}
+
+		private bool ValidateStep(NextStep step)
+		{
+			if (!IsInitialized && !Initialize().Result)
+				throw new InvalidOperationException(EngineNotInitialized);
+
+			return DoNext == step;
 		}
 
 		private string? GetItemLine(Room room)
@@ -41,7 +53,7 @@ namespace R136.Core
 			if (items.Length > 2)
 			{
 				var itemSectionBuilder = new StringBuilder();
-				foreach (var component in items[..^3].Select(item => itemLineList[(int)ItemLineText.EarlierItem].Replace("{item}", item.Name)))
+				foreach (var component in items[..^2].Select(item => itemLineList[(int)ItemLineText.EarlierItem].Replace("{item}", item.Name)))
 					itemSectionBuilder.Append(component);
 
 				itemSectionBuilder.Append(itemSection);
@@ -68,12 +80,12 @@ namespace R136.Core
 			if (ways.Length == 1)
 				return wayLineList[(int)WayLineText.SingleWay].Replace("{way}", wayLineList[(int)ways[0]]);
 
-			var waySection = wayLineList[(int)ItemLineText.LastTwoItems].Replace("{secondway}", wayLineList[(int)ways[^1]]).Replace("{firstway}", wayLineList[(int)ways[^2]]);
+			var waySection = wayLineList[(int)WayLineText.LastTwoWays].Replace("{secondway}", wayLineList[(int)ways[^1]]).Replace("{firstway}", wayLineList[(int)ways[^2]]);
 
 			if (ways.Length > 2)
 			{
 				var waySectionBuilder = new StringBuilder();
-				foreach (var component in ways[..^3].Select(way => wayLineList[(int)WayLineText.EarlierWay].Replace("{way}", wayLineList[(int)way])))
+				foreach (var component in ways[..^2].Select(way => wayLineList[(int)WayLineText.EarlierWay].Replace("{way}", wayLineList[(int)way])))
 					waySectionBuilder.Append(component);
 
 				waySectionBuilder.Append(waySection);
@@ -93,7 +105,7 @@ namespace R136.Core
 			=> Facilities.TextsMap[this, (int)id];
 
 		private ICollection<string>? GetTexts(TextID id, string tag, string content)
-			=> GetTexts(id).ReplaceInAll($"{tag}", content);
+			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", content);
 
 		private Result DoPostRunProcessing(Result result)
 		{

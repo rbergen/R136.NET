@@ -10,7 +10,7 @@ namespace R136.Entities
 {
 	public abstract class CommandProcessor : EntityBase
 	{
-		public static CommandProcessorMap FromInitializers
+		public static CommandProcessorMap CreateMap
 			(
 			ICollection<CommandInitializer> initializers,
 			IReadOnlyDictionary<ItemID, Item> items,
@@ -66,6 +66,8 @@ namespace R136.Entities
 				CommandID.GoWest => LocationProcessor,
 				CommandID.GoNorth => LocationProcessor,
 				CommandID.GoSouth => LocationProcessor,
+				CommandID.GoUp => LocationProcessor,
+				CommandID.GoDown => LocationProcessor,
 				CommandID.Use => _itemProcessor,
 				CommandID.Combine => _itemProcessor,
 				CommandID.Pickup => _itemProcessor,

@@ -5,7 +5,7 @@ namespace R136.Entities.Animates
 {
 	class Plant : StrikableAnimate
 	{
-		public static Animate FromInitializer(Initializer initializer)
+		public static Animate Create(Initializer initializer)
 			=> new Plant(initializer.ID, initializer.StartRoom, initializer.StrikeCount);
 
 		private Plant(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom, strikeCount) { }
@@ -16,6 +16,9 @@ namespace R136.Entities.Animates
 			{
 				case AnimateStatus.Initial:
 				case AnimateStatus.Attack:
+					if (status == AnimateStatus.Initial && Facilities.Configuration.FreezeAnimates)
+						break;
+
 					StatusManager?.DecreaseHealth();
 
 					Status = Facilities.Randomizer.Next(2) == 0
