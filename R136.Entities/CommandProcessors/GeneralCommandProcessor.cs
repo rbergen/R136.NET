@@ -18,6 +18,7 @@ namespace R136.Entities.CommandProcessors
 				CommandID.Wait => ExecuteWait(command, parameters),
 				CommandID.Status => ExecuteStatus(command, parameters, player),
 				CommandID.End => ExecuteEnd(command, parameters),
+				CommandID.Info => ExecuteInfo(),
 				_ => Result.Error()
 			};
 
@@ -40,6 +41,9 @@ namespace R136.Entities.CommandProcessors
 
 		private static Result ExecuteHelp() 
 			=> Result.Success(GetTexts(CommandID.Help, Default));
+
+		private static Result ExecuteInfo()
+			=> Result.Success(GetTexts(CommandID.Info, Default));
 
 		private Result ExecuteWait(string command, string? parameters)
 		{

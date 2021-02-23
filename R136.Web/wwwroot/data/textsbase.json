@@ -49,6 +49,34 @@
 		]
 	},
 	{
+		"Type": "Sword",
+		"ID": 0,
+		"Texts": [
+			"Je haalt uit met je zwaard, maar het monster ontwijkt."
+		]
+	},
+	{
+		"Type": "Sword",
+		"ID": 1,
+		"Texts": [
+			"Je haalt uit met je zwaard en je raakt het monster hard."
+		]
+	},
+	{
+		"Type": "Sword",
+		"ID": 2,
+		"Texts": [
+			"Het monster is zwaar gewond en je baadt in zijn bloed."
+		]
+	},
+	{
+		"Type": "Sword",
+		"ID": 3,
+		"Texts": [
+			"Je kunt nog een slag uitdelen. Wil je dat? [j/n]"
+		]
+	},
+	{
 		"Type": "Player",
 		"ID": 0,
 		"Texts": [

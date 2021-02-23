@@ -115,7 +115,7 @@
 			{
 				"ID": 0,
 				"Texts": [
-					"Weet je zeker dat je de aarde laat vergaan?"
+					"Weet je zeker dat je de aarde laat vergaan? [j/n]"
 				]
 			},
 			{
@@ -199,7 +199,8 @@
 					"* afwachten",
 					"* einde",
 					"* status",
-					"* help"
+					"* help",
+					"* info"
 				]
 			}
 		]
@@ -229,6 +230,17 @@
 				]
 			}
 		]
+	},
+	{
+		"ID": 17,
+		"Name": "info",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Ontwerp:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testen:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.Web\">https:\/\/github.com\/rbergen\/R136.Web<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br\/>Versie 4.0<br\/>&copy; Copyright R.I.P. 1998, 2021<br\/<\/td><\/tr><\/table>"
+				]
+			}
+		]
 	}
-
 ]

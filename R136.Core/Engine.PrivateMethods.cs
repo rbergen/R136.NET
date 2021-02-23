@@ -128,6 +128,21 @@ namespace R136.Core
 			return texts.Count == 0 ? result : new Result(result.Code, texts);
 		}
 
+		private void PlaceAt(ItemID item, RoomID room)
+		{
+			if (_items![item].CurrentRoom == RoomID.None && !IsInPosession(item))
+				_items![item].CurrentRoom = room;
+		}
+		private void TreeHasBurned()
+		{
+			_hasTreeBurned = true;
+
+			if (_animates![AnimateID.GreenCrystal] is ITriggerable greenCrystal)
+				greenCrystal.Trigger();
+
+			PlaceAt(ItemID.GreenCrystal, RoomID.Forest4);
+		}
+
 		private enum ItemLineText
 		{
 			SingleItem,

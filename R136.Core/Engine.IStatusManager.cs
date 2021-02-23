@@ -72,8 +72,7 @@ namespace R136.Core
 			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
-			if (_items![item].CurrentRoom == RoomID.None && !IsInPosession(item))
-			_items![item].CurrentRoom = CurrentRoom;
+			PlaceAt(item, CurrentRoom);
 		}
 
 		public void OpenConnection(Direction direction, RoomID toRoom)
@@ -83,16 +82,6 @@ namespace R136.Core
 
 			if (!_rooms![CurrentRoom].Connections.ContainsKey(direction))
 				_rooms![CurrentRoom].Connections[direction] = _rooms![toRoom];
-		}
-
-		private void TreeHasBurned()
-		{
-			_hasTreeBurned = true;
-
-			if (_animates![AnimateID.GreenCrystal] is ITriggerable greenCrystal)
-				greenCrystal.Trigger();
-
-			Place(ItemID.GreenCrystal);
 		}
 
 		public void MarkAnimateTriggered()

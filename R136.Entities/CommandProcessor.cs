@@ -136,6 +136,7 @@ namespace R136.Entities
 		Status,
 		Help,
 		ConfigGet,
-		ConfigSet
+		ConfigSet,
+		Info
 	}
 }

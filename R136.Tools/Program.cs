@@ -59,6 +59,7 @@ namespace R136.Tools
 
 				fileName = userEntry;
 			}			
+
 			return Path.Combine(Path.GetDirectoryName(path)!, fileName);
 		}
 

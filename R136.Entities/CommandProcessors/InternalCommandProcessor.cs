@@ -21,22 +21,21 @@ namespace R136.Entities.CommandProcessors
 					_ => Result.Error()
 				};
 
-		private static Result ExecuteConfigSet(string parameters)
+		private Result ExecuteConfigSet(string parameters)
 		{
 			var terms = parameters.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 2)
 				return Result.Success();
 
 			var propertyName = terms[0];
-
-			var property = Facilities.Configuration.GetType().GetProperty(propertyName);
-			if (property == null)
-				return Result.Success();
-
 			var propertyValue = terms[1].Trim();
 
 			try
 			{
+				var property = Facilities.Configuration.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+				if (property == null)
+					return Result.Success();
+
 				var oldValue = property.GetValue(Facilities.Configuration);
 
 				if (property.PropertyType == typeof(bool))
@@ -53,14 +52,17 @@ namespace R136.Entities.CommandProcessors
 
 				var newValue = property.GetValue(Facilities.Configuration);
 
-				return Result.Success(GetTexts(propertyName, oldValue, newValue));
+				return Result.Success(GetTexts(property.Name, oldValue, newValue));
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				Facilities.LogLine(this, $"Exception while setting {propertyName} to \"{propertyValue}\": {ex}");
+			}
 
 			return Result.Success();
 		}
 
-		private static Result ExecuteConfigGet(string parameters)
+		private Result ExecuteConfigGet(string parameters)
 		{
 			var terms = parameters.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 1)
@@ -68,15 +70,18 @@ namespace R136.Entities.CommandProcessors
 
 			var propertyName = terms[0];
 
-			var property = Facilities.Configuration.GetType().GetProperty(propertyName);
-			if (property == null)
-				return Result.Success();
-
 			try
 			{
-				return Result.Success(GetTexts(propertyName, property.GetValue(Facilities.Configuration)));
+				var property = Facilities.Configuration.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+				if (property == null)
+					return Result.Success();
+
+				return Result.Success(GetTexts(property.Name, property.GetValue(Facilities.Configuration)));
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				Facilities.LogLine(this, $"Exception while getting {propertyName}: {ex}");
+			}
 
 			return Result.Success();
 		}
@@ -101,7 +106,7 @@ namespace R136.Entities.CommandProcessors
 			.ReplaceInAll("{value}", ObjectDumper.Dump(value));
 
 		private static ICollection<string>? GetTexts(string propertyName, object? oldValue, object? newValue)
-			=> Facilities.CommandTextsMap[CommandID.ConfigGet, Default]
+			=> Facilities.CommandTextsMap[CommandID.ConfigSet, Default]
 			.ReplaceInAll("{setting}", propertyName)
 			.ReplaceInAll("{oldvalue}", ObjectDumper.Dump(oldValue))
 			.ReplaceInAll("{newvalue}", ObjectDumper.Dump(newValue));

@@ -78,6 +78,8 @@ namespace R136.Web.Pages
 		{
 			_error = null;
 
+			_input = ApplyInputSpecs(_input);
+
 			var result = _continuationData != null
 				? Engine.Continue(_continuationData, ApplyInputSpecs(_input))
 				: Engine.Run(_input);
