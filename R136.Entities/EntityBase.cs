@@ -4,8 +4,7 @@ using R136.Interfaces;
 
 namespace R136.Entities
 {
-	public class EntityBase
-	{
+	public abstract class EntityBase	{
 		private static IStatusManager? _statusManager = null;
 		private readonly object _statusManagerLock = new object();
 

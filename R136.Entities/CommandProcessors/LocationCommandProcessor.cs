@@ -7,8 +7,10 @@ using System.Linq;
 
 namespace R136.Entities.CommandProcessors
 {
-	public class LocationCommandProcessor : ActingCommandProcessor
+	public class LocationCommandProcessor : ActingCommandProcessor, ISnappable<LocationCommandProcessor.Snapshot, int>
 	{
+		const int SnapshotID = 3;
+
 		public event Action? PaperRouteCompleted;
 		private event Action<RoomID, RoomID>? RoomChanged;
 
@@ -79,7 +81,7 @@ namespace R136.Entities.CommandProcessors
 		private void CheckPaperRoute(RoomID toRoom)
 		{
 			var paperroute = Facilities.Configuration.PaperRoute;
-			if (_paperrouteIndex != paperroute.Length)
+			if (_paperrouteIndex < paperroute.Length)
 			{
 				if (paperroute[_paperrouteIndex] == toRoom)
 					_paperrouteIndex++;
@@ -93,6 +95,33 @@ namespace R136.Entities.CommandProcessors
 
 		private ICollection<string>? GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
+
+		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
+		{
+			if (snapshot == null)
+				snapshot = new Snapshot();
+
+			snapshot.ID = SnapshotID;
+			snapshot.PaperRouteIndex = _paperrouteIndex;
+
+			return snapshot;
+		}
+
+		public bool RestoreSnapshot(Snapshot snapshot)
+		{
+			if (snapshot.ID != SnapshotID)
+				return false;
+
+			_paperrouteIndex = snapshot.PaperRouteIndex;
+
+			return true;
+		}
+
+		public class Snapshot : ISnapshot<int>
+		{
+			public int ID { get; set; }
+			public int PaperRouteIndex { get; set; }
+		}
 
 		private enum TextID
 		{

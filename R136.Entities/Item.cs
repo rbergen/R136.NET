@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
-	public class Item : EntityBase
+	public class Item : EntityBase, ISnappable<Item.Snapshot, ItemID>
 	{
 		public ItemID ID { get; private set; }
 		public string Name { get; }
@@ -86,6 +86,27 @@ namespace R136.Entities
 			_ => null
 		};
 
+		public virtual Snapshot TakeSnapshot(Snapshot? snapshot = null)
+		{
+			if (snapshot == null)
+				snapshot = new Snapshot();
+
+			snapshot.ID = ID;
+			snapshot.Room = CurrentRoom;
+
+			return snapshot;
+		}
+
+		public virtual bool RestoreSnapshot(Snapshot snapshot)
+		{
+			if (snapshot.ID != ID)
+				return false;
+
+			CurrentRoom = snapshot.Room;
+			return true;
+		}
+
+
 		public class Initializer
 		{
 			public ItemID ID { get; set; }
@@ -115,6 +136,12 @@ namespace R136.Entities
 			public bool KeepAfterUse { get; set; }
 		}
 
+		public class Snapshot : ISnapshot<ItemID>
+		{
+			public ItemID ID { get; set; }
+			public RoomID Room { get; set; }
+		}
+
 		public class TextsInitializer : KeyedTextsMap<ItemID, TextType>.IInitializer
 		{
 			private readonly Initializer _initializer;
@@ -142,10 +169,10 @@ namespace R136.Entities
 		}
 	}
 
-	interface IUsable<T>
+	interface IUsable<TUsableOn>
 	{
-		ICollection<T> UsableOn { get; }
-		Result UseOn(T subject);
+		ICollection<TUsableOn> UsableOn { get; }
+		Result UseOn(TUsableOn subject);
 	}
 
 	class UsableItem : Item, IUsable<Animate>
