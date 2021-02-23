@@ -3,6 +3,7 @@ using R136.Entities.Global;
 using R136.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace R136.Entities.CommandProcessors
@@ -12,17 +13,24 @@ namespace R136.Entities.CommandProcessors
 		private const int Default = 0;
 
 		public override Result Execute(CommandID id, string name, string? parameters, Player player)
-			=> parameters == null
-				? Result.Success()
-				: id switch
+			=> id switch
 				{
 					CommandID.ConfigGet => ExecuteConfigGet(parameters),
 					CommandID.ConfigSet => ExecuteConfigSet(parameters),
+					CommandID.ConfigList => ExecuteConfigList(parameters),
 					_ => Result.Error()
 				};
 
-		private Result ExecuteConfigSet(string parameters)
+		private static Result ExecuteConfigList(string? parameters)
+			=> parameters == null && Facilities.Configuration.EnableConfigList
+			? Result.Success(GetPublicPropertyNames<Configuration>())
+			: Result.Error(Facilities.CommandTextsMap[CommandID.ConfigList, Default]);
+
+		private Result ExecuteConfigSet(string? parameters)
 		{
+			if (parameters == null)
+				return Result.Success();
+
 			var terms = parameters.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 2)
 				return Result.Success();
@@ -62,8 +70,11 @@ namespace R136.Entities.CommandProcessors
 			return Result.Success();
 		}
 
-		private Result ExecuteConfigGet(string parameters)
+		private Result ExecuteConfigGet(string? parameters)
 		{
+			if (parameters == null)
+				return Result.Success();
+
 			var terms = parameters.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 1)
 				return Result.Success();
@@ -108,7 +119,12 @@ namespace R136.Entities.CommandProcessors
 		private static ICollection<string>? GetTexts(string propertyName, object? oldValue, object? newValue)
 			=> Facilities.CommandTextsMap[CommandID.ConfigSet, Default]
 			.ReplaceInAll("{setting}", propertyName)
-			.ReplaceInAll("{oldvalue}", ObjectDumper.Dump(oldValue))
+			.ReplaceInAll("{oldvalue}", ObjectDumper.Dump(oldValue)[..^1])
 			.ReplaceInAll("{newvalue}", ObjectDumper.Dump(newValue));
+
+		public static string[] GetPublicPropertyNames<TType>()
+			=> typeof(TType).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+			.Where(property => property.CanWrite && property.CanRead)
+			.Select(p => p.Name).ToArray();
 	}
 }

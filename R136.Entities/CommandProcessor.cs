@@ -75,6 +75,7 @@ namespace R136.Entities
 				CommandID.Inspect => _itemProcessor,
 				CommandID.ConfigGet => _internalProcessor,
 				CommandID.ConfigSet => _internalProcessor,
+				CommandID.ConfigList => _internalProcessor,
 				_ => _generalProcessor
 			};
 
@@ -137,6 +138,7 @@ namespace R136.Entities
 		Help,
 		ConfigGet,
 		ConfigSet,
-		Info
+		Info,
+		ConfigList
 	}
 }

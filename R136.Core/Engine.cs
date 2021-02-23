@@ -61,7 +61,6 @@ namespace R136.Core
 
 				LogLine("loading configuration... ");
 				var configuration = await configurationTask;
-				LogLine($"configuration loaded: {ObjectDumper.Dump(configuration)}");
 
 				if (configuration != null)
 				{
@@ -69,14 +68,17 @@ namespace R136.Core
 					LogLine("successfully loaded configuration");
 				}
 
-				LogLine($"loading texts (map count: {Facilities.TextsMap.TextsMapCount})...");
+				LogLine($"loading texts...");
 				if (Facilities.TextsMap.TextsMapCount == 0)
 				{
 					var texts = await textsTask;
-					LogLine($"text initializers loaded: {ObjectDumper.Dump(texts)}");
-					Facilities.TextsMap.LoadInitializers(texts);
-					LogLine($"successfully loaded texts (map count: {Facilities.TextsMap.TextsMapCount})");
-					LogLine(ObjectDumper.Dump(Facilities.TextsMap));
+					if (texts != null)
+					{
+						Facilities.TextsMap.LoadInitializers(texts);
+						LogLine($"successfully loaded texts");
+					}
+					else
+						LogLine("texts loading failed");
 				}
 
 				if (_rooms == null)

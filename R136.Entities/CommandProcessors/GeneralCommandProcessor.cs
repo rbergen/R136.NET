@@ -18,7 +18,7 @@ namespace R136.Entities.CommandProcessors
 				CommandID.Wait => ExecuteWait(command, parameters),
 				CommandID.Status => ExecuteStatus(command, parameters, player),
 				CommandID.End => ExecuteEnd(command, parameters),
-				CommandID.Info => ExecuteInfo(),
+				CommandID.Info => ExecuteInfo(command, parameters),
 				_ => Result.Error()
 			};
 
@@ -36,18 +36,25 @@ namespace R136.Entities.CommandProcessors
 		private static void AddStatusTexts(List<string> list, StatusTextID id, string tag, string content)
 			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, (int)id, tag, content));
 
-		private Result? ValidateParameters(string command, string? parameters)
+		private Result? ValidateEmptyParameters(string command, string? parameters)
 			=> parameters == null ? null : Result.Error(Facilities.TextsMap[this, (int)TextID.CommandSyntax]?.ReplaceInAll("{command}", command));
 
 		private static Result ExecuteHelp() 
 			=> Result.Success(GetTexts(CommandID.Help, Default));
 
-		private static Result ExecuteInfo()
-			=> Result.Success(GetTexts(CommandID.Info, Default));
+		private Result ExecuteInfo(string command, string? parameters)
+		{
+			var validateResult = ValidateEmptyParameters(command, parameters);
+
+			if (validateResult != null)
+				return validateResult;
+
+			return Result.Success(GetTexts(CommandID.Info, Default));
+		}
 
 		private Result ExecuteWait(string command, string? parameters)
 		{
-			var validateResult = ValidateParameters(command, parameters);
+			var validateResult = ValidateEmptyParameters(command, parameters);
 
 			if (validateResult != null)
 				return validateResult;
@@ -59,7 +66,7 @@ namespace R136.Entities.CommandProcessors
 
 		private Result ExecuteStatus(string command, string? parameters, Player player)
 		{
-			var validateResult = ValidateParameters(command, parameters);
+			var validateResult = ValidateEmptyParameters(command, parameters);
 
 			if (validateResult != null)
 				return validateResult;
@@ -87,7 +94,7 @@ namespace R136.Entities.CommandProcessors
 
 		private Result ExecuteEnd(string command, string? parameters)
 		{
-			var validateResult = ValidateParameters(command, parameters);
+			var validateResult = ValidateEmptyParameters(command, parameters);
 
 			if (validateResult != null)
 				return validateResult;
