@@ -1,4 +1,5 @@
-﻿using R136.Entities.Global;
+﻿using R136.Entities.General;
+using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
 using System;
@@ -60,11 +61,8 @@ namespace R136.Entities
 
 		private static Item RegisterTexts(Item item, Initializer initializer)
 		{
-			if (initializer.UseTexts != null)
-				Facilities.ItemTextsMap[initializer.ID, TextType.Use] = initializer.UseTexts;
-
-			if (initializer.CombineTexts != null)
-				Facilities.ItemTextsMap[initializer.ID, TextType.Combine] = initializer.CombineTexts;
+			Facilities.ItemTextsMap.LoadInitializer(initializer.ID, new TextsInitializer(TextType.Use, initializer));
+			Facilities.ItemTextsMap.LoadInitializer(initializer.ID, new TextsInitializer(TextType.Combine, initializer));
 
 			return item;
 		}
@@ -96,7 +94,7 @@ namespace R136.Entities
 			public RoomID StartRoom { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-			public ICollection<string>? UseTexts { get; set; }
+			public	string[]? UseTexts { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 			public bool BlockPutdown { get; set; }
@@ -108,13 +106,33 @@ namespace R136.Entities
 			public ItemID[]? Components { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-			public ICollection<string>? CombineTexts { get; set; }
+			public string[]? CombineTexts { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 			public AnimateID[]? UsableOn { get; set; } = null;
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 			public bool KeepAfterUse { get; set; }
+		}
+
+		public class TextsInitializer : KeyedTextsMap<ItemID, TextType>.IInitializer
+		{
+			private readonly Initializer _initializer;
+			private readonly TextType _textType;
+
+			public TextsInitializer(TextType textType, Initializer initializer)
+				=> (_textType, _initializer) = (textType, initializer);
+
+			public TextType ID 
+				=> _textType;
+
+			public string[]? Texts
+				=> _textType switch
+				{
+					TextType.Combine => _initializer.CombineTexts,
+					TextType.Use => _initializer.UseTexts,
+					_ => null
+				};
 		}
 
 		public enum TextType

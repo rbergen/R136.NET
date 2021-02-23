@@ -229,5 +229,14 @@
 			"Dan zakken je ogen dicht en stopt je hart met kloppen.",
 			"Op hetzelfde moment ontploft de bom en sterft de aarde met jou."
 		]
+	},
+	{
+		"Type": "InternalCommandProcessor",
+		"ID": 0,
+		"Texts": [
+			"Ongeldig commando gegeven"
+		]
 	}
+
+
 ]

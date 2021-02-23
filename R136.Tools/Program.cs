@@ -25,15 +25,10 @@ namespace R136.Tools
 			ObjectDumper.WriteClassType = false;
 
 			ProcessEntity<Animate.Initializer[]>("Animates");
-
-			ProcessEntity<CommandInitializer[]>("Commands");
-
-			ProcessEntity<Item.Initializer[]>("Items");
-
+			ProcessCommands("Commands");
+			ProcessItems("Items");
 			ProcessRooms("Rooms");
-
 			ProcessTexts("Texts");
-
 			ProcessConfiguration("Configuration");
 		}
 
@@ -140,11 +135,54 @@ namespace R136.Tools
 
 			var maps = new TypedTextsMap<int>();
 			maps.LoadInitializers(texts);
+
 			Console.WriteLine($"{name} map after load:");
 			Console.WriteLine(ObjectDumper.Dump(maps));
 
 			WriteEntity(texts, name, path);
 		}
+
+		private static void ProcessItems(string name)
+		{
+			(var items, var path) = ReadEntity<Item.Initializer[]>(name);
+
+			if (items == null || path == null)
+				return;
+
+			var textsMap = new KeyedTextsMap<ItemID, Item.TextType>();
+			foreach(var item in items)
+			{
+				textsMap.LoadInitializer(item.ID, new Item.TextsInitializer(Item.TextType.Use, item));
+				textsMap.LoadInitializer(item.ID, new Item.TextsInitializer(Item.TextType.Combine, item));
+			}
+			Console.WriteLine($"{name} map after load:");
+			Console.WriteLine(ObjectDumper.Dump(textsMap));
+
+			WriteEntity(items, name, path);
+		}
+
+		private static void ProcessCommands(string name)
+		{
+			(var commands, var path) = ReadEntity<CommandInitializer[]>(name);
+
+			if (commands == null || path == null)
+				return;
+
+			var textsMap = new KeyedTextsMap<CommandID, int>();
+			foreach (var command in commands)
+			{
+				if (command.TextMap != null)
+				{
+					foreach (var mapping in command.TextMap)
+						textsMap.LoadInitializer(command.ID, mapping);
+				}
+			}
+			Console.WriteLine($"{name} map after load:");
+			Console.WriteLine(ObjectDumper.Dump(textsMap));
+
+			WriteEntity(commands, name, path);
+		}
+
 
 		private static void ProcessConfiguration(string name)
 		{

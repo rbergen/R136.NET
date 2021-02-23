@@ -58,8 +58,20 @@ namespace R136.Entities.General
 			}
 		}
 
+		public void LoadInitializer(TDictKey key, IInitializer initializer)
+		{
+			if (initializer.Texts != null)
+				this[key, initializer.ID] = initializer.Texts;
+		}
+
 		public int TextsMapCount => _map.Count;
 		public int TextValueCount => _map.Aggregate(0, (count, pair) => count += pair.Value.Count, total => total);
 
+		public interface IInitializer
+		{
+			TTextKey ID { get; }
+
+			string[]? Texts { get; }
+		}
 	}
 }

@@ -24,7 +24,7 @@ namespace R136.Entities
 				if (initializer.TextMap != null)
 				{
 					foreach (var mapping in initializer.TextMap)
-						Facilities.CommandTextsMap[initializer.ID, mapping.ID] = mapping.Texts;
+						Facilities.CommandTextsMap.LoadInitializer(initializer.ID, mapping);
 				}
 			}
 
@@ -112,7 +112,7 @@ namespace R136.Entities
 		public bool FullMatch { get; set; } = false;
 		public IDTextMap[]? TextMap { get; set; }
 
-		public class IDTextMap
+		public class IDTextMap : KeyedTextsMap<CommandID, int>.IInitializer
 		{
 			public int ID { get; set; }
 			public string[] Texts { get; set; } = Array.Empty<string>();

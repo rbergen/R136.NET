@@ -11,6 +11,7 @@ namespace R136.Entities.CommandProcessors
 	class InternalCommandProcessor : CommandProcessor
 	{
 		private const int Default = 0;
+		private Result? _invalidCommandResult = null;
 
 		public override Result Execute(CommandID id, string name, string? parameters, Player player)
 			=> id switch
@@ -21,19 +22,30 @@ namespace R136.Entities.CommandProcessors
 					_ => Result.Error()
 				};
 
-		private static Result ExecuteConfigList(string? parameters)
+		private Result ExecuteConfigList(string? parameters)
 			=> parameters == null && Facilities.Configuration.EnableConfigList
 			? Result.Success(GetPublicPropertyNames<Configuration>())
-			: Result.Error(Facilities.CommandTextsMap[CommandID.ConfigList, Default]);
+			: InvalidCommandResult;
+
+		private Result InvalidCommandResult
+		{
+			get
+			{
+				if (_invalidCommandResult == null)
+					_invalidCommandResult = Result.Error(Facilities.TextsMap[this, Default]);
+
+				return _invalidCommandResult;
+			}
+		}
 
 		private Result ExecuteConfigSet(string? parameters)
 		{
 			if (parameters == null)
-				return Result.Success();
+				return InvalidCommandResult;
 
 			var terms = parameters.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 2)
-				return Result.Success();
+				return InvalidCommandResult;
 
 			var propertyName = terms[0];
 			var propertyValue = terms[1].Trim();
@@ -42,7 +54,7 @@ namespace R136.Entities.CommandProcessors
 			{
 				var property = Facilities.Configuration.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 				if (property == null)
-					return Result.Success();
+					return InvalidCommandResult;
 
 				var oldValue = property.GetValue(Facilities.Configuration);
 
@@ -67,17 +79,17 @@ namespace R136.Entities.CommandProcessors
 				Facilities.LogLine(this, $"Exception while setting {propertyName} to \"{propertyValue}\": {ex}");
 			}
 
-			return Result.Success();
+			return InvalidCommandResult;
 		}
 
 		private Result ExecuteConfigGet(string? parameters)
 		{
 			if (parameters == null)
-				return Result.Success();
+				return InvalidCommandResult;
 
 			var terms = parameters.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 1)
-				return Result.Success();
+				return InvalidCommandResult;
 
 			var propertyName = terms[0];
 
@@ -85,7 +97,7 @@ namespace R136.Entities.CommandProcessors
 			{
 				var property = Facilities.Configuration.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 				if (property == null)
-					return Result.Success();
+					return InvalidCommandResult;
 
 				return Result.Success(GetTexts(property.Name, property.GetValue(Facilities.Configuration)));
 			}
@@ -94,7 +106,7 @@ namespace R136.Entities.CommandProcessors
 				Facilities.LogLine(this, $"Exception while getting {propertyName}: {ex}");
 			}
 
-			return Result.Success();
+			return InvalidCommandResult;
 		}
 
 		private static bool SetValue<T>(PropertyInfo property, T value)

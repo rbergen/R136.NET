@@ -246,14 +246,6 @@
 	{
 		"ID": 18,
 		"Name": "configlist",
-		"FullMatch": true,
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Ongeldig commando gegeven"
-				]
-			}
-		]
+		"FullMatch": true
 	}
 ]
