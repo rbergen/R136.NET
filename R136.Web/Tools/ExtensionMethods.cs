@@ -1,9 +1,6 @@
 ﻿using Markdig;
-using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 #nullable enable
 
@@ -14,14 +11,14 @@ namespace R136.Web.Tools
 		private static MarkdownPipeline? _pipeline = null;
 		private static readonly object _pipelineLock = new object();
 
-		public static MarkupString ToMarkupString(this IEnumerable<string> texts)
+		public static string ToMarkupString(this IEnumerable<string> texts)
 		{
 			var markdown = Markdown.ToHtml(string.Join('\n', texts), Pipeline);
 			
 			if (markdown.StartsWith("<p>") && markdown.LastIndexOf("<p>") == 0)
 				markdown = markdown[3..^5];
 
-			return (MarkupString)markdown;
+			return markdown;
 		}
 
 		private static MarkdownPipeline Pipeline

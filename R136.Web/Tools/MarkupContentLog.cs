@@ -1,28 +1,22 @@
-﻿using Markdig;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using R136.Interfaces;
-using R136.Web.Tools;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 #nullable enable
 
 namespace R136.Web.Tools
 {
-	public class MarkupContentLog : IEnumerable<ContentBlock>
+	public class MarkupContentLog : IEnumerable<ContentBlock>, ISnappable<MarkupContentLog.Snapshot>
 	{
-		private const int DefaultMaxBlockCount = 10;
-		
+		private const int DefaultMaxBlockCount = 100;
+		private const int DefaultSaveBlockCount = 20;
+
 		private readonly List<ContentBlock> _blocks = new List<ContentBlock>();
-		private readonly int _maxBlockCount;
-
-		public MarkupContentLog(int maxBlockCount)
-			=> _maxBlockCount = maxBlockCount;
-
-		public MarkupContentLog() : this(DefaultMaxBlockCount) { }
+		public int MaxBlockCount { get; set; } = DefaultMaxBlockCount;
+		public int SaveBlockCount { get; set; } = DefaultSaveBlockCount;
 
 		public bool IsTrimmed { get; private set; } = false;
 
@@ -46,7 +40,12 @@ namespace R136.Web.Tools
 
 		public void AddRaw(ContentBlockType type, string text)
 		{
-			_blocks.Add(new ContentBlock(type, null, (MarkupString)text));
+			_blocks.Add(new ContentBlock()
+			{
+				Type = type,
+				Text = text
+			});
+
 			Trim();
 		}
 
@@ -55,8 +54,14 @@ namespace R136.Web.Tools
 			if (texts == null || !texts.Any())
 				return;
 
-			_blocks.Add(new ContentBlock(type, resultCode, texts.ToMarkupString()));
+			_blocks.Add(new ContentBlock()
+			{
+				Type = type,
+				ResultCode = resultCode,
+				Text = texts.ToMarkupString()
+			});
 
+			Trim();
 		}
 
 		public bool IsEmpty
@@ -78,11 +83,36 @@ namespace R136.Web.Tools
 
 		private void Trim()
 		{
-			while (_blocks.Count > _maxBlockCount)
+			while (_blocks.Count > MaxBlockCount)
 			{
 				_blocks.RemoveAt(0);
 				IsTrimmed = true;
 			}
+		}
+
+		public class Snapshot
+		{
+			public bool IsTrimmed { get; set; }
+			public ContentBlock[]? ContentBlocks { get; set; }
+		}
+
+		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
+			=> new Snapshot()
+			{
+				ContentBlocks = _blocks.TakeLast(SaveBlockCount).ToArray(),
+				IsTrimmed = IsTrimmed || _blocks.Count > SaveBlockCount
+			};
+
+		public bool RestoreSnapshot(Snapshot snapshot)
+		{
+			_blocks.Clear();
+
+			if (snapshot.ContentBlocks != null)
+				_blocks.AddRange(snapshot.ContentBlocks);
+			
+			IsTrimmed = snapshot.IsTrimmed;
+
+			return true;
 		}
 
 		public ContentBlock this[int index]
@@ -91,14 +121,12 @@ namespace R136.Web.Tools
 
 	public class ContentBlock
 	{
-		public ContentBlockType Type { get; private set; }
-		public ResultCode? ResultCode { get; private set; }
-		public MarkupString Content { get; private set; }
+		public ContentBlockType Type { get; set; }
+		public ResultCode? ResultCode { get; set; }
+		public string? Text { get; set; }
 
-		public ContentBlock(ContentBlockType type, MarkupString content) : this(type, null, content) { }
-
-		public ContentBlock(ContentBlockType type, ResultCode? resultCode, MarkupString content)
-			=> (Type, ResultCode, Content) = (type, resultCode, content);
+		[JsonIgnore]
+		public MarkupString Content => (MarkupString)(Text ?? string.Empty);
 	}
 
 	public enum ContentBlockType

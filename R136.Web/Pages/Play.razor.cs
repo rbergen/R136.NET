@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using R136.Core;
 using R136.Interfaces;
 using R136.Web.Tools;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace R136.Web.Pages
@@ -25,16 +24,67 @@ namespace R136.Web.Pages
 		[Inject]
 		public MarkupContentLog ContentLog { get; set; }
 
-		protected override void OnInitialized()
-			=> CycleEngine();
+		[Inject]
+		public NavigationManager NavigationManager { get; set; }
 
-		private void ProceedClicked()
+		[Inject]
+		public ILocalStorageService LocalStorage { get; set; }
+
+		[Parameter]
+		public string Action { get; set; }
+
+		protected override async Task OnInitializedAsync()
 		{
-			_pause = false;
-			CycleEngine();
+			bool result = false;
+
+			if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
+			{
+				try
+				{
+					result = Engine.RestoreSnapshot(await LocalStorage.GetItemAsync<R136.Core.Engine.Snapshot>(Constants.R136EngineStorageKey));
+				}
+				catch (Exception ex)
+				{
+					Console.Write($"Error while restoring snapshot from {Constants.R136EngineStorageKey}: {ex}");
+				}
+
+				if (result && await LocalStorage.ContainKeyAsync(Constants.ContentLogStorageKey))
+				{
+					try
+					{
+						Console.WriteLine(await LocalStorage.GetItemAsStringAsync(Constants.ContentLogStorageKey));
+						ContentLog.RestoreSnapshot(await LocalStorage.GetItemAsync<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey));
+					}
+					catch (Exception ex)
+					{
+						Console.Write($"Error while restoring snapshot from {Constants.ContentLogStorageKey}: {ex}");
+						await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
+					}
+				}
+
+				if (!result)
+				{
+					await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
+					await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
+				}
+			}
+
+  		await CycleEngine();
 		}
 
-		private void CycleEngine()
+		private async Task ProceedClickedAsync()
+		{
+			_pause = false;
+			await CycleEngine();
+		}
+
+		private void RestartClickedAsync()
+		{
+			_ended = false;
+			NavigationManager.NavigateTo("/", true);
+		}
+
+		private async Task CycleEngine()
 		{
 			var proceed = true;
 			
@@ -69,12 +119,15 @@ namespace R136.Web.Pages
 						StateHasChanged();
 						proceed = false;
 
+						await LocalStorage.SetItemAsync(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
+						await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
+
 						break;
 				}
 			}
 		}
 
-		private void SubmitInput(EventArgs e)
+		private async Task SubmitInput(EventArgs e)
 		{
 			_error = null;
 
@@ -86,19 +139,19 @@ namespace R136.Web.Pages
 
 			if (result.IsError)
 			{
-				_error = result.Message != null ? result.Message.ToMarkupString() : (MarkupString)"An unspecified error occurred";
+				_error = (MarkupString)(result.Message != null ? result.Message.ToMarkupString() : "An unspecified error occurred");
 				return;
 			}
 
 			ContentLog.Add(ContentBlockType.Input, _input);
 			_input = string.Empty;
 
-			if (ProcessResult(result, ContentBlockType.RunResult))
+			if (await ProcessResult(result, ContentBlockType.RunResult))
 			{
 				if (Engine.DoNext == NextStep.ProgressAnimateStatus)
 					_pauseBeforeRoomStatus = true;
 
-				CycleEngine();
+				await CycleEngine();
 			}
 		}
 
@@ -113,7 +166,7 @@ namespace R136.Web.Pages
 			return text;
 		}
 
-		private bool ProcessResult(Result result, ContentBlockType blockType)
+		private async Task<bool> ProcessResult(Result result, ContentBlockType blockType)
 		{
 			switch (result.Code)
 			{
@@ -127,6 +180,9 @@ namespace R136.Web.Pages
 					_error = null;
 					_continuationData = null;
 					_ended = true;
+
+					await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
+					await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
 
 					return false;
 

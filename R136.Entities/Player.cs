@@ -3,10 +3,11 @@ using R136.Entities.Global;
 using R136.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
-	public class Player : EntityBase
+	public class Player : EntityBase, ISnappable<Player.Snapshot>
 	{
 		private int? _lifePoints;
 		private int? _lifePointsFromConfig;
@@ -40,7 +41,7 @@ namespace R136.Entities
 
 		public Result AddToInventory(Item item)
 		{
-			if (Facilities.Configuration.MaxInventory != null && _inventory.Where(item => !item.IsWearable).ToArray().Length == Facilities.Configuration.MaxInventory)
+			if (Facilities.Configuration.MaxInventory != null && _inventory.Where(item => !item.IsWearable).ToArray().Length >= Facilities.Configuration.MaxInventory)
 				return Result.Failure(GetNamedTexts(TextID.InventoryFull, item));
 
 			_inventory.Add(item);
@@ -80,6 +81,50 @@ namespace R136.Entities
 				_lifePointsFromConfig = Facilities.Configuration.LifePoints;
 
 			_lifePoints = _lifePointsFromConfig;
+		}
+
+		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
+		{
+			if (snapshot == null)
+				snapshot = new Snapshot();
+
+			snapshot.LifePoints = _lifePoints;
+			snapshot.LifePointsFromConfig = _lifePointsFromConfig;
+			snapshot.Room = CurrentRoom.ID;
+			snapshot.Inventory = _inventory.Select(item => item.ID).ToArray();
+
+			return snapshot;
+		}
+
+		public bool RestoreSnapshot(Snapshot snapshot)
+		{
+			if (snapshot.Rooms == null || snapshot.Items == null)
+				return false;
+
+			_lifePoints = snapshot.LifePoints;
+			_lifePointsFromConfig = snapshot.LifePointsFromConfig;
+			CurrentRoom = snapshot.Rooms[snapshot.Room];
+			
+			_inventory.Clear();
+			if (snapshot.Inventory != null)
+				_inventory.AddRange(snapshot.Inventory.Select(itemId => snapshot.Items[itemId]));
+
+			return true;
+		}
+
+		public class Snapshot : IRoomsReader, IItemsReader
+		{
+			public int ID { get; set; }
+			public int? LifePoints { get; set; }
+			public int? LifePointsFromConfig { get; set; }
+			public RoomID Room { get; set; }
+			public ItemID[]? Inventory { get; set; }
+
+			[JsonIgnore]
+			public IReadOnlyDictionary<ItemID, Item>? Items { get; set; }
+
+			[JsonIgnore]
+			public IReadOnlyDictionary<RoomID, Room>? Rooms { get;  set; }
 		}
 
 		private enum TextID

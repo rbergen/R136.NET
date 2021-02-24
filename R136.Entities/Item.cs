@@ -9,9 +9,9 @@ using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
-	public class Item : EntityBase, ISnappable<Item.Snapshot, ItemID>
+	public class Item : EntityBase, ISnappable<Item.Snapshot>
 	{
-		public ItemID ID { get; private set; }
+		public ItemID ID { get; }
 		public string Name { get; }
 		public string Description { get; }
 		public RoomID CurrentRoom { get; set; }
@@ -136,7 +136,7 @@ namespace R136.Entities
 			public bool KeepAfterUse { get; set; }
 		}
 
-		public class Snapshot : ISnapshot<ItemID>
+		public class Snapshot
 		{
 			public ItemID ID { get; set; }
 			public RoomID Room { get; set; }

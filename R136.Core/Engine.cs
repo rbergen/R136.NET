@@ -14,7 +14,6 @@ namespace R136.Core
 	{
 		public IServiceProvider? Services { get; set; }
 		public IStatusManager StatusManager => this;
-		public bool IsInitialized { get; private set; } = false;
 
 		private const string EngineNotInitialized = "Engine not initialized";
 		private const string IncorrectNextStep = "Step inconsistent with DoNext";
@@ -35,6 +34,8 @@ namespace R136.Core
 
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
+
+		public bool IsInitialized { get; private set; } = false;
 
 		public async Task<bool> Initialize()
 		{

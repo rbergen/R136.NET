@@ -1,14 +1,11 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using R136.Core;
-using R136.Interfaces;
 using R136.Web.Tools;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace R136.Web
@@ -25,8 +22,13 @@ namespace R136.Web
 
 			builder.Services
 			.AddScoped(sp => new HttpClient { BaseAddress = baseUri })
-			.AddSingleton(new MarkupContentLog(builder.Configuration.GetValue<int>("MaxContentLogBlockCount")))
-			.AddR136(() => new Uri(baseUri, "data/"));
+			.AddSingleton(new MarkupContentLog()
+			{
+				MaxBlockCount = builder.Configuration.GetValue<int>(Constants.MaxContentLogBlockCount),
+				SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
+			})
+			.AddR136(() => new Uri(baseUri, "data/"))
+			.AddBlazoredLocalStorage();
 
 			var host = builder.Build();
 

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace R136.Entities.Items
 {
-	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding, ISnappable<Flashlight.Snapshot, ItemID>
+	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding, ISnappable<Flashlight.Snapshot>
 	{
 		private int? _lampPoints;
 		private int? _lampPointsFromConfig;
@@ -121,7 +121,7 @@ namespace R136.Entities.Items
 
 		}
 
-		Snapshot ISnappable<Snapshot, ItemID>.TakeSnapshot(Snapshot? snapshot = null)
+		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
 			if (snapshot == null)
 				snapshot = new Snapshot();

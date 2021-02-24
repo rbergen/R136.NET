@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
-	public abstract class Animate : EntityBase, ISnappable<Animate.Snapshot, AnimateID>
+	public abstract class Animate : EntityBase, ISnappable<Animate.Snapshot>
 	{
 		public AnimateID ID { get; private set; }
 		public RoomID CurrentRoom { get; set; }
@@ -120,7 +120,7 @@ namespace R136.Entities
 			public Dictionary<AnimateStatus, string[]>? StatusTexts { get; set; }
 		}
 
-		public class Snapshot : ISnapshot<AnimateID>
+		public class Snapshot
 		{
 			public AnimateID ID { get; set; }
 			public RoomID Room {get; set; }
@@ -129,7 +129,7 @@ namespace R136.Entities
 		}
 	}
 
-	abstract class StrikableAnimate : Animate, ISnappable<Animate.Snapshot, AnimateID>
+	abstract class StrikableAnimate : Animate, ISnappable<Animate.Snapshot>
 	{
 		protected internal int StrikesLeft { get; protected set; }
 

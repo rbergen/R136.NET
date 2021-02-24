@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 
 namespace R136.Interfaces
 {
-	public interface ISnappable<TSnapshot, TId> 
-		where TSnapshot : class, ISnapshot<TId>
-		where TId : struct
+	public interface ISnappable<TSnapshot> 
+		where TSnapshot : class
 	{
 		TSnapshot TakeSnapshot(TSnapshot? snapshot = null);
 
 		bool RestoreSnapshot(TSnapshot snapshot);
-	}
-
-	public interface ISnapshot<TId> where TId : struct
-	{
-		TId ID { get; set; }
 	}
 }
