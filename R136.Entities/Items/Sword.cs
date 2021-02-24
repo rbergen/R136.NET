@@ -62,7 +62,7 @@ namespace R136.Entities.Items
 			}
 
 			if (Facilities.Randomizer.NextDouble() > .3)
-				return Result.Success(texts);
+				return Result.Failure(texts);
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);

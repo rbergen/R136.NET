@@ -23,7 +23,6 @@ namespace R136.Core
 
 			snapshot.Configuration = Facilities.Configuration;
 			snapshot.HasTreeBurned = _hasTreeBurned;
-			snapshot.IsAnimateTriggered = _isAnimateTriggered;
 			snapshot.DoNext = DoNext;
 			snapshot.LocationCommandProcessor = _processors!.LocationProcessor.TakeSnapshot();
 			snapshot.Items = _items!.Values
@@ -61,7 +60,6 @@ namespace R136.Core
 				Facilities.Configuration = snapshot.Configuration;
 
 			_hasTreeBurned = snapshot.HasTreeBurned;
-			_isAnimateTriggered = snapshot.IsAnimateTriggered;
 			DoNext = snapshot.DoNext;
 
 			if (snapshot.LocationCommandProcessor != null)

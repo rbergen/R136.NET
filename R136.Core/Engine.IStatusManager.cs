@@ -83,8 +83,5 @@ namespace R136.Core
 			if (!_rooms![CurrentRoom].Connections.ContainsKey(direction))
 				_rooms![CurrentRoom].Connections[direction] = _rooms![toRoom];
 		}
-
-		public void MarkAnimateTriggered()
-			=> _isAnimateTriggered = true;
 	}
 }

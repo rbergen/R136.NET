@@ -12,6 +12,7 @@ namespace R136.Entities
 	{
 		public AnimateID ID { get; private set; }
 		public RoomID CurrentRoom { get; set; }
+		public bool IsTriggered { get; protected set; }
 
 		protected AnimateStatus Status { get; set; }
 
@@ -56,9 +57,14 @@ namespace R136.Entities
 
 		protected virtual void ProgressStatusInternal(AnimateStatus status) { }
 
-		public virtual Result ApplyItem(ItemID item) => Result.Failure();
+		public virtual Result ApplyItem(ItemID item) 
+			=> Result.Failure();
 
-		public virtual Result ApplyItem(Item item) => ApplyItem(item.ID);
+		public virtual Result ApplyItem(Item item) 
+			=> ApplyItem(item.ID);
+
+		public virtual void ResetTrigger()
+			=> IsTriggered = false;
 
 		private static Func<Initializer, Animate>? GetCreateMethod(AnimateID id) => id switch
 		{
@@ -95,6 +101,7 @@ namespace R136.Entities
 			snapshot.ID = ID;
 			snapshot.Room = CurrentRoom;
 			snapshot.Status = Status;
+			snapshot.IsTriggered = IsTriggered;
 
 			return snapshot;
 		}
@@ -106,6 +113,7 @@ namespace R136.Entities
 
 			CurrentRoom = state.Room;
 			Status = state.Status;
+			IsTriggered = state.IsTriggered;
 			return true;
 		}
 
@@ -126,6 +134,7 @@ namespace R136.Entities
 			public RoomID Room {get; set; }
 			public AnimateStatus Status { get; set; }
 			public int StrikesLeft { get; set; }
+			public bool IsTriggered { get; set; }
 		}
 	}
 
@@ -144,6 +153,7 @@ namespace R136.Entities
 			if (--StrikesLeft == 0)
 			{
 				Status = AnimateStatus.Dying;
+				IsTriggered = true;
 				return Result.Success();
 			}
 

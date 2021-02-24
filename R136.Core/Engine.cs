@@ -30,7 +30,6 @@ namespace R136.Core
 		private Player? _player;
 		private CommandProcessorMap? _processors;
 		private bool _hasTreeBurned = false;
-		private bool _isAnimateTriggered = false;
 
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
@@ -234,17 +233,29 @@ namespace R136.Core
 				return null;
 
 			var startRoom = CurrentRoom;
-
 			var texts = new List<string>();
+			var isAnimateTriggered = false;
+				
 			foreach(var animate in presentAnimates)
 			{
+				if (animate.IsTriggered)
+				{
+					isAnimateTriggered = true;
+					animate.ResetTrigger();
+				}
+
 				if (texts.Count > 0)
 					texts.Add(string.Empty);
 
 				texts.AddRangeIfNotNull(animate.ProgressStatus());
 			}
 
-			DoNext = CurrentRoom != startRoom ? NextStep.ShowRoomStatus : NextStep.RunCommand;
+			if (CurrentRoom != startRoom)
+				DoNext = NextStep.ShowRoomStatus;
+			else if (isAnimateTriggered)
+				DoNext = NextStep.Pause;
+			else 
+				DoNext = NextStep.RunCommand;
 
 			return texts.Count > 0 ? texts : null;
 		}
@@ -261,8 +272,6 @@ namespace R136.Core
 
 			if (terms.Length == 0)
 				return Result.Error(GetTexts(TextID.NoCommand));
-
-			_isAnimateTriggered = false;
 
 			(var processor, var id, var command, var findResult) = _processors!.FindByName(terms[0]);
 
@@ -283,6 +292,9 @@ namespace R136.Core
 
 			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(this, statusData, input)).WrapInputRequest(this);
 		}
+
+		public void EndPause()
+			=> DoNext = NextStep.ShowRoomStatus;
 
 		private enum TextID
 		{

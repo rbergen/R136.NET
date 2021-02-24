@@ -54,12 +54,14 @@ namespace R136.Entities.Animates
 			if (item == ItemID.Cookie)
 			{
 				Status = AnimateStatus.FirstStep;
+				IsTriggered = true;
 				return Result.Success();
 			}
 
 			if (item == ItemID.Nightcap && Status == AnimateStatus.FirstWait)
 			{
 				Status = AnimateStatus.SecondStep;
+				IsTriggered = true;
 				return Result.Success();
 			}
 

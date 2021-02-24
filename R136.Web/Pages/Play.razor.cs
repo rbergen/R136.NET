@@ -16,7 +16,6 @@ namespace R136.Web.Pages
 		private InputSpecs _inputSpecs;
 		private MarkupString? _error = null;
 		private bool _ended = false;
-		private bool _pauseBeforeRoomStatus = false;
 		private bool _pause = false;
 
 		[Inject]
@@ -61,7 +60,6 @@ namespace R136.Web.Pages
 				{
 					try
 					{
-						Console.WriteLine(await LocalStorage.GetItemAsStringAsync(Constants.ContentLogStorageKey));
 						ContentLog.RestoreSnapshot(await LocalStorage.GetItemAsync<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey));
 					}
 					catch (Exception ex)
@@ -84,6 +82,7 @@ namespace R136.Web.Pages
 		private async Task ProceedClickedAsync()
 		{
 			_pause = false;
+			Engine.EndPause();
 			await CycleEngine();
 		}
 
@@ -107,14 +106,7 @@ namespace R136.Web.Pages
 						break;
 
 					case NextStep.ShowRoomStatus:
-						if (_pauseBeforeRoomStatus)
-						{
-							_pause = true;
-							_pauseBeforeRoomStatus = false;
-							proceed = false;
-						}
-						else
-							ContentLog.Add(ContentBlockType.RoomStatus, Engine.RoomStatus);
+						ContentLog.Add(ContentBlockType.RoomStatus, Engine.RoomStatus);
 
 						break;
 
@@ -125,15 +117,24 @@ namespace R136.Web.Pages
 
 					case NextStep.RunCommand:
 						_inputSpecs = Engine.CommandInputSpecs;
-						StateHasChanged();
 						proceed = false;
+						await SaveSnapshot();
 
-						await LocalStorage.SetItemAsync(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
-						await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
+						break;
+					case NextStep.Pause:
+						_pause = true;
+						proceed = false;
+						await SaveSnapshot();
 
 						break;
 				}
 			}
+		}
+
+		private async Task SaveSnapshot()
+		{
+			await LocalStorage.SetItemAsync(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
+			await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
 		}
 
 		private async Task SubmitInput(EventArgs e)
@@ -157,12 +158,7 @@ namespace R136.Web.Pages
 			_continuationData = null;
 
 			if (await ProcessResult(result, ContentBlockType.RunResult))
-			{
-				if (Engine.DoNext == NextStep.ProgressAnimateStatus)
-					_pauseBeforeRoomStatus = true;
-
 				await CycleEngine();
-			}
 		}
 
 		private string ApplyInputSpecs(string text)
@@ -185,9 +181,11 @@ namespace R136.Web.Pages
 
 					_continuationData = result.ContinuationStatus.Data;
 
+					await SaveSnapshot();
 					return false;
 
 				case ResultCode.EndRequested:
+					ContentLog.Add(blockType, result.Code, result.Message);
 					_error = null;
 					_continuationData = null;
 					_ended = true;

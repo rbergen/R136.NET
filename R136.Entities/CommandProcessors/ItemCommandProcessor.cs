@@ -130,15 +130,7 @@ namespace R136.Entities.CommandProcessors
 			if (presentAnimate == null || item is not UsableItem usableItem || !usableItem.UsableOn.Contains(presentAnimate))
 				return item.Use().WrapInputRequest(this);
 
-			result = usableItem.UseOn(presentAnimate);
-
-			if (result.IsSuccess)
-			{
-				StatusManager?.MarkAnimateTriggered();
-				return result;
-			}
-
-			return result.WrapInputRequest(this);
+			return usableItem.UseOn(presentAnimate).WrapInputRequest(this);
 		}
 
 		private ICollection<string>? GetTexts(TextID id)

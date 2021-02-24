@@ -47,6 +47,7 @@ namespace R136.Entities.Animates
 				_ => AnimateStatus.Operating,
 			};
 
+			IsTriggered = true;
 			return Result.Success();
 		}
 	}

@@ -13,6 +13,7 @@ namespace R136.Core
 		ICollection<string>? ProgressAnimateStatus();
 		NextStep DoNext { get; }
 		Result Run(string input);
+		void EndPause();
 	}
 
 	public enum NextStep
@@ -20,6 +21,7 @@ namespace R136.Core
 		ShowStartMessage,
 		ShowRoomStatus,
 		ProgressAnimateStatus,
-		RunCommand
+		RunCommand,
+		Pause
 	}
 }

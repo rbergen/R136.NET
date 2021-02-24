@@ -27,6 +27,8 @@ namespace R136.Entities.Animates
 		{
 			if (Status == AnimateStatus.Initial)
 				Status = AnimateStatus.Operating;
+
+			IsTriggered = true;
 		}
 	}
 }
