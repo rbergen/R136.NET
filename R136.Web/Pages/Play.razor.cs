@@ -154,6 +154,7 @@ namespace R136.Web.Pages
 
 			ContentLog.Add(ContentBlockType.Input, _input);
 			_input = string.Empty;
+			_continuationData = null;
 
 			if (await ProcessResult(result, ContentBlockType.RunResult))
 			{
