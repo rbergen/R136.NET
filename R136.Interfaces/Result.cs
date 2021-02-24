@@ -36,24 +36,25 @@ namespace R136.Interfaces
 		public static Result InputRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
 			=> new Result(status, specs, message);
 
-		public Result WrapInputRequest(IContinuable wrappingObject)
+		public Result WrapInputRequest(string key, int number, string[]? texts = null)
+			=> WrapInputRequest(key, new int[] { number }, texts);
+
+		public Result WrapInputRequest(string key, int[]? numbers = null, string[]? texts = null)
 			=> IsInputRequest
-			? InputRequested(new ContinuationStatus(wrappingObject, (wrappingObject, ContinuationStatus)), InputSpecs!, Message)
+			? InputRequested(new ContinuationStatus() { Key = key, InnerStatus = ContinuationStatus, Texts = texts, Numbers = numbers }, InputSpecs!, Message)
 			: this;
 
-		public static ContinuationStatus? UnwrapContinuationStatus(IContinuable wrappingObject, object data)
-			=> data is ValueTuple<IContinuable, ContinuationStatus> wrapped && wrapped.Item1 == wrappingObject
-			? wrapped.Item2
-			: null;
+		public static ContinuationStatus? UnwrapContinuationStatus(string key, ContinuationStatus status)
+			=> key == status.Key ? status.InnerStatus : null;
 
-		public static Result ContinueWrappedContinuationStatus(IContinuable wrappingObject, object data, string input)
+		public static Result ContinueWrappedContinuationStatus(string key, ContinuationStatus status, string input, Func<ContinuationStatus, string, Result> continueInvoker)
 		{
-			var innerStatus = UnwrapContinuationStatus(wrappingObject, data);
+			var innerStatus = UnwrapContinuationStatus(key, status);
 
 			if (innerStatus == null)
 				return Error();
 
-			return innerStatus.Continuable.Continue(innerStatus.Data, input);
+			return continueInvoker.Invoke(status, input);
 		}
 
 		public ResultCode Code { get; }

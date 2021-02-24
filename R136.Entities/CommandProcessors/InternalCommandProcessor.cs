@@ -13,6 +13,8 @@ namespace R136.Entities.CommandProcessors
 		private const int Default = 0;
 		private Result? _invalidCommandResult = null;
 
+		public InternalCommandProcessor() : base(CommandProcessorID.Internal) { }
+
 		public override Result Execute(CommandID id, string name, string? parameters, Player player)
 			=> id switch
 				{

@@ -10,6 +10,9 @@ namespace R136.Entities.CommandProcessors
 	class GeneralCommandProcessor : CommandProcessor, IContinuable
 	{
 		private const int Default = 0;
+		private const string ContinuationKey = "QkztbraYG4TCSdtqayuU";
+
+		public GeneralCommandProcessor() : base(CommandProcessorID.General) { }
 
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 			=> id switch
@@ -99,12 +102,12 @@ namespace R136.Entities.CommandProcessors
 			if (validateResult != null)
 				return validateResult;
 
-			return Result.InputRequested(new ContinuationStatus(this, this), Facilities.Configuration.YesNoInputSpecs, GetTexts(EndTextID.ConfirmEnd));
+			return Result.InputRequested(new ContinuationStatus() { Key = ContinuationKey }, Facilities.Configuration.YesNoInputSpecs, GetTexts(EndTextID.ConfirmEnd));
 		}
 
-		public Result Continue(object? statusData, string input)
+		public Result Continue(ContinuationStatus status, string input)
 		{
-			if (statusData != this)
+			if (status.Key != ContinuationKey)
 				return Result.Error();
 
 			return input.ToLower() == Facilities.Configuration.YesInput 

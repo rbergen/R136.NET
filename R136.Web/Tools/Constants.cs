@@ -4,6 +4,7 @@
 	{
 		public const string R136EngineStorageKey = "R136EngineSnapshot";
 		public const string ContentLogStorageKey = "ContentLogSnapshot";
+		public const string ContinuationStatusStorageKey = "ContinuationStatusSnapshot";
 		public const string ProceedButtonLabel = "ProceedButtonLabel";
 		public const string RestartButtonLabel = "RestartButtonLabel";
 		public const string MaxContentLogBlockCount = "MaxContentLogBlockCount";

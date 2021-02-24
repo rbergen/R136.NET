@@ -23,6 +23,7 @@ namespace R136.Core
 		private const string RoomsLabel = "rooms";
 		private const string AnimatesLabel = "animates";
 		private const string ItemsLabel = "items";
+		private const string ContinuationKey = "x8KQUbtDPZwlzWT5AOeJ";
 
 		private IReadOnlyDictionary<RoomID, Room>? _rooms;
 		private IReadOnlyDictionary<ItemID, Item>? _items;
@@ -279,18 +280,23 @@ namespace R136.Core
 			{
 				FindResult.Ambiguous => Result.Error(GetTexts(TextID.AmbiguousCommand)),
 				FindResult.NotFound => Result.Error(GetTexts(TextID.InvalidCommand)),
-				_ => processor!.Execute(id!.Value, command!, terms.Length == 1 ? null : terms[1], _player!)
+				_ => processor!.Execute(id!.Value, command!, terms.Length == 1 ? null : terms[1], _player!).WrapInputRequest(ContinuationKey, (int)processor!.ID)
 			};
 
-			return DoPostRunProcessing(result).WrapInputRequest(this);
+			return DoPostRunProcessing(result);
 		}
 
-		public Result Continue(object statusData, string input)
+		public Result Continue(ContinuationStatus status, string input)
 		{
 			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
-			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(this, statusData, input)).WrapInputRequest(this);
+			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input,
+				(status, input) =>
+					(status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
+					? processor.Continue(status.InnerStatus!, input)
+					: Result.Error()
+				).WrapInputRequest(ContinuationKey));
 		}
 
 		public void EndPause()

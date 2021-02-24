@@ -9,6 +9,8 @@ namespace R136.Entities.Items
 {
 	class Sword : UsableItem, IContinuable
 	{
+		private const string ContinuationKey = "myp3ybBgaJznuoTCcRpj";
+
 #pragma warning disable IDE0060 // Remove unused parameter
 		public static Sword Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
 			=> new Sword
@@ -66,18 +68,22 @@ namespace R136.Entities.Items
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);
-			return Result.InputRequested(new ContinuationStatus(this, (this, strikable)), Facilities.Configuration.YesNoInputSpecs, texts);
+			return Result.InputRequested(new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID }, Facilities.Configuration.YesNoInputSpecs, texts);
 		}
 
 		private void AddTexts(List<string> texts, TextID id)
 			=> texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)id]);
 
-		public Result Continue(object statusData, string input)
+		public Result Continue(ContinuationStatus status, string input)
 		{
-			if (statusData is ValueTuple<Sword, StrikableAnimate> statusTuple && statusTuple.Item1 == this)
-				return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(statusTuple.Item2) : Result.Success();
+			if (status.Key != ContinuationKey || status.Number == null)
+				return Result.Error();
 
-			return Result.Failure();
+			var animate = UsableOn.FirstOrDefault(animate => animate.ID == (AnimateID)status.Number);
+			if (animate == null)
+				return Result.Error();
+
+			return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(animate) : Result.Failure();
 		}
 
 		private enum TextID

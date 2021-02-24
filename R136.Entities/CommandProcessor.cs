@@ -10,6 +10,11 @@ namespace R136.Entities
 {
 	public abstract class CommandProcessor : EntityBase
 	{
+		public CommandProcessorID ID { get; }
+
+		protected CommandProcessor(CommandProcessorID id)
+			=> ID = id;
+
 		public static CommandProcessorMap CreateMap
 			(
 			ICollection<CommandInitializer> initializers,
@@ -79,6 +84,16 @@ namespace R136.Entities
 				_ => _generalProcessor
 			};
 
+		public CommandProcessor? this[CommandProcessorID id]
+			=> id switch
+			{
+				CommandProcessorID.General => _generalProcessor,
+				CommandProcessorID.Internal => _internalProcessor,
+				CommandProcessorID.Item => _itemProcessor,
+				CommandProcessorID.Location => LocationProcessor,
+				_ => null
+			};
+
 		public (CommandProcessor? processor, CommandID? id, string? command, FindResult result) FindByName(string s)
 		{
 			var foundItems = _commandIdMap.Where(pair => pair.Key.fullMatch ? pair.Key.command == s : pair.Key.command.StartsWith(s)).ToArray();
@@ -101,7 +116,7 @@ namespace R136.Entities
 		protected IReadOnlyDictionary<ItemID, Item> Items { get; }
 		protected IReadOnlyDictionary<AnimateID, Animate> Animates { get; }
 
-		public ActingCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public ActingCommandProcessor(CommandProcessorID id, IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(id)
 			=> (Items, Animates) = (items, animates);
 	}
 
@@ -140,5 +155,13 @@ namespace R136.Entities
 		ConfigSet,
 		Info,
 		ConfigList
+	}
+
+	public enum CommandProcessorID
+	{
+		General,
+		Internal,
+		Item,
+		Location
 	}
 }

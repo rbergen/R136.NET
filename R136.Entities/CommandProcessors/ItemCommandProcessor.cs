@@ -10,8 +10,9 @@ namespace R136.Entities.CommandProcessors
 	class ItemCommandProcessor : ActingCommandProcessor, IContinuable
 	{
 		private const int Default = 0;
+		private const string ContinuationKey = "M54ym08ugrEYkp4tpTu1";
 
-		public ItemCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(items, animates) { }
+		public ItemCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Item, items, animates) { }
 
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 			=> id switch
@@ -128,9 +129,9 @@ namespace R136.Entities.CommandProcessors
 			var presentAnimate = Animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
 
 			if (presentAnimate == null || item is not UsableItem usableItem || !usableItem.UsableOn.Contains(presentAnimate))
-				return item.Use().WrapInputRequest(this);
+				return item.Use().WrapInputRequest(ContinuationKey, (int)item.ID);
 
-			return usableItem.UseOn(presentAnimate).WrapInputRequest(this);
+			return usableItem.UseOn(presentAnimate).WrapInputRequest(ContinuationKey, (int)item.ID);
 		}
 
 		private ICollection<string>? GetTexts(TextID id)
@@ -181,8 +182,13 @@ namespace R136.Entities.CommandProcessors
 			};
 		}
 
-		public Result Continue(object statusData, string input)
-			=> Result.ContinueWrappedContinuationStatus(this, statusData, input).WrapInputRequest(this);
+		public Result Continue(ContinuationStatus status, string input)
+			=> Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input, 
+				(status, input) =>
+					(status.Number != null && Items[(ItemID)status.Number] is IContinuable item)
+					? item.Continue(status.InnerStatus!, input)
+					: Result.Error()
+			).WrapInputRequest(ContinuationKey);
 
 		private enum TextID
 		{

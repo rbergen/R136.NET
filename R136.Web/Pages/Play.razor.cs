@@ -12,7 +12,7 @@ namespace R136.Web.Pages
 	public partial class Play
 	{
 		private string _input = string.Empty;
-		private object _continuationData = null;
+		private ContinuationStatus _continuationStatus = null;
 		private InputSpecs _inputSpecs;
 		private MarkupString? _error = null;
 		private bool _ended = false;
@@ -69,14 +69,24 @@ namespace R136.Web.Pages
 					}
 				}
 
-				if (!result)
+				if (result && await LocalStorage.ContainKeyAsync(Constants.ContinuationStatusStorageKey))
 				{
-					await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
-					await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
+					try
+					{
+						_continuationStatus = await LocalStorage.GetItemAsync<ContinuationStatus>(Constants.ContinuationStatusStorageKey);
+					}
+					catch (Exception ex)
+					{
+						Console.Write($"Error while restoring snapshot from {Constants.ContinuationStatusStorageKey}: {ex}");
+						await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
+					}
 				}
+
+				if (!result)
+					await RemoveSnapshot();
 			}
 
-  		await CycleEngine();
+			await CycleEngine();
 		}
 
 		private async Task ProceedClickedAsync()
@@ -135,6 +145,20 @@ namespace R136.Web.Pages
 		{
 			await LocalStorage.SetItemAsync(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
 			await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
+			if (_continuationStatus != null)
+				await LocalStorage.SetItemAsync(Constants.ContinuationStatusStorageKey, _continuationStatus);
+			else
+				await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
+
+			Console.WriteLine(_continuationStatus);
+			Console.WriteLine(await LocalStorage.GetItemAsStringAsync(Constants.ContinuationStatusStorageKey));
+		}
+
+		private async Task RemoveSnapshot()
+		{
+			await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
+			await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
+			await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
 		}
 
 		private async Task SubmitInput(EventArgs e)
@@ -143,8 +167,8 @@ namespace R136.Web.Pages
 
 			_input = ApplyInputSpecs(_input);
 
-			var result = _continuationData != null
-				? Engine.Continue(_continuationData, ApplyInputSpecs(_input))
+			var result = _continuationStatus != null
+				? Engine.Continue(_continuationStatus, ApplyInputSpecs(_input))
 				: Engine.Run(_input);
 
 			if (result.IsError)
@@ -155,7 +179,7 @@ namespace R136.Web.Pages
 
 			ContentLog.Add(ContentBlockType.Input, _input);
 			_input = string.Empty;
-			_continuationData = null;
+			_continuationStatus = null;
 
 			if (await ProcessResult(result, ContentBlockType.RunResult))
 				await CycleEngine();
@@ -179,7 +203,7 @@ namespace R136.Web.Pages
 				case ResultCode.InputRequested:
 					ContentLog.Add(blockType, result.Code, result.Message);
 
-					_continuationData = result.ContinuationStatus.Data;
+					_continuationStatus = result.ContinuationStatus;
 
 					await SaveSnapshot();
 					return false;
@@ -187,12 +211,10 @@ namespace R136.Web.Pages
 				case ResultCode.EndRequested:
 					ContentLog.Add(blockType, result.Code, result.Message);
 					_error = null;
-					_continuationData = null;
+					_continuationStatus = null;
 					_ended = true;
 
-					await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
-					await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
-
+					await RemoveSnapshot();
 					return false;
 
 				case ResultCode.Success:
