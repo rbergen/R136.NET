@@ -2,7 +2,7 @@
 
 @inject IConfiguration Configuration 
 
-<div class="row bg-dark" style="padding-bottom: 50px">
+<div id="contentlog" class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col">
 		<ShowContentLog ContentLog="ContentLog" BlockIDStart="@("content-block-id")" />
 	</div>
@@ -12,27 +12,20 @@
 
 	@if (_pause)
 	{
-		<ProceedButtonBar OnProceedClicked="ProceedClickedAsync" />
+	<ProceedButtonBar OnProceedClicked="ProceedClickedAsync" />
 	}
 	else @if (_ended)
 	{
-		<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@Configuration[Constants.RestartButtonLabel]" />
+	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@Configuration[Constants.RestartButtonLabel]" />
 	}
 	else
 	{
-		<div class="container bg-danger @(_error != null ? "visible" : "hidden")">
-			<div class="row pt-2 pb-2">
-				<div class="col pl-2 text-light">
-					<strong>@(_error ?? (MarkupString)string.Empty)</strong>
-				</div>
-				<div class="col-md-auto">
-					<button type="button" class="btn-close btn-close-white" @onclick="@(() => _error = null)" />
-				</div>
-			</div>
+		<div class="container my-0 alert alert-danger alert-dismissible fade show @(_error != null ? "visible" : "hidden")">
+			@(_error ?? (MarkupString)"&nbsp")
+			<button type="button" class="btn-close" @onclick="@(() => _error = null)"></button>
 		</div>
-
 		<form class="container bg-dark border-top border-danger" @onsubmit="@SubmitInput">
-			<div class="row pt-2 pb-2">
+			<div class="row pt-2 pb-2 gx-2">
 				<div class="col">
 					<div class="input-group">
 						<div class="input-group-prepend">
@@ -46,9 +39,6 @@
 				</div>
 			</div>
 		</form>
-	}
+		}
 
-</div>
-
-@code {
-}
+	</div>

@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using R136.Core;
 using R136.Interfaces;
 using R136.Web.Tools;
@@ -18,6 +19,9 @@ namespace R136.Web.Pages
 		private bool _pauseBeforeRoomStatus = false;
 		private bool _pause = false;
 
+		[Inject]
+		public IJSRuntime JSRuntime { get; set; }
+
 		[Inject] 
 		public IEngine Engine { get; set; }
 
@@ -32,6 +36,11 @@ namespace R136.Web.Pages
 
 		[Parameter]
 		public string Action { get; set; }
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			await JSRuntime.InvokeAsync<bool>("stretchToHeight", "contentlog", "app");
+		}
 
 		protected override async Task OnInitializedAsync()
 		{
@@ -172,6 +181,7 @@ namespace R136.Web.Pages
 			{
 				case ResultCode.InputRequested:
 					ContentLog.Add(blockType, result.Code, result.Message);
+
 					_continuationData = result.ContinuationStatus.Data;
 
 					return false;

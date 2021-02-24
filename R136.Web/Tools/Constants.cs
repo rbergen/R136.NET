@@ -8,5 +8,6 @@
 		public const string RestartButtonLabel = "RestartButtonLabel";
 		public const string MaxContentLogBlockCount = "MaxContentLogBlockCount";
 		public const string SaveContentLogBlockCount = "SaveContentLogBlockCount";
+		public const string HeaderText = "HeaderText";
 	}
 }
