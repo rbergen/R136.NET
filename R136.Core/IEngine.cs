@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using R136.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace R136.Interfaces
+namespace R136.Core
 {
-	public interface IEngine : IContinuable
+	public interface IEngine : IContinuable, ISnappable<Engine.Snapshot>
 	{
 		Task<bool> Initialize();
 		InputSpecs CommandInputSpecs { get; }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace R136.Entities.Items
 {
-	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding
+	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding, ISnappable<Flashlight.Snapshot>
 	{
 		private int? _lampPoints;
 		private int? _lampPointsFromConfig;
@@ -118,6 +118,39 @@ namespace R136.Entities.Items
 			}
 
 			return null;
+
+		}
+
+		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
+		{
+			if (snapshot == null)
+				snapshot = new Snapshot();
+
+			base.TakeSnapshot(snapshot);
+			snapshot.LampPoints = _lampPoints;
+			snapshot.LampPointsFromConfig = _lampPointsFromConfig;
+			snapshot.IsOn = IsOn;
+			
+			return snapshot;
+		}
+		
+		public bool RestoreSnapshot(Snapshot snapshot)
+		{
+			if (!base.RestoreSnapshot(snapshot))
+				return false;
+
+			_lampPoints = snapshot.LampPoints;
+			_lampPointsFromConfig = snapshot.LampPointsFromConfig;
+			IsOn = snapshot.IsOn;
+
+			return true;
+		}
+
+		public new class Snapshot : Item.Snapshot
+		{
+			public int? LampPoints { get; set; }
+			public int? LampPointsFromConfig { get; set; }
+			public bool IsOn { get; set; }
 		}
 
 		private enum TextID

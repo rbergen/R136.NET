@@ -8,13 +8,15 @@
 	</div>
 </div>
 
-@if (!_ended)
-{
-	<div class="footer fixed-bottom">
+<div class="footer fixed-bottom">
 
 	@if (_pause)
 	{
-		<ProceedButtonBar OnProceedClicked="ProceedClicked" />
+		<ProceedButtonBar OnProceedClicked="ProceedClickedAsync" />
+	}
+	else @if (_ended)
+	{
+		<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@Configuration[Constants.RestartButtonLabel]" />
 	}
 	else
 	{
@@ -36,18 +38,17 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text">&gt;</span>
 						</div>
-						<input type="text" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)"/>
+						<input type="text" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)" />
 					</div>
 				</div>
 				<div class="col-md-auto">
-					<input type="submit" class="btn btn-light" value="@Configuration["ProceedButtonLabel"]" />
+					<input type="submit" class="btn btn-light" value="@Configuration[Constants.ProceedButtonLabel]" />
 				</div>
 			</div>
 		</form>
 	}
 
-	</div>
-}
+</div>
 
 @code {
 }

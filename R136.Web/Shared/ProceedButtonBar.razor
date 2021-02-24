@@ -6,7 +6,7 @@
 			&nbsp;
 		</div>
 		<div class="col-md-auto">
-			<button type="button" class="btn btn-light" @onclick="ReportProceedClick">@Configuration["ProceedButtonLabel"]</button>
+			<button type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? Configuration[Constants.ProceedButtonLabel])</button>
 		</div>
 		<div class="col">
 			&nbsp;
@@ -18,6 +18,9 @@
 @code {
 	[Parameter]
 	public EventCallback OnProceedClicked { get; set; }
+
+	[Parameter]
+	public string ButtonLabel { get; set; } = null;
 
 	protected async Task ReportProceedClick(MouseEventArgs e)
 		=> await OnProceedClicked.InvokeAsync();

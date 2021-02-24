@@ -8,9 +8,9 @@ using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
-	public abstract class Animate : EntityBase
+	public abstract class Animate : EntityBase, ISnappable<Animate.Snapshot>
 	{
-		public AnimateID ID { get; }
+		public AnimateID ID { get; private set; }
 		public RoomID CurrentRoom { get; set; }
 
 		protected AnimateStatus Status { get; set; }
@@ -87,6 +87,28 @@ namespace R136.Entities
 			_ => null
 		};
 
+		public virtual Snapshot TakeSnapshot(Snapshot? snapshot = null)
+		{
+			if (snapshot == null)
+				snapshot = new Snapshot();
+
+			snapshot.ID = ID;
+			snapshot.Room = CurrentRoom;
+			snapshot.Status = Status;
+
+			return snapshot;
+		}
+
+		public virtual bool RestoreSnapshot(Snapshot state)
+		{
+			if (state.ID != ID)
+				return false;
+
+			CurrentRoom = state.Room;
+			Status = state.Status;
+			return true;
+		}
+
 		public class Initializer
 		{
 			public AnimateID ID { get; set; }
@@ -98,9 +120,16 @@ namespace R136.Entities
 			public Dictionary<AnimateStatus, string[]>? StatusTexts { get; set; }
 		}
 
+		public class Snapshot
+		{
+			public AnimateID ID { get; set; }
+			public RoomID Room {get; set; }
+			public AnimateStatus Status { get; set; }
+			public int StrikesLeft { get; set; }
+		}
 	}
 
-	abstract class StrikableAnimate : Animate
+	abstract class StrikableAnimate : Animate, ISnappable<Animate.Snapshot>
 	{
 		protected internal int StrikesLeft { get; protected set; }
 
@@ -119,6 +148,22 @@ namespace R136.Entities
 			}
 
 			return Result.Failure();
+		}
+
+		public override Snapshot TakeSnapshot(Snapshot? snapshot = null)
+		{
+			snapshot = base.TakeSnapshot(snapshot);
+			snapshot.StrikesLeft = StrikesLeft;
+			return snapshot;
+		}
+
+		public override bool RestoreSnapshot(Snapshot state)
+		{
+			if (!base.RestoreSnapshot(state))
+				return false;
+
+			StrikesLeft = state.StrikesLeft;
+			return true;
 		}
 	}
 
