@@ -18,10 +18,7 @@ namespace R136.Entities
 		public bool IsPutdownAllowed { get; }
 		public bool IsWearable { get; }
 
-		static Item Create(Initializer initializer)
-			=> new Item(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
-
-		public static IReadOnlyDictionary<ItemID, Item> CreateMap(ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static IReadOnlyDictionary<ItemID, Item> CreateOrUpdateMap(IReadOnlyDictionary<ItemID, Item>? sourceMap, ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
 			Dictionary<ItemID, Item> items = new Dictionary<ItemID, Item>(initializers.Count);
 
@@ -40,10 +37,10 @@ namespace R136.Entities
 					if (initializer.Components != null && initializer.Components.Length == 2)
 						compoundInitializers.Add(initializer);
 					else
-						items[initializer.ID] = RegisterTexts(UsableItem.Create(initializer, animates), initializer);
+						items[initializer.ID] = RegisterTexts(UsableItem.Create(sourceMap?[initializer.ID], initializer, animates), initializer);
 				}
 				else
-					items[initializer.ID] = RegisterTexts(Create(initializer), initializer);
+					items[initializer.ID] = RegisterTexts(Create(sourceMap?[initializer.ID], initializer), initializer);
 			}
 
 			foreach (var initializer in compoundInitializers)
@@ -66,6 +63,15 @@ namespace R136.Entities
 
 			return item;
 		}
+
+		static Item Create(Item? sourceItem, Initializer initializer)
+			=> new Item(
+				initializer.ID,
+				initializer.Name,
+				initializer.Description,
+				sourceItem?.CurrentRoom ?? initializer.StartRoom,
+				initializer.Wearable,
+				!initializer.BlockPutdown);
 
 		protected Item(ItemID id, string name, string description, RoomID startRoom, bool isWearable, bool isPutdownAllowed)
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
@@ -180,13 +186,13 @@ namespace R136.Entities
 		public ICollection<Animate> UsableOn { get; }
 		bool KeepsAfterUse { get; }
 
-		public static UsableItem Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static UsableItem Create(Item? sourceItem, Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
 			=> new UsableItem
 			(
 			initializer.ID,
 			initializer.Name,
 			initializer.Description,
-			initializer.StartRoom,
+			sourceItem?.CurrentRoom ?? initializer.StartRoom,
 			initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
 			initializer.Wearable,
 			!initializer.BlockPutdown,

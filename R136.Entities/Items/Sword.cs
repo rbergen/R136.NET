@@ -83,6 +83,14 @@ namespace R136.Entities.Items
 			if (animate == null)
 				return Result.Error();
 
+			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
+			if (yesNoInputSpecs.PermittedCharacters != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.PermittedCharacters.Contains(input))
+				return Result.InputRequested(
+					new ContinuationStatus() { Key = ContinuationKey, Number = (int)animate.ID }, 
+					Facilities.Configuration.YesNoInputSpecs,
+					Facilities.TextsMap[this, (int)TextID.InvalidYesNoAnswer]
+				);
+
 			return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(animate) : Result.Failure();
 		}
 
@@ -91,7 +99,8 @@ namespace R136.Entities.Items
 			Miss,
 			Hit,
 			SeriouslyInjured,
-			CanStrikeAgain
+			CanStrikeAgain,
+			InvalidYesNoAnswer
 		}
 	}
 }

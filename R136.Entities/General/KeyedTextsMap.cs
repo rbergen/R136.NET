@@ -43,10 +43,15 @@ namespace R136.Entities.General
 			}
 			set
 			{
-				if (value == null)
-					throw new ArgumentNullException(nameof(value));
-
 				var textMap = this[key];
+
+				if (value == null || value.Count == 0)
+				{
+					if (textMap != null)
+						textMap.Remove(id);
+					
+					return;
+				}
 
 				if (textMap == null)
 				{
@@ -59,10 +64,10 @@ namespace R136.Entities.General
 		}
 
 		public void LoadInitializer(TDictKey key, IInitializer initializer)
-		{
-			if (initializer.Texts != null)
-				this[key, initializer.ID] = initializer.Texts;
-		}
+			=> this[key, initializer.ID] = initializer.Texts;
+
+		protected void Clear()
+			=> _map.Clear();
 
 		public int TextsMapCount => _map.Count;
 		public int TextValueCount => _map.Aggregate(0, (count, pair) => count += pair.Value.Count, total => total);

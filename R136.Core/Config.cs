@@ -36,7 +36,7 @@ namespace R136.Core
 				.AddSingleton(engine.StatusManager);
 		}
 
-		public static async Task<bool> InitializeR136Async(this IServiceProvider serviceProvider)
-			=> await serviceProvider.GetRequiredService<IEngine>().Initialize();
+		public static void PreLoadR136Async(this IServiceProvider serviceProvider, string[] entityGroups)
+			=> serviceProvider.GetRequiredService<IEngine>().StartLoadEntities(entityGroups);
 	}
 }

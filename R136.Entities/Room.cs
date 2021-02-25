@@ -34,7 +34,6 @@ namespace R136.Entities
 				rooms[initializer.ID].Connections = initializer.Connections?.ToDictionary(pair => pair.Key, pair => rooms[pair.Value]) ?? new Dictionary<Direction, Room>();
 
 			return rooms;
-
 		}
 
 		private Room(RoomID id, string name, string? description, bool isDark, bool isForest)

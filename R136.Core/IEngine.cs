@@ -6,7 +6,9 @@ namespace R136.Core
 {
 	public interface IEngine : IContinuable, ISnappable<Engine.Snapshot>
 	{
-		Task<bool> Initialize();
+		void StartLoadEntities(string[] groupLabels);
+		Task<bool> SetEntityGroup(string label);
+		Task<bool> Initialize(string groupLabel);
 		InputSpecs CommandInputSpecs { get; }
 		ICollection<string>? StartMessage { get; }
 		ICollection<string>? RoomStatus { get; }

@@ -10,5 +10,7 @@
 		public const string MaxContentLogBlockCount = "MaxContentLogBlockCount";
 		public const string SaveContentLogBlockCount = "SaveContentLogBlockCount";
 		public const string HeaderText = "HeaderText";
+		public const string Languages = "Languages";
+		public const string DefaultLanguage = "Languages:Default";
 	}
 }

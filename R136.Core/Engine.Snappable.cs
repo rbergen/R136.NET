@@ -15,7 +15,7 @@ namespace R136.Core
 	{
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
-			if (!IsInitialized && !Initialize().Result)
+			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
 			if (snapshot == null)
@@ -51,7 +51,7 @@ namespace R136.Core
 
 		public bool RestoreSnapshot(Snapshot snapshot)
 		{
-			if (!IsInitialized && !Initialize().Result)
+			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
 			bool result = true;

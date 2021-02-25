@@ -77,6 +77,13 @@
 		]
 	},
 	{
+		"Type": "Sword",
+		"ID": 4,
+		"Texts": [
+			"Dat snap ik niet. Antwoord alsjeblieft met j of n."
+		]
+	},
+	{
 		"Type": "Player",
 		"ID": 0,
 		"Texts": [

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace R136.Core
 {
@@ -13,19 +14,37 @@ namespace R136.Core
 	{
 		private readonly List<Func<ICollection<string>?>> _turnEndingNotifiees = new List<Func<ICollection<string>?>>();
 
+		private async Task<TypedEntityCollection?> LoadEntities(string groupLabel)
+		{
+			if (Services == null)
+				return null;
+
+			var entityReader = (IEntityReader?)Services.GetService(typeof(IEntityReader));
+			if (entityReader == null)
+				return null;
+
+			var entityCollection = new TypedEntityCollection();
+			entityCollection.Add(await entityReader.ReadEntity<Configuration>(groupLabel, ConfigurationLabel));
+			entityCollection.Add(await entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(groupLabel, TextsLabel));
+			entityCollection.Add(await entityReader.ReadEntity<CommandInitializer[]>(groupLabel, CommandsLabel));
+			entityCollection.Add(await entityReader.ReadEntity<Room.Initializer[]>(groupLabel, RoomsLabel));
+			entityCollection.Add(await entityReader.ReadEntity<Animate.Initializer[]>(groupLabel, AnimatesLabel));
+			entityCollection.Add(await entityReader.ReadEntity<Item.Initializer[]>(groupLabel, ItemsLabel));
+
+			return entityCollection;
+		}
+
 		private void RegisterTurnEndingNotifiees<TEntity>(IEnumerable<TEntity> entities)
 		{
 			foreach (var notifiee in entities.Where(entity => entity is INotifyTurnEnding).Cast<INotifyTurnEnding>())
 				_turnEndingNotifiees.Add(notifiee.TurnEnding);
 		}
 		private void LogLine(string text)
-		{
-			Facilities.LogLine(this, text);
-		}
+			=> Facilities.LogLine(this, text);
 
 		private bool ValidateStep(NextStep step)
 		{
-			if (!IsInitialized && !Initialize().Result)
+			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
 			return DoNext == step;

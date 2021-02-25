@@ -8,6 +8,11 @@
   <ItemGroup>
     <Content Remove="wwwroot\data\animatesbase.json" />
     <Content Remove="wwwroot\data\commandsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\animatesbase.json" />
+    <Content Remove="wwwroot\data\en-GB\commandsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\itemsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\roomsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\textsbase.json" />
     <Content Remove="wwwroot\data\itemsbase.json" />
     <Content Remove="wwwroot\data\roomsbase.json" />
     <Content Remove="wwwroot\data\textsbase.json" />
@@ -15,11 +20,16 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="wwwroot\data\animatesbase.json" />
-    <None Include="wwwroot\data\commandsbase.json" />
-    <None Include="wwwroot\data\itemsbase.json" />
-    <None Include="wwwroot\data\roomsbase.json" />
-    <None Include="wwwroot\data\textsbase.json" />
+    <None Include="wwwroot\data\en-GB\animatesbase.json" />
+    <None Include="wwwroot\data\en-GB\commandsbase.json" />
+    <None Include="wwwroot\data\en-GB\itemsbase.json" />
+    <None Include="wwwroot\data\en-GB\roomsbase.json" />
+    <None Include="wwwroot\data\en-GB\textsbase.json" />
+    <None Include="wwwroot\data\nl-NL\animatesbase.json" />
+    <None Include="wwwroot\data\nl-NL\commandsbase.json" />
+    <None Include="wwwroot\data\nl-NL\itemsbase.json" />
+    <None Include="wwwroot\data\nl-NL\roomsbase.json" />
+    <None Include="wwwroot\data\nl-NL\textsbase.json" />
   </ItemGroup>
 
   <ItemGroup>

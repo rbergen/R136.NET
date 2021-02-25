@@ -31,132 +31,31 @@ namespace R136.Core
 		private Player? _player;
 		private CommandProcessorMap? _processors;
 		private bool _hasTreeBurned = false;
+		private readonly Dictionary<string, Task<TypedEntityCollection?>> _entityTaskMap = new Dictionary<string, Task<TypedEntityCollection?>>();
 
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
 
 		public bool IsInitialized { get; private set; } = false;
 
-		public async Task<bool> Initialize()
+		public void StartLoadEntities(string[] groupLabels)
+		{
+			foreach (var label in groupLabels)
+				_entityTaskMap[label] = LoadEntities(label);
+		}
+
+		public async Task<bool> Initialize(string groupLabel)
 		{
 			try
 			{
 				if (IsInitialized)
 					return true;
 
-				if (Services == null)
-					return false;
-
-				Facilities.Services = Services;
-
-				var entityReader = (IEntityReader?)Services.GetService(typeof(IEntityReader));
-				if (entityReader == null)
-					return false;
-
-				var configurationTask = entityReader.ReadEntity<Configuration>(ConfigurationLabel);
-				var textsTask = entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(TextsLabel);
-				var commandsTask = entityReader.ReadEntity<CommandInitializer[]>(CommandsLabel);
-				var roomsTask = entityReader.ReadEntity<Room.Initializer[]>(RoomsLabel);
-				var animatesTask = entityReader.ReadEntity<Animate.Initializer[]>(AnimatesLabel);
-				var itemsTask = entityReader.ReadEntity<Item.Initializer[]>(ItemsLabel);
-
-				LogLine("loading configuration... ");
-				var configuration = await configurationTask;
-
-				if (configuration != null)
-				{
-					Facilities.Configuration = configuration;
-					LogLine("successfully loaded configuration");
-				}
-
-				LogLine($"loading texts...");
-				if (Facilities.TextsMap.TextsMapCount == 0)
-				{
-					var texts = await textsTask;
-					if (texts != null)
-					{
-						Facilities.TextsMap.LoadInitializers(texts);
-						LogLine($"successfully loaded texts");
-					}
-					else
-						LogLine("texts loading failed");
-				}
-
-				if (_rooms == null)
-				{
-					LogLine("loading rooms... ");
-					var rooms = await roomsTask;
-					if (rooms == null)
-					{
-						LogLine("rooms loading failed");
-						return false;
-					}
-					_rooms = Room.CreateMap(rooms);
-					LogLine("successfully loaded rooms");
-				}
-
-				if (_animates == null)
-				{
-					LogLine("loading animates... ");
-					var animates = await animatesTask;
-					if (animates == null)
-					{
-						LogLine("animates loading failed");
-						return false;
-					}
-
-					_animates = Animate.CreateMap(animates);
-					LogLine("successfully loaded rooms");
-				}
-
-				if (_items == null)
-				{
-					LogLine("loading items... ");
-					var items = await itemsTask;
-					if (items == null)
-					{
-						LogLine("items loading failed");
-						return false;
-					}
-
-					_items = Item.CreateMap(items, _animates);
-					LogLine("successfully loaded items");
-				}
-
-				if (_processors == null)
-				{
-					LogLine("loading commands... ");
-					var commands = await commandsTask;
-					if (commands == null)
-					{
-						LogLine("commands loading failed");
-						return false;
-					}
-
-					_processors = CommandProcessor.CreateMap(commands, _items, _animates);
-					LogLine("successfully loaded commands");
-				}
-
 				ObjectDumper.WriteClassType = false;
 				ObjectDumper.WriteBidirectionalReferences = false;
 
-				LogLine("creating player");
+				await SetEntityGroup(groupLabel);
 
-				if (_player == null)
-					_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
-
-				LogLine("finalizing initialization");
-
-				if (_animates[AnimateID.Tree] is Tree tree)
-					tree.Burned += TreeHasBurned;
-
-				if (_animates[AnimateID.PaperHatch] is ITriggerable paperHatch)
-					_processors.LocationProcessor.PaperRouteCompleted += paperHatch.Trigger;
-
-				RegisterTurnEndingNotifiees(_items.Values);
-				RegisterTurnEndingNotifiees(_animates.Values);
-
-				LogLine("initialization complete");
 				IsInitialized = true;
 				return true;
 			}
@@ -166,6 +65,78 @@ namespace R136.Core
 				return false;
 			}
 		}
+
+		public async Task<bool> SetEntityGroup(string label)
+		{
+			try
+			{
+				var entityMap = await _entityTaskMap[label];
+				if (entityMap == null)
+					return false;
+
+				var configuration = entityMap.Get<Configuration>();
+
+				if (configuration != null)
+					Facilities.Configuration = configuration;
+
+				var texts = entityMap.Get<TypedTextsMap<int>.Initializer[]>();
+				if (texts != null)
+					Facilities.TextsMap.LoadInitializers(texts);
+
+				var rooms = entityMap.Get<Room.Initializer[]>();
+				if (rooms == null)
+					return false;
+
+				_rooms = Room.CreateMap(rooms);
+
+				var animates = entityMap.Get<Animate.Initializer[]>();
+				if (animates == null)
+					return false;
+
+				if (_animates?[AnimateID.Tree] is Tree oldTree)
+					oldTree.Burned -= TreeHasBurned;
+				
+				if (_animates?[AnimateID.PaperHatch] is ITriggerable oldPaperHatch && _processors != null)
+					_processors.LocationProcessor.PaperRouteCompleted -= oldPaperHatch.Trigger;
+
+				_animates = Animate.CreateMap(animates);
+
+				var items = entityMap.Get<Item.Initializer[]>();
+				if (items == null)
+					return false;
+
+				_items = Item.CreateOrUpdateMap(_items, items, _animates);
+
+				var commands = entityMap.Get<CommandInitializer[]>();
+				if (commands == null)
+					return false;
+
+				_processors = CommandProcessor.CreateMap(commands, _items, _animates);
+
+				if (_player == null)
+					_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
+				else
+					_player.CurrentRoom = _rooms[_player.CurrentRoom.ID];
+
+				if (_animates[AnimateID.Tree] is Tree newTree)
+					newTree.Burned += TreeHasBurned;
+
+				if (_animates[AnimateID.PaperHatch] is ITriggerable newPaperHatch)
+					_processors.LocationProcessor.PaperRouteCompleted += newPaperHatch.Trigger;
+
+				_turnEndingNotifiees.Clear();
+				RegisterTurnEndingNotifiees(_items.Values);
+				RegisterTurnEndingNotifiees(_animates.Values);
+
+				return true;
+			}
+			catch (Exception e)
+			{
+				LogLine($"Exception during initialization: {e}");
+				return false;
+			}
+		}
+
 
 		public ICollection<string>? StartMessage
 		{

@@ -13,8 +13,7 @@ namespace R136.Entities.General
 
 			foreach (var initializer in initializers)
 			{
-				if (initializer.Texts != null && initializer.Texts.Length > 0)
-					base[initializer.Type, initializer.ID] = initializer.Texts;
+				base[initializer.Type, initializer.ID] = initializer.Texts;
 			}
 		}
 
