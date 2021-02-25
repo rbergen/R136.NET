@@ -10,4 +10,4 @@ Since its resurrection, R136 has become a willing vehicle for me to try new thin
 * [Bootstrap 5.0](https://getbootstrap.com/docs/5.0/getting-started/introduction/).
 * Browser local storage, via [Blazored LocalStorage](https://github.com/Blazored/LocalStorage).
 
-The game itself has been converted from a purely C-like procedural implementation to an object-oriented one. Furthermore, much of it (including all visual texts) can now be configured through JSON files. (Amongst others, this means that a next step in the game's development could be an English version. Maybe I'll develop that itch at some point in the future.) 
+The game itself has been converted from a purely C-like procedural implementation to an object-oriented one. Furthermore, much of it (including all visible texts) can now be configured through JSON files. (Amongst others, this means that a next step in the game's development could be an English version. Maybe I'll develop that itch at some point in the future.) 
