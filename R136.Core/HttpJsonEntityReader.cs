@@ -19,12 +19,12 @@ namespace R136.Core
 			LogLine($"created with base URI {_client.BaseAddress}");
 		}
 
-		public async Task<TEntity?> ReadEntity<TEntity>(string label)
+		public async Task<TEntity?> ReadEntity<TEntity>(string groupLabel, string label)
 		{
 			try
 			{
 				LogLine($"loading {label}... ");
-				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{label}.json"));
+				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{groupLabel}/{label}.json"));
 				LogLine($"{label} loaded successfully");
 				return result;
 			}

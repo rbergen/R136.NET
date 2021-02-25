@@ -31,11 +31,39 @@ namespace R136.Core
 		private Player? _player;
 		private CommandProcessorMap? _processors;
 		private bool _hasTreeBurned = false;
+		private Dictionary<string, Task<TypedEntityCollection?>> _entityTaskMap = new Dictionary<string, Task<TypedEntityCollection?>>();
 
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
 
 		public bool IsInitialized { get; private set; } = false;
+
+
+		private void StartLoadEntities(string[] groupLabels)
+		{
+			foreach (var label in groupLabels)
+				_entityTaskMap[label] = LoadEntities(label);
+		}
+
+		private async Task<TypedEntityCollection?> LoadEntities(string groupLabel)
+		{
+			if (Services == null)
+				return null;
+
+			var entityReader = (IEntityReader?)Services.GetService(typeof(IEntityReader));
+			if (entityReader == null)
+				return null;
+
+			var entityCollection = new TypedEntityCollection();
+			entityCollection.Add(await entityReader.ReadEntity<Configuration>(groupLabel, ConfigurationLabel));
+			entityCollection.Add(await entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(groupLabel, TextsLabel));
+			entityCollection.Add(await entityReader.ReadEntity<CommandInitializer[]>(groupLabel, CommandsLabel));
+			entityCollection.Add(await entityReader.ReadEntity<Room.Initializer[]>(groupLabel, RoomsLabel));
+			entityCollection.Add(await entityReader.ReadEntity<Animate.Initializer[]>(groupLabel, AnimatesLabel));
+			entityCollection.Add(await entityReader.ReadEntity<Item.Initializer[]>(groupLabel, ItemsLabel));
+
+			return entityCollection;
+		}
 
 		public async Task<bool> Initialize()
 		{

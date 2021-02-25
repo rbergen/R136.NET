@@ -110,7 +110,15 @@ namespace R136.Entities.CommandProcessors
 			if (status.Key != ContinuationKey)
 				return Result.Error();
 
-			return input.ToLower() == Facilities.Configuration.YesInput 
+			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
+			if (yesNoInputSpecs.PermittedCharacters != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.PermittedCharacters.Contains(input))
+				return Result.InputRequested(
+					new ContinuationStatus() { Key = ContinuationKey },
+					Facilities.Configuration.YesNoInputSpecs,
+					GetTexts(EndTextID.InvalidYesNoAnswer)
+				);
+
+			return input == Facilities.Configuration.YesInput 
 				? Result.EndRequested() 
 				: Result.Success(GetTexts(EndTextID.EndCancelled));
 		}
@@ -129,7 +137,8 @@ namespace R136.Entities.CommandProcessors
 		private enum EndTextID
 		{
 			ConfirmEnd,
-			EndCancelled
+			EndCancelled,
+			InvalidYesNoAnswer
 		}
 
 		private enum TextID
