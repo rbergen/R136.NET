@@ -9,8 +9,12 @@
 		public const string RestartButtonLabel = "RestartButtonLabel";
 		public const string MaxContentLogBlockCount = "MaxContentLogBlockCount";
 		public const string SaveContentLogBlockCount = "SaveContentLogBlockCount";
+		public const string LanguageStorageKey = "Language";
 		public const string HeaderText = "HeaderText";
 		public const string Languages = "Languages";
-		public const string DefaultLanguage = "Languages:Default";
+		public const string DefaultLanguage = "DefaultLanguage";
+		public const string LanguageParam = "lang";
+		public const string Dutch = "nl-NL";
+		public const string English = "en-GB";
 	}
 }

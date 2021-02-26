@@ -54,7 +54,7 @@ namespace R136.Entities.Items
 				AddTexts(texts, TextID.Hit);
 
 				if (strikable.ApplyItem(this).IsSuccess)
-					return Result.Success(texts);
+					return Result.Success(texts.ToArray());
 			}
 
 			if (strikable.StrikesLeft == 1)
@@ -64,11 +64,15 @@ namespace R136.Entities.Items
 			}
 
 			if (Facilities.Randomizer.NextDouble() > .3)
-				return Result.Failure(texts);
+				return Result.Failure(texts.ToArray());
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);
-			return Result.InputRequested(new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID }, Facilities.Configuration.YesNoInputSpecs, texts);
+			return Result.InputRequested(
+				new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID }, 
+				Facilities.Configuration.YesNoInputSpecs, 
+				texts.ToArray()
+			);
 		}
 
 		private void AddTexts(List<string> texts, TextID id)

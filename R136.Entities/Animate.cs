@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Primitives;
 
 namespace R136.Entities
 {
@@ -29,7 +30,7 @@ namespace R136.Entities
 					continue;
 
 				if (initializer.StatusTexts != null)
-					Facilities.AnimateStatusTextsMap[animateType] = initializer.StatusTexts.ToDictionary(pair => pair.Key, pair => (ICollection<string>)pair.Value);
+					Facilities.AnimateStatusTextsMap[animateType] = initializer.StatusTexts.ToDictionary(pair => pair.Key, pair => (StringValues)pair.Value);
 
 				if (initializer.Virtual)
 					continue;
@@ -43,10 +44,10 @@ namespace R136.Entities
 		protected Animate(AnimateID id, RoomID startRoom)
 			=> (ID, CurrentRoom, Status) = (id, startRoom, AnimateStatus.Initial);
 
-		protected ICollection<string>? GetTextsForStatus(AnimateStatus status)
+		protected StringValues GetTextsForStatus(AnimateStatus status)
 			=> Facilities.AnimateStatusTextsMap[this, status];
 
-		public virtual ICollection<string>? ProgressStatus()
+		public virtual StringValues ProgressStatus()
 		{
 			AnimateStatus textStatus = Status;
 

@@ -18,6 +18,9 @@ namespace R136.Web.Pages
 		private bool _ended = false;
 		private bool _pause = false;
 
+		[Parameter]
+		public string Language { get; set; }
+
 		[Inject]
 		public IJSRuntime JSRuntime { get; set; }
 
@@ -33,16 +36,20 @@ namespace R136.Web.Pages
 		[Inject]
 		public ILocalStorageService LocalStorage { get; set; }
 
+		[Inject]
+		public ILanguageProvider LanguageProvider { get; set; }
+
 		[Parameter]
 		public string Action { get; set; }
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			await JSRuntime.InvokeAsync<bool>("stretchToHeight", "contentlog", "app");
-		}
+			=> await JSRuntime.InvokeAsync<bool>("stretchToHeight", "contentlog", "app");
 
 		protected override async Task OnInitializedAsync()
 		{
+			Engine.Initialize();
+			Engine.SetEntityGroup(LanguageProvider.Language);
+
 			bool result = false;
 
 			if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
@@ -88,6 +95,9 @@ namespace R136.Web.Pages
 
 			await CycleEngine();
 		}
+
+		private void LanguageChanged()
+			=> Engine.SetEntityGroup(LanguageProvider.Language);
 
 		private async Task ProceedClickedAsync()
 		{
@@ -173,7 +183,7 @@ namespace R136.Web.Pages
 
 			if (result.IsError)
 			{
-				_error = (MarkupString)(result.Message != null ? result.Message.ToMarkupString() : "An unspecified error occurred");
+				_error = (MarkupString)(result.Message.ToMarkupString() ?? "An unspecified error occurred");
 				return;
 			}
 

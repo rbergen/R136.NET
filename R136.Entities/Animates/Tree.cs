@@ -1,4 +1,5 @@
-﻿using R136.Interfaces;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -13,12 +14,12 @@ namespace R136.Entities.Animates
 
 		private Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override ICollection<string>? ProgressStatus()
+		public override StringValues ProgressStatus()
 		{
 			var texts = new List<string>();
 
 			var statusTexts = GetTextsForStatus(Status);
-			if (statusTexts != null)
+			if (statusTexts.Count > 0)
 				texts.AddRange(statusTexts);
 
 			if (Status == AnimateStatus.Operating)
@@ -26,7 +27,7 @@ namespace R136.Entities.Animates
 				if (!(StatusManager?.IsInPosession(ItemID.HeatSuit) ?? false))
 				{
 					statusTexts = GetTextsForStatus(AnimateStatus.SelfInjury);
-					if (statusTexts != null)
+					if (statusTexts.Count > 0)
 						texts.AddRange(statusTexts);
 				}
 
@@ -35,7 +36,7 @@ namespace R136.Entities.Animates
 				Status = AnimateStatus.Done;
 			}
 
-			return texts.Count > 0 ? texts : null;
+			return texts.Count > 0 ? texts.ToArray() : null;
 		}
 
 		public override Result ApplyItem(ItemID item)

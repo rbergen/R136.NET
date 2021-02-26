@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Primitives;
 using R136.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,19 +27,13 @@ namespace R136.Web.Tools
 		IEnumerator IEnumerable.GetEnumerator()
 			=> ((IEnumerable)_blocks).GetEnumerator();
 
-		public void Add(ContentBlockType type, ResultCode resultCode, IEnumerable<string>? texts)
+		public void Add(ContentBlockType type, ResultCode resultCode, StringValues texts)
 			=> AddBlock(type, resultCode, texts);
 
-		public void Add(ContentBlockType type, IEnumerable<string>? texts)
+		public void Add(ContentBlockType type, StringValues texts)
 			=> AddBlock(type, null, texts);
 
-		public void Add(ContentBlockType type, ResultCode resultCode, string text)
-			=> AddBlock(type, resultCode, new string[] { text });
-
-		public void Add(ContentBlockType type, string text)
-			=> AddBlock(type, null, new string[] { text });
-
-		public void AddRaw(ContentBlockType type, string text)
+		public void AddRaw(ContentBlockType type, StringValues text)
 		{
 			_blocks.Add(new ContentBlock()
 			{
@@ -49,9 +44,9 @@ namespace R136.Web.Tools
 			Trim();
 		}
 
-		private void AddBlock(ContentBlockType type, ResultCode? resultCode, IEnumerable<string>? texts)
+		private void AddBlock(ContentBlockType type, ResultCode? resultCode, StringValues texts)
 		{
-			if (texts == null || !texts.Any())
+			if (texts == StringValues.Empty)
 				return;
 
 			_blocks.Add(new ContentBlock()
@@ -74,9 +69,7 @@ namespace R136.Web.Tools
 			=> _blocks[^1];
 
 		public IEnumerable<ContentBlock> AllButLast()
-		{
-			return _blocks.DropLast(1);
-		}
+			=> _blocks.DropLast(1);
 
 		public int Count
 			=> _blocks.Count;

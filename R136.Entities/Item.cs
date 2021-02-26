@@ -1,4 +1,5 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
@@ -79,7 +80,7 @@ namespace R136.Entities
 
 		public virtual Result Use() => Result.Failure(UsageTexts);
 
-		protected ICollection<string>? UsageTexts
+		protected StringValues UsageTexts
 		{
 			get => Facilities.ItemTextsMap[ID, TextType.Use];
 		}
@@ -237,7 +238,7 @@ namespace R136.Entities
 	class CompoundItem : UsableItem, ICompound<Item>
 	{
 		public ICollection<Item> Components { get; }
-		protected ICollection<string>? CombineTexts => Facilities.ItemTextsMap[ID, TextType.Combine];
+		protected StringValues CombineTexts => Facilities.ItemTextsMap[ID, TextType.Combine];
 
 		public Item Self => this;
 

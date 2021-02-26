@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace R136.Entities.General
@@ -11,9 +12,9 @@ namespace R136.Entities.General
 				list.AddRange(collection);
 		}
 
-		public static ICollection<string>? ReplaceInAll(this ICollection<string>? collection, string from, string to)
-			=> collection?.Select(s => s.Replace(from, to)).ToArray();
-	
+		public static StringValues ReplaceInAll(this StringValues collection, string from, string to)
+			=> collection.Select(s => s.Replace(from, to)).ToArray();
+
 		public static (Item? item, FindResult result) FindItemByName(this List<Item> list, string s)
 		{
 			var foundItems = list.FindAll(item => item.Name.Contains(s));
@@ -28,9 +29,9 @@ namespace R136.Entities.General
 			return ((result == FindResult.Found ? foundItems[0] : null), result);
 		}
 
-		public static (int index, string? found) IndexOfAny(this string subject, ICollection<string>? substrings)
+		public static (int index, string? found) IndexOfAny(this string subject, StringValues substrings)
 		{
-			if (substrings == null)
+			if (substrings == StringValues.Empty)
 				return (-1, null);
 
 			foreach (var substring in substrings)

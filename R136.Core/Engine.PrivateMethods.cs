@@ -1,4 +1,6 @@
-﻿using R136.Entities;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities;
+using R136.Entities.Animates;
 using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
@@ -12,9 +14,9 @@ namespace R136.Core
 {
 	public partial class Engine
 	{
-		private readonly List<Func<ICollection<string>?>> _turnEndingNotifiees = new List<Func<ICollection<string>?>>();
+		private readonly List<Func<StringValues>> _turnEndingNotifiees = new List<Func<StringValues>>();
 
-		private async Task<TypedEntityCollection?> LoadEntities(string groupLabel)
+		private TypedEntityTaskCollection? LoadEntities(string groupLabel)
 		{
 			if (Services == null)
 				return null;
@@ -23,15 +25,89 @@ namespace R136.Core
 			if (entityReader == null)
 				return null;
 
-			var entityCollection = new TypedEntityCollection();
-			entityCollection.Add(await entityReader.ReadEntity<Configuration>(groupLabel, ConfigurationLabel));
-			entityCollection.Add(await entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(groupLabel, TextsLabel));
-			entityCollection.Add(await entityReader.ReadEntity<CommandInitializer[]>(groupLabel, CommandsLabel));
-			entityCollection.Add(await entityReader.ReadEntity<Room.Initializer[]>(groupLabel, RoomsLabel));
-			entityCollection.Add(await entityReader.ReadEntity<Animate.Initializer[]>(groupLabel, AnimatesLabel));
-			entityCollection.Add(await entityReader.ReadEntity<Item.Initializer[]>(groupLabel, ItemsLabel));
+			var entityCollection = new TypedEntityTaskCollection();
+			entityCollection.Add(entityReader.ReadEntity<Configuration>(groupLabel, ConfigurationLabel));
+			entityCollection.Add(entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(groupLabel, TextsLabel));
+			entityCollection.Add(entityReader.ReadEntity<CommandInitializer[]>(groupLabel, CommandsLabel));
+			entityCollection.Add(entityReader.ReadEntity<Room.Initializer[]>(groupLabel, RoomsLabel));
+			entityCollection.Add(entityReader.ReadEntity<Animate.Initializer[]>(groupLabel, AnimatesLabel));
+			entityCollection.Add(entityReader.ReadEntity<Item.Initializer[]>(groupLabel, ItemsLabel));
 
 			return entityCollection;
+		}
+
+		private bool SetEntityGroup(string label, bool requireInitialized)
+		{
+			if (requireInitialized && !IsInitialized)
+				return false;
+
+			try
+			{
+				var entityMap = _entityTaskMap[label];
+				if (entityMap == null)
+					return false;
+
+				var configuration = entityMap.Get<Configuration>();
+
+				if (configuration != null)
+					Facilities.Configuration = configuration;
+
+				var texts = entityMap.Get<TypedTextsMap<int>.Initializer[]>();
+				if (texts != null)
+					Facilities.TextsMap.LoadInitializers(texts);
+
+				var rooms = entityMap.Get<Room.Initializer[]>();
+				if (rooms == null)
+					return false;
+
+				_rooms = Room.CreateMap(rooms);
+
+				var animates = entityMap.Get<Animate.Initializer[]>();
+				if (animates == null)
+					return false;
+
+				if (_animates?[AnimateID.Tree] is Tree oldTree)
+					oldTree.Burned -= TreeHasBurned;
+
+				if (_animates?[AnimateID.PaperHatch] is ITriggerable oldPaperHatch && _processors != null)
+					_processors.LocationProcessor.PaperRouteCompleted -= oldPaperHatch.Trigger;
+
+				_animates = Animate.CreateMap(animates);
+
+				var items = entityMap.Get<Item.Initializer[]>();
+				if (items == null)
+					return false;
+
+				_items = Item.CreateOrUpdateMap(_items, items, _animates);
+
+				var commands = entityMap.Get<CommandInitializer[]>();
+				if (commands == null)
+					return false;
+
+				_processors = CommandProcessor.CreateMap(commands, _items, _animates);
+
+				if (_player == null)
+					_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
+				else
+					_player.CurrentRoom = _rooms[_player.CurrentRoom.ID];
+
+				if (_animates[AnimateID.Tree] is Tree newTree)
+					newTree.Burned += TreeHasBurned;
+
+				if (_animates[AnimateID.PaperHatch] is ITriggerable newPaperHatch)
+					_processors.LocationProcessor.PaperRouteCompleted += newPaperHatch.Trigger;
+
+				_turnEndingNotifiees.Clear();
+				RegisterTurnEndingNotifiees(_items.Values);
+				RegisterTurnEndingNotifiees(_animates.Values);
+
+				return true;
+			}
+			catch (Exception e)
+			{
+				LogLine($"Exception during initialization: {e}");
+				return false;
+			}
 		}
 
 		private void RegisterTurnEndingNotifiees<TEntity>(IEnumerable<TEntity> entities)
@@ -59,7 +135,7 @@ namespace R136.Core
 
 			var itemLineTexts = GetTexts(TextID.ItemLineTexts);
 
-			if (itemLineTexts == null || itemLineTexts.Count < Enum.GetValues<ItemLineText>().Length)
+			if (itemLineTexts.Count < Enum.GetValues<ItemLineText>().Length)
 				return null;
 
 			var itemLineList = itemLineTexts.ToArray();
@@ -91,7 +167,7 @@ namespace R136.Core
 
 			var wayLineTexts = GetTexts(TextID.WayLineTexts);
 
-			if (wayLineTexts == null || wayLineTexts.Count < Enum.GetValues<WayLineText>().Select(v => (int)v).Max() + 1)
+			if (wayLineTexts.Count < Enum.GetValues<WayLineText>().Select(v => (int)v).Max() + 1)
 				return null;
 
 			var wayLineList = wayLineTexts.ToArray();
@@ -120,10 +196,10 @@ namespace R136.Core
 		private ICollection<Animate> PresentAnimates
 			=> _animates!.Values.Where(animate => animate.CurrentRoom == CurrentRoom).ToArray();
 
-		private ICollection<string>? GetTexts(TextID id)
+		private StringValues GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
 
-		private ICollection<string>? GetTexts(TextID id, string tag, string content)
+		private StringValues GetTexts(TextID id, string tag, string content)
 			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", content);
 
 		private Result DoPostRunProcessing(Result result)
@@ -138,13 +214,13 @@ namespace R136.Core
 			foreach (var notifiee in _turnEndingNotifiees)
 			{
 				var notifieeTexts = notifiee.Invoke();
-				if (notifieeTexts != null && notifieeTexts.Count > 0)
+				if (notifieeTexts.Count > 0)
 					texts.AddRange(notifieeTexts);
 			}
 
 			DoNext = _animates!.Values.Any(animate => animate.IsTriggered) ? NextStep.ProgressAnimateStatus : NextStep.ShowRoomStatus;
 
-			return texts.Count == 0 ? result : new Result(result.Code, texts);
+			return texts.Count == 0 ? result : new Result(result.Code, texts.ToArray());
 		}
 
 		private void PlaceAt(ItemID item, RoomID room)

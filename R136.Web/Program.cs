@@ -29,7 +29,8 @@ namespace R136.Web
 				SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
 			})
 			.AddR136(() => new Uri(baseUri, "data/"))
-			.AddBlazoredLocalStorage();
+			.AddBlazoredLocalStorage()
+			.AddLanguageProvider();
 
 			var host = builder.Build();
 

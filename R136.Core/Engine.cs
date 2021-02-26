@@ -1,4 +1,5 @@
-﻿using R136.Entities;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities;
 using R136.Entities.Animates;
 using R136.Entities.General;
 using R136.Entities.Global;
@@ -31,7 +32,7 @@ namespace R136.Core
 		private Player? _player;
 		private CommandProcessorMap? _processors;
 		private bool _hasTreeBurned = false;
-		private readonly Dictionary<string, Task<TypedEntityCollection?>> _entityTaskMap = new Dictionary<string, Task<TypedEntityCollection?>>();
+		private readonly Dictionary<string, TypedEntityTaskCollection> _entityTaskMap = new Dictionary<string, TypedEntityTaskCollection>();
 
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
@@ -41,109 +42,36 @@ namespace R136.Core
 		public void StartLoadEntities(string[] groupLabels)
 		{
 			foreach (var label in groupLabels)
-				_entityTaskMap[label] = LoadEntities(label);
+			{
+				var entities = LoadEntities(label);
+				if (entities != null)
+				_entityTaskMap[label] = entities;
+			}
 		}
 
-		public async Task<bool> Initialize(string groupLabel)
+		public bool Initialize()
 		{
-			try
-			{
-				if (IsInitialized)
-					return true;
-
-				ObjectDumper.WriteClassType = false;
-				ObjectDumper.WriteBidirectionalReferences = false;
-
-				await SetEntityGroup(groupLabel);
-
-				IsInitialized = true;
+			if (IsInitialized)
 				return true;
-			}
-			catch (Exception e)
-			{
-				LogLine($"Exception during initialization: {e}");
-				return false;
-			}
+
+			Facilities.Services = Services;
+
+			ObjectDumper.WriteClassType = false;
+			ObjectDumper.WriteBidirectionalReferences = false;
+
+			IsInitialized = true;
+			return true;
 		}
 
-		public async Task<bool> SetEntityGroup(string label)
-		{
-			try
-			{
-				var entityMap = await _entityTaskMap[label];
-				if (entityMap == null)
-					return false;
+		public bool SetEntityGroup(string label)
+			=> SetEntityGroup(label, true);
 
-				var configuration = entityMap.Get<Configuration>();
-
-				if (configuration != null)
-					Facilities.Configuration = configuration;
-
-				var texts = entityMap.Get<TypedTextsMap<int>.Initializer[]>();
-				if (texts != null)
-					Facilities.TextsMap.LoadInitializers(texts);
-
-				var rooms = entityMap.Get<Room.Initializer[]>();
-				if (rooms == null)
-					return false;
-
-				_rooms = Room.CreateMap(rooms);
-
-				var animates = entityMap.Get<Animate.Initializer[]>();
-				if (animates == null)
-					return false;
-
-				if (_animates?[AnimateID.Tree] is Tree oldTree)
-					oldTree.Burned -= TreeHasBurned;
-				
-				if (_animates?[AnimateID.PaperHatch] is ITriggerable oldPaperHatch && _processors != null)
-					_processors.LocationProcessor.PaperRouteCompleted -= oldPaperHatch.Trigger;
-
-				_animates = Animate.CreateMap(animates);
-
-				var items = entityMap.Get<Item.Initializer[]>();
-				if (items == null)
-					return false;
-
-				_items = Item.CreateOrUpdateMap(_items, items, _animates);
-
-				var commands = entityMap.Get<CommandInitializer[]>();
-				if (commands == null)
-					return false;
-
-				_processors = CommandProcessor.CreateMap(commands, _items, _animates);
-
-				if (_player == null)
-					_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
-				else
-					_player.CurrentRoom = _rooms[_player.CurrentRoom.ID];
-
-				if (_animates[AnimateID.Tree] is Tree newTree)
-					newTree.Burned += TreeHasBurned;
-
-				if (_animates[AnimateID.PaperHatch] is ITriggerable newPaperHatch)
-					_processors.LocationProcessor.PaperRouteCompleted += newPaperHatch.Trigger;
-
-				_turnEndingNotifiees.Clear();
-				RegisterTurnEndingNotifiees(_items.Values);
-				RegisterTurnEndingNotifiees(_animates.Values);
-
-				return true;
-			}
-			catch (Exception e)
-			{
-				LogLine($"Exception during initialization: {e}");
-				return false;
-			}
-		}
-
-
-		public ICollection<string>? StartMessage
+		public StringValues StartMessage
 		{
 			get
 			{
 				if (!ValidateStep(NextStep.ShowStartMessage))
-					return null;
+					return StringValues.Empty;
 
 				DoNext = NextStep.ShowRoomStatus;
 
@@ -151,14 +79,14 @@ namespace R136.Core
 			}
 		}
 
-		public ICollection<string>? RoomStatus
+		public StringValues RoomStatus
 		{
 			get
 			{
 				if (!ValidateStep(NextStep.ShowRoomStatus))
-					return null;
+					return StringValues.Empty;
 
-				List<string> texts = new List<string>();
+				var texts = new List<string>();
 
 				var playerRoom = _player!.CurrentRoom;
 				texts.AddRangeIfNotNull(GetTexts(TextID.YouAreAt, "room", playerRoom.Name));
@@ -191,18 +119,18 @@ namespace R136.Core
 
 				DoNext = IsAnimatePresent ? NextStep.ProgressAnimateStatus : NextStep.RunCommand;
 
-				return texts;
+				return texts.ToArray();
 			}
 		}
 
-		public ICollection<string>? ProgressAnimateStatus()
+		public StringValues ProgressAnimateStatus()
 		{
 			if (!ValidateStep(NextStep.ProgressAnimateStatus))
-				return null;
+				return StringValues.Empty;
 
 			var presentAnimates = PresentAnimates;
 			if (presentAnimates.Count == 0)
-				return null;
+				return StringValues.Empty;
 
 			var startRoom = CurrentRoom;
 			var texts = new List<string>();
@@ -229,7 +157,7 @@ namespace R136.Core
 			else 
 				DoNext = NextStep.RunCommand;
 
-			return texts.Count > 0 ? texts : null;
+			return texts.ToArray();
 		}
 
 		public Result Run(string input)

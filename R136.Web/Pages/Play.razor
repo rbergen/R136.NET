@@ -2,6 +2,8 @@
 
 @inject IConfiguration Configuration 
 
+<PageHeader LanguageChanged="LanguageChanged" />
+
 <div id="contentlog" class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col">
 		<ShowContentLog ContentLog="ContentLog" BlockIDStart="@("content-block-id")" />
@@ -16,7 +18,7 @@
 	}
 	else @if (_ended)
 	{
-	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@Configuration[Constants.RestartButtonLabel]" />
+	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel)" />
 	}
 	else
 	{
@@ -35,7 +37,7 @@
 					</div>
 				</div>
 				<div class="col-md-auto">
-					<input type="submit" class="btn btn-light" value="@Configuration[Constants.ProceedButtonLabel]" />
+					<input type="submit" class="btn btn-light" value="@LanguageProvider.GetConfigurationValue(Constants.ProceedButtonLabel)" />
 				</div>
 			</div>
 		</form>

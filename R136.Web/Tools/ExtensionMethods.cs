@@ -1,6 +1,11 @@
 ﻿using Markdig;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #nullable enable
 
@@ -59,6 +64,13 @@ namespace R136.Web.Tools
 					yield return buffer.Dequeue();
 			}
 		}
+
+		public static IServiceCollection AddLanguageProvider(this IServiceCollection serviceCollection)
+			=> serviceCollection.AddSingleton<ILanguageProvider>(sp =>
+				new LanguageProvider
+				{
+					Services = sp
+				});
 	}
 }
 

@@ -1,4 +1,5 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace R136.Entities.Items
 		public bool IsOn { get; private set; }
 
 		public ICollection<Item> Components { get; private set; }
-		public ICollection<string>? CombineTexts
+		public StringValues CombineTexts
 			=> Facilities.ItemTextsMap[ID, TextType.Combine];
 
 #pragma warning disable IDE0060 // Remove unused parameter
@@ -71,7 +72,7 @@ namespace R136.Entities.Items
 
 		public Item Self => this;
 
-		private ICollection<string>? GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
+		private StringValues GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
 
 		public override Result Use()
 		{
@@ -100,10 +101,10 @@ namespace R136.Entities.Items
 				:	Result.Success(CombineTexts);
 		}
 
-		public ICollection<string>? TurnEnding()
+		public StringValues TurnEnding()
 		{
 			if (!IsOn)
-				return null;
+				return StringValues.Empty;
 
 			if (LampPoints != null && LampPoints > 0)
 				LampPoints--;
@@ -117,7 +118,7 @@ namespace R136.Entities.Items
 				return Facilities.TextsMap[this, (int)TextID.BatteriesEmpty];
 			}
 
-			return null;
+			return StringValues.Empty;
 
 		}
 

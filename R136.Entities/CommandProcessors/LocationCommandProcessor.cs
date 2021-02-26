@@ -1,4 +1,5 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
@@ -23,7 +24,7 @@ namespace R136.Entities.CommandProcessors
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 		{
 			if (parameters != null)
-				Result.Error(GetTexts(TextID.CommandSyntax)?.ReplaceInAll("{command}", command));
+				Result.Error(GetTexts(TextID.CommandSyntax).ReplaceInAll("{command}", command));
 
 			Direction? direction = CommandToDirection(id);
 
@@ -91,7 +92,7 @@ namespace R136.Entities.CommandProcessors
 			}
 		}
 
-		private ICollection<string>? GetTexts(TextID id)
+		private StringValues GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Primitives;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,10 +9,10 @@ namespace R136.Entities.General
 			where TDictKey : notnull
 			where TTextKey : struct
 	{
-		private readonly Dictionary<TDictKey, IDictionary<TTextKey, ICollection<string>>> _map 
-			= new Dictionary<TDictKey, IDictionary<TTextKey, ICollection<string>>>();
+		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map 
+			= new Dictionary<TDictKey, IDictionary<TTextKey, StringValues>>();
 
-		public IDictionary<TTextKey, ICollection<string>>? this[TDictKey key]
+		public IDictionary<TTextKey, StringValues>? this[TDictKey key]
 		{
 			get
 			{
@@ -28,14 +29,14 @@ namespace R136.Entities.General
 			}
 		}
 
-		public ICollection<string>? this[TDictKey key, TTextKey id]
+		public StringValues this[TDictKey key, TTextKey id]
 		{
 			get
 			{
 				var textMap = this[key];
 
 				if (textMap == null)
-					return null;
+					return StringValues.Empty;
 
 				textMap.TryGetValue(id, out var text);
 
@@ -45,7 +46,7 @@ namespace R136.Entities.General
 			{
 				var textMap = this[key];
 
-				if (value == null || value.Count == 0)
+				if (value.Count == 0)
 				{
 					if (textMap != null)
 						textMap.Remove(id);
@@ -55,7 +56,7 @@ namespace R136.Entities.General
 
 				if (textMap == null)
 				{
-					textMap = new Dictionary<TTextKey, ICollection<string>>();
+					textMap = new Dictionary<TTextKey, StringValues>();
 					this[key] = textMap;
 				}
 

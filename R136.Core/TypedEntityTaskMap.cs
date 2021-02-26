@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace R136.Core
 {
-	public class TypedEntityCollection
+	public class TypedEntityTaskCollection
 	{
-		private Dictionary<Type, Task> _map = new Dictionary<Type, Task>();
+		private readonly Dictionary<Type, ValueType> _map = new Dictionary<Type, ValueType>();
 
-		public void Add<TValue>(Task<TValue> value) where TValue : notnull
+		public void Add<TValue>(ValueTask<TValue> value)
 			=> _map[typeof(TValue)] = value;
+		
+		public void Add<TValue>(Task<TValue> value)
+			=> _map[typeof(TValue)] = new ValueTask<TValue>(value);
+
+		public void Add<TValue>(TValue value)
+			=> _map[typeof(TValue)] = new ValueTask<TValue>(value);
 
 		public TValue Get<TValue>()
-			=> ((Task<TValue>)_map[typeof(TValue)]).Result;
+			=> ((ValueTask<TValue>)_map[typeof(TValue)]).Result;
 	}
 }

@@ -1,0 +1,51 @@
+﻿@inject IConfiguration Configuration
+@inject ILanguageProvider LanguageProvider
+ 
+<div class="row sticky-top bg-dark border-bottom border-danger">
+	<div class="col-2">
+		<a href="#" @onclick="DutchClicked">
+			@if (LanguageProvider.Language == Constants.Dutch)
+			{
+				<strong>nl</strong>
+			}
+			else
+			{
+				<div>nl</div>
+			}
+		</a> 
+		<a href="#" @onclick="EnglishClicked">
+			@if (LanguageProvider.Language == Constants.English)
+			{
+				<strong>en</strong>
+			}
+			else
+			{
+				<div>en</div>
+			}
+		</a></div>
+	<div class="col text-danger text-center">
+		<h1><strong>@LanguageProvider.GetConfigurationValue(Constants.HeaderText)</strong></h1>
+	</div>
+	<div class="col-2">&nbsp;</div>
+</div>
+
+@code  
+{
+	[Parameter]
+	public EventCallback LanguageChanged { get; set; }
+
+	private async Task DutchClicked(MouseEventArgs e)
+		=> await SetLanguage(Constants.Dutch);
+
+	private async Task EnglishClicked(MouseEventArgs e)
+		=> await SetLanguage(Constants.English);
+
+	private async Task SetLanguage(string language)
+	{
+		if (LanguageProvider.Language == language)
+			return;
+
+		LanguageProvider.Language = language;
+		await LanguageChanged.InvokeAsync();
+	}
+}
