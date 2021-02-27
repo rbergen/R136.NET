@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.DependencyInjection;
 using R136.Entities;
 using R136.Entities.Animates;
 using R136.Entities.General;
@@ -19,6 +20,7 @@ namespace R136.Core
 		private const string EngineNotInitialized = "Engine not initialized";
 		private const string IncorrectNextStep = "Step inconsistent with DoNext";
 		private const string ConfigurationLabel = "configuration";
+		private const string PropertiesLabel = "properties";
 		private const string CommandsLabel = "commands";
 		private const string TextsLabel = "texts";
 		private const string RoomsLabel = "rooms";
@@ -49,22 +51,45 @@ namespace R136.Core
 			}
 		}
 
-		public bool Initialize()
+		public async Task<bool> Initialize(string? groupLabel = null)
 		{
 			if (IsInitialized)
 				return true;
+
+			if (Services == null)
+				return false;
 
 			Facilities.Services = Services;
 
 			ObjectDumper.WriteClassType = false;
 			ObjectDumper.WriteBidirectionalReferences = false;
 
+			var entityReader = Services.GetService<IEntityReader>();
+			if (entityReader == null)
+				return false;
+
+			try
+			{
+				var configuration = await entityReader.ReadEntity<Configuration>(null, ConfigurationLabel);
+				if (configuration != null)
+					Facilities.Configuration = configuration;
+			}
+			catch (Exception e)
+			{
+				LogLine($"Exception while loading configuration: {e}");
+				return false;
+			}
+
+
+			if (groupLabel != null)
+				await SetEntityGroup(groupLabel, false);
+
 			IsInitialized = true;
 			return true;
 		}
 
-		public bool SetEntityGroup(string label)
-			=> SetEntityGroup(label, true);
+		public async Task<bool> SetEntityGroup(string label)
+			=> await SetEntityGroup(label, true);
 
 		public StringValues StartMessage
 		{
@@ -190,12 +215,13 @@ namespace R136.Core
 			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
+
 			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input,
 				(status, input) =>
 					(status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
-					? processor.Continue(status.InnerStatus!, input)
+					? processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, (int)_processors![(CommandProcessorID)status.Number]!.ID)
 					: Result.Error()
-				).WrapInputRequest(ContinuationKey));
+				));
 		}
 
 		public void EndPause()

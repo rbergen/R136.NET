@@ -183,7 +183,7 @@
 	},
 	{
 		"ID": 38,
-		"Name": "in de wenteltrapgrot",
+		"Name": "in een wenteltrapgrot",
 		"Description": "In deze grot bevindt zich een grote, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
 	},
 	{
@@ -323,7 +323,7 @@
 	},
 	{
 		"ID": 68,
-		"Name": "in de wenteltrapgrot",
+		"Name": "in een wenteltrapgrot",
 		"Description": "In deze grot bevindt zich een grote, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
 	},
 	{
@@ -374,5 +374,6 @@
 	},
 	{
 		"ID": 79,
-		"Name": "in de teleportgrot"	}
+		"Name": "in de teleportgrot"
+	}
 ]

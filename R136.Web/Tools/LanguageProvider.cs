@@ -19,24 +19,22 @@ namespace R136.Web.Tools
 
 		public string Language
 		{
-			get {
-				if (_language == null)
+			get
+			{
+				if (_language == null && Services != null)
 				{
-					if (Services != null)
+					var localStorage = Services.GetService<ISyncLocalStorageService>();
+					if (localStorage != null)
 					{
-						var localStorage = Services.GetService<ILocalStorageService>();
-						if (localStorage != null)
-						{
-							if (localStorage.ContainKeyAsync(Constants.LanguageStorageKey).AsTask().Result)
-								_language = localStorage.GetItemAsync<string>(Constants.LanguageStorageKey).AsTask().Result;
-						}
-						else
-							_language = Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
+						if (localStorage.ContainKey(Constants.LanguageStorageKey))
+							_language = localStorage.GetItem<string>(Constants.LanguageStorageKey);
 					}
+					else
+						_language = Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
 				}
 
-				return _language!;
-			} 
+				return _language ?? Constants.English;
+			}
 
 			set
 			{
@@ -45,9 +43,9 @@ namespace R136.Web.Tools
 					if (!Services.GetRequiredService<IConfiguration>().GetSection(Constants.Languages).GetSection(value).Exists())
 						return;
 
-					var localStorage = Services.GetService<ILocalStorageService>();
+					var localStorage = Services.GetService<ISyncLocalStorageService>();
 					if (localStorage != null)
-						localStorage.SetItemAsync(Constants.LanguageStorageKey, value).AsTask().Wait();
+						localStorage.SetItem(Constants.LanguageStorageKey, value);
 				}
 
 				_language = value;

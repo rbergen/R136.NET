@@ -18,7 +18,7 @@
 
 			<div class="row bg-dark p-0 m-0 g-0">
 				<div class="col p-0 m-0">
-					<div id="@(_blockID)" class="row bg-secondary border-top border-bottom border-light mb-2 gx-2 align-items-bottom">
+					<div id="@(_blockID)" class="row border-top border-bottom border-light mb-2 gx-2 align-items-bottom">
 						<div class="col-md-auto text-light">
 							<h5>&gt;</h5>
 						</div>
@@ -26,6 +26,16 @@
 							<strong>@(block.Content)</strong>
 						</div>
 					</div>
+				</div>
+			</div>
+
+			break;
+
+		case ContentBlockType.LanguageSwitch:
+
+			<div class="row bg-secondary border-top border-bottom border-light mb-2 gx-2 align-items-middle">
+				<div class="col text-white">
+					@(block.Content)
 				</div>
 			</div>
 

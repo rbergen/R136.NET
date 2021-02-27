@@ -128,7 +128,8 @@ namespace R136.Web.Tools
 		RoomStatus,
 		AnimateStatus,
 		Input,
-		RunResult
+		RunResult,
+		LanguageSwitch
 	}
 }
 

@@ -19,13 +19,18 @@ namespace R136.Core
 			LogLine($"created with base URI {_client.BaseAddress}");
 		}
 
-		public async Task<TEntity?> ReadEntity<TEntity>(string groupLabel, string label)
+		public async Task<TEntity?> ReadEntity<TEntity>(string? groupLabel, string label)
 		{
 			try
 			{
-				LogLine($"loading {label}... ");
-				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{groupLabel}/{label}.json"));
-				LogLine($"{label} loaded successfully");
+				var fullLabel = groupLabel != null ? $"{groupLabel}/{label}" : label;
+
+				LogLine($"loading {fullLabel}...");
+
+				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{fullLabel}.json"));
+
+				LogLine($"{fullLabel} loaded successfully");
+
 				return result;
 			}
 			catch (HttpRequestException e)

@@ -3,212 +3,212 @@
 		"Type": "Bandage",
 		"ID": 0,
 		"Texts": [
-			"Je bent nog helemaal heel!"
+			"You're still in one piece!"
 		]
 	},
 	{
 		"Type": "Flashlight",
 		"ID": 0,
 		"Texts": [
-			"Je zet de zaklamp uit."
+			"You turn off the flashlight."
 		]
 	},
 	{
 		"Type": "Flashlight",
 		"ID": 1,
 		"Texts": [
-			"Je zet de zaklamp uit. Je ziet niets meer."
+			"You turn off the flashlight. You don't see a thing anymore."
 		]
 	},
 	{
 		"Type": "Flashlight",
 		"ID": 2,
 		"Texts": [
-			"Je zet de zaklamp aan. De straal verlicht de omtrek."
+			"You turn on the flashlight. The beam lights up your surroundings."
 		]
 	},
 	{
 		"Type": "Flashlight",
 		"ID": 3,
 		"Texts": [
-			"Zonder nieuwe batterijen doet-ie het niet..."
+			"It won't work without new batteries..."
 		]
 	},
 	{
 		"Type": "Flashlight",
 		"ID": 4,
 		"Texts": [
-			"De zaklamp gaat zwakker branden."
+			"The light of the flashlight starts to dim."
 		]
 	},
 	{
 		"Type": "Flashlight",
 		"ID": 5,
 		"Texts": [
-			"De batterijen van de zaklamp zijn uitgeput. Langzaam dooft hij."
+			"The batteries in the flaslight are depleted. Slowly, it goes out."
 		]
 	},
 	{
 		"Type": "Sword",
 		"ID": 0,
 		"Texts": [
-			"Je haalt uit met je zwaard, maar het monster ontwijkt."
+			"You strike with your sword, but the monster dodges it."
 		]
 	},
 	{
 		"Type": "Sword",
 		"ID": 1,
 		"Texts": [
-			"Je haalt uit met je zwaard en je raakt het monster hard."
+			"You strike with your sword and you hit the monster hard."
 		]
 	},
 	{
 		"Type": "Sword",
 		"ID": 2,
 		"Texts": [
-			"Het monster is zwaar gewond en je baadt in zijn bloed."
+			"The monster is badly injured and you're soaked in its blood."
 		]
 	},
 	{
 		"Type": "Sword",
 		"ID": 3,
 		"Texts": [
-			"Je kunt nog een slag uitdelen. Wil je dat? [j/n]"
+			"You can strike again. Do you Want to? [y/n]"
 		]
 	},
 	{
 		"Type": "Sword",
 		"ID": 4,
 		"Texts": [
-			"Dat snap ik niet. Antwoord alsjeblieft met j of n."
+			"I didn't catch that. Please answer with y or n."
 		]
 	},
 	{
 		"Type": "Player",
 		"ID": 0,
 		"Texts": [
-			"Je zakken zitten tsjokvol, en je krijgt {item} er niet in."
+			"Je pockets are filled to the brim and you can't fit {item} in them."
 		]
 	},
 	{
 		"Type": "Player",
 		"ID": 1,
 		"Texts": [
-			"Je pakt {item} op en steekt deze in een van je zakken."
+			"You pick up {item} and puts it in one of your pockets."
 		]
 	},
 	{
 		"Type": "Player",
 		"ID": 2,
 		"Texts": [
-			"Je pakt {item} op en doet hem aan."
+			"You pick up {item} and puts it on."
 		]
 	},
 	{
 		"Type": "GeneralCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command}"
+			"Syntax: {command}"
 		]
 	},
 	{
 		"Type": "LocationCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command}"
+			"Syntax: {command}"
 		]
 	},
 	{
 		"Type": "LocationCommandProcessor",
 		"ID": 1,
 		"Texts": [
-			"Daar kun je niet heen."
+			"You can't go there."
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"Syntax: {command} \\<voorwerp\\>"
+			"Syntax: {command} \\<object\\>"
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 1,
 		"Texts": [
-			"Je hebt geen \"{param}\""
+			"You don't have a \"{param}\""
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 2,
 		"Texts": [
-			"De afkorting \"{param}\" is dubbelzinnig"
+			"The abbreviation \"{param}\" is ambiguous"
 		]
 	},
 	{
 		"Type": "ItemCommandProcessor",
 		"ID": 3,
 		"Texts": [
-			"Je ziet hier geen \"{param}\" die je kunt meenemen."
+			"You don't see a \"{param}\" that you can pick up."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 0,
 		"Texts": [
-			"Geen commando gegeven"
+			"No command entered"
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 1,
 		"Texts": [
-			"Ongeldig commando gegeven"
+			"Invalid command entered"
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 2,
 		"Texts": [
-			"Afkorting \"{command}\" is dubbelzinnig"
+			"The abbreviation \"{command}\" is ambiguous"
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 3,
 		"Texts": [
-			"Type h voor help."
+			"Type h for help."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 4,
 		"Texts": [
-			"Je bevindt je {room}."
+			"You are {room}."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 5,
 		"Texts": [
-			"Het is stekedonker en je ziet geen hand voor ogen."
+			"It's pitch black and you can't see your hand in front of your face."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 6,
 		"Texts": [
-			"Om je heen zie je de smeulende resten van wat eens bos was."
+			"Around you, you see the smoldering remains of what used to be a forest."
 		]
 	},
 	{
 		"Type": "Engine",
 		"ID": 7,
 		"Texts": [
-			"Hier ligt {item}.",
-			"Hier liggen {items}.",
-			"{firstitem} en {seconditem}",
+			"Here's {item}.",
+			"Here are {items}.",
+			"{firstitem} and {seconditem}",
 			"{item}, "
 		]
 	},
@@ -216,15 +216,15 @@
 		"Type": "Engine",
 		"ID": 8,
 		"Texts": [
-			"het oosten",
-			"het westen",
-			"het noorden",
-			"het zuiden",
-			"boven",
-			"beneden",
-			"Je kunt naar {way}.",
-			"Je kunt naar {ways}.",
-			"{firstway} en {secondway}",
+			"east",
+			"west",
+			"north",
+			"south",
+			"up",
+			"down",
+			"You can go {way}.",
+			"You can go {ways}.",
+			"{firstway} and {secondway}",
 			"{way}, "
 		]
 	},
@@ -232,16 +232,16 @@
 		"Type": "Engine",
 		"ID": 9,
 		"Texts": [
-			"Badend in je eigen bloed bezwijk je aan je verwondingen. Terwijl je liggend op de grond met moeite naar adem snakt, hoor je in de verte een luid gelach.",
-			"Dan zakken je ogen dicht en stopt je hart met kloppen.",
-			"Op hetzelfde moment ontploft de bom en sterft de aarde met jou."
+			"Bathing in your own blood, you succumb to your injuries. While you're gasping for air on the ground, you hear loud laughter from a distance.",
+			"Then your eyes close and your heart stops beating.",
+			"At the same time, the bomb explodes and the earth dies with you."
 		]
 	},
 	{
 		"Type": "InternalCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"Ongeldig commando gegeven"
+			"Invalid command entered"
 		]
 	}
 

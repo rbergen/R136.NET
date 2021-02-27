@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using R136.Core;
 using R136.Interfaces;
@@ -47,57 +48,46 @@ namespace R136.Web.Pages
 
 		protected override async Task OnInitializedAsync()
 		{
-			Engine.Initialize();
-			Engine.SetEntityGroup(LanguageProvider.Language);
-
-			bool result = false;
-
+			await Engine.Initialize(LanguageProvider.Language);
+			
 			if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
 			{
-				try
+				if (await LoadSnapshot<Engine.Snapshot>(Constants.R136EngineStorageKey, Engine.RestoreSnapshot))
 				{
-					result = Engine.RestoreSnapshot(await LocalStorage.GetItemAsync<R136.Core.Engine.Snapshot>(Constants.R136EngineStorageKey));
+					await LoadSnapshot<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey, ContentLog.RestoreSnapshot);
+					await LoadSnapshot<ContinuationStatus>(Constants.ContinuationStatusStorageKey, snapshot => { _continuationStatus = snapshot; return true; });
+					await LoadSnapshot<InputSpecs>(Constants.InputSpecsStorageKey, snapshot => { _inputSpecs = snapshot; return true; });
 				}
-				catch (Exception ex)
-				{
-					Console.Write($"Error while restoring snapshot from {Constants.R136EngineStorageKey}: {ex}");
-				}
-
-				if (result && await LocalStorage.ContainKeyAsync(Constants.ContentLogStorageKey))
-				{
-					try
-					{
-						ContentLog.RestoreSnapshot(await LocalStorage.GetItemAsync<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey));
-					}
-					catch (Exception ex)
-					{
-						Console.Write($"Error while restoring snapshot from {Constants.ContentLogStorageKey}: {ex}");
-						await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
-					}
-				}
-
-				if (result && await LocalStorage.ContainKeyAsync(Constants.ContinuationStatusStorageKey))
-				{
-					try
-					{
-						_continuationStatus = await LocalStorage.GetItemAsync<ContinuationStatus>(Constants.ContinuationStatusStorageKey);
-					}
-					catch (Exception ex)
-					{
-						Console.Write($"Error while restoring snapshot from {Constants.ContinuationStatusStorageKey}: {ex}");
-						await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
-					}
-				}
-
-				if (!result)
-					await RemoveSnapshot();
+				else
+					await RemoveSnapshots();
 			}
 
 			await CycleEngine();
 		}
 
-		private void LanguageChanged()
-			=> Engine.SetEntityGroup(LanguageProvider.Language);
+		private async Task<bool> LoadSnapshot<TEntity>(string storageKey, Func<TEntity, bool> loader)
+		{
+			if (!await LocalStorage.ContainKeyAsync(storageKey))
+				return true;
+
+			try
+			{
+				return loader(await LocalStorage.GetItemAsync<TEntity>(storageKey));
+			}
+			catch (Exception ex)
+			{
+				Console.Write($"Error while restoring {nameof(TEntity)} snapshot from {storageKey}: {ex}");
+				await LocalStorage.RemoveItemAsync(storageKey);
+				return false;
+			}
+		}
+
+		private async Task LanguageChanged()
+		{
+			ContentLog.Add(ContentBlockType.LanguageSwitch, LanguageProvider.GetConfigurationValue(Constants.LanguageSwitchText));
+			await Engine.SetEntityGroup(LanguageProvider.Language);
+			await SaveSnapshots();
+		}
 
 		private async Task ProceedClickedAsync()
 		{
@@ -138,37 +128,41 @@ namespace R136.Web.Pages
 					case NextStep.RunCommand:
 						_inputSpecs = Engine.CommandInputSpecs;
 						proceed = false;
-						await SaveSnapshot();
+						await SaveSnapshots();
 
 						break;
 					case NextStep.Pause:
 						_pause = true;
 						proceed = false;
-						await SaveSnapshot();
+						await SaveSnapshots();
 
 						break;
 				}
 			}
 		}
 
-		private async Task SaveSnapshot()
+		private async Task SaveSnapshot<TEntity>(string storageKey, TEntity entity)
+		{
+			if (entity != null)
+				await LocalStorage.SetItemAsync(storageKey, entity);
+			else
+				await LocalStorage.RemoveItemAsync(storageKey);
+		}
+
+		private async Task SaveSnapshots()
 		{
 			await LocalStorage.SetItemAsync(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
 			await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
-			if (_continuationStatus != null)
-				await LocalStorage.SetItemAsync(Constants.ContinuationStatusStorageKey, _continuationStatus);
-			else
-				await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
-
-			Console.WriteLine(_continuationStatus);
-			Console.WriteLine(await LocalStorage.GetItemAsStringAsync(Constants.ContinuationStatusStorageKey));
+			await SaveSnapshot(Constants.ContinuationStatusStorageKey, _continuationStatus);
+			await SaveSnapshot(Constants.InputSpecsStorageKey, _inputSpecs);
 		}
 
-		private async Task RemoveSnapshot()
+		private async Task RemoveSnapshots()
 		{
 			await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
 			await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
 			await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
+			await LocalStorage.RemoveItemAsync(Constants.InputSpecsStorageKey);
 		}
 
 		private async Task SubmitInput(EventArgs e)
@@ -183,7 +177,7 @@ namespace R136.Web.Pages
 
 			if (result.IsError)
 			{
-				_error = (MarkupString)(result.Message.ToMarkupString() ?? "An unspecified error occurred");
+				_error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
 				return;
 			}
 
@@ -214,8 +208,9 @@ namespace R136.Web.Pages
 					ContentLog.Add(blockType, result.Code, result.Message);
 
 					_continuationStatus = result.ContinuationStatus;
+					_inputSpecs = result.InputSpecs;
 
-					await SaveSnapshot();
+					await SaveSnapshots();
 					return false;
 
 				case ResultCode.EndRequested:
@@ -224,7 +219,7 @@ namespace R136.Web.Pages
 					_continuationStatus = null;
 					_ended = true;
 
-					await RemoveSnapshot();
+					await RemoveSnapshots();
 					return false;
 
 				case ResultCode.Success:

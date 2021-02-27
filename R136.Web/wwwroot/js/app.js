@@ -12,7 +12,7 @@ window.stretchToHeight = (from, to) => {
   var toElement = $("#" + to);
   if (fromElement == null || toElement == null)
     return false;
-  if (fromElement.height() > toElement.height())
+//  if (fromElement.height() > toElement.height())
     toElement.height(fromElement.height());
   return true;
 }

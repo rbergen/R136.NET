@@ -11,9 +11,11 @@
     <Content Remove="wwwroot\data\en-GB\animatesbase.json" />
     <Content Remove="wwwroot\data\en-GB\commandsbase.json" />
     <Content Remove="wwwroot\data\en-GB\itemsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\propertiesbase.json" />
     <Content Remove="wwwroot\data\en-GB\roomsbase.json" />
     <Content Remove="wwwroot\data\en-GB\textsbase.json" />
     <Content Remove="wwwroot\data\itemsbase.json" />
+    <Content Remove="wwwroot\data\nl-NL\propertiesbase.json" />
     <Content Remove="wwwroot\data\roomsbase.json" />
     <Content Remove="wwwroot\data\textsbase.json" />
   </ItemGroup>
@@ -23,11 +25,13 @@
     <None Include="wwwroot\data\en-GB\animatesbase.json" />
     <None Include="wwwroot\data\en-GB\commandsbase.json" />
     <None Include="wwwroot\data\en-GB\itemsbase.json" />
+    <None Include="wwwroot\data\en-GB\propertiesbase.json" />
     <None Include="wwwroot\data\en-GB\roomsbase.json" />
     <None Include="wwwroot\data\en-GB\textsbase.json" />
     <None Include="wwwroot\data\nl-NL\animatesbase.json" />
     <None Include="wwwroot\data\nl-NL\commandsbase.json" />
     <None Include="wwwroot\data\nl-NL\itemsbase.json" />
+    <None Include="wwwroot\data\nl-NL\propertiesbase.json" />
     <None Include="wwwroot\data\nl-NL\roomsbase.json" />
     <None Include="wwwroot\data\nl-NL\textsbase.json" />
   </ItemGroup>

@@ -22,7 +22,7 @@
 	{
 		"ID": 2,
 		"Name": "het groene kristal",
-		"Description": "Het is een helder, groengekleurd kristal. Even zie je een mysterieuze twinkeling",
+		"Description": "Het is een helder, groengekleurd kristal. Even zie je een mysterieuze twinkeling.",
 		"StartRoom": 80,
 		"UseTexts": [
 			"Je gooit het kristal in de lucht en vangt het weer op. Het valt bijna uit je hand als-ie landt."

@@ -19,7 +19,7 @@ namespace R136.Core
 		public void Add<TValue>(TValue value)
 			=> _map[typeof(TValue)] = new ValueTask<TValue>(value);
 
-		public TValue Get<TValue>()
-			=> ((ValueTask<TValue>)_map[typeof(TValue)]).Result;
+		public ValueTask<TValue> Get<TValue>()
+			=> (ValueTask<TValue>)_map[typeof(TValue)];
 	}
 }

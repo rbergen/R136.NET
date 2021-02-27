@@ -37,12 +37,12 @@ namespace R136.Entities.Animates
 
 		public override Result ApplyItem(ItemID item)
 		{
-			if (item != ItemID.Hashies && item != ItemID.HoundMeat)
+			if (item != ItemID.Hashis && item != ItemID.HoundMeat)
 				return Result.Error();
 
 			Status = Status switch
 			{
-				AnimateStatus.Initial => item == ItemID.Hashies ? AnimateStatus.FirstStep : AnimateStatus.SecondStep,
+				AnimateStatus.Initial => item == ItemID.Hashis ? AnimateStatus.FirstStep : AnimateStatus.SecondStep,
 				_ => AnimateStatus.Operating
 			};
 

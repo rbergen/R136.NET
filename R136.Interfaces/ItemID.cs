@@ -8,7 +8,7 @@
 		Sword = 3,
 		Bone = 4,
 		Diskette = 5,
-		Hashies = 6,
+		Hashis = 6,
 		RedCrystal = 7,
 		Nightcap = 8,
 		Bomb = 9,

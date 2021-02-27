@@ -27,6 +27,7 @@ namespace R136.Tools
 			ProcessEntity<Animate.Initializer[]>("Animates");
 			ProcessCommands("Commands");
 			ProcessItems("Items");
+			ProcessEntity<LayoutProperties>("Layout properties");
 			ProcessRooms("Rooms");
 			ProcessTexts("Texts");
 			ProcessConfiguration("Configuration");
@@ -244,7 +245,7 @@ namespace R136.Tools
 			// Mark dark rooms
 			for (int i = 20; i < rooms.Length; i++)
 			{
-				rooms[i].IsDark = (i != (int)RoomID.TLCave && i != (int)RoomID.RadioactiveCave);
+				rooms[i].IsDark = (i != (int)RoomID.fluorescentcave && i != (int)RoomID.RadioactiveCave);
 			}
 
 			RoomID[] forest = new RoomID[] 
@@ -306,7 +307,7 @@ namespace R136.Tools
 			new KeyValuePair<RoomID, Direction>(RoomID.DrugCave, Direction.South),
 			new KeyValuePair<RoomID, Direction>(RoomID.HornyCave, Direction.West),
 			new KeyValuePair<RoomID, Direction>(RoomID.HornyCave, Direction.East),
-			new KeyValuePair<RoomID, Direction>(RoomID.StraightjacketCave, Direction.West),
+			new KeyValuePair<RoomID, Direction>(RoomID.StraitjacketCave, Direction.West),
 			new KeyValuePair<RoomID, Direction>(RoomID.NeglectedCave, Direction.East),
 			new KeyValuePair<RoomID, Direction>(RoomID.NeglectedCave, Direction.North),
 			new KeyValuePair<RoomID, Direction>(RoomID.EmptyCave26, Direction.West),
@@ -315,7 +316,7 @@ namespace R136.Tools
 			new KeyValuePair<RoomID, Direction>(RoomID.MainCave, Direction.West),
 			new KeyValuePair<RoomID, Direction>(RoomID.MainCave, Direction.North),
 			new KeyValuePair<RoomID, Direction>(RoomID.HieroglyphsCave, Direction.West),
-			new KeyValuePair<RoomID, Direction>(RoomID.TLCave, Direction.South),
+			new KeyValuePair<RoomID, Direction>(RoomID.fluorescentcave, Direction.South),
 			new KeyValuePair<RoomID, Direction>(RoomID.SmallCave, Direction.North),
 			new KeyValuePair<RoomID, Direction>(RoomID.IceCave, Direction.East),
 			new KeyValuePair<RoomID, Direction>(RoomID.CactusCave, Direction.West),

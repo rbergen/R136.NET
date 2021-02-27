@@ -1,134 +1,134 @@
 ﻿[
 	{
 		"ID": 0,
-		"Name": "het hellehondvlees",
-		"Description": "Het is een goor stuk vlees dat naar kots ruikt.",
+		"Name": "the hell hound meat",
+		"Description": "It's a filthy piece of meat that smells of vomit.",
 		"UseTexts": [
-			"Dat lijkt me niet verstandig."
+			"I don't think that's wise."
 		],
 		"StartRoom": 80,
 		"UsableOn": [ 8 ]
 	},
 	{
 		"ID": 1,
-		"Name": "het hittepak",
-		"Description": "Dit aluminiumkleurig pak beschermt je tegen grote hitte of kou.",
+		"Name": "the thermal suit",
+		"Description": "This aluminium-coloured suit protects you against great heat or cold.",
 		"StartRoom": 4,
 		"Wearable": true,
 		"UseTexts": [
-			"Je hebt het pak al aan." 
+			"You're wearing the suit already." 
 		]
 	},
 	{
 		"ID": 2,
-		"Name": "het groene kristal",
-		"Description": "Het is een helder, groengekleurd kristal. Even zie je een mysterieuze twinkeling",
+		"Name": "the green crystal",
+		"Description": "It is a clear, green crystal. For a moment, you see a mysterious twinkle.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Je gooit het kristal in de lucht en vangt het weer op. Het valt bijna uit je hand als-ie landt."
+			"You throw the crystal in the air and catches it again. It nearly falls out of your hand when it lands."
 		],
 		"UsableOn": [ 12 ]
 	},
 	{
 		"ID": 3,
-		"Name": "het zwaard",
-		"Description": "Het is een magisch zwaard dat er niet al te sterk uit ziet, maar veel kracht uitstraalt. In het heft zit een paarse robijn.",
+		"Name": "the sword",
+		"Description": "It's a magical sword that doesn't look too strong, but radiates great force. There's a purple ruby in the handle."
 		"StartRoom": 5,
 		"UseTexts": [
-			"Je kantelt het zwaard wat en pulkt aan de kling."
+			"You tip the sword a little and pick at the blade."
 		],
 		"UsableOn": [ 0, 2 ]
 	},
 	{
 		"ID": 4,
-		"Name": "het bot",
-		"Description": "Het is een menselijk, verbleekt dijbeen, dat er sterk uit ziet. Je kunt er veel kracht mee zetten.",
+		"Name": "the bone",
+		"Description": "It's a bleak, human thigh bone, that looks strong. You can apply a lot of force with it.",
 		"StartRoom": 13,
 		"UseTexts": [
-			"Je laat een uiteinde van het bot een paar keer op je hoofd stuiteren. Het klinkt wat hol."
+			"You let one end of the bone bounce off your head a few times. It sounds a little hollow."
 		],
 		"UsableOn": [ 6 ],
 		"KeepAfterUse": true
 	},
 	{
 		"ID": 5,
-		"Name": "de diskette",
-		"Description": "Het is een grijze 3,5 inch diskette van het merk 'Spirits' met daarop waarschijnlijk belangrijke data.",
+		"Name": "the diskette",
+		"Description": "It's a grey 3.5\" diskette of the brand 'Spirits' that is likely to contain important data.",
 		"StartRoom": 20,
 		"UseTexts": [
-			"Je schuift het metalen klepje aan de kant. Er lijkt dun magnetisch plastic achter te zitten."
+			"You slide the metal cover to the side. It looks like there's thin magnetic material behind it."
 		],
 		"UsableOn": [ 11 ]
 	},
 	{
 		"ID": 6,
-		"Name": "de hasj",
-		"Description": "Het is een zakje met spul dat lijkt op tabak.",
+		"Name": "the hashis",
+		"Description": "It's a bag with stuff that looks like tobacco.",
 		"StartRoom": 22,
 		"UseTexts": [
-			"Je wrijft het zakje heen weer tussen je vingers. De inhoud verbrokkelt wat."
+			"You rub the bag between your fingers. The contents crumble a little."
 		],
 		"UsableOn": [ 8 ]
 	},
 	{
 		"ID": 7,
-		"Name": "het rode kristal",
-		"Description": "Het is een helder, roodgekleurd kristal. Even zie je een mysterieuze twinkeling.",
+		"Name": "the red crystal",
+		"Description": "It is a clear, red crystal. For a moment, you see a mysterious twinkle.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Je knijpt in het kristal. Er komt geen bloed uit."
+			"You squeeze the crystal. No blood comes out of it."
 		],
 		"UsableOn": [ 12 ]
 	},
 	{
 		"ID": 8,
-		"Name": "de slaapmuts",
-		"Description": "Het is een Mickey Mouse-slaapmuts met vrolijke kleuren.",
+		"Name": "the nightcap",
+		"Description": "It's a Mickey Mouse nightcap full of happy colours.",
 		"StartRoom": 24,
 		"UseTexts": [
-			"Je zet de slaapmuts op je hoofd. Hij past niet en zakt er weer af."
+			"You put the nightcap on your head. It doesn't fit and slides off."
 		],
 		"UsableOn": [ 4 ]
 	},
 	{
 		"ID": 9,
-		"Name": "de noekietronenbom",
-		"Description": "De bom bestaat uit een aantal dunne buizen in een cilinder. Daaromheen zitten een aantal slangetjes. Er klinkt een vreemd gebrom dat uit een rooster komt. Er zit een bordje op: -5° - 105°, Codenaam: R136.",
+		"Name": "the nookitron bomb",
+		"Description": "The bomb consists of a number of thin tubes in a cilinder. Around it, there are some tubes. A strange hum emerges from a grate. There's a sign on it that says: -5° - 105°, Code name: R136.",
 		"StartRoom": 27,
 		"UseTexts": [
-			"Je kunt geen knop vinden waarop je kunt drukken."
+			"You can't find a button to push."
 		],
 		"UsableOn": [ 13 ]
 	},
 	{
 		"ID": 10,
-		"Name": "de zaklamp",
-		"Description": "Het is een zwarte, aluminium zaklamp met een halogeenlampje erin.",
+		"Name": "the flashlight",
+		"Description": "It's a black, aluminium flashlight with a halogen lamp in it.", 
 		"StartRoom": 31,
 		"BlockPutdown": true,
 		"Components": [ 10, 18 ],
 		"CombineTexts": [
-			"Je schroeft de zaklamp open en schudt totdat de oude batterijen er uit komen vallen. Daarna steek je de \"trommelbatterijen\" erin en schroeft de lamp weer dicht. Nadat je een paar keer op de zaklantaarn hebt geslagen zie je dat hij het doet."
+			"You screw the cap off the flashlight and shake until the old batteries fall out. Then, you stick in the \"bunny batteries\" and screw the cap back on. After you've hit the flashlight a few times, you see that it works."
 		],
 		"KeepAfterUse": true
 	},
 	{
 		"ID": 11,
-		"Name": "het verband",
-		"Description": "Het is een witte doos met een rood kruis waarin wat verband en een paar pleisters zitten.",
+		"Name": "the bandage kit",
+		"Description": "It's a white box with a red cross. It contains some bandages and a few band-aids.",
 		"StartRoom": 39,
 		"UseTexts": [
-			"Je pakt het verband en de pleisters en plaatst ze over je wonden. Je bijt even op je lippen van de pijn als het verband je nog bloedende wonden raakt.",
-			"Je bent weer zo goed als nieuw."
+			"You take the bandages and band-aids and puts them over your wounds. You bite your lips when you feel the pain of the bandages touchting your wounds that are still bleeding.",
+			"You're as good as new."
 		]
 	},
 	{
 		"ID": 12,
-		"Name": "de vlammenwerper",
-		"Description": "De vlammenwerper bestaat uit een pijp, een zuur- en een brandstoffles en een activatieknop. Uit de pijp komt een klein waakvlammetje.",
+		"Name": "the flamethrower",
+		"Description": "The flamethrower consists of a pipe, oxigen and fuel containers and an activation button. A small pilot light comes out of the end of the pipe.",
 		"StartRoom": 40,
 		"UseTexts": [
-			"Je pielt wat aan de trekker. \"Pfft\", zegt de vlammenwerper."
+			"You pull the lever a little. \"Pfft\", the flamethrower says."
 		],
 		"UsableOn": [ 9 ],
 		"KeepAfterUse": true
@@ -220,8 +220,8 @@
 	},
 	{
 		"ID": 22,
-		"Name": "het blauwe kristal",
-		"Description": "Het is een helder, blauwgekleurd kristal. Even zie je een mysterieuze twinkeling.",
+		"Name": "the blue crystal",
+		"Description": "It is a clear, blue crystal. For a moment, you see a mysterious twinkle.",
 		"StartRoom": 72,
 		"UseTexts": [
 			"Je krabt je achterhoofd met een punt van het kristal."

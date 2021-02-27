@@ -9,7 +9,7 @@
 
 <div class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col text-light">
-		@if (Language == Constants.Dutch)
+		@if (LanguageProvider.Language == Constants.Dutch)
 		{
 			<p>
 				Terwijl je op het punt staat je avontuur te beginnen, denk je nog even na over waarom je hier, in deze verlaten, neertroostige omgeving staat.
@@ -58,9 +58,6 @@
 
 @code 
 {
-	[Parameter]
-	public string Language { get; set; }
-
 	private void LanguageChanged()
 		=> StateHasChanged();
 

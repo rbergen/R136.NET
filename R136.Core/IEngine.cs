@@ -8,8 +8,8 @@ namespace R136.Core
 	public interface IEngine : IContinuable, ISnappable<Engine.Snapshot>
 	{
 		void StartLoadEntities(string[] groupLabels);
-		bool SetEntityGroup(string label);
-		bool Initialize();
+		Task<bool> SetEntityGroup(string label);
+		Task<bool> Initialize(string? groupLabel);
 		bool IsInitialized { get; }
 		InputSpecs CommandInputSpecs { get; }
 		StringValues StartMessage { get; }

@@ -108,14 +108,14 @@
 		"Type": "GeneralCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command}"
+			"Syntax: {command}"
 		]
 	},
 	{
 		"Type": "LocationCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command}"
+			"Syntax: {command}"
 		]
 	},
 	{
@@ -171,7 +171,7 @@
 		"Type": "Engine",
 		"ID": 2,
 		"Texts": [
-			"Afkorting \"{command}\" is dubbelzinnig"
+			"De afkorting \"{command}\" is dubbelzinnig"
 		]
 	},
 	{

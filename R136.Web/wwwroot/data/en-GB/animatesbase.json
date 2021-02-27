@@ -5,21 +5,21 @@
 		"StrikeCount": 4,
 		"StatusTexts": {
 			"Initial": [
-				"Er staat hier een reusachtige hellehond die je de weg verspert. Zijn scherpe tanden steken duidelijk af, en het rode kwijl druipt langzaam uit zijn bek.",
-				"Hij kijkt je dreigend aan met zijn bloeddoorlopen ogen, en uit zijn keel klinkt een diep gegrom."
+				"There is a giant hell hound here, that blocks your path. His sharp teeth are clearly visible, and red drool slowly drips from its mouth.",
+				"It looks threateningly at you with its blood-shot eyes, and a deep growl rises from its throat."
 			],
 			"Attack": [
-				"De hellehond zet zich af tegen de grond, en hij spring boven op je lijf. Zijn nagels boren zich in je vlees, en op een gegeven moment bijt hij je hard in je schouder. Je botten kraken en een scheut van pijn trekt door je zenuwen.",
-				"De hond laat je los, en hij kijkt je grommend aan."
+				"The hell hound leaps forward and jumps on top of your body. His nails dig into your flesh, and at some points he bites you hard in the shoulder. Your bones crunch and a jolt of pain shoot through your nerves.",
+				"The hound releases you and looks at you as it growls."
 			],
 			"PreparingNextAttack": [
-				"De honger van de hellehond is nog niet gestild. Een diep gegrom komt uit zijn keel, en hij staat klaar om opnieuw aan te vallen."
+				"The hunger of the hell hound has not been satisfied yet. A deep growl comes out of its throat, and it's ready to attack again."
 			],
 			"Dying": [
-				"Door de wonden aangericht met je zwaard sterft de hevig bloedende hellehond. Je deelt nog een slag uit, en een stuk vlees van de hond laat los."
+				"Due to the wounds you've inflicted with your sword, the heavily bleeding hell hound dies. Je strike one more time, and a piece of hound meat lets loose."
 			],
 			"Done": [
-				"De dode hellehond ligt in een bad van dampend bloed."
+				"The dead hell hound lies in a steaming pool of blood."
 			]
 		}
 	},
@@ -28,23 +28,23 @@
 		"StartRoom": 23,
 		"StatusTexts": {
 			"Initial": [
-				"Je hebt de rust van de rode trol verstoord. Hij kijkt zwaar geërgerd."
+				"You've disturbed the peace of the red troll. He looks deeply annoyed."
 			],
 			"PreparingFirstAttack": [
-				"Nu is de trol pas echt goed wakker. Hij pakt zijn zweep en komt dreigend op je af."
+				"Now the troll is properly awake. He grabs his whip and appraches you threateningly."
 			],
 			"Attack": [
-				"De trol deelt je een harde klap uit met z'n zweep. Je voelt de brandende pijn tot je botten doordringen."
+				"The troll hits you hard whit his whip. You feel the burning pain down to your bones."
 			],
 			"PreparingNextAttack": [
-				"Het schuim loopt uit de trol z'n bek. Hij heft opnieuw zijn zweep."
+				"Foam runs from the troll's mouth. He rises his sword again."
 			],
 			"Dying": [
-				"Opgewonden grijpt de trol het boekje. Hij bladert het door, en wordt roder en roder. Op een gegeven moment klinkt een geborrel op uit het wezen, en met een klap springt hij uit elkaar. Van de rotswanden druipen de resten van de trol langzaam naar beneden.",
-				"Opeens zie je iets glinsteren."
+				"Excitedly, the troll snatches the magazine. He flips through it and turns redder and redder. At some point a gurgling noise emerges from the creature, and he blows up with a bang. The remains of the troll slowly drip down from the cave walls.",
+				"Suddenly, you see something glimmer."				
 			],
 			"Done": [
-				"Overal in de grot liggen stukken van de verscheurde trol verspreid. Het slijm zuigt aan je schoenen, en een vieze stank dringt in je neus."
+				"Peaces of the torn-up troll are spread throughout the cave. Slime pulls at your shoes, and a filthy stench creeps up your nose."
 			]
 		}
 	},
@@ -54,22 +54,22 @@
 		"StrikeCount": 6,
 		"StatusTexts": {
 			"Initial": [
-				"In deze grot leeft een vleesetende plant.",
-				"Zijn dikke groene stengel loopt uit in een afschrikwekkende kop, met afzichtelijke tanden. Hij heeft je gezien en beweegt zijn opengesperde bek in je richting. Voordat je een stap hebt kunnen zetten zit je verstrengd in het monster, en zet de plant zijn tanden in je nek."
+				"This cave houses a flesh-eating plant.",
+				"Its thick green stemp runs up to a horrifying head, with gruesome teeth. It noticed you and it moves its wide-open mouth in your direction. Before you've been able to make a move, you're tangled up in the monster. The plant puts its teeth in your neck."
 			],
 			"PreparingNextAttack": [
-				"De plant likt met zijn kleine schurfterige tongetje je bloed van zijn bek.",
-				"Met zijn groene oogjes kijkt hij je weer aan, en hij maakt aanstalten zijn tanden opnieuw in je nek te zetten."
+				"With its little scavy tongue, the plant licks your blood of its mouth.",
+				"It looks at you again with its geen eyes, and prepares to sink its teeth in you neck again."
 			],
 			"Attack": [
-				"Opnieuw omsluit de bek van de plant je hals. Een warme stroom bloed loopt via je rug naar beneden, en de pijn is nu ondraaglijk. Na een tijdje laat de plant je weer los."
+				"Once more, the plant's mouth encloses your neck. A warm stream of blood runs down over your back, and now the pain is unbearable. After a while, the plant lets go of you again."
 			],
 			"Dying": [
-				"De resten van wat eerst een vleesetende plant was liggen nu op de grond van de grot. Zijn bek ligt opengesperd, en zijn ogen rollen bijna uit zijn oogkassen. Uit zijn stengel druipt langzaam het bloed van zijn slachtoffers.",
-				"Op de plek waar vroeger zijn beschimmelde wortels waren zit nu een opening."
+				"The remains of what used to be a flesh-eating plant are now on the floor of the cave. It's mouth is wide open, and its eyes almost roll out of their sockets. The blood of its victims slowly drips out of its stem.",
+				"At the spot where his molded roots used to be, an opening has appeared."
 			],
 			"Done": [
-				"De vleesetende plant is niet veel meer dan een berg stinkend tuinafval."
+				"The flesh-eating plant is little more than a mound of stinking garden waste."
 			]
 		}
 	},
@@ -78,17 +78,17 @@
 		"StartRoom": 44,
 		"StatusTexts": {
 			"Initial": [
-				"Er staat hier een grote behaarde gnoe die je met twee geniepige oogjes aankijkt. Tussen de haren van zijn vacht bevinden zich allerlei kleine kruipende beestjes, die je nog nooit eerder gezien hebt. Het beest verspreidt een afschuwelijke lucht. Kweilend en zwaar snuivend komt hij langzaam naar je toe."
+				"There is a big, hairy gnu here, that looks at you with two sneaky eyes. Between the hairs of its fur there are all kinds of small creeping creatures that you have never seen before. A horrible smell comes off the beast. Drooling and puffing heavily, it approaches you."
 			],
 			"Attack": [
-				"De gnoe neemt een sprong, en stoot met zijn grote kop hard in je maag. Je hebt het gevoel alsof je longen uit je lijf worden geperst. Versuft sta je weer op."
+				"THe gnu takes a leap and thrusts its large head hard into your stomach. Je feel like your lungs are being pressed out of your body. Dazed, you get back on your feet."
 			],
 			"Dying": [
-				"De gnoe ziet het vlees, snuffelt er aan, en slokt het in één hap naar binnen.",
-				"Je ziet hem langzaam opzwellen en zijn hersens komen door zijn oogkassen naar buiten. Hij zakt in elkaar en blijft roerloos liggen."
+				"The gnu sees the meat, sniffs it and gobbles it up in one go.",
+				"You see it swell up slowly and its brains come out through its eye sockets. It collapses and remains completely still."
 			],
 			"Done": [
-				"Het bultachtige lichaam van de gnoe ligt op de grond en de hersens liggen er als een papje naast."
+				"The bobbed body of the gnu are on the floor, with its brains forming a puddle next to it."
 			]
 		}
 	},
@@ -299,7 +299,7 @@
 	},
 	{
 		"ID": 15,
-		"StartRoom": 66,
+		"StartRoom": 67,
 		"StatusTexts": {
 			"Initial": [
 				"Er zit een dicht, houten luik in het plafond. Je kunt er niet bij."

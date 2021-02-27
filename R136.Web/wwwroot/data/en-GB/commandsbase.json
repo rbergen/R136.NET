@@ -1,7 +1,7 @@
 ﻿[
 	{
 		"ID": 0,
-		"Name": "oost"
+		"Name": "east"
 	},
 	{
 		"ID": 1,
@@ -9,168 +9,168 @@
 	},
 	{
 		"ID": 2,
-		"Name": "noord"
+		"Name": "north"
 	},
 	{
 		"ID": 3,
-		"Name": "zuid"
+		"Name": "south"
 	},
 	{
 		"ID": 4,
-		"Name": "klim"
+		"Name": "ascend"
 	},
 	{
 		"ID": 5,
-		"Name": "daal"
+		"Name": "descend"
 	},
 	{
 		"ID": 6,
-		"Name": "gebruik"
+		"Name": "use"
 	},
 	{
 		"ID": 7,
-		"Name": "combineer",
+		"Name": "combine",
 		"TextMap": [
 			{
 				"ID": 0,
 				"Texts": [
-					"Syntax: {command} \\<voorwerp\\> en/met \\<voorwerp\\>"
+					"Syntax: {command} \\<object\\> and/with \\<object\\>"
 				]
 			},
 			{
 				"ID": 1,
 				"Texts": [
-					" en ",
-					" met "
+					" and ",
+					" with "
 				]
 			},
 			{
 				"ID": 2,
 				"Texts": [
-					"Je kunt een voorwerp niet met zichzelf combineren."
+					"You can't combine an object with itself."
 				]
 			},
 			{
 				"ID": 3,
 				"Texts": [
-					"Dat levert niets bruikbaars op."
+					"That doesn't yield anything useful."
 				]
 			}
 		]
 	},
 	{
 		"ID": 8,
-		"Name": "pak"
+		"Name": "pickup"
 	},
 	{
 		"ID": 9,
-		"Name": "leg",
+		"Name": "lay",
 		"TextMap": [
 			{
 				"ID": 0,
 				"Texts": [
-					"Je bent inmiddels zo aan {item} gehecht geraakt dat je deze niet meer kunt missen."
+					"You've become so attached to {item} that you can't part from it anymore."
 				]
 			},
 			{
 				"ID": 1,
 				"Texts": [
-					"Je legt {item} neer."
+					"You put {item} down."
 				]
 			}
 		]
 	},
 	{
 		"ID": 10,
-		"Name": "bekijk",
+		"Name": "inspect",
 		"TextMap": [
 			{
 				"ID": 0,
 				"Texts": [
-					"Het is veel te donker om wat dan ook te bekijken."
+					"It's way too dark to look at anything."
 				]
 			}
 		]
 	},
 	{
 		"ID": 11,
-		"Name": "afwachten",
+		"Name": "bide",
 		"TextMap": [
 			{
 				"ID": 0,
 				"Texts": [
-					"Je pulkt wat in je neus.",
-					"Je krabt wat achter je oren.",
-					"Je gaapt even uitgebreid.",
-					"Je trekt je broek even op.",
-					"Je pulkt wat smeer uit je oren."
+					"You pick your nose a little.",
+					"You scratch a little behind your ears.",
+					"You yawn extensively.",
+					"You pull up your pants.",
+					"You pick some grease from your ears."
 				]
 			}
 		]
 	},
 	{
 		"ID": 12,
-		"Name": "einde",
+		"Name": "finish",
 		"TextMap": [
 			{
 				"ID": 0,
 				"Texts": [
-					"Weet je zeker dat je de aarde laat vergaan? [j/n]"
+					"Are you sure you want to leave the earth to die? [y/n]"
 				]
 			},
 			{
 				"ID": 1,
 				"Texts": [
-					"Mooi zo!"
+					"Good!"
 				]
 			},
 			{
 				"ID": 2,
 				"Texts": [
-					"Dat snap ik niet. Antwoord alsjeblieft met j of n."
+					"I didn't catch that. Please answer with y or n."
 				]
 			}
 		]
 	},
 	{
 		"ID": 13,
-		"Name": "status",
+		"Name": "report",
 		"TextMap": [
 			{
 				"ID": 0,
 				"Texts": [
-					"**STATUSRAPPORT**",
+					"**STATUS REPORT**",
 					""
 				]
 			},
 			{
 				"ID": 1,
 				"Texts": [
-					"Je hebt nog {lifepoints} levenspunten."
+					"You have {lifepoints} life points left."
 				]
 			},
 			{
 				"ID": 2,
 				"Texts": [
-					"Je zaklamp staat aan."
+					"Your flashlight is on."
 				]
 			},
 			{
 				"ID": 3,
 				"Texts": [
-					"Je zaklamp staat uit."
+					"Your flashlight is off."
 				]
 			},
 			{
 				"ID": 4,
 				"Texts": [
-					"Je draagt niets."
+					"You have nothing on you."
 				]
 			},
 			{
 				"ID": 5,
 				"Texts": [
-					"Je hebt in je bezit:"
+					"You have in your posession:"
 				]
 			},
 			{
@@ -190,21 +190,21 @@
 				"Texts": [
 					"**HELP**",
 					"",
-					"Commando's:",
-					"* oost",
+					"Commands:",
+					"* east",
 					"* west",
-					"* noord",
-					"* zuid",
-					"* klim",
-					"* daal",
-					"* gebruik \\<voorwerp\\>",
-					"* combineer",
-					"* pak \\<voorwerp\\>",
-					"* leg \\<voorwerp\\>",
-					"* bekijk \\<voorwerp\\>",
-					"* afwachten",
-					"* einde",
-					"* status",
+					"* north",
+					"* south",
+					"* ascend",
+					"* descend",
+					"* use \\<object\\>",
+					"* combine \\<object\\> and/with \\<object\\>",
+					"* pickup \\<object\\>",
+					"* lay \\<object\\>",
+					"* inspect \\<object\\>",
+					"* bide",
+					"* finish",
+					"* report",
 					"* help",
 					"* info"
 				]
@@ -244,7 +244,7 @@
 			{
 				"ID": 0,
 				"Texts": [
-					"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Ontwerp:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testen:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.Web\">https:\/\/github.com\/rbergen\/R136.Web<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br\/>Versie 4.0<br\/>&copy; Copyright R.I.P. 1998, 2021<p\/<\/td><\/tr><\/table>"
+					"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Design:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testing:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.Web\">https:\/\/github.com\/rbergen\/R136.Web<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br\/>Version 4.1<br\/>&copy; Copyright R.I.P. 1998, 2021<p\/<\/td><\/tr><\/table>"
 				]
 			}
 		]

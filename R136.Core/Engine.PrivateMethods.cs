@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.DependencyInjection;
 using R136.Entities;
 using R136.Entities.Animates;
 using R136.Entities.General;
@@ -21,12 +22,12 @@ namespace R136.Core
 			if (Services == null)
 				return null;
 
-			var entityReader = (IEntityReader?)Services.GetService(typeof(IEntityReader));
+			var entityReader = Services.GetService<IEntityReader>();
 			if (entityReader == null)
 				return null;
 
 			var entityCollection = new TypedEntityTaskCollection();
-			entityCollection.Add(entityReader.ReadEntity<Configuration>(groupLabel, ConfigurationLabel));
+			entityCollection.Add(entityReader.ReadEntity<LayoutProperties>(groupLabel, PropertiesLabel));
 			entityCollection.Add(entityReader.ReadEntity<TypedTextsMap<int>.Initializer[]>(groupLabel, TextsLabel));
 			entityCollection.Add(entityReader.ReadEntity<CommandInitializer[]>(groupLabel, CommandsLabel));
 			entityCollection.Add(entityReader.ReadEntity<Room.Initializer[]>(groupLabel, RoomsLabel));
@@ -36,7 +37,7 @@ namespace R136.Core
 			return entityCollection;
 		}
 
-		private bool SetEntityGroup(string label, bool requireInitialized)
+		private async Task<bool> SetEntityGroup(string label, bool requireInitialized)
 		{
 			if (requireInitialized && !IsInitialized)
 				return false;
@@ -47,22 +48,22 @@ namespace R136.Core
 				if (entityMap == null)
 					return false;
 
-				var configuration = entityMap.Get<Configuration>();
+				var layoutProperties = await entityMap.Get<LayoutProperties>();
 
-				if (configuration != null)
-					Facilities.Configuration = configuration;
+				if (layoutProperties != null)
+						Facilities.Configuration.Load(layoutProperties);
 
-				var texts = entityMap.Get<TypedTextsMap<int>.Initializer[]>();
+				var texts = await entityMap.Get<TypedTextsMap<int>.Initializer[]>();
 				if (texts != null)
 					Facilities.TextsMap.LoadInitializers(texts);
 
-				var rooms = entityMap.Get<Room.Initializer[]>();
+				var rooms = await entityMap.Get<Room.Initializer[]>();
 				if (rooms == null)
 					return false;
 
 				_rooms = Room.CreateMap(rooms);
 
-				var animates = entityMap.Get<Animate.Initializer[]>();
+				var animates = await entityMap.Get<Animate.Initializer[]>();
 				if (animates == null)
 					return false;
 
@@ -74,13 +75,13 @@ namespace R136.Core
 
 				_animates = Animate.CreateMap(animates);
 
-				var items = entityMap.Get<Item.Initializer[]>();
+				var items = await entityMap.Get<Item.Initializer[]>();
 				if (items == null)
 					return false;
 
 				_items = Item.CreateOrUpdateMap(_items, items, _animates);
 
-				var commands = entityMap.Get<CommandInitializer[]>();
+				var commands = await entityMap.Get<CommandInitializer[]>();
 				if (commands == null)
 					return false;
 
@@ -105,7 +106,7 @@ namespace R136.Core
 			}
 			catch (Exception e)
 			{
-				LogLine($"Exception during initialization: {e}");
+				LogLine($"Exception while loading entity group {label}: {e}");
 				return false;
 			}
 		}
