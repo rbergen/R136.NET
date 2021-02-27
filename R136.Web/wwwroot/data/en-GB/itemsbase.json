@@ -4,7 +4,7 @@
 		"Name": "the hell hound meat",
 		"Description": "It's a filthy piece of meat that smells of vomit.",
 		"UseTexts": [
-			"I don't think that's wise."
+			"I don't think that's a good idea."
 		],
 		"StartRoom": 80,
 		"UsableOn": [ 8 ]
@@ -32,7 +32,7 @@
 	{
 		"ID": 3,
 		"Name": "the sword",
-		"Description": "It's a magical sword that doesn't look too strong, but radiates great force. There's a purple ruby in the handle."
+		"Description": "It's a magical sword that doesn't look too strong, but radiates great force. There's a purple ruby in the handle.",
 		"StartRoom": 5,
 		"UseTexts": [
 			"You tip the sword a little and pick at the blade."
@@ -135,86 +135,86 @@
 	},
 	{
 		"ID": 13,
-		"Name": "het kookboek",
-		"Description": "Het is een oud, vergeeld kookboek met daarin een koekjesrecept. Er staat: 'Pak wat hellehond en wat hasj, en gooi het in de barbecue'. Dat is alles.",
+		"Name": "the cookbook",
+		"Description": "It's an old, yellowed cookbook that has a cookie recepy in it. It says: 'Take some hell hound and some hashis and throw them in the barbecue.' That is all.",
 		"StartRoom": 43,
 		"UseTexts": [
-			"Je draait het kookboek ondersteboven. Het valt je op dat de tekst nu op zijn kop staat."
-		]
+			"You turn the cookbook upside down. It occurs to you that the text is now the wrong way up."
+ 		]
 	},
 	{
 		"ID": 14,
-		"Name": "de tnt",
-		"Description": "De T.N.T. is een bosje rode staven met een velletje waarop staat: 'Pas op! Schokgevoelig!'",
+		"Name": "the tnt",
+		"Description": "The TNT is a bundle of red sticks with a note that says: 'Warning! Sensitive to shock!'",
 		"StartRoom": 51,
 		"UseTexts": [
-			"Je pakt een staafje en gooit het op de grond. Er volgt een explosie die samengaat met een harde knal. Je wordt even verblind door de flits van de ontploffing. Door de klap val je even flauw."
+			"You take a stick and throw it on the ground. An explosion follows, accompanied by a loud bang. You're temporarily blinded by the explosion's flash. Due to the hit you shortly loose conscience."
 		]
 	},
 	{
 		"ID": 15,
-		"Name": "het mosterdgaspatroon",
-		"Description": "Het is een patroon dat mosterdgas onder druk bevat. Er zitten draadjes aan en je kunt niets vinden om hem te activeren.",
+		"Name": "the mustard gas catrtridge",
+		"Description": "It's a cartridge that contains mustard gas under pressure. There are wires attached to it and you can't find any way to activate it.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Je schudt wat met het patroon. Je hoort niets."
+			"You shake the cartridge a little. You don't hear anything."
 		]
 	},
 	{
 		"ID": 16,
-		"Name": "het giftige vlees",
-		"Description": "Het is een stuk vlees dat er op zich lekker uit ziet, maar een paar groene vlekken heeft. Er zit een dode mier op.",
+		"Name": "the poisonous meat",
+		"Description": "It's a piece of meat that looks delicious in itself, but has a few green spots. There's a dead ant on top of it.",
 		"StartRoom": 52,
 		"UseTexts": [
-			"Dat lijkt me niet verstandig."
+			"I don't think that's a good idea."
 		],
 		"UsableOn": [ 3 ]
 	},
 	{
 		"ID": 17,
-		"Name": "de ontsteking",
-		"Description": "De ontsteking is een kastje met een T-vormige hendel erop.",
+		"Name": "the ignition",
+		"Description": "The ignition is a small box with T-shaped handle on it.",
 		"StartRoom": 60,
 		"UseTexts": [
-			"Je drukt de hendel omlaag, maar er gebeurt niets. Misschien ontbreekt er nog iets?"
+			"You push the handle down but nothing happens. Maybe something's still missing?"
 		]
 	},
 	{
 		"ID": 18,
-		"Name": "het pakje batterijen",
-		"Description": "Het is een pakketje met penlights. Konijntjes kunnen er uren mee trommelen.",
+		"Name": "the pack of batteries",
+		"Description": "It's a packet of penlight batteries. Bunnies can drum for hours on them.",
 		"StartRoom": 61,
 		"BlockPutdown": true,
 		"UseTexts": [
-			"Je steekt twee batterijen in je neusgaten en de andere twee in je oren. Je wordt er niet warm of koud van, dus je steekt de batterijen weer in het pakje."
+			"You stick two batteries in your nostrils and the other two in your ears. It doesn't do much for you, so you stick the batteries back into the pack."
 		]
 	},
 	{
 		"ID": 19,
-		"Name": "het gasmasker",
-		"Description": "Het is een groen masker met een rond filter en 2 plastic ooggaten.",
+		"Name": "the gasmask",
+		"Description": "It's a green mask with a round filter and 2 plastic eyeholes.",
 		"StartRoom": 62,
 		"Wearable": true,
 		"UseTexts": [
-			"Je hebt het gasmasker al op."
+			"You're already wearing the gasmask."
 		]
 	},
 	{
 		"ID": 20,
-		"Name": "het papier",
-		"Description": "Het is een geel vel papier met gekrulde hoeken. Het handschrift is bijna onleesbaar, en met moeite ontcijfer je: 'Voed de drakekop met de 3 gekleurde kristallen'.",
+		"Name": "the paper",
+		"Description": "It's a yellow pieace of paper with curled corners. The writing is almost illegible, and with some difficulty you decipher: 'Feed the dragon's head with the three coloured crystals'.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Je probeert er een vliegtuigje van te vouwen, maar ontdekt dat je vergeten bent hoe dat moet."
+			"You try to fold it into a paper plane, but you discover you've forgotten how to."
 		]
 	},
 	{
 		"ID": 21,
-		"Name": "het boekje",
-		"Description": "Het is een vies, kleverig boekje met op de voorkant een ontklede trol. Je krijgt kotsneigingen.",
+		"Name": "the booklet",
+		"Description": "It's a dirty, sticky booklet with a naked roll on the front page. You feel like throwing up.",
 		"StartRoom": 70,
 		"UseTexts": [
-			"Je kunt je niet indenken wat je hiermee aan moet."
+			"You can't imagine what to do with this."
 		],
 		"UsableOn": [ 1 ]
 	},
@@ -224,31 +224,31 @@
 		"Description": "It is a clear, blue crystal. For a moment, you see a mysterious twinkle.",
 		"StartRoom": 72,
 		"UseTexts": [
-			"Je krabt je achterhoofd met een punt van het kristal."
+			"You scratch the back of your head with a point of the crystal."
 		],
 		"UsableOn": [ 12 ]
 	},
 	{
 		"ID": 23,
-		"Name": "het koekje",
-		"Description": "Het is een rond koekje dat naar ammoniak stinkt.",
+		"Name": "the cookie",
+		"Description": "It's a round cookie that smells like ammonia.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Je ruikt eens aan het koekje en besluit het daarbij maar te laten"
+			"You smell the cookie and then decide to leave it at that."
 		],
 		"UsableOn": [ 4 ]
 	},
 	{
 		"ID": 24,
-		"Name": "de mosterdgasgranaat",
-		"Description": "Door het indrukken van de hendel kan het mosterdgas ontstnappen.",
+		"Name": "the mustard gas grenade",
+		"Description": "By pressing the handle down, the mustard gas can esacpe.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Dat lijkt me hier geen goed idee."
+			"I don't think that's going to work here."
 		],
 		"Components": [ 15, 17 ],
 		"CombineTexts": [
-			"Je plaatst de ontsteker op het mosterdgaspatroon. Na enig friemelen is het resultaat een werkende mosterdgasgranaat."
+			"You put the ignition on the mustard gas cartridge. After some fiddling, the result is a functioning mustard gas grenade."
 		],
 		"UsableOn": [ 5 ]
 	}

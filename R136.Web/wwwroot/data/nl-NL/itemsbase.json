@@ -136,7 +136,7 @@
 	{
 		"ID": 13,
 		"Name": "het kookboek",
-		"Description": "Het is een oud, vergeeld kookboek met daarin een koekjesrecept. Er staat: 'Pak wat hellehond en wat hasj, en gooi het in de barbecue'. Dat is alles.",
+		"Description": "Het is een oud, vergeeld kookboek met daarin een koekjesrecept. Er staat: 'Pak wat hellehond en wat hasj, en gooi het in de barbecue.' Dat is alles.",
 		"StartRoom": 43,
 		"UseTexts": [
 			"Je draait het kookboek ondersteboven. Het valt je op dat de tekst nu op zijn kop staat."
@@ -202,7 +202,7 @@
 	{
 		"ID": 20,
 		"Name": "het papier",
-		"Description": "Het is een geel vel papier met gekrulde hoeken. Het handschrift is bijna onleesbaar, en met moeite ontcijfer je: 'Voed de drakekop met de 3 gekleurde kristallen'.",
+		"Description": "Het is een geel vel papier met gekrulde hoeken. Het handschrift is bijna onleesbaar, en met moeite ontcijfer je: 'Voed de drakekop met de drie gekleurde kristallen'.",
 		"StartRoom": 80,
 		"UseTexts": [
 			"Je probeert er een vliegtuigje van te vouwen, maar ontdekt dat je vergeten bent hoe dat moet."
@@ -234,7 +234,7 @@
 		"Description": "Het is een rond koekje dat naar ammoniak stinkt.",
 		"StartRoom": 80,
 		"UseTexts": [
-			"Je ruikt eens aan het koekje en besluit het daarbij maar te laten"
+			"Je ruikt eens aan het koekje en besluit het daarbij maar te laten."
 		],
 		"UsableOn": [ 4 ]
 	},

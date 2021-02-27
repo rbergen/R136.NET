@@ -185,7 +185,7 @@
 		"Type": "Engine",
 		"ID": 4,
 		"Texts": [
-			"You are {room}."
+			"You're {room}."
 		]
 	},
 	{

@@ -202,7 +202,7 @@ namespace R136.Core
 
 			var result = findResult switch
 			{
-				FindResult.Ambiguous => Result.Error(GetTexts(TextID.AmbiguousCommand)),
+				FindResult.Ambiguous => Result.Error(GetTexts(TextID.AmbiguousCommand, "command", input)),
 				FindResult.NotFound => Result.Error(GetTexts(TextID.InvalidCommand)),
 				_ => processor!.Execute(id!.Value, command!, terms.Length == 1 ? null : terms[1], _player!).WrapInputRequest(ContinuationKey, (int)processor!.ID)
 			};
