@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using R136.Entities.Global;
+using R136.Interfaces;
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using R136.Entities.Global;
-using R136.Interfaces;
 
 namespace R136.Core
 {
@@ -19,13 +17,18 @@ namespace R136.Core
 			LogLine($"created with base URI {_client.BaseAddress}");
 		}
 
-		public async Task<TEntity?> ReadEntity<TEntity>(string label)
+		public async Task<TEntity?> ReadEntity<TEntity>(string? groupLabel, string label)
 		{
 			try
 			{
-				LogLine($"loading {label}... ");
-				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{label}.json"));
-				LogLine($"{label} loaded successfully");
+				var fullLabel = groupLabel != null ? $"{groupLabel}/{label}" : label;
+
+				LogLine($"loading {fullLabel}...");
+
+				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{fullLabel}.json"));
+
+				LogLine($"{fullLabel} loaded successfully");
+
 				return result;
 			}
 			catch (HttpRequestException e)

@@ -13,9 +13,6 @@ namespace R136.Entities.Animates
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
-			if (Facilities.Configuration.AutoPlaceItems)
-				StatusManager?.Place(ItemID.RedCrystal);
-
 			switch (status)
 			{
 				case AnimateStatus.Initial:
@@ -30,7 +27,6 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					StatusManager?.Place(ItemID.RedCrystal);
 					Status = AnimateStatus.Done;
 
 					break;
@@ -39,7 +35,7 @@ namespace R136.Entities.Animates
 
 		public override Result ApplyItem(ItemID item)
 		{
-			if (item != ItemID.Pornbook)
+			if (item != ItemID.PoisonedMeat)
 				return Result.Failure();
 
 			Status = AnimateStatus.Dying;

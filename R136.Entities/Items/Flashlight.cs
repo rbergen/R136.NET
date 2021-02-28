@@ -1,4 +1,5 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System.Collections.Generic;
@@ -12,9 +13,10 @@ namespace R136.Entities.Items
 		private int? _lampPointsFromConfig;
 
 		public bool IsOn { get; private set; }
+		public bool HasBatteries { get; private set; }
 
 		public ICollection<Item> Components { get; private set; }
-		public ICollection<string>? CombineTexts
+		public StringValues CombineTexts
 			=> Facilities.ItemTextsMap[ID, TextType.Combine];
 
 #pragma warning disable IDE0060 // Remove unused parameter
@@ -48,8 +50,8 @@ namespace R136.Entities.Items
 			IReadOnlyDictionary<ItemID, Item> items,
 			ICollection<ItemID> components
 			) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
-			=> (IsOn, _lampPoints, _lampPointsFromConfig, Components)
-			= (false, null, null, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
+			=> (IsOn, HasBatteries, _lampPoints, _lampPointsFromConfig, Components)
+			= (false, false, null, null, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
 
 		public int? LampPoints
 		{
@@ -71,7 +73,7 @@ namespace R136.Entities.Items
 
 		public Item Self => this;
 
-		private ICollection<string>? GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
+		private StringValues GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
 
 		public override Result Use()
 		{
@@ -84,7 +86,7 @@ namespace R136.Entities.Items
 				return Result.Success(GetTexts(isDark ? TextID.LightOffInDark : TextID.LightOff));
 			}
 
-			if (LampPoints == null || LampPoints > 0)
+			if (HasBatteries || LampPoints == null || LampPoints > 0)
 			{
 				IsOn = true;
 				return Result.Success(GetTexts(TextID.LightOn));
@@ -95,15 +97,17 @@ namespace R136.Entities.Items
 
 		public Result Combine(Item first, Item second)
 		{
-			return !Components.Contains(first) || !Components.Contains(second) || first == second 
-				? Result.Failure()
-				:	Result.Success(CombineTexts);
+			if (!Components.Contains(first) || !Components.Contains(second) || first == second)
+				return Result.Failure();
+
+			HasBatteries = true;
+			return Result.Success(CombineTexts);
 		}
 
-		public ICollection<string>? TurnEnding()
+		public StringValues TurnEnding()
 		{
-			if (!IsOn)
-				return null;
+			if (!IsOn || HasBatteries)
+				return StringValues.Empty;
 
 			if (LampPoints != null && LampPoints > 0)
 				LampPoints--;
@@ -117,7 +121,7 @@ namespace R136.Entities.Items
 				return Facilities.TextsMap[this, (int)TextID.BatteriesEmpty];
 			}
 
-			return null;
+			return StringValues.Empty;
 
 		}
 
@@ -130,6 +134,7 @@ namespace R136.Entities.Items
 			snapshot.LampPoints = _lampPoints;
 			snapshot.LampPointsFromConfig = _lampPointsFromConfig;
 			snapshot.IsOn = IsOn;
+			snapshot.HasBatteries = HasBatteries;
 			
 			return snapshot;
 		}
@@ -142,6 +147,7 @@ namespace R136.Entities.Items
 			_lampPoints = snapshot.LampPoints;
 			_lampPointsFromConfig = snapshot.LampPointsFromConfig;
 			IsOn = snapshot.IsOn;
+			HasBatteries = snapshot.HasBatteries;
 
 			return true;
 		}
@@ -151,6 +157,7 @@ namespace R136.Entities.Items
 			public int? LampPoints { get; set; }
 			public int? LampPointsFromConfig { get; set; }
 			public bool IsOn { get; set; }
+			public bool HasBatteries { get; set; }
 		}
 
 		private enum TextID

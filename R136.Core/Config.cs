@@ -2,10 +2,6 @@
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Core
 {
@@ -36,7 +32,7 @@ namespace R136.Core
 				.AddSingleton(engine.StatusManager);
 		}
 
-		public static async Task<bool> InitializeR136Async(this IServiceProvider serviceProvider)
-			=> await serviceProvider.GetRequiredService<IEngine>().Initialize();
+		public static void PreLoadR136Async(this IServiceProvider serviceProvider, string[] entityGroups)
+			=> serviceProvider.GetRequiredService<IEngine>().StartLoadEntities(entityGroups);
 	}
 }

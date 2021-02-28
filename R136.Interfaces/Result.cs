@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Primitives;
+using System;
 
 namespace R136.Interfaces
 {
@@ -19,21 +19,21 @@ namespace R136.Interfaces
 		private static readonly Result _error = new Result(ResultCode.Error);
 
 		public static Result Success() => _success;
-		public static Result Success(ICollection<string>? message) => new Result(ResultCode.Success, message);
+		public static Result Success(StringValues message) => new Result(ResultCode.Success, message);
 		public static Result Success(string message) => new Result(ResultCode.Success, new string[] { message });
 
 		public static Result Failure() => _failure;
-		public static Result Failure(ICollection<string>? message) => new Result(ResultCode.Failure, message);
+		public static Result Failure(StringValues message) => new Result(ResultCode.Failure, message);
 		public static Result Failure(string message) => new Result(ResultCode.Failure, new string[] { message });
 
 		public static Result Error() => _error;
-		public static Result Error(ICollection<string>? message) => new Result(ResultCode.Error, message);
+		public static Result Error(StringValues message) => new Result(ResultCode.Error, message);
 		public static Result Error(string message) => new Result(ResultCode.Error, new string[] { message });
 
 		public static Result EndRequested() => new Result(ResultCode.EndRequested);
-		public static Result EndRequested(ICollection<string>? message) => new Result(ResultCode.EndRequested, message);
+		public static Result EndRequested(StringValues message) => new Result(ResultCode.EndRequested, message);
 
-		public static Result InputRequested(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
+		public static Result InputRequested(ContinuationStatus status, InputSpecs specs, StringValues message)
 			=> new Result(status, specs, message);
 
 		public Result WrapInputRequest(string key, int number, string[]? texts = null)
@@ -58,7 +58,7 @@ namespace R136.Interfaces
 		}
 
 		public ResultCode Code { get; }
-		public ICollection<string>? Message { get; }
+		public StringValues Message { get; }
 		public ContinuationStatus? ContinuationStatus { get; }
 
 		public InputSpecs? InputSpecs { get; }
@@ -71,7 +71,7 @@ namespace R136.Interfaces
 		public Result(ResultCode code)
 			=> Code = code;
 
-		public Result(ResultCode code, ICollection<string>? message)
+		public Result(ResultCode code, StringValues message)
 		{
 			if (code == ResultCode.InputRequested)
 				throw new ArgumentException("ResultCode ContinuationRequested requires InputSpecs", nameof(code));
@@ -79,7 +79,7 @@ namespace R136.Interfaces
 			(Code, Message) = (code, message);
 		}
 
-		public Result(ContinuationStatus status, InputSpecs specs, ICollection<string>? message)
+		public Result(ContinuationStatus status, InputSpecs specs, StringValues message)
 			=> (Code, ContinuationStatus, InputSpecs, Message)
 			= (ResultCode.InputRequested, status, specs, message);
 	}

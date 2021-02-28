@@ -102,7 +102,7 @@
 			],
 			"PreparingFirstAttack": [
 				"De koppen van de draak bewegen nu agressiever heen en weer en beginnen hevig te snuiven.",
-				"De lucht uit de drakekoppen ruikt afgrijselijk, en je slaat achterover van walging. Een van de bekken spert zich wijd open, en harder dan eerst klinkt \"BEN JIJ EEN KOEKIE?!?\""
+				"De lucht uit de drakekoppen ruikt afgrijselijk, en je slaat achterover van walging. Een van de bekken spert zich wijd open, en harder dan eerst klinkt \"**BEN JIJ EEN KOEKIE?!?**\""
 			],
 			"Attack": [
 				"De draak heft langzaam een van zijn gore poten op, en geeft opeens een ontzettende harde klap. Er kraakt iets in je hoofd, en een duizeling maakt zich van je meester. Hij maakt aanstalten je nog een klap te verkopen."
@@ -212,7 +212,7 @@
 				"Je hebt niets om je te beschermen tegen de hitte, en je loopt flinke brandwonden op."
 			],
 			"Done": [
-				"Uit de grond steken nog een paar wortels, en er naast ligt een verkoold stuk bord met daarop \"R\u00a0\u00a0\u00a0n e\u00a0 op\u00a0n v\u00a0u\u00a0 ver\u00a0\u00a0d\u00a0n\""
+				"Uit de grond steken nog een paar wortels, en er naast ligt een verkoold stuk bord met daarop \"R\u00a0\u00a0\u00a0n e\u00a0 op\u00a0n v\u00a0u\u00a0\u00a0 ver\u00a0\u00a0d\u00a0n\"."
 			]
 		}
 	},
@@ -236,7 +236,7 @@
 				"De computer wacht nog steeds."
 			],
 			"Operating": [
-				"De drive begint te lezen en na korte tijd verschijnt er informatie op het scherm. Er staat: \"In het onderste grottenstelsel moet men een letterroute volgen die resulteert in de naam van het te vinden voorwerp.\".",
+				"De drive begint te lezen en na korte tijd verschijnt er informatie op het scherm. Er staat: \"In het onderste grottenstelsel moet men een letterroute volgen die resulteert in de naam van het te vinden voorwerp.\"",
 				"Na even wordt het scherm zwart."
 			],
 			"Done": [
@@ -293,7 +293,7 @@
 		"StartRoom": 71,
 		"StatusTexts": {
 			"Initial": [
-				"Doordat er in deze grot geen lucht is, klappen allebei je longen dicht. Een verschrikkelijke pijn kraakt als een bliksem door je lijf. Je valt naar achteren de grot uit, en daar val je even flauw"
+				"Doordat er in deze grot geen lucht is, klappen allebei je longen dicht. Een verschrikkelijke pijn kraakt als een bliksem door je lijf. Je valt naar achteren de grot uit, en daar val je even flauw."
 			]
 		}
 	},

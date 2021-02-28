@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using R136.Entities;
+﻿using R136.Entities;
 using R136.Entities.CommandProcessors;
 using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
+using System;
+using System.Linq;
 
 namespace R136.Core
 {
@@ -15,7 +12,7 @@ namespace R136.Core
 	{
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
-			if (!IsInitialized && !Initialize().Result)
+			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
 			if (snapshot == null)
@@ -51,7 +48,7 @@ namespace R136.Core
 
 		public bool RestoreSnapshot(Snapshot snapshot)
 		{
-			if (!IsInitialized && !Initialize().Result)
+			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
 			bool result = true;

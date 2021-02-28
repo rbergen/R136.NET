@@ -4,6 +4,6 @@ namespace R136.Interfaces
 {
 	public interface IEntityReader
 	{
-		public Task<TEntity> ReadEntity<TEntity>(string label);
+		public Task<TEntity> ReadEntity<TEntity>(string? groupLabel, string label);
 	}
 }

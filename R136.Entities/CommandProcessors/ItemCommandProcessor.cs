@@ -1,4 +1,5 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
@@ -73,11 +74,11 @@ namespace R136.Entities.CommandProcessors
 		private Result ExecuteCombine(string command, string? parameters, Player player)
 		{
 			if (parameters == null)
-				return Result.Error(GetTexts(CombineTextID.NoParametersGiven, "command", command));
+				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
 			(var separatorIndex, var separator) = parameters.IndexOfAny(GetTexts(CommandID.Combine, (int)CombineTextID.ItemSeparators));
 			if (separatorIndex < 1 || separatorIndex + separator!.Length == parameters.Length)
-				return Result.Error(GetTexts(CombineTextID.NoParametersGiven, "command", command));
+				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
 			var itemNames = new string[]
 			{
@@ -86,7 +87,7 @@ namespace R136.Entities.CommandProcessors
 			};
 
 			if (itemNames.Any(s => s == string.Empty))
-				return Result.Error(GetTexts(CombineTextID.NoParametersGiven, "command", command));
+				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
 			var items = new Item?[itemNames.Length];
 			Result result;
@@ -134,22 +135,22 @@ namespace R136.Entities.CommandProcessors
 			return usableItem.UseOn(presentAnimate).WrapInputRequest(ContinuationKey, (int)item.ID);
 		}
 
-		private ICollection<string>? GetTexts(TextID id)
+		private StringValues GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
 
-		private ICollection<string>? GetTexts(TextID id, string tag, string parameter)
+		private StringValues GetTexts(TextID id, string tag, string parameter)
 			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", parameter);
 
-		private static ICollection<string>? GetTexts(CommandID commandId, int textId)
+		private static StringValues GetTexts(CommandID commandId, int textId)
 			=> Facilities.CommandTextsMap[commandId, textId];
 
-		private static ICollection<string>? GetTextsWithItem(CommandID commandID, int textId, Item item)
+		private static StringValues GetTextsWithItem(CommandID commandID, int textId, Item item)
 			=> GetTexts(commandID, textId).ReplaceInAll("{item}", item.Name);
 
-		private static ICollection<string>? GetTexts(CombineTextID id, string tag, string content)
+		private static StringValues GetTexts(CombineTextID id, string tag, string content)
 			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", content);
 
-		private static ICollection<string>? GetTexts(CombineTextID id)
+		private static StringValues GetTexts(CombineTextID id)
 			=> GetTexts(CommandID.Combine, (int)id);
 
 		private (Item?, Result) FindOwnedItem(string command, string? itemName, Player player)
@@ -200,7 +201,7 @@ namespace R136.Entities.CommandProcessors
 
 		private enum CombineTextID
 		{
-			NoParametersGiven,
+			InvalidParametersGiven,
 			ItemSeparators,
 			CantCombineWithItself,
 			DoesntCombine

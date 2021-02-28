@@ -3,23 +3,44 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
+		   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+	</PropertyGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\data\animatesbase.json" />
     <Content Remove="wwwroot\data\commandsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\animatesbase.json" />
+    <Content Remove="wwwroot\data\en-GB\commandsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\itemsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\propertiesbase.json" />
+    <Content Remove="wwwroot\data\en-GB\roomsbase.json" />
+    <Content Remove="wwwroot\data\en-GB\textsbase.json" />
     <Content Remove="wwwroot\data\itemsbase.json" />
+    <Content Remove="wwwroot\data\nl-NL\propertiesbase.json" />
     <Content Remove="wwwroot\data\roomsbase.json" />
     <Content Remove="wwwroot\data\textsbase.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="wwwroot\data\animatesbase.json" />
-    <None Include="wwwroot\data\commandsbase.json" />
-    <None Include="wwwroot\data\itemsbase.json" />
-    <None Include="wwwroot\data\roomsbase.json" />
-    <None Include="wwwroot\data\textsbase.json" />
+    <None Include="wwwroot\data\en-GB\animatesbase.json" />
+    <None Include="wwwroot\data\en-GB\commandsbase.json" />
+    <None Include="wwwroot\data\en-GB\itemsbase.json" />
+    <None Include="wwwroot\data\en-GB\propertiesbase.json" />
+    <None Include="wwwroot\data\en-GB\roomsbase.json" />
+    <None Include="wwwroot\data\en-GB\textsbase.json" />
+    <None Include="wwwroot\data\nl-NL\animatesbase.json" />
+    <None Include="wwwroot\data\nl-NL\commandsbase.json" />
+    <None Include="wwwroot\data\nl-NL\itemsbase.json" />
+    <None Include="wwwroot\data\nl-NL\propertiesbase.json" />
+    <None Include="wwwroot\data\nl-NL\roomsbase.json" />
+    <None Include="wwwroot\data\nl-NL\textsbase.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +48,7 @@
     <PackageReference Include="Markdig" Version="0.23.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 

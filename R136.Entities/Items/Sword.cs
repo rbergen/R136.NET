@@ -1,7 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,7 +53,7 @@ namespace R136.Entities.Items
 				AddTexts(texts, TextID.Hit);
 
 				if (strikable.ApplyItem(this).IsSuccess)
-					return Result.Success(texts);
+					return Result.Success(texts.ToArray());
 			}
 
 			if (strikable.StrikesLeft == 1)
@@ -64,11 +63,15 @@ namespace R136.Entities.Items
 			}
 
 			if (Facilities.Randomizer.NextDouble() > .3)
-				return Result.Failure(texts);
+				return Result.Failure(texts.ToArray());
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);
-			return Result.InputRequested(new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID }, Facilities.Configuration.YesNoInputSpecs, texts);
+			return Result.InputRequested(
+				new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID }, 
+				Facilities.Configuration.YesNoInputSpecs, 
+				texts.ToArray()
+			);
 		}
 
 		private void AddTexts(List<string> texts, TextID id)
@@ -83,6 +86,14 @@ namespace R136.Entities.Items
 			if (animate == null)
 				return Result.Error();
 
+			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
+			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
+				return Result.InputRequested(
+					new ContinuationStatus() { Key = ContinuationKey, Number = (int)animate.ID }, 
+					Facilities.Configuration.YesNoInputSpecs,
+					Facilities.TextsMap[this, (int)TextID.InvalidYesNoAnswer]
+				);
+
 			return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(animate) : Result.Failure();
 		}
 
@@ -91,7 +102,8 @@ namespace R136.Entities.Items
 			Miss,
 			Hit,
 			SeriouslyInjured,
-			CanStrikeAgain
+			CanStrikeAgain,
+			InvalidYesNoAnswer
 		}
 	}
 }

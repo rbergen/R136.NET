@@ -77,6 +77,13 @@
 		]
 	},
 	{
+		"Type": "Sword",
+		"ID": 4,
+		"Texts": [
+			"Dat snap ik niet. Antwoord alsjeblieft met j of n."
+		]
+	},
+	{
 		"Type": "Player",
 		"ID": 0,
 		"Texts": [
@@ -101,14 +108,14 @@
 		"Type": "GeneralCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command}"
+			"Syntax: {command}"
 		]
 	},
 	{
 		"Type": "LocationCommandProcessor",
 		"ID": 0,
 		"Texts": [
-			"syntax: {command}"
+			"Syntax: {command}"
 		]
 	},
 	{
@@ -164,7 +171,7 @@
 		"Type": "Engine",
 		"ID": 2,
 		"Texts": [
-			"Afkorting \"{command}\" is dubbelzinnig"
+			"De afkorting \"{command}\" is dubbelzinnig"
 		]
 	},
 	{

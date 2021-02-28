@@ -1,4 +1,5 @@
 ﻿@inject IConfiguration Configuration
+@inject ILanguageProvider LanguageProvider 
 
 <div class="container bg-dark border-top border-danger">
 	<div class="row pt-2 pb-2 gx-2">
@@ -6,7 +7,7 @@
 			&nbsp;
 		</div>
 		<div class="col-md-auto">
-			<button type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? Configuration[Constants.ProceedButtonLabel])</button>
+			<button type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? LanguageProvider.GetConfigurationValue(Constants.ProceedButtonLabel))</button>
 		</div>
 		<div class="col">
 			&nbsp;

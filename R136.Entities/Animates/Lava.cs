@@ -1,6 +1,6 @@
-﻿using R136.Entities.Global;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.Global;
 using R136.Interfaces;
-using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 
 		private Lava(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override ICollection<string>? ProgressStatus()
+		public override StringValues ProgressStatus()
 		{
 			var textStatus = Status;
 
@@ -31,9 +31,7 @@ namespace R136.Entities.Animates
 			if (item != ItemID.Bomb)
 				return Result.Error();
 
-			Status = AnimateStatus.Operating;
-			IsTriggered = true;
-			return Result.EndRequested();
+			return Result.EndRequested(GetTextsForStatus(AnimateStatus.Done));
 		}
 	}
 }

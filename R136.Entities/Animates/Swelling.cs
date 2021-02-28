@@ -1,6 +1,6 @@
-﻿using R136.Entities.Global;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.Global;
 using R136.Interfaces;
-using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
@@ -11,7 +11,7 @@ namespace R136.Entities.Animates
 
 		private Swelling(AnimateID id, RoomID startRoom) : base(id, startRoom) { }
 
-		public override ICollection<string>? ProgressStatus()
+		public override StringValues ProgressStatus()
 		{
 			if (Facilities.Configuration.AutoOpenConnections)
 				StatusManager?.OpenConnection(Direction.North, RoomID.DamnationCave);

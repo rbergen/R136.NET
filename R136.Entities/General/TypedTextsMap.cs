@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Primitives;
+using System;
 using System.Collections.Generic;
 
 
@@ -13,12 +14,11 @@ namespace R136.Entities.General
 
 			foreach (var initializer in initializers)
 			{
-				if (initializer.Texts != null && initializer.Texts.Length > 0)
-					base[initializer.Type, initializer.ID] = initializer.Texts;
+				base[initializer.Type, initializer.ID] = initializer.Texts;
 			}
 		}
 
-		public IDictionary<TTextKey, ICollection<string>>? this[object o]
+		public IDictionary<TTextKey, StringValues>? this[object o]
 		{
 			get => base[o.GetType().Name];
 			set
@@ -30,7 +30,7 @@ namespace R136.Entities.General
 			}
 		}
 
-		public IDictionary<TTextKey, ICollection<string>> this[Type t]
+		public IDictionary<TTextKey, StringValues> this[Type t]
 		{
 			set
 			{
@@ -38,7 +38,7 @@ namespace R136.Entities.General
 			}
 		}
 
-		public ICollection<string>? this[object o, TTextKey id]
+		public StringValues this[object o, TTextKey id]
 		{
 			get => base[o.GetType().Name, id];
 			set

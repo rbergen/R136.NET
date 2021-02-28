@@ -1,8 +1,8 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -125,12 +125,12 @@ namespace R136.Entities.CommandProcessors
 			return true;
 		}
 
-		private static ICollection<string>? GetTexts(string propertyName, object? value)
+		private static StringValues GetTexts(string propertyName, object? value)
 			=> Facilities.CommandTextsMap[CommandID.ConfigGet, Default]
 			.ReplaceInAll("{setting}", propertyName)
 			.ReplaceInAll("{value}", ObjectDumper.Dump(value));
 
-		private static ICollection<string>? GetTexts(string propertyName, object? oldValue, object? newValue)
+		private static StringValues GetTexts(string propertyName, object? oldValue, object? newValue)
 			=> Facilities.CommandTextsMap[CommandID.ConfigSet, Default]
 			.ReplaceInAll("{setting}", propertyName)
 			.ReplaceInAll("{oldvalue}", ObjectDumper.Dump(oldValue)[..^1])

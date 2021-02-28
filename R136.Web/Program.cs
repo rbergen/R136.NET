@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using R136.Core;
 using R136.Web.Tools;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -28,11 +29,20 @@ namespace R136.Web
 				SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
 			})
 			.AddR136(() => new Uri(baseUri, "data/"))
-			.AddBlazoredLocalStorage();
+			.AddBlazoredLocalStorage()
+			.AddLanguageProvider();
 
 			var host = builder.Build();
 
-			await host.Services.InitializeR136Async();
+			host.Services.PreLoadR136Async(
+				builder
+				.Configuration
+				.GetSection(Constants.Languages)
+				.GetChildren()
+				.Select(section => section.Key)
+				.ToArray()
+			);
+	
 			await host.RunAsync();
 		}
 	}

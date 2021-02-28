@@ -1,0 +1,255 @@
+﻿[
+	{
+		"ID": 0,
+		"Name": "the hell hound meat",
+		"Description": "It's a filthy piece of meat that smells of vomit.",
+		"UseTexts": [
+			"I don't think that's a good idea."
+		],
+		"StartRoom": 80,
+		"UsableOn": [ 8 ]
+	},
+	{
+		"ID": 1,
+		"Name": "the thermal suit",
+		"Description": "This aluminium-coloured suit protects you against great heat or cold.",
+		"StartRoom": 4,
+		"Wearable": true,
+		"UseTexts": [
+			"You're wearing the suit already." 
+		]
+	},
+	{
+		"ID": 2,
+		"Name": "the green crystal",
+		"Description": "It is a clear, green crystal. For a moment, you see a mysterious twinkle.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"You throw the crystal in the air and catches it again. It nearly falls out of your hand when it lands."
+		],
+		"UsableOn": [ 12 ]
+	},
+	{
+		"ID": 3,
+		"Name": "the sword",
+		"Description": "It's a magical sword that doesn't look too strong, but radiates great force. There's a purple ruby in the handle.",
+		"StartRoom": 5,
+		"UseTexts": [
+			"You tip the sword a little and pick at the blade."
+		],
+		"UsableOn": [ 0, 2 ]
+	},
+	{
+		"ID": 4,
+		"Name": "the bone",
+		"Description": "It's a bleak, human thigh bone, that looks strong. You can apply a lot of force with it.",
+		"StartRoom": 13,
+		"UseTexts": [
+			"You let one end of the bone bounce off your head a few times. It sounds a little hollow."
+		],
+		"UsableOn": [ 6 ],
+		"KeepAfterUse": true
+	},
+	{
+		"ID": 5,
+		"Name": "the diskette",
+		"Description": "It's a grey 3.5\" diskette of the brand 'Spirits' that is likely to contain important data.",
+		"StartRoom": 20,
+		"UseTexts": [
+			"You slide the metal cover to the side. It looks like there's thin magnetic material behind it."
+		],
+		"UsableOn": [ 11 ]
+	},
+	{
+		"ID": 6,
+		"Name": "the hashis",
+		"Description": "It's a bag with stuff that looks like tobacco.",
+		"StartRoom": 22,
+		"UseTexts": [
+			"You rub the bag between your fingers. The contents crumble a little."
+		],
+		"UsableOn": [ 8 ]
+	},
+	{
+		"ID": 7,
+		"Name": "the red crystal",
+		"Description": "It is a clear, red crystal. For a moment, you see a mysterious twinkle.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"You squeeze the crystal. No blood comes out of it."
+		],
+		"UsableOn": [ 12 ]
+	},
+	{
+		"ID": 8,
+		"Name": "the nightcap",
+		"Description": "It's a Mickey Mouse nightcap full of happy colours.",
+		"StartRoom": 24,
+		"UseTexts": [
+			"You put the nightcap on your head. It doesn't fit and slides off."
+		],
+		"UsableOn": [ 4 ]
+	},
+	{
+		"ID": 9,
+		"Name": "the positron bomb",
+		"Description": "The bomb consists of a number of thin tubes in a cilinder. Around it, there are some tubes. A strange hum emerges from a grate. There's a sign on it that says: \"-5° - 105°, Code name: R136\".",
+		"StartRoom": 27,
+		"UseTexts": [
+			"You can't find a button to push."
+		],
+		"UsableOn": [ 13 ]
+	},
+	{
+		"ID": 10,
+		"Name": "the flashlight",
+		"Description": "It's a black, aluminium flashlight with a halogen lamp in it.", 
+		"StartRoom": 31,
+		"BlockPutdown": true,
+		"Components": [ 10, 18 ],
+		"CombineTexts": [
+			"You screw the cap off the flashlight and shake until the old batteries fall out. Then, you stick in the \"bunny batteries\" and screw the cap back on. After you've hit the flashlight a few times, you see that it works."
+		],
+		"KeepAfterUse": true
+	},
+	{
+		"ID": 11,
+		"Name": "the bandage kit",
+		"Description": "It's a white box with a red cross. It contains some bandages and a few band-aids.",
+		"StartRoom": 39,
+		"UseTexts": [
+			"You take the bandages and band-aids and puts them over your wounds. You bite your lips when you feel the pain of the bandages touchting your wounds that are still bleeding.",
+			"You're as good as new."
+		]
+	},
+	{
+		"ID": 12,
+		"Name": "the flamethrower",
+		"Description": "The flamethrower consists of a pipe, oxigen and fuel containers and an activation button. A small pilot light comes out of the end of the pipe.",
+		"StartRoom": 40,
+		"UseTexts": [
+			"You pull the lever a little. \"Pfft\", the flamethrower says."
+		],
+		"UsableOn": [ 9 ],
+		"KeepAfterUse": true
+	},
+	{
+		"ID": 13,
+		"Name": "the cookbook",
+		"Description": "It's an old, yellowed cookbook that has a cookie recepy in it. It says: 'Take some hell hound and some hashis and throw them in the barbecue.' That is all.",
+		"StartRoom": 43,
+		"UseTexts": [
+			"You turn the cookbook upside down. It occurs to you that the text is now the wrong way up."
+ 		]
+	},
+	{
+		"ID": 14,
+		"Name": "the tnt",
+		"Description": "The TNT is a bundle of red sticks with a note that says: 'Warning! Sensitive to shock!'",
+		"StartRoom": 51,
+		"UseTexts": [
+			"You take a stick and throw it on the ground. An explosion follows, accompanied by a loud bang. You're temporarily blinded by the explosion's flash. Due to the hit you shortly loose conscience."
+		]
+	},
+	{
+		"ID": 15,
+		"Name": "the mustard gas cartrtridge",
+		"Description": "It's a cartridge that contains mustard gas under pressure. There are wires attached to it and you can't find any way to activate it.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"You shake the cartridge a little. You don't hear anything."
+		]
+	},
+	{
+		"ID": 16,
+		"Name": "the poisonous meat",
+		"Description": "It's a piece of meat that looks delicious in itself, but has a few green spots. There's a dead ant on top of it.",
+		"StartRoom": 52,
+		"UseTexts": [
+			"I don't think that's a good idea."
+		],
+		"UsableOn": [ 3 ]
+	},
+	{
+		"ID": 17,
+		"Name": "the ignition",
+		"Description": "The ignition is a small box with T-shaped handle on it.",
+		"StartRoom": 60,
+		"UseTexts": [
+			"You push the handle down but nothing happens. Maybe something's still missing?"
+		]
+	},
+	{
+		"ID": 18,
+		"Name": "the pack of batteries",
+		"Description": "It's a packet of penlight batteries. Bunnies can drum for hours on them.",
+		"StartRoom": 61,
+		"BlockPutdown": true,
+		"UseTexts": [
+			"You stick two batteries in your nostrils and the other two in your ears. It doesn't do much for you, so you stick the batteries back into the pack."
+		]
+	},
+	{
+		"ID": 19,
+		"Name": "the gasmask",
+		"Description": "It's a green mask with a round filter and 2 plastic eyeholes.",
+		"StartRoom": 62,
+		"Wearable": true,
+		"UseTexts": [
+			"You're already wearing the gasmask."
+		]
+	},
+	{
+		"ID": 20,
+		"Name": "the paper",
+		"Description": "It's a yellow pieace of paper with curled corners. The writing is almost illegible, and with some difficulty you decipher: 'Feed the dragon's head with the three coloured crystals'.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"You try to fold it into a paper plane, but you discover you've forgotten how to."
+		]
+	},
+	{
+		"ID": 21,
+		"Name": "the booklet",
+		"Description": "It's a dirty, sticky booklet with a naked troll on the front page. You feel like throwing up.",
+		"StartRoom": 70,
+		"UseTexts": [
+			"You can't imagine what to do with this."
+		],
+		"UsableOn": [ 1 ]
+	},
+	{
+		"ID": 22,
+		"Name": "the blue crystal",
+		"Description": "It is a clear, blue crystal. For a moment, you see a mysterious twinkle.",
+		"StartRoom": 72,
+		"UseTexts": [
+			"You scratch the back of your head with a point of the crystal."
+		],
+		"UsableOn": [ 12 ]
+	},
+	{
+		"ID": 23,
+		"Name": "the cookie",
+		"Description": "It's a round cookie that smells like ammonia.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"You smell the cookie and then decide to leave it at that."
+		],
+		"UsableOn": [ 4 ]
+	},
+	{
+		"ID": 24,
+		"Name": "the mustard gas grenade",
+		"Description": "By pressing the handle down, the mustard gas can esacpe.",
+		"StartRoom": 80,
+		"UseTexts": [
+			"I don't think that's going to work here."
+		],
+		"Components": [ 15, 17 ],
+		"CombineTexts": [
+			"You put the ignition on the mustard gas cartridge. After some fiddling, the result is a functioning mustard gas grenade."
+		],
+		"UsableOn": [ 5 ]
+	}
+]

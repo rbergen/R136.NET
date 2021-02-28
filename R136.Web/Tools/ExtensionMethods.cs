@@ -1,4 +1,6 @@
 ﻿using Markdig;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 
@@ -11,8 +13,11 @@ namespace R136.Web.Tools
 		private static MarkdownPipeline? _pipeline = null;
 		private static readonly object _pipelineLock = new object();
 
-		public static string ToMarkupString(this IEnumerable<string> texts)
+		public static string ToMarkupString(this StringValues texts)
 		{
+			if (texts == StringValues.Empty)
+				return string.Empty;
+
 			var markdown = Markdown.ToHtml(string.Join('\n', texts), Pipeline);
 			
 			if (markdown.StartsWith("<p>") && markdown.LastIndexOf("<p>") == 0)
@@ -59,6 +64,13 @@ namespace R136.Web.Tools
 					yield return buffer.Dequeue();
 			}
 		}
+
+		public static IServiceCollection AddLanguageProvider(this IServiceCollection serviceCollection)
+			=> serviceCollection.AddScoped<ILanguageProvider>(sp =>
+				new LanguageProvider
+				{
+					Services = sp
+				});
 	}
 }
 

@@ -1,0 +1,359 @@
+﻿[
+	{
+		"ID": 0,
+		"StartRoom": 2,
+		"StrikeCount": 4,
+		"StatusTexts": {
+			"Initial": [
+				"There is a giant hell hound here, that blocks your path. His sharp teeth are clearly visible, and red drool slowly drips from its mouth.",
+				"It looks threateningly at you with its blood-shot eyes, and a deep growl rises from its throat."
+			],
+			"Attack": [
+				"The hell hound leaps forward and jumps on top of your body. His nails dig into your flesh, and at some points he bites you hard in the shoulder. Your bones crunch and a jolt of pain shoot through your nerves.",
+				"The hound releases you and looks at you as it growls."
+			],
+			"PreparingNextAttack": [
+				"The hunger of the hell hound has not been satisfied yet. A deep growl comes out of its throat, and it's ready to attack again."
+			],
+			"Dying": [
+				"Due to the wounds you've inflicted with your sword, the heavily bleeding hell hound dies. Je strike one more time, and a piece of hound meat comes off."
+			],
+			"Done": [
+				"The dead hell hound lies in a steaming pool of blood."
+			]
+		}
+	},
+	{
+		"ID": 1,
+		"StartRoom": 23,
+		"StatusTexts": {
+			"Initial": [
+				"You've disturbed the peace of the red troll. He looks deeply annoyed."
+			],
+			"PreparingFirstAttack": [
+				"Now the troll is properly awake. He grabs his whip and appraches you threateningly."
+			],
+			"Attack": [
+				"The troll hits you hard whit his whip. You feel the burning pain down to your bones."
+			],
+			"PreparingNextAttack": [
+				"Foam runs from the troll's mouth. He rises his sword again."
+			],
+			"Dying": [
+				"Excitedly, the troll snatches the booklet. He flips through it and turns more and more red. At some point a gurgling noise emerges from the creature, and he blows up with a bang. The remains of the troll slowly drip down from the cave walls.",
+				"Suddenly, you see something glimmer."				
+			],
+			"Done": [
+				"Peaces of the torn-up troll are spread throughout the cave. Slime pulls at your shoes, and a filthy stench creeps up your nose."
+			]
+		}
+	},
+	{
+		"ID": 2,
+		"StartRoom": 25,
+		"StrikeCount": 6,
+		"StatusTexts": {
+			"Initial": [
+				"This cave houses a flesh-eating plant.",
+				"Its thick green stemp runs up to a horrifying head, with gruesome teeth. It noticed you and it moves its wide-open mouth in your direction. Before you've been able to make a move, you're tangled up in the monster. The plant puts its teeth in your neck."
+			],
+			"PreparingNextAttack": [
+				"With its little scavy tongue, the plant licks your blood of its mouth.",
+				"It looks at you again with its geen eyes, and prepares to sink its teeth in you neck again."
+			],
+			"Attack": [
+				"Once more, the plant's mouth encloses your neck. A warm stream of blood runs down over your back, and now the pain is unbearable. After a while, the plant lets go of you again."
+			],
+			"Dying": [
+				"The remains of what used to be a flesh-eating plant are now on the floor of the cave. It's mouth is wide open, and its eyes almost roll out of their sockets. The blood of its victims slowly drips out of its stem.",
+				"At the spot where his molded roots used to be, an opening has appeared."
+			],
+			"Done": [
+				"The flesh-eating plant is little more than a mound of stinking garden waste."
+			]
+		}
+	},
+	{
+		"ID": 3,
+		"StartRoom": 44,
+		"StatusTexts": {
+			"Initial": [
+				"There is a big, hairy gnu here, that looks at you with two sneaky eyes. Between the hairs of its fur there are all kinds of small creeping creatures that you have never seen before. A horrible smell comes off the beast. Drooling and puffing heavily, it approaches you."
+			],
+			"Attack": [
+				"The gnu takes a leap and thrusts its large head hard into your stomach. You feel like your lungs are being pressed out of your body. Dazed, you get back on your feet."
+			],
+			"Dying": [
+				"The gnu sees the meat, sniffs it and gobbles it up in one go.",
+				"You see it swell up slowly and its brains come out through its eye sockets. It collapses and remains completely still."
+			],
+			"Done": [
+				"The bobbed body of the gnu are on the floor, with its brains forming a puddle next to it."
+			]
+		}
+	},
+	{
+		"ID": 4,
+		"StartRoom": 50,
+		"StatusTexts": {
+			"Initial": [
+				"A large dragon resides in this cave. It has multiple heads, each of which watch you with yellow eyes. It's entire skin is covered in mold, and from its mouths hang long, brown tongues, from which a biting acid drips.",
+				"Suddenly, a rumbling noise comes from one of the mouths. With difficulty you make out \"Are you a cookie?\""
+			],
+			"PreparingFirstAttack": [
+				"The heads of the dragon are now moving more agressively and start to puff heavily.",
+				"The air from the dragon heads smells awful, and you bounce back of disgust. One of the mouths open wide, and louder than before it sounds \"**ARE YOU A COOKIE?!?**\""
+			],
+			"Attack": [
+				"The dragon slowly lifts one of its filthy legs, and suddenly strikes hard. Something in your head crunches, and dizziness takes you. The dragon gets ready to hit you again."
+			],
+			"FirstStep": [
+				"The dragon grabs the cookie, and instantly sticks it in of its large mouths.",
+				"Slowly it starts to wobble, and with a muted thump it slams to the ground.",
+				"A little drool runs from the mouth in which the cooky just disappeared. The dragon sleeps."
+			],
+			"FirstWait": [
+				"The dragon sleeps restlessly. Sometimes, one of its heads moves slightly, and a deep growl emerges from its body."
+			],
+			"SecondStep": [
+				"Carefully, you put the nightcap on the dragon. The happy colours of the cap stand out against the molded skin, and the cap slides to the side a litte. Suddenly something falls, and it clatters on the hard rock floor."
+			],
+			"Done": [
+				"The dragon sleeps peacefully."
+			]
+		}
+	},
+	{
+		"ID": 5,
+		"StartRoom": 75,
+		"StatusTexts": {
+			"Initial": [
+				"There is a creature here that can be best described as a lump. It looks at you with two sneaky eyes, scavy spots are on its skin, and algae grow on the corners of its mouth. With its long, slippery tentacles it holds on to all walls of the cave, blocking your path."
+			],
+			"FirstWait": [
+				"The lump is still sucked solidly to the cave walls, and it trembles lightly."
+			],
+			"Dying": [
+				"When you push the lever down, you see a brown-grey gas spray out of the cartridge.",
+				"The lump's trembling increases, and cracks start to appear in its scavy skin. Making a slurping sound, its tentacles start to come loose from the rock walls, and it collapses into a heap."
+			],
+			"SelfInjury": [
+				"When you push the lever down, you see a brown-grey gas spray out of the cartridge.",
+				"You can see that the lump trembling starts to increase, before you are hit by a pounding headache and fall over. You have nothing to protect against the gas, and you lose consciousness. After a while, you come to."
+			],
+			"Done": [
+				"The lump's torn body is covered in fungus. Isopods and earwigs crawl out of its stomach. A strong smell of rotting emerges, and a small puddle of slime slowly appears."
+			]
+		}
+	},
+	{
+		"ID": 6,
+		"StartRoom": 45,
+		"StatusTexts": {
+			"Initial": [
+				"A large door that is rusted shut is at the northern side. It can no longer be opened with bare hands."
+			],
+			"Operating": [
+				"You put one end of the bone under the door, and you start pushing down on the other.",
+				"After extensive wiggling, the door starts to creak and squeak, and a crack appears. You push down once more, and slowly the door swings open."
+			],
+			"Done": [
+				"The door is now open and provides access to a cave."
+			]
+		}
+	},
+	{
+		"ID": 7,
+		"StartRoom": 58,
+		"StatusTexts": {
+			"Initial": [
+				"Out of nothing you suddenly hear a few voices. With difficulty you can understand them:",
+				"\"What shouts is still a child in its heart\"",
+				"Then it goes quiet again."
+			],
+			"Done": [
+				"From the distance you hear soft, laughing voices."
+			]
+		}
+	},
+	{
+		"ID": 8,
+		"StartRoom": 17,
+		"StatusTexts": {
+			"Initial": [
+				"In this open space, a barbecue is burning nicely."
+			],
+			"FirstStep": [
+				"When you throw the hashis on the barbecue, the flame changes colour. Beyond that, nothing happens."
+			],
+			"SecondStep": [
+				"When you throw the meat on the barbecue, the flame changes colour. Beyond that, nothing happens."
+			],
+			"FirstWait": [
+				"The barbecue is still burning, just a little more flickery than before."
+			],
+			"Operating": [
+				"A lot of smoke develops when the second ingredient lands on the barbecue.",
+				"With crackling noises, the two ingredients blend together into a cookie."
+			]
+		}
+	},
+	{
+		"ID": 9,
+		"StartRoom": 10,
+		"StatusTexts": {
+			"Initial": [
+				"In a small, open area there is a large, bone-dry, dead tree. There's a sign on the stem that reads \"Smoking and naked flames prohibited\"."
+			],
+			"Operating": [
+				"An enormous flame erupts from the flamethrower. Slowly, the tree starts to burn, and soon it's ablaze. The flames spread around, and the entire forest starts to burn. You're surrounded by an ocean of fire, and the heat is enormous."
+			],
+			"SelfInjury": [
+				"You have nothing to protect you from the fire, and you suffer serious burns."
+			],
+			"Done": [
+				"Some roots still stick from the grounds. Next to them lies a charred part of a sign that reads \"Sm\u00a0\u00a0\u00a0ng a\u00a0\u00a0 na\u00a0\u00a0d fl\u00a0\u00a0\u00a0\u00a0 pro\u00a0\u00a0\u00a0\u00a0t\u00a0d\"."
+			]
+		}
+	},
+	{
+		"ID": 10,
+		"StartRoom": 4,
+		"StatusTexts": {
+			"Initial": [
+				"You trip over something. Due to the overgrowth you can't see what it is."
+			]
+		}
+	},
+	{
+		"ID": 11,
+		"StartRoom": 41,
+		"StatusTexts": {
+			"Initial": [
+				"There's a Beull-branded computer that consists of a cabinet with a 3.5\" drive and a monitor. The monitor displays: \"Please enter data disk\"."
+			],
+			"FirstWait": [
+				"The computer's still waiting."
+			],
+			"Operating": [
+				"The drive starts to read and after a short time information appears on the screen. It reads: \"In the lowest cave system, one must follow a letter route that results in the name of the object that is to be found.\"",
+				"After a little while, the screen goes black."
+			],
+			"Done": [
+				"There's nothing to see on the monitor and the computer is silent."
+			]
+		}
+	},
+	{
+		"ID": 12,
+		"StartRoom": 32,
+		"StatusTexts": {
+			"Initial": [
+				"There's a heavy, closed door in the north. Next to it is a dragon's head with an open mouth. There's a heavy lock on the door."
+			],
+			"FirstStep": [
+				"You put the crystal in the mouth of the dragon's head, which subsequently closes and reopens. The crystal has disappeared, and the eyes in the head start to glow lightly."
+			],
+			"FirstWait": [
+				"The eyes of the dragon keep glowling lightly."
+			],
+			"SecondStep": [
+				"You put another crystal in the mouth. Again, it closes and opens, and again, the crystal disappears. The shining from the eyes becomes stronger."
+			],
+			"SecondWait": [
+				"The eyes of the dragon keep glowing."
+			],
+			"Operating": [
+				"You put the last crystal in the mouth. The mouth closes once more, and now it remains shut. The glow from the eyes keeps intensifying. At some point, the glow converges into a very bright beam of light that shoots past you and gets reflected by a mirror just begind you. With grisly precision, the mirror reflects the light onto the heavy lock, which evaporates due to the enormous heat.",
+				"Then, the door slowly opens while squeaking loudly."
+			],
+			"Done": [
+				"The heavy door is now open and provides access to a room."
+			]
+		}
+	},
+	{
+		"ID": 13,
+		"StartRoom": 59,
+		"StatusTexts": {
+			"Initial": [
+				"In front of you, there's a crater from which lava bubbles up. A thick vapor emerges from the lava, and a red glow lights the surroundings. The heat is enormous, but the thermal suit protects you from burning."
+			],
+			"SelfInjury": [
+				"In front of you, there's a crater from which lava bubbles up. The heat is so intense that you suffer a number of burns and get blown backwards."
+			],
+			"Done": [
+				"You throw the positron bomb into the lava with a lackluster curve. Sissing loudly, the bomb slowly sinks down. At some point, the lava starts bubbling weirdly and suddenly changes from red to green. Then you see a lightning flash from the lava. After that, it calms down again.",
+				"It looks like you've saved the planet from total destruction by this positron weapon, the origins of which are partly your making. Your mission is complete, and tired and full of emotions you leave the cave system."
+			]
+		}
+	},
+	{
+		"ID": 14,
+		"StartRoom": 71,
+		"StatusTexts": {
+			"Initial": [
+				"Because there is no air in this cave, both your lungs collapse. A horrible pain shoots through you like a lightning bolt. You fall backwards out of the cave, where you briefly lose consciousness."
+			]
+		}
+	},
+	{
+		"ID": 15,
+		"StartRoom": 67,
+		"StatusTexts": {
+			"Initial": [
+				"There's a closed, wooden hatch in the ceiling. You can't reach it."
+			],
+			"Operating": [
+				"The hatch in the ceiling opens, and a sheet of paper whirls downward."
+			],
+			"Done": [
+				"The hatch in the ceiling hangs open. There's an empty hole."
+			]
+		}
+	},
+	{
+		"ID": 21,
+		"Virtual": true,
+		"StatusTexts": {
+			"Initial": [
+				"With the first step you take into the swamp, you feel that you no longer have solid footing. Despite trying desparately to stay above, you slowly sink into the swamp. When you're neck-deep in the bubbling, muddy mass you hold your breath and close your eyes. You keep sinking down the goo, and after some time you lose consciousness",
+				"When you come to, you notice that you are on solid ground... in a cave."
+			]
+		}
+	},
+	{
+		"ID": 16,
+		"StartRoom": 3
+	},
+	{
+		"ID": 17,
+		"StartRoom": 8
+	},
+	{
+		"ID": 18,
+		"StartRoom": 18
+	},
+	{
+		"ID": 19,
+		"StartRoom": 37,
+		"StatusTexts": {
+			"Initial": [
+				"A strange, dense fog dominates this cave, because of which you can't see your hand in front of your eyes. You lose orientation, and stumble around the cave in panic, looking for a way out.",
+				"Just when you start thinking that you'll never find a way out of this cave, you fall forward into another cave."
+			]
+		}
+	},
+	{
+		"ID": 20,
+		"StartRoom": 79,
+		"StatusTexts": {
+			"Initial": [
+				"When you walk into this cave, you see a number of pulsating lights on the ceiling. Against one of the walls, there's an enormous machine with a number of control panels and displays.",
+				"As you walk over there to take a better look, you trip over a pedal in the floor, after which a siren stars wailing. Overcome by fear you stay down, and you see that the lights on the ceiling start burning brighter and large amounts of data flash across the computer screens. Then you see a blinding flash and you feel weightless for a moment.",
+				"When you can see again, you notice that the lights and the machine have disappeared.",
+				"More so, you're outside..."
+			]
+		}
+	}
+]
