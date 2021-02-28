@@ -66,14 +66,14 @@
 		"Type": "Sword",
 		"ID": 2,
 		"Texts": [
-			"The monster is badly injured and you're soaked in its blood."
+			"The monster is badly injured and you're soaked with its blood."
 		]
 	},
 	{
 		"Type": "Sword",
 		"ID": 3,
 		"Texts": [
-			"You can strike again. Do you Want to? [y/n]"
+			"You can strike again. Do you want to? [y/n]"
 		]
 	},
 	{
@@ -87,21 +87,21 @@
 		"Type": "Player",
 		"ID": 0,
 		"Texts": [
-			"Je pockets are filled to the brim and you can't fit {item} in them."
+			"Your pockets are filled to the brim and you can't fit {item} in them."
 		]
 	},
 	{
 		"Type": "Player",
 		"ID": 1,
 		"Texts": [
-			"You pick up {item} and puts it in one of your pockets."
+			"You pick up {item} and put it in one of your pockets."
 		]
 	},
 	{
 		"Type": "Player",
 		"ID": 2,
 		"Texts": [
-			"You pick up {item} and puts it on."
+			"You pick up {item} and put it on."
 		]
 	},
 	{
@@ -206,8 +206,8 @@
 		"Type": "Engine",
 		"ID": 7,
 		"Texts": [
-			"Here's {item}.",
-			"Here are {items}.",
+			"You see that {item} is here.",
+			"You see that {items} are here.",
 			"{firstitem} and {seconditem}",
 			"{item}, "
 		]

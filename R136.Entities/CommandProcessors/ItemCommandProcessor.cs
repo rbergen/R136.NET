@@ -74,11 +74,11 @@ namespace R136.Entities.CommandProcessors
 		private Result ExecuteCombine(string command, string? parameters, Player player)
 		{
 			if (parameters == null)
-				return Result.Error(GetTexts(CombineTextID.NoParametersGiven, "command", command));
+				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
 			(var separatorIndex, var separator) = parameters.IndexOfAny(GetTexts(CommandID.Combine, (int)CombineTextID.ItemSeparators));
 			if (separatorIndex < 1 || separatorIndex + separator!.Length == parameters.Length)
-				return Result.Error(GetTexts(CombineTextID.NoParametersGiven, "command", command));
+				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
 			var itemNames = new string[]
 			{
@@ -87,7 +87,7 @@ namespace R136.Entities.CommandProcessors
 			};
 
 			if (itemNames.Any(s => s == string.Empty))
-				return Result.Error(GetTexts(CombineTextID.NoParametersGiven, "command", command));
+				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
 			var items = new Item?[itemNames.Length];
 			Result result;
@@ -201,7 +201,7 @@ namespace R136.Entities.CommandProcessors
 
 		private enum CombineTextID
 		{
-			NoParametersGiven,
+			InvalidParametersGiven,
 			ItemSeparators,
 			CantCombineWithItself,
 			DoesntCombine

@@ -1,10 +1,7 @@
 ﻿using Blazored.LocalStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 
 #nullable enable
@@ -24,16 +21,14 @@ namespace R136.Web.Tools
 				if (_language == null && Services != null)
 				{
 					var localStorage = Services.GetService<ISyncLocalStorageService>();
-					if (localStorage != null)
-					{
-						if (localStorage.ContainKey(Constants.LanguageStorageKey))
-							_language = localStorage.GetItem<string>(Constants.LanguageStorageKey);
-					}
-					else
+					if (localStorage != null && localStorage.ContainKey(Constants.LanguageStorageKey))
+						_language = localStorage.GetItem<string>(Constants.LanguageStorageKey);
+
+					if (_language == null)
 						_language = Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
 				}
 
-				return _language ?? Constants.English;
+				return _language ?? Constants.Dutch;
 			}
 
 			set

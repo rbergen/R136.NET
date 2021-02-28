@@ -2,37 +2,37 @@
 	{
 		"ID": 0,
 		"Name": "in the forest",
-		"Description": "Je bevindt je in a uithoek van a donker bos. Overal hoor je enge geluiden."
+		"Description": "This is the far corner of a dark forest. Scary sounds come from every direction."
 	},
 	{
 		"ID": 1,
 		"Name": "in the forest",
-		"Description": "Aan the zuidkant zie je a hek dat toegang geeft tot a donkere plaats."
+		"Description": "Towards the south, you see a gate that gives access to a dark place."
 	},
 	{
 		"ID": 2,
 		"Name": "in the forest",
-		"Description": "Er komt a modderige geur uit het oosten."
+		"Description": "There is a muddy smell coming from the east."
 	},
 	{
 		"ID": 3,
 		"Name": "in the swamp",
-		"Description": "Er hangt a griezelige nevel over het stinkende oppervlak."
+		"Description": "A creepy mist hangs over the smelly surface."
 	},
 	{
 		"ID": 4,
 		"Name": "in the forest",
-		"Description": "Er komt a modderige geur uit het westen."
+		"Description": "There is a muddy smell coming from the west."
 	},
 	{
 		"ID": 5,
 		"Name": "in the forest",
-		"Description": "Pas op voor the laaghangende takken!"
+		"Description": "Mind the low-hanging branches!"
 	},
 	{
 		"ID": 6,
 		"Name": "at the cemetery",
-		"Description": "Een lucht van rottend vlees dringt in je neus. Je denkt dat je a grafsteen ziet bewegen."
+		"Description": "The smell of rotting flesh creeps up your nose. You think you see a tombstone move."
 	},
 	{
 		"ID": 7,
@@ -41,12 +41,12 @@
 	{
 		"ID": 8,
 		"Name": "in the swamp",
-		"Description": "Er hangt a griezelige nevel over het stinkende oppervlak."
+		"Description": "A creepy mist hangs over the smelly surface."
 	},
 	{
 		"ID": 9,
 		"Name": "at an open space",
-		"Description": "Er komt a modderige geur uit het westen."
+		"Description": "There is a muddy smell coming from the west."
 	},
 	{
 		"ID": 10,
@@ -55,27 +55,27 @@
 	{
 		"ID": 11,
 		"Name": "in the forest",
-		"Description": "Je trapt bijna in a bereklem."
+		"Description": "You almost step into a bear trap."
 	},
 	{
 		"ID": 12,
 		"Name": "at an open space",
-		"Description": "Door the mist zie je nog net the omtrekken van het donkere bos."
+		"Description": "Through the mist you can just make out the outline of the dark forest."
 	},
 	{
 		"ID": 13,
 		"Name": "on the swamp path",
-		"Description": "Er ligt hier a skelet, waarschijnlijk a van je voorgangers."
+		"Description": "There's a skeleton here, probably one of your predecessors."
 	},
 	{
 		"ID": 14,
 		"Name": "at an open space",
-		"Description": "Bij het licht van a halve maan onderscheid je nog net the vorm van a galg."
+		"Description": "In the light of a half moon you can just make out the shape of a gallow."
 	},
 	{
 		"ID": 15,
 		"Name": "in the forest",
-		"Description": "In the verte hoor je het trieste gehuil van a weerwolf."
+		"Description": "In the distance you hear the sad howl of a werewolf."
 	},
 	{
 		"ID": 16,
@@ -84,27 +84,27 @@
 	{
 		"ID": 17,
 		"Name": "at an open space",
-		"Description": "Er ligt hier a dood konijn dat wordt belaagd door vliegen."
+		"Description": "There's a dead rabbit on the ground that's being attacked by flies."
 	},
 	{
 		"ID": 18,
 		"Name": "in the swamp",
-		"Description": "Er hangt a griezelige nevel over het stinkende oppervlak."
+		"Description": "A creepy mist hangs over the smelly surface."
 	},
 	{
 		"ID": 19,
 		"Name": "in the ruins",
-		"Description": "The ruïne is a spookachtige bouwval. Er is hier a wankele trap die naar beneden leidt."
+		"Description": "The ruins are a spooky rubble. There is a shaky staircase that leads downwards."
 	},
 	{
 		"ID": 20,
 		"Name": "in the slime cave",
-		"Description": "The wanden van deze cave zijn bekleed met a snotachtig slijm."
+		"Description": "The walls of the cave are covered in a snotty slime."
 	},
 	{
 		"ID": 21,
 		"Name": "in the black cave",
-		"Description": "Je ziet geen hand voor ogen."
+		"Description": "You can't see your hand in front of your face."
 	},
 	{
 		"ID": 22,
@@ -113,12 +113,12 @@
 	{
 		"ID": 23,
 		"Name": "in the horny cave",
-		"Description": "Aan the muren hangen gelige, gescheurde Playboy-posters."
+		"Description": "Affixed to the wall are yellow, torn Playboy posters."
 	},
 	{
 		"ID": 24,
 		"Name": "in the straitjacket cave",
-		"Description": "Er hangt hier a dwangbuis, met daarin a verminkt lijk."
+		"Description": "There's a straitjacket hanging from the ceiling, with a mutilated body in it."
 	},
 	{
 		"ID": 25,
@@ -131,17 +131,17 @@
 	{
 		"ID": 27,
 		"Name": "in the main cave",
-		"Description": "Er staat hier a batterij aan mysterieuze apparatuur."
+		"Description": "There is a battery of mysterious equipment, here."
 	},
 	{
 		"ID": 28,
 		"Name": "in the hieroglyphs cave",
-		"Description": "Op the wanden staan hiërogliefen waar je geen wijs uit wordt."
+		"Description": "There are symbols on the walls that you can not make sense of."
 	},
 	{
 		"ID": 29,
 		"Name": "in the stench cave",
-		"Description": "Er hangt hier a smerige lucht die je herinnert aan the zware lucht van a beerput."
+		"Description": "The filthy stench that lingers here reminds you of the heavy smell of a cesspool."
 	},
 	{
 		"ID": 30,
@@ -150,7 +150,7 @@
 	{
 		"ID": 31,
 		"Name": "in the fluorescent cave",
-		"Description": "The cave wordt zwak verlicht door a lichtbron die hoog aan het plafond hangt."
+		"Description": "The cave is weakly lit by a light source that hangs high at the ceiling."
 	},
 	{
 		"ID": 32,
@@ -159,62 +159,61 @@
 	{
 		"ID": 33,
 		"Name": "in the ice cave",
-		"Description": "In deze cave lijkt het net of alles van ijs is, en je krijgt rillingen."
+		"Description": "In this cave everything looks like it is made out of ice. It gives you the shivers."
 	},
 	{
 		"ID": 34,
 		"Name": "in the cactus cave",
-		"Description": "Je bent omringd door giftige kaktussen die in deze cave staan."
+		"Description": "You're surrounded by poisonous cactuses that are present in this cave."
 	},
 	{
 		"ID": 35,
 		"Name": "in the stalagmite cave",
-		"Description": "Hier zie je a traliewerk van stalagmieten."
+		"Description": "You see a railing of stalagmites."
 	},
 	{
 		"ID": 36,
 		"Name": "in the storm cave",
-		"Description": "Door deze cave loeit a harde wind, waardoor je je vast moet grijpen aan a van the wanden."
+		"Description": "A hard wind blows through this cave that makes you hold on to one of the walls."
 	},
 	{
 		"ID": 37,
-		"Name": "in the mist cave",
-		"Description": "Een dichte mist belemmert je zicht, en je verliest je orïentatiegevoel."
+		"Name": "in the mist cave"
 	},
 	{
 		"ID": 38,
 		"Name": "in a stairwell cave",
-		"Description": "In deze cave bevindt zich a cavee, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
+		"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
 	},
 	{
 		"ID": 39,
 		"Name": "in the tentacle cave",
-		"Description": "Van alle kanten komen cavee tentakels die je aftasten en groene sporen op je huid achterlaten."
+		"Description": "Large tentacles come from all directions. They scan your body and leave green traces on your skin."
 	},
 	{
 		"ID": 40,
 		"Name": "in the garbage cave",
-		"Description": "In deze cave ligt a cavee stapel rottende etensresten. The stank is bijna ondraaglijk."
+		"Description": "There is large pile of rotting food remains in this cave. The stench is almost unbearable."
 	},
 	{
 		"ID": 41,
 		"Name": "in the echo cave",
-		"Description": "Hier worden alle geluiden die je maakt tegen the wanden geëcho'd."
+		"Description": "All sounds you make echo back from the walls."
 	},
 	{
 		"ID": 42,
 		"Name": "in the secret cave",
-		"Description": "Op the grond van deze cave liggen allerlei onbekende en geheimzinnige voorwerpen."
+		"Description": "On the floor of the cave there's a wide range of unfamiliar and mysterious objects."
 	},
 	{
 		"ID": 43,
 		"Name": "in the food cave",
-		"Description": "Zo te ruiken is dit waarschijnlijk eens a keuken geweest..."
+		"Description": "It smells like this probably was a kitchen at some point..."
 	},
 	{
 		"ID": 44,
 		"Name": "in the cave of the gnu",
-		"Description": "Hier liggen the geraamtes van wezens die eerder ten prooi zijn gevallen aan the gnoe."
+		"Description": "Scattered around are skeletons of creatures that fell prey to the gnu before."
 	},
 	{
 		"ID": 45,
@@ -223,12 +222,12 @@
 	{
 		"ID": 46,
 		"Name": "in the eye cave",
-		"Description": "Van alle kanten wordt je bespied door rode, bloeddoorlopen ogen die precies volgen wat je doet."
+		"Description": "From all angles you are looked at by red, blood-shot eyes that precisely follow your actions."
 	},
 	{
 		"ID": 47,
 		"Name": "in the rock cave",
-		"Description": "Overal zie je hier scherpe rotspunten. Aan a aantal ervan zitten bruine korsten."
+		"Description": "You see sharp rock edges everywhere. Brown crusts are attached to some of them."
 	},
 	{
 		"ID": 48,
@@ -237,12 +236,12 @@
 	{
 		"ID": 49,
 		"Name": "at the sandbank",
-		"Description": "Op the vloer liggen vreemde patronen, gevormd uit verschillende soorten zand."
+		"Description": "On the ground you see strange patterns, made out of different types of sand."
 	},
 	{
 		"ID": 50,
 		"Name": "in the torture cave",
-		"Description": "Onder the vage schemering van the martelvuren zie je nog net a duimschroef en wat stekelige voorwerpen waar nog wat bloed aan zit."
+		"Description": "Under the vague shimmer of the torture fires, you can just see a thumbscrew and some pointy objects that still have some blood attached to them."
 	},
 	{
 		"ID": 51,
@@ -251,17 +250,17 @@
 	{
 		"ID": 52,
 		"Name": "in the safe cave",
-		"Description": "Dit is the enige cave waar je je a beetje veilig voelt."
+		"Description": "This is the only cave in which you feel some safety."
 	},
 	{
 		"ID": 53,
 		"Name": "in the narrow cleft",
-		"Description": "Aan alle kanten wordt je omringd door hoge rotsmuren. Alleen in het westen zie je a opening."
+		"Description": "You're surrounded by high rock walls at all sides. You only see an opening at the western side."
 	},
 	{
 		"ID": 54,
 		"Name": "in the oil cave",
-		"Description": "Vanuit het zuiden verspreidt zich a enorme hitte, die in deze cave nog net draaglijk is."
+		"Description": "An enormous heat spreads from the south that is only just bearable in this cave."
 	},
 	{
 		"ID": 55,
@@ -270,12 +269,12 @@
 	{
 		"ID": 56,
 		"Name": "in a stairwell cave",
-		"Description": "In deze cave bevindt zich a cavee, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
+		"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
 	},
 	{
 		"ID": 57,
 		"Name": "in the spider cave",
-		"Description": "Het wemelt hier van the tarantula's. Bij elke stap die je zet hoor je het onder je voeten kraken, en ze kruipen langs je benen omhoog."
+		"Description": "It's teeming with tarantulas, here. You hear crunching with every step you take, and you feel them crawling up your legs."
 	},
 	{
 		"ID": 58,
@@ -288,12 +287,12 @@
 	{
 		"ID": 60,
 		"Name": "in the scooby cave",
-		"Description": "Uit alle richtingen komen rare geluiden, als in a gesticht."
+		"Description": "Weird noises come from all directions, as if in a mental institution."
 	},
 	{
 		"ID": 61,
 		"Name": "in the radioactive cave",
-		"Description": "Door the hoge radioactiviteit is deze cave zwak verlicht."
+		"Description": "Due to the high level of radioactivity, this cave is dimly lit."
 	},
 	{
 		"ID": 62,
@@ -306,12 +305,12 @@
 	{
 		"ID": 64,
 		"Name": "in the a cave",
-		"Description": "In deze cave bevindt zich het stenen beeld van a oud, jou onbekend wezen."
+		"Description": "This caves houses the stone statue of an old creature that is unfamiliar to you."
 	},
 	{
 		"ID": 65,
 		"Name": "in the cave of death",
-		"Description": "The naam van deze cave spreekt voor zich..."
+		"Description": "The name of this cave speaks for itself..."
 	},
 	{
 		"ID": 66,
@@ -324,7 +323,7 @@
 	{
 		"ID": 68,
 		"Name": "in a stairwell cave",
-		"Description": "In deze cave bevindt zich a cavee, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
+		"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
 	},
 	{
 		"ID": 69,
@@ -333,7 +332,7 @@
 	{
 		"ID": 70,
 		"Name": "in the damnation cave",
-		"Description": "In deze cave heerst a haast verstikkende sfeer, en je voelt je niet prettig."
+		"Description": "An almost suffocating atmosphere dominates this cave. You don't feel comfortable here."
 	},
 	{
 		"ID": 71,
@@ -346,22 +345,22 @@
 	{
 		"ID": 73,
 		"Name": "in the neon cave",
-		"Description": "Deze cave is fel gekleurd. Er staan patronen die je doen denken aan zwarte ma gie."
+		"Description": "This cave is brightly coloured. There are patterns that remind you of black magic."
 	},
 	{
 		"ID": 74,
 		"Name": "in the blood cave",
-		"Description": "Het geraamte van a groot beest ligt hier op the grond en a aantal ingewanden liggen er naast."
+		"Description": "There's a skeleton of a large beast on the ground, and some of its guts are next to it."
 	},
 	{
 		"ID": 75,
 		"Name": "in the bat cave",
-		"Description": "In deze cave fladderen overal vleermuizen, op zoek naar hun prooi."
+		"Description": "Bats are fluttering everywhere in this cave, looking for their prey."
 	},
 	{
 		"ID": 76,
 		"Name": "in the snake cave",
-		"Description": "Je hoort het geluid van a ratelslang. Bij the weg naar het noorden staat a doodskop getekend, die a gevaar aanduidt."
+		"Description": "You hear the sound of a rattle-snake. At the northern end there's a drawing of a skull, signifying danger."
 	},
 	{
 		"ID": 77,
@@ -370,7 +369,7 @@
 	{
 		"ID": 78,
 		"Name": "in the slippery cave",
-		"Description": "Je glijdt bijna uit over the zeepachtige prut die overal in the cave ligt. Tussen the glibberige massa steekt a paal omhoog met daarop a pijl die naar het oosten wijst."
+		"Description": "You nearly slip over the soap-like goo that is everywhere in this cave. Somewhere in the slippery mass, a pole sticks up that has an arrow attached to it, which points east."
 	},
 	{
 		"ID": 79,

@@ -5,13 +5,13 @@
 	"PaperRoute": [ 69, 64, 63, 62, 67, 66 ],
 	"YesNoInputSpecs": {
 		"MaxLength": 1,
-		"PermittedCharacters": "jn",
+		"Permitted": "[jJnN]",
 		"IsLowerCase": true
 	},
 	"YesInput": "j",
 	"CommandInputSpecs": {
 		"MaxLength": 65,
-		"PermittedCharacters": "abcdefghijklmnopqrstuvwxyz 1234567890",
+		"Permitted": "[a-zA-Z0-9 ]+",
 		"IsLowerCase": true
 	}
 }

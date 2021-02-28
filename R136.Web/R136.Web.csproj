@@ -3,7 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
+		   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+	</PropertyGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\data\animatesbase.json" />
@@ -18,6 +21,10 @@
     <Content Remove="wwwroot\data\nl-NL\propertiesbase.json" />
     <Content Remove="wwwroot\data\roomsbase.json" />
     <Content Remove="wwwroot\data\textsbase.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

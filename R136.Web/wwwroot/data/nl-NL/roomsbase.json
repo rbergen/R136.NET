@@ -2,7 +2,7 @@
 	{
 		"ID": 0,
 		"Name": "in het bos",
-		"Description": "Je bevindt je in een uithoek van een donker bos. Overal hoor je enge geluiden."
+		"Description": "Dit is een uithoek van een donker bos. Overal hoor je enge geluiden."
 	},
 	{
 		"ID": 1,
@@ -55,7 +55,7 @@
 	{
 		"ID": 11,
 		"Name": "in het bos",
-		"Description": "Je trapt bijna in een bereklem."
+		"Description": "Je trapt bijna in een berenklem."
 	},
 	{
 		"ID": 12,
@@ -178,8 +178,7 @@
 	},
 	{
 		"ID": 37,
-		"Name": "in de mistgrot",
-		"Description": "Een dichte mist belemmert je zicht, en je verliest je orïentatiegevoel."
+		"Name": "in de mistgrot"
 	},
 	{
 		"ID": 38,
@@ -346,12 +345,12 @@
 	{
 		"ID": 73,
 		"Name": "in de neongrot",
-		"Description": "Deze grot is fel gekleurd. Er staan patronen die je doen denken aan zwarte ma gie."
+		"Description": "Deze grot is fel gekleurd. Er staan patronen die je doen denken aan zwarte magie."
 	},
 	{
 		"ID": 74,
 		"Name": "in de bloedgrot",
-		"Description": "Het geraamte van een groot beest ligt hier op de grond en een aantal ingewanden liggen er naast."
+		"Description": "Het geraamte van een groot beest ligt hier op de grond en een aantal ingewanden liggen ernaast."
 	},
 	{
 		"ID": 75,

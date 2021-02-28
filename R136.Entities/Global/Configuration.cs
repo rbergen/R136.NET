@@ -1,6 +1,4 @@
-﻿using R136.Interfaces;
-
-namespace R136.Entities.Global
+﻿namespace R136.Entities.Global
 {
 	public class Configuration : LayoutProperties
 	{

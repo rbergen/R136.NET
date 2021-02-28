@@ -224,7 +224,7 @@ namespace R136.Entities
 			if (result.IsSuccess && !KeepsAfterUse)
 				StatusManager?.RemoveFromPossession(ID);
 
-			return Result.Success(result.Message);
+			return result;
 		}
 	}
 

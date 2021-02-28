@@ -1,7 +1,6 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -88,7 +87,7 @@ namespace R136.Entities.Items
 				return Result.Error();
 
 			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
-			if (yesNoInputSpecs.PermittedCharacters != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.PermittedCharacters.Contains(input))
+			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
 				return Result.InputRequested(
 					new ContinuationStatus() { Key = ContinuationKey, Number = (int)animate.ID }, 
 					Facilities.Configuration.YesNoInputSpecs,

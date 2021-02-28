@@ -92,8 +92,8 @@
 	},
 	{
 		"ID": 9,
-		"Name": "the nookitron bomb",
-		"Description": "The bomb consists of a number of thin tubes in a cilinder. Around it, there are some tubes. A strange hum emerges from a grate. There's a sign on it that says: -5° - 105°, Code name: R136.",
+		"Name": "the positron bomb",
+		"Description": "The bomb consists of a number of thin tubes in a cilinder. Around it, there are some tubes. A strange hum emerges from a grate. There's a sign on it that says: \"-5° - 105°, Code name: R136\".",
 		"StartRoom": 27,
 		"UseTexts": [
 			"You can't find a button to push."
@@ -153,7 +153,7 @@
 	},
 	{
 		"ID": 15,
-		"Name": "the mustard gas catrtridge",
+		"Name": "the mustard gas cartrtridge",
 		"Description": "It's a cartridge that contains mustard gas under pressure. There are wires attached to it and you can't find any way to activate it.",
 		"StartRoom": 80,
 		"UseTexts": [
@@ -211,7 +211,7 @@
 	{
 		"ID": 21,
 		"Name": "the booklet",
-		"Description": "It's a dirty, sticky booklet with a naked roll on the front page. You feel like throwing up.",
+		"Description": "It's a dirty, sticky booklet with a naked troll on the front page. You feel like throwing up.",
 		"StartRoom": 70,
 		"UseTexts": [
 			"You can't imagine what to do with this."

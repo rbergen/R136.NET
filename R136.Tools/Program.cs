@@ -73,12 +73,17 @@ namespace R136.Tools
 			if (string.IsNullOrWhiteSpace(input))
 				return (null, null);
 
-			string jsonFilePath = input.Trim();
+			var jsonFilePath = input.Trim();
 
 			try
 			{
-				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				return (JsonSerializer.Deserialize<T>(jsonString), jsonFilePath);
+				var jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
+				var entity = JsonSerializer.Deserialize<T>(jsonString);
+
+				if (entity == null || (entity is Array entityArray && entityArray.Length == 0))
+					Console.Write($"!! Warning: no {name} loaded !!");
+
+				return (entity, jsonFilePath);
 			}
 			catch (Exception e)
 			{

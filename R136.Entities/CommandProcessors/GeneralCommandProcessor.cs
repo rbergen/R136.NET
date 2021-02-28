@@ -5,6 +5,7 @@ using R136.Entities.Items;
 using R136.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace R136.Entities.CommandProcessors
 {
@@ -53,7 +54,12 @@ namespace R136.Entities.CommandProcessors
 			if (validateResult != null)
 				return validateResult;
 
-			return Result.Success(GetTexts(CommandID.Info, Default));
+			var assembly = typeof(EntityBase).Assembly;
+			var version = assembly.GetName().Version;
+			var versionText = version != null ? $"{version.Major}.{version.Minor}" : "?.?";
+			var copyrightText = ((AssemblyCopyrightAttribute?)assembly.GetCustomAttributes(false).FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute))?.Copyright;			
+
+			return Result.Success(GetTexts(CommandID.Info, Default, "version", versionText).ReplaceInAll("{copyright}", copyrightText ?? string.Empty));
 		}
 
 		private Result ExecuteWait(string command, string? parameters)
@@ -112,7 +118,7 @@ namespace R136.Entities.CommandProcessors
 				return Result.Error();
 
 			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
-			if (yesNoInputSpecs.PermittedCharacters != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.PermittedCharacters.Contains(input))
+			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
 				return Result.InputRequested(
 					new ContinuationStatus() { Key = ContinuationKey },
 					Facilities.Configuration.YesNoInputSpecs,
