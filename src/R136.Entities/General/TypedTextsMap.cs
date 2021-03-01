@@ -38,6 +38,12 @@ namespace R136.Entities.General
 			}
 		}
 
+		public StringValues Get<TCaller>(TTextKey id)
+			=> base[typeof(TCaller).Name, id];
+
+		public void Set<TCaller>(TTextKey id, StringValues texts)
+			=> base[typeof(TCaller).Name, id] = texts;
+
 		public StringValues this[object o, TTextKey id]
 		{
 			get => base[o.GetType().Name, id];

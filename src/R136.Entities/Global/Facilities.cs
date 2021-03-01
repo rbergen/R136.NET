@@ -1,7 +1,7 @@
-﻿
-using R136.Entities.General;
+﻿using R136.Entities.General;
 using R136.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace R136.Entities.Global
 {
@@ -14,6 +14,7 @@ namespace R136.Entities.Global
 		public static KeyedTextsMap<ItemID, Item.TextType> ItemTextsMap { get; }
 		public static KeyedTextsMap<CommandID, int> CommandTextsMap { get; }
 		public static Configuration Configuration { get; set; }
+		public static Logger Logger { get; }
 
 		static Facilities()
 		{
@@ -23,17 +24,8 @@ namespace R136.Entities.Global
 			ItemTextsMap = new KeyedTextsMap<ItemID, Item.TextType>();
 			CommandTextsMap = new KeyedTextsMap<CommandID, int>();
 			Configuration = new Configuration();
+			Logger = new Logger();
 		}
-
-		public static void LogLine(object caller, string text)
-			=> LogLine(caller.GetType(), text);
-
-		public static void LogLine(Type callingType, string text)
-		{
-			if (Configuration.LogToConsole)
-				Console.WriteLine($"{callingType.FullName}: {text}");
-		}
-		
 
 	}
 }

@@ -106,7 +106,7 @@ namespace R136.Core
 			}
 			catch (Exception e)
 			{
-				LogLine($"Exception while loading entity group {label}: {e}");
+				Facilities.Logger.LogDebug<Engine>($"Exception while loading entity group {label}: {e}");
 				return false;
 			}
 		}
@@ -116,9 +116,7 @@ namespace R136.Core
 			foreach (var notifiee in entities.Where(entity => entity is INotifyTurnEnding).Cast<INotifyTurnEnding>())
 				_turnEndingNotifiees.Add(notifiee.TurnEnding);
 		}
-		private void LogLine(string text)
-			=> Facilities.LogLine(this, text);
-
+	
 		private bool ValidateStep(NextStep step)
 		{
 			if (!IsInitialized)

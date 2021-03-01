@@ -74,10 +74,9 @@ namespace R136.Core
 			}
 			catch (Exception e)
 			{
-				LogLine($"Exception while loading configuration: {e}");
+				Facilities.Logger.LogDebug<Engine>($"Exception while loading configuration: {e}");
 				return false;
 			}
-
 
 			if (groupLabel != null)
 				await SetEntityGroup(groupLabel, false);

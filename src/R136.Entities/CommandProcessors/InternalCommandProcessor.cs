@@ -78,7 +78,7 @@ namespace R136.Entities.CommandProcessors
 			}
 			catch (Exception ex)
 			{
-				Facilities.LogLine(this, $"Exception while setting {propertyName} to \"{propertyValue}\": {ex}");
+				Facilities.Logger.LogDebug<InternalCommandProcessor>($"Exception while setting {propertyName} to \"{propertyValue}\": {ex}");
 			}
 
 			return InvalidCommandResult;
@@ -105,7 +105,7 @@ namespace R136.Entities.CommandProcessors
 			}
 			catch (Exception ex)
 			{
-				Facilities.LogLine(this, $"Exception while getting {propertyName}: {ex}");
+				Facilities.Logger.LogDebug<InternalCommandProcessor>($"Exception while getting {propertyName}: {ex}");
 			}
 
 			return InvalidCommandResult;

@@ -1,7 +1,9 @@
+using Blazor.Extensions.Logging;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using R136.Core;
 using R136.Web.Tools;
 using System;
@@ -22,13 +24,17 @@ namespace R136.Web
 			var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
 
 			builder.Services
+			.AddLogging(builder => builder
+				.AddBrowserConsole()
+				.SetMinimumLevel(LogLevel.Debug)
+			)
 			.AddScoped(sp => new HttpClient { BaseAddress = baseUri })
 			.AddSingleton(new MarkupContentLog()
 			{
 				MaxBlockCount = builder.Configuration.GetValue<int>(Constants.MaxContentLogBlockCount),
 				SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
 			})
-			.AddR136(new HttpJsonEntityReader(new Uri(baseUri, "data/")))
+			.AddR136(sp => new HttpJsonEntityReader(sp, new Uri(baseUri, "data/")))
 			.AddBlazoredLocalStorage()
 			.AddLanguageProvider();
 
