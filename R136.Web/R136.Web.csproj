@@ -3,44 +3,32 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
 	</PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\data\animatesbase.json" />
-    <Content Remove="wwwroot\data\commandsbase.json" />
-    <Content Remove="wwwroot\data\en-GB\animatesbase.json" />
-    <Content Remove="wwwroot\data\en-GB\commandsbase.json" />
-    <Content Remove="wwwroot\data\en-GB\itemsbase.json" />
-    <Content Remove="wwwroot\data\en-GB\propertiesbase.json" />
-    <Content Remove="wwwroot\data\en-GB\roomsbase.json" />
-    <Content Remove="wwwroot\data\en-GB\textsbase.json" />
-    <Content Remove="wwwroot\data\itemsbase.json" />
-    <Content Remove="wwwroot\data\nl-NL\propertiesbase.json" />
-    <Content Remove="wwwroot\data\roomsbase.json" />
-    <Content Remove="wwwroot\data\textsbase.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\data\configuration.json" Link="wwwroot\data\configuration.json" />
+    <Content Include="..\data\en-GB\animates.json" Link="wwwroot\data\en-GB\animates.json" />
+    <Content Include="..\data\en-GB\commands.json" Link="wwwroot\data\en-GB\commands.json" />
+    <Content Include="..\data\en-GB\items.json" Link="wwwroot\data\en-GB\items.json" />
+    <Content Include="..\data\en-GB\properties.json" Link="wwwroot\data\en-GB\properties.json" />
+    <Content Include="..\data\en-GB\rooms.json" Link="wwwroot\data\en-GB\rooms.json" />
+    <Content Include="..\data\en-GB\texts.json" Link="wwwroot\data\en-GB\texts.json" />
+    <Content Include="..\data\nl-NL\animates.json" Link="wwwroot\data\nl-NL\animates.json" />
+    <Content Include="..\data\nl-NL\commands.json" Link="wwwroot\data\nl-NL\commands.json" />
+    <Content Include="..\data\nl-NL\items.json" Link="wwwroot\data\nl-NL\items.json" />
+    <Content Include="..\data\nl-NL\properties.json" Link="wwwroot\data\nl-NL\properties.json" />
+    <Content Include="..\data\nl-NL\rooms.json" Link="wwwroot\data\nl-NL\rooms.json" />
+    <Content Include="..\data\nl-NL\texts.json" Link="wwwroot\data\nl-NL\texts.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="wwwroot\data\en-GB\animatesbase.json" />
-    <None Include="wwwroot\data\en-GB\commandsbase.json" />
-    <None Include="wwwroot\data\en-GB\itemsbase.json" />
-    <None Include="wwwroot\data\en-GB\propertiesbase.json" />
-    <None Include="wwwroot\data\en-GB\roomsbase.json" />
-    <None Include="wwwroot\data\en-GB\textsbase.json" />
-    <None Include="wwwroot\data\nl-NL\animatesbase.json" />
-    <None Include="wwwroot\data\nl-NL\commandsbase.json" />
-    <None Include="wwwroot\data\nl-NL\itemsbase.json" />
-    <None Include="wwwroot\data\nl-NL\propertiesbase.json" />
-    <None Include="wwwroot\data\nl-NL\roomsbase.json" />
-    <None Include="wwwroot\data\nl-NL\textsbase.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +43,11 @@
   <ItemGroup>
     <ProjectReference Include="..\R136.Core\R136.Core.csproj" />
     <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\data\en-GB\" />
+    <Folder Include="wwwroot\data\nl-NL\" />
   </ItemGroup>
 
 </Project>

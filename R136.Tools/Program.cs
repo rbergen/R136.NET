@@ -8,8 +8,6 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 
-#nullable enable
-
 namespace R136.Tools
 {
 	class Program
@@ -79,9 +77,6 @@ namespace R136.Tools
 			{
 				var jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
 				var entity = JsonSerializer.Deserialize<T>(jsonString);
-
-				if (entity == null || (entity is Array entityArray && entityArray.Length == 0))
-					Console.Write($"!! Warning: no {name} loaded !!");
 
 				return (entity, jsonFilePath);
 			}

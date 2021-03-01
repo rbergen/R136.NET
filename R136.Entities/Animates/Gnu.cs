@@ -1,6 +1,7 @@
 ﻿using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
+using System;
 
 namespace R136.Entities.Animates
 {
@@ -43,12 +44,16 @@ namespace R136.Entities.Animates
 			return Result.Success();
 		}
 
-		public bool RoomChangeRequested(RoomID from, RoomID to) => true;
 
-		public void RoomChanged(RoomID from, RoomID to) 
+		public void RoomChanged(RoomChangeRequestedEventArgs e) 
 		{
-			if (from == CurrentRoom && Status != AnimateStatus.Done)
-				CurrentRoom = Facilities.Configuration.GnuRoamingRooms[Facilities.Randomizer.Next(5)];
+			if (e.From == CurrentRoom && Status != AnimateStatus.Done)
+			{
+				var roamingRooms = Facilities.Configuration.GnuRoamingRooms;
+				CurrentRoom = roamingRooms[Facilities.Randomizer.Next(roamingRooms.Length)]; 
+			}
 		}
+
+		public void RoomChangeRequested(RoomChangeRequestedEventArgs args) { }
 	}
 }

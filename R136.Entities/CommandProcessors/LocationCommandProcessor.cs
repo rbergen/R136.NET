@@ -11,7 +11,8 @@ namespace R136.Entities.CommandProcessors
 	public class LocationCommandProcessor : ActingCommandProcessor, ISnappable<LocationCommandProcessor.Snapshot>
 	{
 		public event Action? PaperRouteCompleted;
-		private event Action<RoomID, RoomID>? RoomChanged;
+		private event Action<RoomChangeRequestedEventArgs>? RoomChanged;
+		private event Action<RoomChangeRequestedEventArgs>? RoomChangeRequested;
 
 		private int _paperrouteIndex = 0;
 
@@ -37,33 +38,27 @@ namespace R136.Entities.CommandProcessors
 			var fromRoom = player.CurrentRoom;
 			var toRoom = player.CurrentRoom.Connections[direction.Value];
 
-			if (!NotifyRoomChangeRequested(Items, fromRoom.ID, toRoom.ID) || !NotifyRoomChangeRequested(Animates, fromRoom.ID, toRoom.ID))
+			var args = new RoomChangeRequestedEventArgs(fromRoom.ID, toRoom.ID);
+			RoomChangeRequested?.Invoke(args);
+
+			if (args.Cancel)
 				return Result.Failure();
 
 			player.CurrentRoom = toRoom;
 
-			RoomChanged?.Invoke(fromRoom.ID, toRoom.ID);
-
+			RoomChanged?.Invoke(args);
 			CheckPaperRoute(toRoom.ID);
 
 			return Result.Success();
 		}
 
-		private static bool NotifyRoomChangeRequested<TEntityKey, TEntityValue>(IReadOnlyDictionary<TEntityKey, TEntityValue> entities, RoomID fromRoom, RoomID toRoom)
-		{
-			foreach (var requestNotifiee in entities.Values.Where(entity => entity is INotifyRoomChangeRequested).Cast<INotifyRoomChangeRequested>())
-			{
-				if (!requestNotifiee.RoomChangeRequested(fromRoom, toRoom))
-					return false;
-			}
-			
-			return true;
-		}
-
 		private void RegisterRoomChangedListeners<TEntityKey, TEntityValue>(IReadOnlyDictionary<TEntityKey, TEntityValue> entities)
 		{
 			foreach (var requestNotifiee in entities.Values.Where(entity => entity is INotifyRoomChangeRequested).Cast<INotifyRoomChangeRequested>())
+			{
+				RoomChangeRequested += requestNotifiee.RoomChangeRequested;
 				RoomChanged += requestNotifiee.RoomChanged;
+			}
 		}
 
 		private static Direction? CommandToDirection(CommandID id) => id switch

@@ -7,19 +7,22 @@ namespace R136.Core
 {
 	public static class Config
 	{
-		public static IServiceCollection AddR136(this IServiceCollection serviceCollection, Func<Uri> baseUriProvider)
-		 => AddR136(serviceCollection, new HttpJsonEntityReader(baseUriProvider.Invoke()));
-
-		public static IServiceCollection AddR136(this IServiceCollection serviceCollection, Func<IEntityReader> entityReaderProvider)
-		 => AddR136(serviceCollection, entityReaderProvider.Invoke());
-
-		private static IServiceCollection AddR136(IServiceCollection serviceCollection, IEntityReader? reader = null)
+		public static IServiceCollection AddR136(this IServiceCollection serviceCollection, Func<IServiceProvider, IEntityReader> entityReaderFactory)
 		{
-			Facilities.Configuration.LogToConsole = true;
+			serviceCollection.AddSingleton<IEntityReader>(entityReaderFactory);
+			AddR136(serviceCollection);
+			return serviceCollection;
+		}
 
-			if (reader != null)
-				serviceCollection.AddSingleton(reader);
+		public static IServiceCollection AddR136(this IServiceCollection serviceCollection, IEntityReader entityReader)
+		{
+			serviceCollection.AddSingleton(entityReader);
+			AddR136(serviceCollection);
+			return serviceCollection;
+		}
 
+		private static IServiceCollection AddR136(IServiceCollection serviceCollection)
+		{
 			var engine = new Engine();
 
 			return serviceCollection

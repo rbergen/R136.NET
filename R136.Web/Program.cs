@@ -28,7 +28,7 @@ namespace R136.Web
 				MaxBlockCount = builder.Configuration.GetValue<int>(Constants.MaxContentLogBlockCount),
 				SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
 			})
-			.AddR136(() => new Uri(baseUri, "data/"))
+			.AddR136(new HttpJsonEntityReader(new Uri(baseUri, "data/")))
 			.AddBlazoredLocalStorage()
 			.AddLanguageProvider();
 

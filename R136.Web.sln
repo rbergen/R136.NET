@@ -19,6 +19,45 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Interfaces", "R136.Int
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Core", "R136.Core\R136.Core.csproj", "{3B183D9F-4C79-41A1-9772-517696185F0E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Shell", "R136.Shell\R136.Shell.csproj", "{30AC54D4-CE76-4CBE-886E-5364D4BBF4AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{551F56AA-A2F0-4F1D-AE0D-DDAA65C693ED}"
+	ProjectSection(SolutionItems) = preProject
+		data\configuration.json = data\configuration.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "en-GB", "en-GB", "{4D5B7349-6EEB-406E-BDFD-2343B709AB19}"
+	ProjectSection(SolutionItems) = preProject
+		data\en-GB\animates.json = data\en-GB\animates.json
+		data\en-GB\animatesbase.json = data\en-GB\animatesbase.json
+		data\en-GB\commands.json = data\en-GB\commands.json
+		data\en-GB\commandsbase.json = data\en-GB\commandsbase.json
+		data\en-GB\items.json = data\en-GB\items.json
+		data\en-GB\itemsbase.json = data\en-GB\itemsbase.json
+		data\en-GB\properties.json = data\en-GB\properties.json
+		data\en-GB\propertiesbase.json = data\en-GB\propertiesbase.json
+		data\en-GB\rooms.json = data\en-GB\rooms.json
+		data\en-GB\roomsbase.json = data\en-GB\roomsbase.json
+		data\en-GB\texts.json = data\en-GB\texts.json
+		data\en-GB\textsbase.json = data\en-GB\textsbase.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nl-NL", "nl-NL", "{7F8BA050-D8CD-4B62-9323-DE7991924D10}"
+	ProjectSection(SolutionItems) = preProject
+		data\nl-NL\animates.json = data\nl-NL\animates.json
+		data\nl-NL\animatesbase.json = data\nl-NL\animatesbase.json
+		data\nl-NL\commands.json = data\nl-NL\commands.json
+		data\nl-NL\commandsbase.json = data\nl-NL\commandsbase.json
+		data\nl-NL\items.json = data\nl-NL\items.json
+		data\nl-NL\itemsbase.json = data\nl-NL\itemsbase.json
+		data\nl-NL\properties.json = data\nl-NL\properties.json
+		data\nl-NL\propertiesbase.json = data\nl-NL\propertiesbase.json
+		data\nl-NL\rooms.json = data\nl-NL\rooms.json
+		data\nl-NL\roomsbase.json = data\nl-NL\roomsbase.json
+		data\nl-NL\texts.json = data\nl-NL\texts.json
+		data\nl-NL\textsbase.json = data\nl-NL\textsbase.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +84,17 @@ Global
 		{3B183D9F-4C79-41A1-9772-517696185F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B183D9F-4C79-41A1-9772-517696185F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B183D9F-4C79-41A1-9772-517696185F0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30AC54D4-CE76-4CBE-886E-5364D4BBF4AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30AC54D4-CE76-4CBE-886E-5364D4BBF4AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30AC54D4-CE76-4CBE-886E-5364D4BBF4AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30AC54D4-CE76-4CBE-886E-5364D4BBF4AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4D5B7349-6EEB-406E-BDFD-2343B709AB19} = {551F56AA-A2F0-4F1D-AE0D-DDAA65C693ED}
+		{7F8BA050-D8CD-4B62-9323-DE7991924D10} = {551F56AA-A2F0-4F1D-AE0D-DDAA65C693ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFCB95A6-28AC-4AFF-AE6C-F910B27A57BC}
