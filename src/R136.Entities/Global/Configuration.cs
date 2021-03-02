@@ -9,7 +9,6 @@
 		public bool FreezeAnimates { get; set; } = false;
 		public bool AutoPlaceItems { get; set; } = false;
 		public bool AutoOpenConnections { get; set; } = false;
-		public bool LogToConsole { get; set; } = false;
 		public bool EnableConfigList { get; set; } = false;
 	}
 }

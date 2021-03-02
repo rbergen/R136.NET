@@ -64,13 +64,6 @@ namespace R136.Web.Tools
 					yield return buffer.Dequeue();
 			}
 		}
-
-		public static IServiceCollection AddLanguageProvider(this IServiceCollection serviceCollection)
-			=> serviceCollection.AddScoped<ILanguageProvider>(sp =>
-				new LanguageProvider
-				{
-					Services = sp
-				});
 	}
 }
 

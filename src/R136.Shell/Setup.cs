@@ -40,6 +40,8 @@ namespace R136.Shell
       serviceCollection
         .AddSingleton(configuration)
         .AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, true))
+        .AddSingleton(sp => Status.Load(sp) ?? new Status())
+        .AddSingleton<ILanguageProvider>(sp => new LanguageProvider() { Services = sp })
         .AddR136(sp => new FileSystemJsonEntityReader(sp, Path.Combine(basePath, "data")));
 
       var serviceProvider = serviceCollection.BuildServiceProvider();

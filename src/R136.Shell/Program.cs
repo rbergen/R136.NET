@@ -11,9 +11,13 @@ namespace R136.Shell
 {
   class Program
   {
-    static int Main(string[] args)
+    static async Task<int> Main(string[] args)
     {
-      return new GameConsole(Environment.Setup(args)).Play();
+      var services = Environment.Setup(args);
+
+
+
+      return await new GameConsole(services).Play();
     }
 	}
 }

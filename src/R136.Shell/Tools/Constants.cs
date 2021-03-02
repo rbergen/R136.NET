@@ -8,7 +8,10 @@ namespace R136.Shell.Tools
 {
 	public class Constants
 	{
+		public const string StatusFilename = nameof(StatusFilename);
+
 		public const string Languages = nameof(Languages);
+		public const string DefaultLanguage = nameof(DefaultLanguage);
 
 		public const string Dutch = "nl-NL";
 		public const string English = "en-GB";
