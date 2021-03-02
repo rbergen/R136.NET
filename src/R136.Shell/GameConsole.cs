@@ -22,6 +22,7 @@ namespace R136.Shell
 		private readonly ILanguageProvider? _languages;
 		private readonly IEngine? _engine;
 		private Status? _status;
+		private readonly Queue<string> _texts = new Queue<string>();
 
 		public GameConsole(IServiceProvider services)
 		{
@@ -63,9 +64,12 @@ namespace R136.Shell
 
 			await _engine.Initialize(_languages?.Language ?? Constants.Dutch);
 
+			RestoreStatus();
+
+			var firstRun = true;
 			var proceed = true;
 
-			while(proceed)
+			while (proceed)
 			{
 				switch (_engine.DoNext)
 				{
@@ -85,31 +89,53 @@ namespace R136.Shell
 						break;
 
 					case NextStep.RunCommand:
-						SaveStatus(_engine.CommandInputSpecs);
+						if (!firstRun) 
+							SaveStatus(_engine.CommandInputSpecs);
 
-						proceed = RunCommand();
+						proceed = await RunCommand();
 
 						break;
 					case NextStep.Pause:
 						SaveStatus(null);
 
-						Console.ReadKey();
+						WriteLine(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
+						Console.Read();
 
 						break;
 				}
+
+				firstRun = false;
 			}
 
 			return Success;
 		}
 
-		private bool RunCommand()
+		private void RestoreStatus()
+		{
+			if (_status?.EngineSnapshot != null && _engine != null)
+				_engine.RestoreSnapshot(_status.EngineSnapshot);
+
+			if (_status?.Texts != null)
+			{
+				_texts.Clear();
+				foreach (var text in _status.Texts)
+				{
+					WriteLine(text);
+					_texts.Enqueue(text);
+				}
+			}
+		}
+
+		private async Task<bool> RunCommand()
 		{
 			while (true)
 			{
 				var input = GetInput();
 
-				if (InputSpecs?.IsLowerCase ?? false)
-					input = input.ToLower();
+				if (await ApplyLanguageChange(input))
+					continue;
+
+				input = ApplyInputSpecs(input);
 
 				var result = ContinuationStatus != null
 					? _engine!.Continue(ContinuationStatus, input)
@@ -117,6 +143,7 @@ namespace R136.Shell
 
 				if (result.IsError)
 				{
+					Console.WriteLine();
 					WriteTexts(result.Message != StringValues.Empty ? result.Message : "An unspecified error occurred");
 					continue;
 				}
@@ -128,12 +155,31 @@ namespace R136.Shell
 				if (result.IsEndRequest)
 					return false;
 
-				else if (result.IsEndRequest)
+				else if (result.IsInputRequest)
 					continue;
 
 				else
 					return true;
 			}
+		}
+
+		private async Task<bool> ApplyLanguageChange(string input)
+		{
+			if (_languages == null)
+				return false;
+
+			var segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			if ((segments?.Length ?? 0) == 2 && segments![0] == "lang")
+			{
+				_languages.Language = segments![1];
+				var result = _engine!.SetEntityGroup(_languages.Language);
+				WriteTexts(_languages.GetConfigurationValue(Constants.LanguageSwitchText));
+				await result;
+
+				return true;
+			}
+
+			return false;
 		}
 
 		private void ProcessResult(Result result)
@@ -164,9 +210,18 @@ namespace R136.Shell
 
 		private string GetInput()
 		{
-			Console.WriteLine($"Enter input (max length: {_status?.InputSpecs?.MaxLength}): ");
-			var input = Console.ReadLine() ?? string.Empty;
+			Console.Write("> ");
 
+			var input = Console.ReadLine() ?? string.Empty;
+			_texts.Enqueue($"> {input}");
+
+			Console.WriteLine();
+
+			return input;
+		}
+
+		private string ApplyInputSpecs(string input)
+		{
 			if (InputSpecs?.IsLowerCase ?? false)
 				input = input.ToLower();
 
@@ -179,15 +234,46 @@ namespace R136.Shell
 		private void SaveStatus(InputSpecs? inputSpecs)
 		{
 			if (_status == null)
-				return; 
+				return;
 
 			_status.InputSpecs = inputSpecs;
 			_status.EngineSnapshot = _engine!.TakeSnapshot();
+			_status.Texts = _texts.ToArray();
+
+			_status.Save();
 		}
 
-		private static void WriteTexts(StringValues texts)
+		private void WriteTexts(StringValues texts)
 		{
-			Console.WriteLine(texts.ToPlainText());
+			if (StringValues.IsNullOrEmpty(texts))
+				return;
+
+			var plainText = texts.ToPlainText();
+			WriteLine(plainText);
+			_texts.Enqueue(plainText);
+			while (_texts.Count > 20)
+				_texts.Dequeue();
+		}
+
+		private static void WriteLine(string plainText)
+		{
+			var consoleWidth = Console.WindowWidth;
+
+			foreach (var item in plainText.Split('\n'))
+			{
+				var plainLine = item;
+				while (plainLine.Length >= consoleWidth)
+				{
+					var lastFittingSpace = plainLine.LastIndexOf(' ', consoleWidth - 1);
+					if (lastFittingSpace <= 0)
+						break;
+
+					Console.WriteLine(plainLine[..(lastFittingSpace)]);
+					plainLine = plainLine[(lastFittingSpace + 1)..];
+				}
+
+				Console.WriteLine(plainLine);
+			}
 		}
 	}
 }

@@ -1,1 +1,1 @@
-﻿{"StartRoom":0,"GreenCrystalRoom":4,"GnuRoamingRooms":[44,47,48,49,54],"PaperRoute":[69,64,63,62,67,66],"YesNoInputSpecs":{"MaxLength":1,"PermittedCharacters":null,"IsLowerCase":true},"YesInput":"j","CommandInputSpecs":{"MaxLength":65,"PermittedCharacters":null,"IsLowerCase":true}}
+﻿{"StartRoom":0,"GreenCrystalRoom":4,"GnuRoamingRooms":[44,47,48,49,54],"PaperRoute":[69,64,63,62,67,66],"YesNoInputSpecs":{"MaxLength":1,"Permitted":"[jJnN]","IsLowerCase":true},"YesInput":"j","CommandInputSpecs":{"MaxLength":65,"Permitted":"[a-zA-Z0-9 ]\u002B","IsLowerCase":true}}

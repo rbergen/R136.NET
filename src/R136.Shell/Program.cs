@@ -15,8 +15,6 @@ namespace R136.Shell
     {
       var services = Environment.Setup(args);
 
-
-
       return await new GameConsole(services).Play();
     }
 	}

@@ -25,7 +25,7 @@ namespace R136.Entities.CommandProcessors
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 		{
 			if (parameters != null)
-				Result.Error(GetTexts(TextID.CommandSyntax).ReplaceInAll("{command}", command));
+				return Result.Error(GetTexts(TextID.CommandSyntax).ReplaceInAll("{command}", command));
 
 			Direction? direction = CommandToDirection(id);
 

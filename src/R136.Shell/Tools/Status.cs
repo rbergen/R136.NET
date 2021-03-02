@@ -25,6 +25,7 @@ namespace R136.Shell.Tools
 		public InputSpecs? InputSpecs { get; set; }
 		public Engine.Snapshot? EngineSnapshot { get; set; }
 		public string? Language { get; set; }
+		public string[]? Texts { get; set; }
 
 		public static Status? Load(IServiceProvider? services)
 		{

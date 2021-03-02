@@ -35,11 +35,16 @@ namespace R136.Shell.Tools
 				_language = value;
 			}
 		}
+
+		public string? GetConfigurationValue(string key)
+			=> Services?.GetRequiredService<IConfiguration>().GetSection(Constants.Languages).GetSection(Language)[key];
 	}
 
 	public interface ILanguageProvider
 	{
 		IServiceProvider? Services { set; }
 		string Language { get; set; }
+		public string? GetConfigurationValue(string key);
+
 	}
 }
