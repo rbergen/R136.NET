@@ -1,16 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using R136.Core;
 using R136.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
 using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace R136.Shell.Tools
 {
@@ -27,14 +24,20 @@ namespace R136.Shell.Tools
 		public string? Language { get; set; }
 		public string[]? Texts { get; set; }
 
+		[JsonIgnore]
+		public bool IsLoaded { get; private set; } = false;
+
 		public static Status? Load(IServiceProvider? services)
 		{
 			try
 			{
 				var result = JsonSerializer.Deserialize<Status>(File.ReadAllText(GetFilename(services), Encoding.UTF8));
-				
+
 				if (result != null)
+				{
 					result._services = services;
+					result.IsLoaded = true;
+				}
 				
 				return result;
 			}

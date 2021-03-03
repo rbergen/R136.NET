@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace R136.Shell.Tools
+﻿namespace R136.Shell.Tools
 {
 	public class Constants
 	{
 		public const string StatusFilename = nameof(StatusFilename);
-		public const string HeaderText = nameof(HeaderText);
-		public const string EnterInputText = nameof(EnterInputText);
+		public const string TitleText = nameof(TitleText);
 		public const string ProceedText = nameof(ProceedText);
 		public const string LanguageSwitchText = nameof(LanguageSwitchText);
 
@@ -19,5 +12,7 @@ namespace R136.Shell.Tools
 
 		public const string Dutch = "nl-NL";
 		public const string English = "en-GB";
+		public const string Prompt = "> ";
+		public const string ReversePrompt = "< ";
 	}
 }

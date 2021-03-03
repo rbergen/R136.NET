@@ -1,8 +1,7 @@
 ﻿using Markdig;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace R136.Shell.Tools
 {
@@ -15,7 +14,7 @@ namespace R136.Shell.Tools
 			if (texts == StringValues.Empty)
 				return string.Empty;
 
-			return Markdown.ToPlainText(string.Join('\n', texts), Pipeline);
+			return string.Join('\n', texts.Select(text => text == string.Empty ? text : Markdown.ToPlainText(text, Pipeline).Trim()));
 		}
 
 		private static MarkdownPipeline Pipeline
@@ -23,10 +22,18 @@ namespace R136.Shell.Tools
 			get
 			{
 				if (_pipeline == null)
-					_pipeline = new MarkdownPipelineBuilder().UseSoftlineBreakAsHardlineBreak().Build();
+					_pipeline = new MarkdownPipelineBuilder()
+						.UseSoftlineBreakAsHardlineBreak()
+						.Build();
 
 				return _pipeline;
 			}
+		}
+
+		public static void AddIfNotEmpty(this IList<StringValues> list, StringValues value)
+		{
+			if (value != StringValues.Empty)
+				list.Add(value);
 		}
 	}
 }

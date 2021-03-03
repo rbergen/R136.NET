@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using R136.Entities.Global;
 using R136.Interfaces;
 using System;
 using System.Net.Http;

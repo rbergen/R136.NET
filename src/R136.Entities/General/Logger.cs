@@ -3,9 +3,6 @@ using Microsoft.Extensions.Logging;
 using R136.Entities.Global;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Entities.General
 {
