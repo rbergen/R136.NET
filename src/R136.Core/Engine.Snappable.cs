@@ -54,7 +54,7 @@ namespace R136.Core
 			bool result = true;
 
 			if (snapshot.Configuration != null)
-				Facilities.Configuration = snapshot.Configuration;
+				Facilities.Configuration.Load(snapshot.Configuration);
 
 			_hasTreeBurned = snapshot.HasTreeBurned;
 			DoNext = snapshot.DoNext;

@@ -27,8 +27,7 @@ namespace R136.Entities.Items
 			IReadOnlyDictionary<ItemID, Item> items
 			)
 #pragma warning restore IDE0060 // Remove unused parameter
-			=> new Flashlight
-			(
+			=> new (
 			initializer.ID, 
 			initializer.Name, 
 			initializer.Description, 
@@ -65,10 +64,7 @@ namespace R136.Entities.Items
 				return _lampPoints!.Value;
 			}
 
-			private set
-			{
-				_lampPoints = value;
-			}
+			private set => _lampPoints = value;
 		}
 
 		public Item Self => this;

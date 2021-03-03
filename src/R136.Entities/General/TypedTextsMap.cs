@@ -32,10 +32,7 @@ namespace R136.Entities.General
 
 		public IDictionary<TTextKey, StringValues> this[Type t]
 		{
-			set
-			{
-				base[t.Name] = value;
-			}
+			set => base[t.Name] = value;
 		}
 
 		public StringValues Get<TCaller>(TTextKey id)
@@ -47,10 +44,7 @@ namespace R136.Entities.General
 		public StringValues this[object o, TTextKey id]
 		{
 			get => base[o.GetType().Name, id];
-			set
-			{
-				base[o.GetType().Name, id] = value;
-			}
+			set => base[o.GetType().Name, id] = value;
 		}
 
 		public class Initializer

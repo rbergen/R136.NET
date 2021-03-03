@@ -10,7 +10,7 @@ namespace R136.Entities.General
 			where TTextKey : struct
 	{
 		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map 
-			= new Dictionary<TDictKey, IDictionary<TTextKey, StringValues>>();
+			= new();
 
 		public IDictionary<TTextKey, StringValues>? this[TDictKey key]
 		{

@@ -15,7 +15,7 @@ namespace R136.Core
 {
 	public partial class Engine
 	{
-		private readonly List<Func<StringValues>> _turnEndingNotifiees = new List<Func<StringValues>>();
+		private readonly List<Func<StringValues>> _turnEndingNotifiees = new();
 
 		private TypedEntityTaskCollection? LoadEntities(string groupLabel)
 		{
@@ -206,7 +206,7 @@ namespace R136.Core
 			if (!result.IsSuccess && !result.IsFailure)
 				return result;
 
-			List<string> texts = new List<string>();
+			List<string> texts = new();
 
 			texts.AddRangeIfNotNull(result.Message);
 

@@ -10,5 +10,18 @@
 		public bool AutoPlaceItems { get; set; } = false;
 		public bool AutoOpenConnections { get; set; } = false;
 		public bool EnableConfigList { get; set; } = false;
+
+		public void Load(Configuration configuration)
+		{
+			LifePoints = configuration.LifePoints;
+			LampPoints = configuration.LampPoints;
+			MaxInventory = configuration.MaxInventory;
+			Immortal = configuration.Immortal;
+			FreezeAnimates = configuration.FreezeAnimates;
+			AutoPlaceItems = configuration.AutoPlaceItems;
+			AutoOpenConnections = configuration.AutoOpenConnections;
+			EnableConfigList = configuration.EnableConfigList;
+		}
+
 	}
 }

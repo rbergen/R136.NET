@@ -32,10 +32,7 @@ namespace R136.Entities
 				return _lifePoints!.Value;
 			}
 
-			private set
-			{
-				_lifePoints = value;
-			}
+			private set => _lifePoints = value;
 		}
 
 		private StringValues GetNamedTexts(TextID id, Item item) => Facilities.TextsMap[this, (int)id].ReplaceInAll("{item}", item.Name);

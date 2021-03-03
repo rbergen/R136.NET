@@ -32,7 +32,7 @@ namespace R136.Core
 		private Player? _player;
 		private CommandProcessorMap? _processors;
 		private bool _hasTreeBurned = false;
-		private readonly Dictionary<string, TypedEntityTaskCollection> _entityTaskMap = new Dictionary<string, TypedEntityTaskCollection>();
+		private readonly Dictionary<string, TypedEntityTaskCollection> _entityTaskMap = new();
 
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;

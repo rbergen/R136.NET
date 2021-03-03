@@ -17,7 +17,6 @@ namespace R136.Shell
 
 			_status.InputSpecs = inputSpecs;
 			_status.EngineSnapshot = _engine!.TakeSnapshot();
-			_status.Language = _languages!.Language;
 			_status.Texts = _texts.ToArray();
 
 			_status.Save();
@@ -66,7 +65,7 @@ namespace R136.Shell
 			return input;
 		}
 
-		private StringValues FilterHTML(StringValues message)
+		private static StringValues FilterHTML(StringValues message)
 		{
 			if (message.Count != 1 || !((string)message).StartsWith("<table>"))
 				return message;
@@ -144,5 +143,12 @@ namespace R136.Shell
 				rowCountDown = Console.WindowHeight - 1;
 			}
 		}
+
+		private void ShowLanguageSwitchInstructions()
+		{
+			var strings = new List<string>();
+			var languageSections = _configuration!.GetSection(Constants.Languages).GetChildren();
+			var codes = string.Join(", ", languageSections.Select(cs => cs.Key));
+
 	}
 }

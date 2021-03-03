@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using R136.Shell.Tools;
+using System.Threading.Tasks;
 
 namespace R136.Shell
 {
 	class Program
   {
     static async Task<int> Main(string[] args)
-    {
-      var services = Environment.Setup(args);
-
-      return await new GameConsole(services).Play();
-    }
+      => await new GameConsole(Environment.Setup(args)).Play();
 	}
 }

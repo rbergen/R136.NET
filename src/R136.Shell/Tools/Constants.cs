@@ -2,6 +2,7 @@
 {
 	public class Constants
 	{
+		public const string LanguageSwitchInstructionText = nameof(LanguageSwitchInstructionText);
 		public const string StatusFilename = nameof(StatusFilename);
 		public const string TitleText = nameof(TitleText);
 		public const string ProceedText = nameof(ProceedText);

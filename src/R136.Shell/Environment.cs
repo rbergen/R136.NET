@@ -36,7 +36,7 @@ namespace R136.Shell
       serviceCollection
         .AddSingleton(configuration)
         .AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, true))
-        .AddSingleton(sp => Status.Load(sp) ?? new Status())
+        .AddSingleton(SetupStatus)
         .AddSingleton<ILanguageProvider>(sp => new LanguageProvider() { Services = sp })
         .AddR136(sp => new FileSystemJsonEntityReader(sp, Path.Combine(basePath, "data")));
 
@@ -50,6 +50,17 @@ namespace R136.Shell
          );
 
       return serviceProvider;
+
+      Status SetupStatus(IServiceProvider serviceProvider)
+			{
+        var status = Status.Load(serviceProvider) ?? new Status();
+
+        var language = configuration["lang"];
+        if (language != null)
+          status.Language = language;
+
+        return status;
+      }
     }
 
   }

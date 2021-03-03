@@ -15,7 +15,7 @@ namespace R136.Web.Tools
 		private const int DefaultMaxBlockCount = 100;
 		private const int DefaultSaveBlockCount = 20;
 
-		private readonly List<ContentBlock> _blocks = new List<ContentBlock>();
+		private readonly List<ContentBlock> _blocks = new();
 		public int MaxBlockCount { get; set; } = DefaultMaxBlockCount;
 		public int SaveBlockCount { get; set; } = DefaultSaveBlockCount;
 
@@ -90,7 +90,7 @@ namespace R136.Web.Tools
 		}
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
-			=> new Snapshot()
+			=> new()
 			{
 				ContentBlocks = _blocks.TakeLast(SaveBlockCount).ToArray(),
 				IsTrimmed = IsTrimmed || _blocks.Count > SaveBlockCount

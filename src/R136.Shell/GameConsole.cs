@@ -21,8 +21,8 @@ namespace R136.Shell
 		private readonly ILanguageProvider? _languages;
 		private readonly IEngine? _engine;
 		private Status? _status;
-		private readonly Queue<string> _texts = new Queue<string>();
-		private readonly List<StringValues> _messages = new List<StringValues>();
+		private readonly Queue<string> _texts = new();
+		private readonly List<StringValues> _messages = new();
 
 		public GameConsole(IServiceProvider services)
 		{
@@ -69,6 +69,7 @@ namespace R136.Shell
 
 			if (!(_status?.IsLoaded ?? false))
 			{
+				new Animation().Run();
 				WritePlainText(_introTexts[language]);
 				WaitForKey();
 				Console.Clear();
@@ -236,7 +237,7 @@ namespace R136.Shell
 			}
 		}
 
-		private readonly Dictionary<string, string> _introTexts = new Dictionary<string, string>()
+		private readonly Dictionary<string, string> _introTexts = new()
 		{
 			[Constants.Dutch] =
 @"Terwijl je op het punt staat je avontuur te beginnen, denk je nog even na over waarom je hier, in deze verlaten, neertroostige omgeving staat.

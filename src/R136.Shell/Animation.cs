@@ -1,0 +1,338 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace R136.Shell
+{
+	class Animation
+	{
+		private const int SpiderDropHeight = 13;
+		private const string SpiderThreadSection = "               █               ";
+		private const string ClearSpiderSection = "                               ";
+
+		private const int LetterSpaceWidth = 6;
+		private const string ClearLeftLetterSection = "            ";
+		private const string ClearRightLetterSection = "                    ";
+
+		private readonly Blocks _blocks = new();
+
+		public void Run()
+		{
+			var screenRightX = Console.WindowWidth - 1;
+
+			var foreColor = Console.ForegroundColor;
+			var backColor = Console.BackgroundColor;
+
+			Console.CursorVisible = false;
+			Console.BackgroundColor = ConsoleColor.Gray;
+			Console.Clear();
+
+			var spiderX = (screenRightX - _blocks.GetWidth(Block.Spider)) / 2;
+
+			LowerSpider(spiderX);
+
+			var leftLetterFinalX = screenRightX / 2 - _blocks.GetWidth(Block.LetterR) - LetterSpaceWidth;
+
+			var screenMiddleX = screenRightX / 2;
+			if ((screenRightX % 2) == 0)
+				screenMiddleX--;
+
+			SwoopInLetters(screenMiddleX, leftLetterFinalX);
+
+			Thread.Sleep(2000);
+
+			SwoopInDigits(screenMiddleX, spiderX, leftLetterFinalX);
+
+			Thread.Sleep(2500);
+
+			Console.CursorVisible = true;
+			Console.ResetColor();
+			Console.ForegroundColor = foreColor;
+			Console.BackgroundColor = backColor;
+			Console.Clear();
+		}
+
+		private void LowerSpider(int column)
+		{
+			int spiderBottomY = _blocks.BlockRowCount - 1;
+			int spiderRightX = _blocks.GetWidth(Block.Spider) - 1;
+
+			// Introduce the spider from the top of the screen
+			for (int dropIndex = _blocks.BlockRowCount; dropIndex > 0; dropIndex--)
+			{
+				foreach (var position in Enum.GetValues<BlockPosition>())
+				{
+					WriteBlock(column, 0, ConsoleColor.Black, _blocks[Block.Spider, position], 0, dropIndex - 1, spiderRightX, spiderBottomY);
+
+					Thread.Sleep(50);
+				}
+			}
+
+			// Lower it to its final place, leaving a silk thread
+			for (int dropIndex = 0; dropIndex < SpiderDropHeight; dropIndex++)
+			{
+				WriteSection(column, dropIndex, ConsoleColor.Black, SpiderThreadSection);
+
+				foreach (var position in Enum.GetValues<BlockPosition>())
+				{
+					WriteBlock(column, dropIndex + 1, ConsoleColor.Black, _blocks[Block.Spider, position]);
+
+					Thread.Sleep(50);
+				}
+			}
+		}
+
+		private void SwoopInLetters(int screenMiddleX, int leftLetterFinalX)
+		{
+			var letterWidth = _blocks.GetWidth(Block.LetterR);
+			var letterRightX = _blocks.GetWidth(Block.LetterR) - 1;
+			var letterBottomY = _blocks.BlockRowCount - 1;
+
+			var screenRightX = Console.WindowWidth - 1;
+
+			// Introduce letters from either side of the screen
+			for (var i = 0; i < letterWidth; i++)
+			{
+				WriteBlock(0, 2, ConsoleColor.Black, _blocks[Block.LetterR], letterRightX - i, 0, letterRightX, letterBottomY);
+				WriteBlock(screenRightX - i, 2, ConsoleColor.Black, _blocks[Block.LetterP], 0, 0, i, letterBottomY);
+			}
+
+			var rightLetterFirstX = screenRightX - letterWidth;
+			var flowIndex = 0;
+
+			// Bring the letters to the center
+			for (; flowIndex < leftLetterFinalX; flowIndex++)
+			{
+				WriteBlock(flowIndex, 2, ConsoleColor.Black, _blocks[Block.Space]);
+				WriteBlock(flowIndex + 1, 2, ConsoleColor.Black, _blocks[Block.LetterR]);
+
+				WriteBlock(rightLetterFirstX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.LetterP]);
+				WriteBlock(screenRightX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.Space]);
+			}
+
+			// If the silk thread is just left of center due to screen width, bump the P one more place to the left
+			if ((screenRightX % 2) == 0)
+			{
+				WriteBlock(rightLetterFirstX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.LetterP]);
+				WriteBlock(screenRightX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.Space]);
+			}
+
+			// Cut the silk thread to create the letter I
+			WriteSection(screenMiddleX, 1, ConsoleColor.Black, "▀");
+			WriteSection(screenMiddleX, 1 + _blocks.BlockRowCount, ConsoleColor.Black, "▄");
+		}
+
+		private void SwoopInDigits(int screenMiddleX, int spiderX, int leftLetterfinalX)
+		{
+			var screenRightX = Console.WindowWidth - 1;
+			var screenBottomY = Console.WindowHeight - 1;
+			var letterWidth = _blocks.GetWidth(Block.LetterR);
+			var digitsWidth = _blocks.GetWidth(Block.Digits);
+
+			var lettersTopY = (screenBottomY - _blocks.BlockRowCount) / 2;
+			if (lettersTopY < 2)
+				lettersTopY = 2;
+
+			// clear everything except for the R
+			WriteSection(screenMiddleX, 0, ConsoleColor.Black, " ");
+			WriteSection(screenMiddleX, 1, ConsoleColor.Black, " ");
+
+			for (var i = 2; i < 2 + _blocks.BlockRowCount; i++)
+				WriteSection(screenMiddleX, i, ConsoleColor.Black, ClearRightLetterSection);
+
+			for (var i = 2 + _blocks.BlockRowCount; i < SpiderDropHeight; i++)
+				WriteSection(screenMiddleX, i, ConsoleColor.Black, " ");
+
+			for (var i = SpiderDropHeight; i < SpiderDropHeight + _blocks.BlockRowCount; i++)
+				WriteSection(spiderX, i, ConsoleColor.Black, ClearSpiderSection);
+
+			// Lower the R to the vertical middle of the screen
+			for (var i = 2; i < lettersTopY; i++)
+			{
+				WriteBlock(leftLetterfinalX, i, ConsoleColor.Black, _blocks[Block.LetterR, BlockPosition.Lower]);
+
+				Thread.Sleep(5);
+
+				WriteSection(leftLetterfinalX, i, ConsoleColor.Black, ClearLeftLetterSection);
+				WriteBlock(leftLetterfinalX, i + 1, ConsoleColor.Black, _blocks[Block.LetterR, BlockPosition.Upper]);
+
+				Thread.Sleep(5);
+			}
+
+			var digitsFinalX = leftLetterfinalX + letterWidth + 3;
+			var digitsBottomY = _blocks.BlockRowCount - 1;
+
+			// Introduce the digits from the right-hand side of the screen
+			for (var i = 0; i < digitsWidth; i++)
+				WriteBlock(screenRightX - i, lettersTopY, ConsoleColor.Red, _blocks[Block.Digits], 0, 0, i, digitsBottomY);
+
+			// Bring the digits to the center
+			for (var i = screenRightX - digitsWidth; i >= digitsFinalX; i--)
+			{
+				WriteBlock(i, lettersTopY, ConsoleColor.Red, _blocks[Block.Digits]);
+				WriteBlock(i + digitsWidth, lettersTopY, ConsoleColor.Red, _blocks[Block.Space]);
+			}
+		}
+
+		private static void WriteSection(int x, int y, ConsoleColor color, string sectionString)
+		{
+			Console.ForegroundColor = color;
+			Console.SetCursorPosition(x, y);
+			Console.Write(sectionString);
+		}
+
+		private static void WriteBlock(int x, int y, ConsoleColor color, string[] blockStrings) 
+		{
+			Console.ForegroundColor = color;
+	
+			foreach (var rowString in blockStrings)
+			{
+				Console.SetCursorPosition(x, y++);
+				Console.Write(rowString);
+			}
+		}
+
+		private static void WriteBlock(int x, int y, ConsoleColor color, string[] blockStrings, int leftx, int topy, int rightx, int bottomy)
+		{
+			Console.ForegroundColor = color;
+
+			for (int i = topy; i <= bottomy; i++)
+			{
+				Console.SetCursorPosition(x, y + i - topy);
+				Console.Write(blockStrings[i][leftx..(rightx + 1)]);
+			}
+		}
+
+		private enum BlockPosition
+		{
+			Upper = 0,
+			Lower = 1
+		}
+
+		private enum Block
+		{
+			Spider	= 0,
+			LetterR = 1,
+			LetterP = 2,
+			Space		= 3,
+			Digits	= 4
+		}
+
+		private class Blocks
+		{
+			public readonly int BlockRowCount;
+			private readonly string[][][] _strings;
+
+			public Blocks()
+			{
+				_strings = new string[Enum.GetValues<Block>().Length][][];
+
+				var blockPositionCount = Enum.GetValues<BlockPosition>().Length;
+
+				_strings[(int)Block.Spider] = new string[blockPositionCount][];
+				_strings[(int)Block.LetterR] = new string[blockPositionCount][];
+				_strings[(int)Block.LetterP] = new string[1][];
+				_strings[(int)Block.Space] = new string[1][];
+				_strings[(int)Block.Digits] = new string[1][];
+
+
+				_strings[(int)Block.Spider][(int)BlockPosition.Upper] = new string[]
+				{
+					"  ▄▄▄        ▄ █ ▄        ▄▄▄  ",
+					" ▄▀  ▀▀▄▄  ▄▀ ▀█▀ ▀▄  ▄▄▀▀  ▀▄ ",
+					"▄█ ▄▄▄▄  ███ ▀ ▄ ▀ ███  ▄▄▄▄ █▄",
+					"   █   ▀▀████▄███▄████▀▀   █   ",
+					" ▄█    ▄▄▄▀█████████▀▄▄▄    █▄ ",
+					"   ▄▀▀▀                 ▀▀▀▄   ",
+					"  █                         █  ",
+					" ▀▀                         ▀▀ ",
+				};
+
+				_strings[(int)Block.Spider][(int)BlockPosition.Lower] = new string[]
+				{
+					"               █               ",
+					"  █▀▀▄▄     ▄▀▄█▄▀▄     ▄▄▀▀█  ",
+					" █     ▀▀▄▄█ ▄ ▀ ▄ █▄▄▀▀     █ ",
+					"▀▀ █▀▀▀▄▄███▄ ▄█▄ ▄███▄▄▀▀▀█ ▀▀",
+					"  ▄▀     ▀███████████▀     ▀▄  ",
+					" ▀▀ ▄▄▄▀▀▀ ▀▀▀▀▀▀▀▀▀ ▀▀▀▄▄▄ ▀▀ ",
+					"  ▄▀                       ▀▄  ",
+					" ▄█                         █▄ "
+				};
+
+				_strings[(int)Block.LetterR][(int)BlockPosition.Upper] = new string[] 
+				{
+					"█▀▀▀▀▀▀▀▀▀▀▄",
+					"█          █",
+					"█          █",
+					"█▄▄▄▄▄▄▄▄▄▄▀",
+					"█     ▀▄    ",
+					"█       ▀▄  ",
+					"█         ▀▄",
+					"            "
+				};
+				_strings[(int)Block.LetterR][(int)BlockPosition.Lower] = new string[]
+				{
+					"▄▄▄▄▄▄▄▄▄▄▄ ",
+					"█          █",
+					"█          █",
+					"█          █",
+					"█▀▀▀▀▀█▀▀▀▀ ",
+					"█      ▀▄   ",
+					"█        ▀▄ ",
+					"▀          ▀"
+				};
+
+				_strings[(int)Block.LetterP][0] = new string[]
+				{
+					"█▀▀▀▀▀▀▀▀▀▀▄",
+					"█          █",
+					"█          █",
+					"█▄▄▄▄▄▄▄▄▄▄▀",
+					"█           ",
+					"█           ",
+					"█           ",
+					"            "
+				};
+
+				_strings[(int)Block.Space][0] = new string[]
+				{
+					" ",
+					" ",
+					" ",
+					" ",
+					" ",
+					" ",
+					" ",
+					" "
+				};
+
+				_strings[(int)Block.Digits][0] = new string[]
+				{
+					"▄█   ▄▀▀▀▀▀▄   ▄▀▀▀▀▀▄",
+					" █         █   █      ",
+					" █         █   █      ",
+					" █    ▀▀▀▀▀▄   █▀▀▀▀▀▄",
+					" █         █   █     █",
+					" █         █   █     █",
+					" █   ▀▄▄▄▄▄▀   ▀▄▄▄▄▄▀",
+					"                      "
+				};
+
+				BlockRowCount = _strings[0][0].Length;
+			}
+
+			public string[] this[Block block, BlockPosition position]
+				=> _strings[(int)block][(int)(_strings[(int)block].Length == 1 ? 0 : position)];
+
+			public string[] this[Block block] 
+				=> _strings[(int)block][0];
+
+			public int GetWidth(Block block)
+				=> _strings[(int)block][0][0].Length;
+		}
+	}
+}

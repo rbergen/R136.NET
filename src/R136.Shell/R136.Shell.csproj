@@ -10,49 +10,59 @@
 	</PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\data\configuration.json" Link="data\configuration.json">
+    <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\en-GB\animates.json" Link="data\en-GB\animates.json">
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\data\configuration.json" Link="data\configuration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\en-GB\commands.json" Link="data\en-GB\commands.json">
+    </Content>
+    <Content Include="..\..\data\en-GB\animates.json" Link="data\en-GB\animates.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\en-GB\items.json" Link="data\en-GB\items.json">
+    </Content>
+    <Content Include="..\..\data\en-GB\commands.json" Link="data\en-GB\commands.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\en-GB\properties.json" Link="data\en-GB\properties.json">
+    </Content>
+    <Content Include="..\..\data\en-GB\items.json" Link="data\en-GB\items.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\en-GB\rooms.json" Link="data\en-GB\rooms.json">
+    </Content>
+    <Content Include="..\..\data\en-GB\properties.json" Link="data\en-GB\properties.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\en-GB\texts.json" Link="data\en-GB\texts.json">
+    </Content>
+    <Content Include="..\..\data\en-GB\rooms.json" Link="data\en-GB\rooms.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\nl-NL\animates.json" Link="data\nl-NL\animates.json">
+    </Content>
+    <Content Include="..\..\data\en-GB\texts.json" Link="data\en-GB\texts.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\nl-NL\commands.json" Link="data\nl-NL\commands.json">
+    </Content>
+    <Content Include="..\..\data\nl-NL\animates.json" Link="data\nl-NL\animates.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\nl-NL\items.json" Link="data\nl-NL\items.json">
+    </Content>
+    <Content Include="..\..\data\nl-NL\commands.json" Link="data\nl-NL\commands.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\nl-NL\properties.json" Link="data\nl-NL\properties.json">
+    </Content>
+    <Content Include="..\..\data\nl-NL\items.json" Link="data\nl-NL\items.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\nl-NL\rooms.json" Link="data\nl-NL\rooms.json">
+    </Content>
+    <Content Include="..\..\data\nl-NL\properties.json" Link="data\nl-NL\properties.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\data\nl-NL\texts.json" Link="data\nl-NL\texts.json">
+    </Content>
+    <Content Include="..\..\data\nl-NL\rooms.json" Link="data\nl-NL\rooms.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="..\..\data\nl-NL\texts.json" Link="data\nl-NL\texts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -73,12 +83,6 @@
   <ItemGroup>
     <Folder Include="data\en-GB\" />
     <Folder Include="data\nl-NL\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
