@@ -1,7 +1,7 @@
-# R136.Web
-This is a web version of a text adventure a friend and I created all the way back in 1998. 
+# R136.NET
+This is a .NET web and console version of a text adventure a friend and I created all the way back in 1998. 
 More information about the game and its history can be found in the README of the 
-["console version" GitHub repo](https://github.com/rbergen/R136).
+[original C(++) version GitHub repo](https://github.com/rbergen/R136).
 
 Since its resurrection, R136 has become a willing vehicle for me to try new things. This 
 single-pager "static" web application marks my first dabble with developing for/in/using:
@@ -25,7 +25,5 @@ and [logging](https://docs.microsoft.com/en-us/dotnet/core/extensions/logging) e
 
 Concerning the the game itself:
 * It has been converted from a purely C-like procedural implementation to an object-oriented one.
-* I've added a console ("shell") front-end to the game engine used by the web front-end, just for good measure 
-(and yes, it does come with the ASCII art animation of the original C(++) console game!)
 * Much of it (including all visible texts) can now be configured through JSON files. 
-* It's now available in English, too!
+* It's now available in English, too, and features on-the-spot language switching.
