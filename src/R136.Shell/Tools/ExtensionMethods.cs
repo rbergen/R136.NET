@@ -7,27 +7,12 @@ namespace R136.Shell.Tools
 {
 	public static class ExtensionMethods
 	{
-		private static MarkdownPipeline? _pipeline = null;
-
 		public static string ToPlainText(this StringValues texts)
 		{
 			if (texts == StringValues.Empty)
 				return string.Empty;
 
-			return string.Join('\n', texts);
-		}
-
-		private static MarkdownPipeline Pipeline
-		{
-			get
-			{
-				if (_pipeline == null)
-					_pipeline = new MarkdownPipelineBuilder()
-						.UseSoftlineBreakAsHardlineBreak()
-						.Build();
-
-				return _pipeline;
-			}
+			return string.Join('\n', texts.Select(t => t.Replace("\\", string.Empty)));
 		}
 
 		public static void AddIfNotEmpty(this IList<StringValues> list, StringValues value)
