@@ -40,8 +40,13 @@ namespace R136.Shell
 
 		private void WaitForKey()
 		{
+			ConsoleColor color = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.White;
+
 			Console.Write(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
 			Console.ReadKey();
+
+			Console.ForegroundColor = color;
 
 			(var left, var top) = Console.GetCursorPosition();
 
@@ -57,10 +62,15 @@ namespace R136.Shell
 
 		private static string GetInput(out int totalCharacters)
 		{
+			ConsoleColor color = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.White;
+
 			Console.Write(Constants.Prompt);
 
 			var input = Console.ReadLine() ?? string.Empty;
 			totalCharacters = input.Length + Constants.Prompt.Length;
+
+			Console.ForegroundColor = color;
 
 			return input;
 		}

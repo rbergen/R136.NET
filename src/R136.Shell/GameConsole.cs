@@ -66,6 +66,7 @@ namespace R136.Shell
 			if (!(_status?.IsLoaded ?? false))
 			{
 				new Animation().Run();
+
 				WritePlainText(_introTexts[language]);
 				WaitForKey();
 				Console.Clear();
@@ -118,6 +119,8 @@ namespace R136.Shell
 
 						WaitForKey();
 
+						_engine.EndPause();
+
 						break;
 				}
 
@@ -145,8 +148,14 @@ namespace R136.Shell
 
 				if (result.IsError)
 				{
+					ConsoleColor color = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Red;
+
 					var errorLine = Constants.ReversePrompt + (result.Message != StringValues.Empty ? result.Message : "An unspecified error occurred");
 					Console.Write(errorLine);
+
+					Console.ForegroundColor = color;
+
 					Console.ReadKey();
 
 					ClearLine(top - 1, errorLine.Length + 1);
