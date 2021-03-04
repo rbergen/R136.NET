@@ -87,6 +87,7 @@ namespace R136.Shell
 			messageText = Regex.Replace(messageText, @"<br />", "\n");
 			messageText = Regex.Replace(messageText, @"<br/>", ", ");
 			messageText = Regex.Replace(messageText, @"<tr.*?>", "\n");
+			messageText = Regex.Replace(messageText, @"&nbsp;", " ");
 			messageText = Regex.Replace(messageText, @"&[a-zA-Z]+?;", string.Empty);
 			messageText = Regex.Replace(messageText, @"<[^>]+?>", string.Empty);
 
