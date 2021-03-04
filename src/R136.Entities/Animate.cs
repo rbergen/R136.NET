@@ -19,7 +19,7 @@ namespace R136.Entities
 
 		public static IReadOnlyDictionary<AnimateID, Animate> CreateMap(ICollection<Initializer> initializers)
 		{
-			Dictionary<AnimateID, Animate> animates = new Dictionary<AnimateID, Animate>(initializers.Count);
+			Dictionary<AnimateID, Animate> animates = new(initializers.Count);
 
 			foreach (var initializer in initializers)
 			{

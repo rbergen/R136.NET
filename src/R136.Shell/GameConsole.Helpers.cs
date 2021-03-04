@@ -149,6 +149,11 @@ namespace R136.Shell
 			var strings = new List<string>();
 			var languageSections = _configuration!.GetSection(Constants.Languages).GetChildren();
 			var codes = string.Join(", ", languageSections.Select(cs => cs.Key));
+		
+			foreach (var section in languageSections)
+				strings.Add(section[Constants.LanguageSwitchInstructionText].Replace("{codes}", codes));
 
+			_messages.Add(strings.ToArray());
+		}
 	}
 }

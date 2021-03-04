@@ -10,7 +10,7 @@ namespace R136.Web.Tools
 	public static class ExtensionMethods
 	{
 		private static MarkdownPipeline? _pipeline = null;
-		private static readonly object _pipelineLock = new object();
+		private static readonly object _pipelineLock = new();
 
 		public static string ToMarkupString(this StringValues texts)
 		{
@@ -53,7 +53,7 @@ namespace R136.Web.Tools
 
 		private static IEnumerable<T> InternalDropLast<T>(IEnumerable<T> source, int n)
 		{
-			Queue<T> buffer = new Queue<T>(n + 1);
+			Queue<T> buffer = new(n + 1);
 
 			foreach (T x in source)
 			{

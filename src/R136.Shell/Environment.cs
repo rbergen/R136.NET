@@ -53,7 +53,13 @@ namespace R136.Shell
 
       Status SetupStatus(IServiceProvider serviceProvider)
 			{
-        var status = Status.Load(serviceProvider) ?? new Status();
+        Status? status = null;
+
+        if (configuration["load"] != "no")
+          status = Status.Load(serviceProvider);
+
+        if (status == null)
+          status = new();
 
         var language = configuration["lang"];
         if (language != null)

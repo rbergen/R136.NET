@@ -17,7 +17,7 @@ namespace R136.Entities
 
 		public static IReadOnlyDictionary<RoomID, Room> CreateMap(ICollection<Initializer> initializers)
 		{
-			Dictionary<RoomID, Room> rooms = new Dictionary<RoomID, Room>(initializers.Count);
+			Dictionary<RoomID, Room> rooms = new(initializers.Count);
 
 			foreach (var initializer in initializers)
 			{

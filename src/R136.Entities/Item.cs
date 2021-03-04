@@ -21,7 +21,7 @@ namespace R136.Entities
 
 		public static IReadOnlyDictionary<ItemID, Item> CreateOrUpdateMap(IReadOnlyDictionary<ItemID, Item>? sourceMap, ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
-			Dictionary<ItemID, Item> items = new Dictionary<ItemID, Item>(initializers.Count);
+			Dictionary<ItemID, Item> items = new(initializers.Count);
 
 			var compoundInitializers = new List<Initializer>();
 			var typedInitializers = new Dictionary<Initializer, Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>>();
@@ -66,13 +66,15 @@ namespace R136.Entities
 		}
 
 		static Item Create(Item? sourceItem, Initializer initializer)
-			=> new Item(
+			=> new
+			(
 				initializer.ID,
 				initializer.Name,
 				initializer.Description,
 				sourceItem?.CurrentRoom ?? initializer.StartRoom,
 				initializer.Wearable,
-				!initializer.BlockPutdown);
+				!initializer.BlockPutdown
+				);
 
 		protected Item(ItemID id, string name, string description, RoomID startRoom, bool isWearable, bool isPutdownAllowed)
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
@@ -188,7 +190,7 @@ namespace R136.Entities
 		bool KeepsAfterUse { get; }
 
 		public static UsableItem Create(Item? sourceItem, Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
-			=> new UsableItem
+			=> new
 			(
 			initializer.ID,
 			initializer.Name,
@@ -243,7 +245,7 @@ namespace R136.Entities
 		public Item Self => this;
 
 		public static CompoundItem Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
-			=> new CompoundItem
+			=> new
 			(
 			initializer.ID,
 			initializer.Name,

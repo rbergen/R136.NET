@@ -17,9 +17,9 @@ namespace R136.Shell
 		private const int Error = -1;
 
 		private readonly IServiceProvider _services;
-		private readonly IConfiguration? _configuration;
+		private readonly IConfiguration _configuration;
 		private readonly ILanguageProvider? _languages;
-		private readonly IEngine? _engine;
+		private readonly IEngine _engine;
 		private Status? _status;
 		private readonly Queue<string> _texts = new();
 		private readonly List<StringValues> _messages = new();
@@ -27,10 +27,10 @@ namespace R136.Shell
 		public GameConsole(IServiceProvider services)
 		{
 			_services = services;
-			_configuration = _services.GetService<IConfiguration>();
+			_configuration = _services.GetRequiredService<IConfiguration>();
 			_languages = _services.GetService<ILanguageProvider>();
 			_status = _services.GetService<Status>();
-			_engine = _services.GetService<IEngine>();
+			_engine = _services.GetRequiredService<IEngine>();
 		}
 
 		private InputSpecs? InputSpecs
@@ -59,9 +59,6 @@ namespace R136.Shell
 
 		public async Task<int> Play()
 		{
-			if (_engine == null)
-				return Error;
-
 			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
 			var language = _languages?.Language ?? Constants.Dutch;
 
@@ -73,6 +70,7 @@ namespace R136.Shell
 				WritePlainText(_introTexts[language]);
 				WaitForKey();
 				Console.Clear();
+				ShowLanguageSwitchInstructions();
 			}
 
 			await task;
