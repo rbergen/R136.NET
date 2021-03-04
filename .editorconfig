@@ -1,4 +1,0 @@
-﻿[*.cs]
-
-# IDE0079: Remove unnecessary suppression
-dotnet_diagnostic.IDE0079.severity = silent

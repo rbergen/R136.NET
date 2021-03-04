@@ -1,0 +1,257 @@
+﻿[
+	{
+		"ID": 0,
+		"Name": "east"
+	},
+	{
+		"ID": 1,
+		"Name": "west"
+	},
+	{
+		"ID": 2,
+		"Name": "north"
+	},
+	{
+		"ID": 3,
+		"Name": "south"
+	},
+	{
+		"ID": 4,
+		"Name": "ascend"
+	},
+	{
+		"ID": 5,
+		"Name": "descend"
+	},
+	{
+		"ID": 6,
+		"Name": "use"
+	},
+	{
+		"ID": 7,
+		"Name": "combine",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"Syntax: {command} \\<object\\> and/with \\<object\\>"
+				]
+			},
+			{
+				"ID": 1,
+				"Texts": [
+					" and ",
+					" with "
+				]
+			},
+			{
+				"ID": 2,
+				"Texts": [
+					"You can't combine an object with itself."
+				]
+			},
+			{
+				"ID": 3,
+				"Texts": [
+					"That doesn't yield anything useful."
+				]
+			}
+		]
+	},
+	{
+		"ID": 8,
+		"Name": "pickup"
+	},
+	{
+		"ID": 9,
+		"Name": "lay",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"You've become so attached to {item} that you can't part from it anymore."
+				]
+			},
+			{
+				"ID": 1,
+				"Texts": [
+					"You put {item} down."
+				]
+			}
+		]
+	},
+	{
+		"ID": 10,
+		"Name": "inspect",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"It's way too dark to look at anything."
+				]
+			}
+		]
+	},
+	{
+		"ID": 11,
+		"Name": "bide",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"You pick your nose a little.",
+					"You scratch a little behind your ears.",
+					"You yawn extensively.",
+					"You pull up your pants.",
+					"You pick some grease from your ears."
+				]
+			}
+		]
+	},
+	{
+		"ID": 12,
+		"Name": "finish",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"Are you sure you want to leave the earth to die? [y/n]"
+				]
+			},
+			{
+				"ID": 1,
+				"Texts": [
+					"Good!"
+				]
+			},
+			{
+				"ID": 2,
+				"Texts": [
+					"I didn't catch that. Please answer with y or n."
+				]
+			}
+		]
+	},
+	{
+		"ID": 13,
+		"Name": "report",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"**STATUS REPORT**",
+					""
+				]
+			},
+			{
+				"ID": 1,
+				"Texts": [
+					"You have {lifepoints} life points left."
+				]
+			},
+			{
+				"ID": 2,
+				"Texts": [
+					"Your flashlight is on."
+				]
+			},
+			{
+				"ID": 3,
+				"Texts": [
+					"Your flashlight is off."
+				]
+			},
+			{
+				"ID": 4,
+				"Texts": [
+					"You have nothing on you."
+				]
+			},
+			{
+				"ID": 5,
+				"Texts": [
+					"You have in your posession:"
+				]
+			},
+			{
+				"ID": 6,
+				"Texts": [
+					"* {item}"
+				]
+			}
+		]
+	},
+	{
+		"ID": 14,
+		"Name": "help",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"**HELP**",
+					"",
+					"Commands:",
+					"* east",
+					"* west",
+					"* north",
+					"* south",
+					"* ascend",
+					"* descend",
+					"* use \\<object\\>",
+					"* combine \\<object\\> and/with \\<object\\>",
+					"* pickup \\<object\\>",
+					"* lay \\<object\\>",
+					"* inspect \\<object\\>",
+					"* bide",
+					"* finish",
+					"* report",
+					"* help",
+					"* info"
+				]
+			}
+		]
+	},
+	{
+		"ID": 15,
+		"Name": "configget",
+		"FullMatch":  true,
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"{setting}: {value}"
+				]
+			}
+		]
+	},
+	{
+		"ID": 16,
+		"Name": "configset",
+		"FullMatch": true,
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"{setting}: {oldvalue} => {newvalue}"
+				]
+			}
+		]
+	},
+	{
+		"ID": 17,
+		"Name": "info",
+		"TextMap": [
+			{
+				"ID": 0,
+				"Texts": [
+					"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Design:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testing:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.Web\">https:\/\/github.com\/rbergen\/R136.Web<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br \/>Version {version}<br \/>{copyright}<p\/<\/td><\/tr><\/table>"
+				]
+			}
+		]
+	},
+	{
+		"ID": 18,
+		"Name": "configlist",
+		"FullMatch": true
+	}
+]
