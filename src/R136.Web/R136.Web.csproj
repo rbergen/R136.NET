@@ -78,7 +78,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="call ..\buildtool.bat --nowait" />
+    <Exec Command="call ..\..\buildtool.bat --nowait" />
   </Target>
 
 </Project>
