@@ -1,0 +1,24 @@
+[
+	{
+		"Directory": "../data/en-GB",
+		"Conversions": {
+			"Animates": {},
+			"Commands": {},
+			"Items": {},
+			"Properties": {},
+			"Rooms": {},
+			"Texts": {}
+		}
+	},
+	{
+		"Directory": "../data/nl-NL",
+		"Conversions": {
+			"Animates": {},
+			"Commands": {},
+			"Items": {},
+			"Properties": {},
+			"Rooms": {},
+			"Texts": {}
+		}
+	}
+]

@@ -16,7 +16,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Interfaces", "R136.Interfaces\R136.Interfaces.csproj", "{A5DB1389-AEFF-4080-8B5C-AA1C2B2DE965}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Core", "R136.Core\R136.Core.csproj", "{3B183D9F-4C79-41A1-9772-517696185F0E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nl-NL", "nl-NL", "{7F8BA050-D8CD-4B62-9323-DE7991924D10}"
+	ProjectSection(SolutionItems) = preProject
+		data\nl-NL\animates.json = data\nl-NL\animates.json
+		data\nl-NL\animatesbase.json = data\nl-NL\animatesbase.json
+		data\nl-NL\commands.json = data\nl-NL\commands.json
+		data\nl-NL\commandsbase.json = data\nl-NL\commandsbase.json
+		data\nl-NL\items.json = data\nl-NL\items.json
+		data\nl-NL\itemsbase.json = data\nl-NL\itemsbase.json
+		data\nl-NL\properties.json = data\nl-NL\properties.json
+		data\nl-NL\propertiesbase.json = data\nl-NL\propertiesbase.json
+		data\nl-NL\rooms.json = data\nl-NL\rooms.json
+		data\nl-NL\roomsbase.json = data\nl-NL\roomsbase.json
+		data\nl-NL\texts.json = data\nl-NL\texts.json
+		data\nl-NL\textsbase.json = data\nl-NL\textsbase.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5DE1B7A0-C671-4DD2-85CC-603C5FAB7BD2}"
+	ProjectSection(SolutionItems) = preProject
+		src\buildtool.bat = src\buildtool.bat
+		src\conversions.json = src\conversions.json
+		src\SolutionInfo.cs = src\SolutionInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CBA2284-8FCA-4005-BEBF-588A2DDD9EFB}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
