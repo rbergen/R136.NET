@@ -82,10 +82,12 @@ namespace R136.Shell
 
 			var messageText = (string)message;
 
-			messageText = Regex.Replace(messageText, @"</h\d>", "\n");
+			messageText = Regex.Replace(messageText, @"<h\d>", "**");
+			messageText = Regex.Replace(messageText, @"</h\d>", "**\n");
 			messageText = Regex.Replace(messageText, @"<br />", "\n");
 			messageText = Regex.Replace(messageText, @"<br/>", ", ");
 			messageText = Regex.Replace(messageText, @"<tr.*?>", "\n");
+			messageText = Regex.Replace(messageText, @"&[a-zA-Z]+?;", string.Empty);
 			messageText = Regex.Replace(messageText, @"<[^>]+?>", string.Empty);
 
 			return messageText.Split('\n');

@@ -265,7 +265,7 @@ Hij vond dat de wereld de schuld had van zijn mutaties en hij wilde de wereld da
 Eén van de wetenschappers rook onraad en wilde de zaak gaan onderzoeken. 
 Drie dagen later werd hij met een vleesmes in zijn rug op de stoep van zijn huis gevonden.
 Toen zijn huis werd doorzocht stootte men op twee dingen: de plaats waar de bom lag en licht radioactieve voetstappen.
-Jij en je collega begrepen wat er aan de hand was, en jullie besloten dat er moest worden ingegrepen. Aangezien je niet echt een held bent, werd er besloten dat de andere wetenschapper op pad zou gaan.Jij zou achterblijven om zijn reis te co&ouml; rdineren via een geheime radiofrequentie.
+Jij en je collega begrepen wat er aan de hand was, en jullie besloten dat er moest worden ingegrepen. Aangezien je niet echt een held bent, werd er besloten dat de andere wetenschapper op pad zou gaan. Jij zou achterblijven om zijn reis te coördineren via een geheime radiofrequentie.
 Je hebt nooit meer iets van hem gehoord.
 
 Nu ben jij aan de beurt.

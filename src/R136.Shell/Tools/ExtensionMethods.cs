@@ -14,7 +14,7 @@ namespace R136.Shell.Tools
 			if (texts == StringValues.Empty)
 				return string.Empty;
 
-			return string.Join('\n', texts.Select(text => text == string.Empty ? text : Markdown.ToPlainText(text, Pipeline).Trim()));
+			return string.Join('\n', texts);
 		}
 
 		private static MarkdownPipeline Pipeline
