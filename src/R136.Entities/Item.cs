@@ -124,7 +124,7 @@ namespace R136.Entities
 			public RoomID StartRoom { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-			public	string[]? UseTexts { get; set; }
+			public string[]? UseTexts { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 			public bool BlockPutdown { get; set; }
@@ -159,7 +159,7 @@ namespace R136.Entities
 			public TextsInitializer(TextType textType, Initializer initializer)
 				=> (_textType, _initializer) = (textType, initializer);
 
-			public TextType ID 
+			public TextType ID
 				=> _textType;
 
 			public string[]? Texts
@@ -275,7 +275,7 @@ namespace R136.Entities
 
 		public Result Combine(Item first, Item second)
 		{
-			return !Components.Contains(first) || !Components.Contains(second) || first == second 
+			return !Components.Contains(first) || !Components.Contains(second) || first == second
 				? Result.Failure()
 				: Result.Success(CombineTexts);
 		}

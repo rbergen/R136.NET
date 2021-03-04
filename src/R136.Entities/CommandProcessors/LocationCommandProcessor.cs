@@ -16,7 +16,7 @@ namespace R136.Entities.CommandProcessors
 
 		private int _paperrouteIndex = 0;
 
-		public LocationCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Location, items, animates) 
+		public LocationCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Location, items, animates)
 		{
 			RegisterRoomChangedListeners(items);
 			RegisterRoomChangedListeners(animates);

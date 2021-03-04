@@ -5,25 +5,24 @@ namespace R136.Entities.Items
 {
 	class Tnt : Item
 	{
-#pragma warning disable IDE0060 // Remove unused parameter
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameters are part of delegate interface")]
 		public static Tnt Create
 			(
-			Initializer initializer, 
-			IReadOnlyDictionary<AnimateID, Animate> animates, 
-			IReadOnlyDictionary<ItemID, Item> items
+				Initializer initializer,
+				IReadOnlyDictionary<AnimateID, Animate> animates,
+				IReadOnlyDictionary<ItemID, Item> items
 			)
-#pragma warning restore IDE0060 // Remove unused parameter
-			=> new Tnt(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
+			=> new(initializer.ID, initializer.Name, initializer.Description, initializer.StartRoom, initializer.Wearable, !initializer.BlockPutdown);
 
 		private Tnt
 			(
-			ItemID id,
-			string name,
-			string description,
-			RoomID startRoom,
-			bool isWearable,
-			bool isPutdownAllowed
-			) 
+				ItemID id,
+				string name,
+				string description,
+				RoomID startRoom,
+				bool isWearable,
+				bool isPutdownAllowed
+			)
 			: base(id, name, description, startRoom, isWearable, isPutdownAllowed) { }
 
 		public override Result Use()

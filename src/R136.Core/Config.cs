@@ -25,10 +25,9 @@ namespace R136.Core
 			var engine = new Engine();
 
 			return serviceCollection
-				.AddSingleton<IEngine>(sp => 
+				.AddSingleton<IEngine>(sp =>
 				{
 					engine.Services = sp;
-
 					return engine;
 				})
 				.AddSingleton(engine.StatusManager);

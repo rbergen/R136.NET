@@ -17,12 +17,12 @@ namespace R136.Entities.CommandProcessors
 
 		public override Result Execute(CommandID id, string name, string? parameters, Player player)
 			=> id switch
-				{
-					CommandID.ConfigGet => ExecuteConfigGet(parameters),
-					CommandID.ConfigSet => ExecuteConfigSet(parameters),
-					CommandID.ConfigList => ExecuteConfigList(parameters),
-					_ => Result.Error()
-				};
+			{
+				CommandID.ConfigGet => ExecuteConfigGet(parameters),
+				CommandID.ConfigSet => ExecuteConfigSet(parameters),
+				CommandID.ConfigList => ExecuteConfigList(parameters),
+				_ => Result.Error()
+			};
 
 		private Result ExecuteConfigList(string? parameters)
 			=> parameters == null && Facilities.Configuration.EnableConfigList

@@ -14,27 +14,27 @@ namespace R136.Interfaces
 
 	public class Result
 	{
-		private static readonly Result _success = new Result(ResultCode.Success);
-		private static readonly Result _failure = new Result(ResultCode.Failure);
-		private static readonly Result _error = new Result(ResultCode.Error);
+		private static readonly Result _success = new(ResultCode.Success);
+		private static readonly Result _failure = new(ResultCode.Failure);
+		private static readonly Result _error = new(ResultCode.Error);
 
 		public static Result Success() => _success;
-		public static Result Success(StringValues message) => new Result(ResultCode.Success, message);
-		public static Result Success(string message) => new Result(ResultCode.Success, new string[] { message });
+		public static Result Success(StringValues message) => new(ResultCode.Success, message);
+		public static Result Success(string message) => new(ResultCode.Success, new string[] { message });
 
 		public static Result Failure() => _failure;
-		public static Result Failure(StringValues message) => new Result(ResultCode.Failure, message);
-		public static Result Failure(string message) => new Result(ResultCode.Failure, new string[] { message });
+		public static Result Failure(StringValues message) => new(ResultCode.Failure, message);
+		public static Result Failure(string message) => new(ResultCode.Failure, new string[] { message });
 
 		public static Result Error() => _error;
-		public static Result Error(StringValues message) => new Result(ResultCode.Error, message);
-		public static Result Error(string message) => new Result(ResultCode.Error, new string[] { message });
+		public static Result Error(StringValues message) => new(ResultCode.Error, message);
+		public static Result Error(string message) => new(ResultCode.Error, new string[] { message });
 
-		public static Result EndRequested() => new Result(ResultCode.EndRequested);
-		public static Result EndRequested(StringValues message) => new Result(ResultCode.EndRequested, message);
+		public static Result EndRequested() => new(ResultCode.EndRequested);
+		public static Result EndRequested(StringValues message) => new(ResultCode.EndRequested, message);
 
 		public static Result InputRequested(ContinuationStatus status, InputSpecs specs, StringValues message)
-			=> new Result(status, specs, message);
+			=> new(status, specs, message);
 
 		public Result WrapInputRequest(string key, int number, string[]? texts = null)
 			=> WrapInputRequest(key, new int[] { number }, texts);

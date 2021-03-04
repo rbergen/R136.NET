@@ -27,7 +27,7 @@ namespace R136.Entities.CommandProcessors
 				_ => Result.Error()
 			};
 
-		private static StringValues GetTexts(CommandID commandId, int textId) 
+		private static StringValues GetTexts(CommandID commandId, int textId)
 			=> Facilities.CommandTextsMap[commandId, textId];
 
 		private static StringValues GetTexts(CommandID commandID, int textId, string tag, string content)
@@ -44,7 +44,7 @@ namespace R136.Entities.CommandProcessors
 		private Result? ValidateEmptyParameters(string command, string? parameters)
 			=> parameters == null ? null : Result.Error(Facilities.TextsMap[this, (int)TextID.CommandSyntax].ReplaceInAll("{command}", command));
 
-		private static Result ExecuteHelp() 
+		private static Result ExecuteHelp()
 			=> Result.Success(GetTexts(CommandID.Help, Default));
 
 		private Result ExecuteInfo(string command, string? parameters)
@@ -57,7 +57,7 @@ namespace R136.Entities.CommandProcessors
 			var assembly = typeof(EntityBase).Assembly;
 			var version = assembly.GetName().Version;
 			var versionText = version != null ? $"{version.Major}.{version.Minor}" : "?.?";
-			var copyrightText = ((AssemblyCopyrightAttribute?)assembly.GetCustomAttributes(false).FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute))?.Copyright;			
+			var copyrightText = ((AssemblyCopyrightAttribute?)assembly.GetCustomAttributes(false).FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute))?.Copyright;
 
 			return Result.Success(GetTexts(CommandID.Info, Default, "version", versionText).ReplaceInAll("{copyright}", copyrightText ?? string.Empty));
 		}
@@ -88,7 +88,7 @@ namespace R136.Entities.CommandProcessors
 
 			if (player.Inventory.Count == 0)
 				AddStatusTexts(texts, StatusTextID.NoInventory);
-	
+
 			else
 			{
 				if (player.FindInInventory(ItemID.Flashlight) is Flashlight flashlight)
@@ -125,8 +125,8 @@ namespace R136.Entities.CommandProcessors
 					GetTexts(EndTextID.InvalidYesNoAnswer)
 				);
 
-			return input == Facilities.Configuration.YesInput 
-				? Result.EndRequested() 
+			return input == Facilities.Configuration.YesInput
+				? Result.EndRequested()
 				: Result.Success(GetTexts(EndTextID.EndCancelled));
 		}
 

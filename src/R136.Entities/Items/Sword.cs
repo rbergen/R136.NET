@@ -10,32 +10,30 @@ namespace R136.Entities.Items
 	{
 		private const string ContinuationKey = "myp3ybBgaJznuoTCcRpj";
 
-#pragma warning disable IDE0060 // Remove unused parameter
 		public static Sword Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
-			=> new Sword
+			=> new
 			(
-			initializer.ID, 
-			initializer.Name, 
-			initializer.Description, 
-			initializer.StartRoom,
-			initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(), 
-			initializer.Wearable, 
-			!initializer.BlockPutdown, 
-			initializer.KeepAfterUse
+				initializer.ID,
+				initializer.Name,
+				initializer.Description,
+				initializer.StartRoom,
+				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
+				initializer.Wearable,
+				!initializer.BlockPutdown,
+				initializer.KeepAfterUse
 			);
-#pragma warning restore IDE0060 // Remove unused parameter
 
 		private Sword
 			(
-			ItemID id,
-			string name,
-			string description,
-			RoomID startRoom,
-			ICollection<Animate> usableOn,
-			bool isWearable,
-			bool isPutdownAllowed,
-			bool keepAfterUse
-			) 
+				ItemID id,
+				string name,
+				string description,
+				RoomID startRoom,
+				ICollection<Animate> usableOn,
+				bool isWearable,
+				bool isPutdownAllowed,
+				bool keepAfterUse
+			)
 			: base(id, name, description, startRoom, usableOn, isWearable, isPutdownAllowed, keepAfterUse) { }
 
 		public override Result UseOn(Animate animate)
@@ -67,9 +65,10 @@ namespace R136.Entities.Items
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);
-			return Result.InputRequested(
-				new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID }, 
-				Facilities.Configuration.YesNoInputSpecs, 
+			return Result.InputRequested
+			(
+				new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID },
+				Facilities.Configuration.YesNoInputSpecs,
 				texts.ToArray()
 			);
 		}
@@ -88,8 +87,9 @@ namespace R136.Entities.Items
 
 			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
 			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
-				return Result.InputRequested(
-					new ContinuationStatus() { Key = ContinuationKey, Number = (int)animate.ID }, 
+				return Result.InputRequested
+				(
+					new ContinuationStatus() { Key = ContinuationKey, Number = (int)animate.ID },
 					Facilities.Configuration.YesNoInputSpecs,
 					Facilities.TextsMap[this, (int)TextID.InvalidYesNoAnswer]
 				);

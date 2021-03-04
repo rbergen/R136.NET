@@ -18,7 +18,7 @@ namespace R136.Web.Tools
 				return string.Empty;
 
 			var markdown = Markdown.ToHtml(string.Join('\n', texts), Pipeline);
-			
+
 			if (markdown.StartsWith("<p>") && markdown.LastIndexOf("<p>") == 0)
 				markdown = markdown[3..^5];
 

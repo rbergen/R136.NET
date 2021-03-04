@@ -8,7 +8,7 @@ namespace R136.Entities.General
 {
 	public class Logger
 	{
-		private readonly Dictionary<Type, ILogger> _loggerMap = new Dictionary<Type, ILogger>();
+		private readonly Dictionary<Type, ILogger> _loggerMap = new();
 
 		public void Log<TCaller>(LogLevel level, string message)
 		{

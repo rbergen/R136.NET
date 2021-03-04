@@ -47,7 +47,7 @@ namespace R136.Entities
 			return Result.Success(GetNamedTexts(item.IsWearable ? TextID.StartedWearing : TextID.AddedToInventory, item));
 		}
 
-		public Item? FindInInventory(ItemID id) 
+		public Item? FindInInventory(ItemID id)
 			=> _inventory.FirstOrDefault(item => item.ID == id);
 
 		public bool RemoveFromInventory(Item item)
@@ -59,7 +59,7 @@ namespace R136.Entities
 		public (Item? item, FindResult result) FindInInventory(string s)
 			=> _inventory.FindItemByName(s);
 
-		public void DecreaseHealth() 
+		public void DecreaseHealth()
 			=> DecreaseHealth(HealthImpact.Normal);
 
 		public void DecreaseHealth(HealthImpact impact)
@@ -102,7 +102,7 @@ namespace R136.Entities
 			_lifePoints = snapshot.LifePoints;
 			_lifePointsFromConfig = snapshot.LifePointsFromConfig;
 			CurrentRoom = snapshot.Rooms[snapshot.Room];
-			
+
 			_inventory.Clear();
 			if (snapshot.Inventory != null)
 				_inventory.AddRange(snapshot.Inventory.Select(itemId => snapshot.Items[itemId]));
@@ -122,7 +122,7 @@ namespace R136.Entities
 			public IReadOnlyDictionary<ItemID, Item>? Items { get; set; }
 
 			[JsonIgnore]
-			public IReadOnlyDictionary<RoomID, Room>? Rooms { get;  set; }
+			public IReadOnlyDictionary<RoomID, Room>? Rooms { get; set; }
 		}
 
 		private enum TextID

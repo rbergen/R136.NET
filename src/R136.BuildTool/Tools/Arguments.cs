@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace R136.BuildTool.Tools
+﻿namespace R136.BuildTool.Tools
 {
 	class Arguments
 	{
 		public bool IsTest { get; set; }
+		public bool ShouldWait { get; set; } = true;
 		public string? ConfigFileName { get; set; } = null;
 
 		public static Arguments Parse(string[] args)
@@ -19,10 +14,19 @@ namespace R136.BuildTool.Tools
 			{
 				var arg = args[i];
 				if (arg == "--test" || arg == "-t")
+				{
 					arguments.IsTest = true;
+					continue;
+				}
 
-				else
-					arguments.ConfigFileName = arg;
+				if (arg == "--nowait")
+				{
+					arguments.ShouldWait = false;
+					continue;
+				}
+
+				arguments.ConfigFileName = arg;
+				break;
 			}
 
 			return arguments;

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace R136.Shell
 {
@@ -184,10 +180,10 @@ namespace R136.Shell
 			Console.Write(sectionString);
 		}
 
-		private static void WriteBlock(int x, int y, ConsoleColor color, string[] blockStrings) 
+		private static void WriteBlock(int x, int y, ConsoleColor color, string[] blockStrings)
 		{
 			Console.ForegroundColor = color;
-	
+
 			foreach (var rowString in blockStrings)
 			{
 				Console.SetCursorPosition(x, y++);
@@ -214,11 +210,11 @@ namespace R136.Shell
 
 		private enum Block
 		{
-			Spider	= 0,
+			Spider = 0,
 			LetterR = 1,
 			LetterP = 2,
-			Space		= 3,
-			Digits	= 4
+			Space = 3,
+			Digits = 4
 		}
 
 		private class Blocks
@@ -263,7 +259,7 @@ namespace R136.Shell
 					" ▄█                         █▄ "
 				};
 
-				_strings[(int)Block.LetterR][(int)BlockPosition.Upper] = new string[] 
+				_strings[(int)Block.LetterR][(int)BlockPosition.Upper] = new string[]
 				{
 					"█▀▀▀▀▀▀▀▀▀▀▄",
 					"█          █",
@@ -328,7 +324,7 @@ namespace R136.Shell
 			public string[] this[Block block, BlockPosition position]
 				=> _strings[(int)block][(int)(_strings[(int)block].Length == 1 ? 0 : position)];
 
-			public string[] this[Block block] 
+			public string[] this[Block block]
 				=> _strings[(int)block][0];
 
 			public int GetWidth(Block block)

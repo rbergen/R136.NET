@@ -45,7 +45,7 @@ namespace R136.Core
 			{
 				var entities = LoadEntities(label);
 				if (entities != null)
-				_entityTaskMap[label] = entities;
+					_entityTaskMap[label] = entities;
 			}
 		}
 
@@ -157,8 +157,8 @@ namespace R136.Core
 			var startRoom = CurrentRoom;
 			var texts = new List<string>();
 			var isAnimateTriggered = false;
-				
-			foreach(var animate in presentAnimates)
+
+			foreach (var animate in presentAnimates)
 			{
 				if (animate.IsTriggered)
 				{
@@ -176,7 +176,7 @@ namespace R136.Core
 				DoNext = NextStep.ShowRoomStatus;
 			else if (isAnimateTriggered)
 				DoNext = NextStep.Pause;
-			else 
+			else
 				DoNext = NextStep.RunCommand;
 
 			return texts.ToArray();
@@ -212,13 +212,15 @@ namespace R136.Core
 			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
+			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input, DoContinuation));
 
-			return DoPostRunProcessing(Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input,
-				(status, input) =>
-					(status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
-					? processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, (int)_processors![(CommandProcessorID)status.Number]!.ID)
-					: Result.Error()
-				));
+			Result DoContinuation(ContinuationStatus status, string input)
+			{
+				if (status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
+					return processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, (int)_processors![(CommandProcessorID)status.Number]!.ID);
+
+				return Result.Error();
+			}
 		}
 
 		public void EndPause()

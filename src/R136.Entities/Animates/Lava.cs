@@ -15,7 +15,7 @@ namespace R136.Entities.Animates
 		{
 			var textStatus = Status;
 
-			if (!Facilities.Configuration.FreezeAnimates && textStatus == AnimateStatus.Initial 
+			if (!Facilities.Configuration.FreezeAnimates && textStatus == AnimateStatus.Initial
 				&& StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
 			{
 				textStatus = AnimateStatus.SelfInjury;

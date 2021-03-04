@@ -102,7 +102,7 @@ namespace R136.Web.Tools
 
 			if (snapshot.ContentBlocks != null)
 				_blocks.AddRange(snapshot.ContentBlocks);
-			
+
 			IsTrimmed = snapshot.IsTrimmed;
 
 			return true;
@@ -110,7 +110,7 @@ namespace R136.Web.Tools
 
 		public ContentBlock this[int index]
 			=> _blocks[index];
-}
+	}
 
 	public class ContentBlock
 	{

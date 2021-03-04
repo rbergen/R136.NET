@@ -51,7 +51,7 @@ namespace R136.Core
 				var layoutProperties = await entityMap.Get<LayoutProperties>();
 
 				if (layoutProperties != null)
-						Facilities.Configuration.Load(layoutProperties);
+					Facilities.Configuration.Load(layoutProperties);
 
 				var texts = await entityMap.Get<TypedTextsMap<int>.Initializer[]>();
 				if (texts != null)
@@ -68,7 +68,7 @@ namespace R136.Core
 					return false;
 
 				if (_animates?[AnimateID.Tree] is Tree oldTree)
-					oldTree.Burned -= TreeHasBurned;
+					oldTree.Burned -= HandleTreeBurning;
 
 				if (_animates?[AnimateID.PaperHatch] is ITriggerable oldPaperHatch && _processors != null)
 					_processors.LocationProcessor.PaperRouteCompleted -= oldPaperHatch.Trigger;
@@ -93,7 +93,7 @@ namespace R136.Core
 					_player.CurrentRoom = _rooms[_player.CurrentRoom.ID];
 
 				if (_animates[AnimateID.Tree] is Tree newTree)
-					newTree.Burned += TreeHasBurned;
+					newTree.Burned += HandleTreeBurning;
 
 				if (_animates[AnimateID.PaperHatch] is ITriggerable newPaperHatch)
 					_processors.LocationProcessor.PaperRouteCompleted += newPaperHatch.Trigger;
@@ -116,7 +116,7 @@ namespace R136.Core
 			foreach (var notifiee in entities.Where(entity => entity is INotifyTurnEnding).Cast<INotifyTurnEnding>())
 				_turnEndingNotifiees.Add(notifiee.TurnEnding);
 		}
-	
+
 		private bool ValidateStep(NextStep step)
 		{
 			if (!IsInitialized)
@@ -189,11 +189,14 @@ namespace R136.Core
 			return wayLineList[(int)WayLineText.MultipleWayFormat].Replace("{ways}", waySection);
 		}
 
+		private bool IsInCurrentRoom(Animate animate)
+			=> animate.CurrentRoom == CurrentRoom;
+
 		private bool IsAnimatePresent
-			=> _animates!.Values.Any(animate => animate.CurrentRoom == CurrentRoom);
+			=> _animates!.Values.Any(IsInCurrentRoom);
 
 		private ICollection<Animate> PresentAnimates
-			=> _animates!.Values.Where(animate => animate.CurrentRoom == CurrentRoom).ToArray();
+			=> _animates!.Values.Where(IsInCurrentRoom).ToArray();
 
 		private StringValues GetTexts(TextID id)
 			=> Facilities.TextsMap[this, (int)id];
@@ -227,14 +230,15 @@ namespace R136.Core
 			if (_items![item].CurrentRoom == RoomID.None && !IsInPosession(item))
 				_items![item].CurrentRoom = room;
 		}
-		private void TreeHasBurned()
+
+		private void HandleTreeBurning()
 		{
 			_hasTreeBurned = true;
 
 			if (_animates![AnimateID.GreenCrystal] is ITriggerable greenCrystal)
 				greenCrystal.Trigger();
 
-			PlaceAt(ItemID.GreenCrystal, RoomID.Forest4);
+			PlaceAt(ItemID.GreenCrystal, Facilities.Configuration.GreenCrystalRoom);
 		}
 
 		private enum ItemLineText

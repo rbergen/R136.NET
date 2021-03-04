@@ -25,14 +25,14 @@ namespace R136.Web.Tools
 		public async Task<TEntity?> ReadEntity<TEntity>(string? groupLabel, string label)
 		{
 			var fullLabel = groupLabel != null ? $"{groupLabel}/{label}" : label;
-			
+
 			try
 			{
 				_logger?.LogDebug($"loading {fullLabel}...");
-				
+
 				var result = JsonSerializer.Deserialize<TEntity>(await _client.GetStringAsync($"{fullLabel}.json"));
 				_logger?.LogDebug($"{fullLabel} loaded successfully");
-				
+
 				return result;
 			}
 			catch (Exception e)

@@ -85,4 +85,8 @@
     <Folder Include="data\nl-NL\" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="call ..\..\buildtool.bat --nowait" />
+  </Target>
+
 </Project>

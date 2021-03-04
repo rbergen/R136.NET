@@ -9,7 +9,7 @@ namespace R136.Entities.Animates
 	{
 		public static Animate Create(Initializer initializer)
 			=> new Tree(initializer.ID, initializer.StartRoom);
-		
+
 		public event Action? Burned;
 
 		private Tree(AnimateID id, RoomID startRoom) : base(id, startRoom) { }

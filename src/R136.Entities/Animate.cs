@@ -58,10 +58,10 @@ namespace R136.Entities
 
 		protected virtual void ProgressStatusInternal(AnimateStatus status) { }
 
-		public virtual Result ApplyItem(ItemID item) 
+		public virtual Result ApplyItem(ItemID item)
 			=> Result.Failure();
 
-		public virtual Result ApplyItem(Item item) 
+		public virtual Result ApplyItem(Item item)
 			=> ApplyItem(item.ID);
 
 		public virtual void ResetTrigger()
@@ -132,7 +132,7 @@ namespace R136.Entities
 		public class Snapshot
 		{
 			public AnimateID ID { get; set; }
-			public RoomID Room {get; set; }
+			public RoomID Room { get; set; }
 			public AnimateStatus Status { get; set; }
 			public int StrikesLeft { get; set; }
 			public bool IsTriggered { get; set; }

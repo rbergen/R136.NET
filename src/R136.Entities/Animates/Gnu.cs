@@ -44,12 +44,12 @@ namespace R136.Entities.Animates
 		}
 
 
-		public void RoomChanged(RoomChangeRequestedEventArgs e) 
+		public void RoomChanged(RoomChangeRequestedEventArgs e)
 		{
 			if (e.From == CurrentRoom && Status != AnimateStatus.Done)
 			{
 				var roamingRooms = Facilities.Configuration.GnuRoamingRooms;
-				CurrentRoom = roamingRooms[Facilities.Randomizer.Next(roamingRooms.Length)]; 
+				CurrentRoom = roamingRooms[Facilities.Randomizer.Next(roamingRooms.Length)];
 			}
 		}
 

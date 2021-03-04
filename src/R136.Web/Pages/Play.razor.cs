@@ -25,7 +25,7 @@ namespace R136.Web.Pages
 		[Inject]
 		public IJSRuntime JSRuntime { get; set; }
 
-		[Inject] 
+		[Inject]
 		public IEngine Engine { get; set; }
 
 		[Inject]
@@ -49,7 +49,7 @@ namespace R136.Web.Pages
 		protected override async Task OnInitializedAsync()
 		{
 			await Engine.Initialize(LanguageProvider.Language);
-			
+
 			if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
 			{
 				if (await LoadSnapshot<Engine.Snapshot>(Constants.R136EngineStorageKey, Engine.RestoreSnapshot))
@@ -105,7 +105,7 @@ namespace R136.Web.Pages
 		private async Task CycleEngine()
 		{
 			var proceed = true;
-			
+
 			while (proceed)
 			{
 				switch (Engine.DoNext)

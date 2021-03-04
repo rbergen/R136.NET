@@ -2,8 +2,8 @@
 using R136.Interfaces;
 using R136.Shell.Tools;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace R136.Shell
@@ -71,7 +71,7 @@ namespace R136.Shell
 				return message;
 
 			var messageText = (string)message;
-			
+
 			messageText = Regex.Replace(messageText, @"</h\d>", "\n");
 			messageText = Regex.Replace(messageText, @"<br />", "\n");
 			messageText = Regex.Replace(messageText, @"<br/>", ", ");
@@ -83,8 +83,6 @@ namespace R136.Shell
 
 		private void WriteMessage(StringValues message)
 			=> WriteText(FilterHTML(message).Append(string.Empty).ToArray());
-
-
 
 		private void WriteMessages()
 		{
@@ -149,7 +147,7 @@ namespace R136.Shell
 			var strings = new List<string>();
 			var languageSections = _configuration!.GetSection(Constants.Languages).GetChildren();
 			var codes = string.Join(", ", languageSections.Select(cs => cs.Key));
-		
+
 			foreach (var section in languageSections)
 				strings.Add(section[Constants.LanguageSwitchInstructionText].Replace("{codes}", codes));
 

@@ -38,7 +38,7 @@ namespace R136.Shell.Tools
 					result._services = services;
 					result.IsLoaded = true;
 				}
-				
+
 				return result;
 			}
 			catch (Exception e)

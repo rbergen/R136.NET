@@ -48,8 +48,8 @@ namespace R136.Entities.CommandProcessors
 			return item == null
 				? result
 				: (StatusManager?.IsDark ?? false)
-        ? Result.Failure(GetTexts(CommandID.Inspect, Default))
-        : Result.Success(item.Description);
+				? Result.Failure(GetTexts(CommandID.Inspect, Default))
+				: Result.Success(item.Description);
 		}
 
 		private Result ExecutePutDown(string command, string? parameters, Player player)
@@ -184,12 +184,15 @@ namespace R136.Entities.CommandProcessors
 		}
 
 		public Result Continue(ContinuationStatus status, string input)
-			=> Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input, 
-				(status, input) =>
-					(status.Number != null && Items[(ItemID)status.Number] is IContinuable item)
-					? item.Continue(status.InnerStatus!, input)
-					: Result.Error()
-			).WrapInputRequest(ContinuationKey);
+			=> Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input, DoContinuation);
+
+		private Result DoContinuation(ContinuationStatus status, string input)
+		{
+			if (status.Number != null && Items[(ItemID)status.Number] is IContinuable item)
+				return item.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey);
+
+			return Result.Error();
+		}
 
 		private enum TextID
 		{

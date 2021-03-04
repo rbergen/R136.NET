@@ -9,7 +9,7 @@ namespace R136.Entities.General
 			where TDictKey : notnull
 			where TTextKey : struct
 	{
-		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map 
+		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map
 			= new();
 
 		public IDictionary<TTextKey, StringValues>? this[TDictKey key]
@@ -50,7 +50,7 @@ namespace R136.Entities.General
 				{
 					if (textMap != null)
 						textMap.Remove(id);
-					
+
 					return;
 				}
 

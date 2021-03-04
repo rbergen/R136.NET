@@ -5,7 +5,6 @@ using R136.Core;
 using R136.Interfaces;
 using R136.Shell.Tools;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -76,6 +75,13 @@ namespace R136.Shell
 			await task;
 			RestoreStatus();
 
+			await RunEngineLoop();
+
+			return Success;
+		}
+
+		private async Task RunEngineLoop()
+		{
 			var firstRun = true;
 			var proceed = true;
 
@@ -117,8 +123,6 @@ namespace R136.Shell
 
 				firstRun = false;
 			}
-
-			return Success;
 		}
 
 		private async Task<bool> RunCommand()
@@ -196,7 +200,7 @@ namespace R136.Shell
 				WriteText(new string[] {
 					string.Empty,
 					_languages.GetConfigurationValue(Constants.LanguageSwitchText) ?? Constants.LanguageSwitchText,
-					string.Empty 
+					string.Empty
 				});
 
 				SaveStatus(_status?.InputSpecs);

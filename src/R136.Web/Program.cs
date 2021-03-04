@@ -36,7 +36,7 @@ namespace R136.Web
 			})
 			.AddR136(sp => new HttpJsonEntityReader(sp, new Uri(baseUri, "data/")))
 			.AddBlazoredLocalStorage()
-			.AddScoped<ILanguageProvider>(sp => new LanguageProvider() { Services = sp	});
+			.AddScoped<ILanguageProvider>(sp => new LanguageProvider() { Services = sp });
 
 			var host = builder.Build();
 
@@ -48,7 +48,7 @@ namespace R136.Web
 				.Select(section => section.Key)
 				.ToArray()
 			);
-	
+
 			await host.RunAsync();
 		}
 	}

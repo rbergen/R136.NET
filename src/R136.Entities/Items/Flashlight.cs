@@ -19,35 +19,33 @@ namespace R136.Entities.Items
 		public StringValues CombineTexts
 			=> Facilities.ItemTextsMap[ID, TextType.Combine];
 
-#pragma warning disable IDE0060 // Remove unused parameter
 		public static Flashlight Create
 			(
-			Initializer initializer, 
-			IReadOnlyDictionary<AnimateID, Animate> animates, 
-			IReadOnlyDictionary<ItemID, Item> items
+				Initializer initializer,
+				IReadOnlyDictionary<AnimateID, Animate> animates,
+				IReadOnlyDictionary<ItemID, Item> items
 			)
-#pragma warning restore IDE0060 // Remove unused parameter
-			=> new (
-			initializer.ID, 
-			initializer.Name, 
-			initializer.Description, 
-			initializer.StartRoom,
-			initializer.Wearable, 
-			!initializer.BlockPutdown, 
-			items, 
-			initializer.Components!
+			=> new(
+				initializer.ID,
+				initializer.Name,
+				initializer.Description,
+				initializer.StartRoom,
+				initializer.Wearable,
+				!initializer.BlockPutdown,
+				items,
+				initializer.Components!
 			);
 
 		private Flashlight
 			(
-			ItemID id,
-			string name,
-			string description,
-			RoomID startRoom,
-			bool isWearable,
-			bool isPutdownAllowed,
-			IReadOnlyDictionary<ItemID, Item> items,
-			ICollection<ItemID> components
+				ItemID id,
+				string name,
+				string description,
+				RoomID startRoom,
+				bool isWearable,
+				bool isPutdownAllowed,
+				IReadOnlyDictionary<ItemID, Item> items,
+				ICollection<ItemID> components
 			) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
 			=> (IsOn, HasBatteries, _lampPoints, _lampPointsFromConfig, Components)
 			= (false, false, null, null, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
@@ -57,9 +55,7 @@ namespace R136.Entities.Items
 			get
 			{
 				if (_lampPointsFromConfig != Facilities.Configuration.LampPoints)
-				{
 					_lampPoints = _lampPointsFromConfig = Facilities.Configuration.LampPoints;
-				}
 
 				return _lampPoints!.Value;
 			}
@@ -131,10 +127,10 @@ namespace R136.Entities.Items
 			snapshot.LampPointsFromConfig = _lampPointsFromConfig;
 			snapshot.IsOn = IsOn;
 			snapshot.HasBatteries = HasBatteries;
-			
+
 			return snapshot;
 		}
-		
+
 		public bool RestoreSnapshot(Snapshot snapshot)
 		{
 			if (!base.RestoreSnapshot(snapshot))

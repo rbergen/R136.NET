@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 namespace R136.Shell
 {
 	class Program
-  {
-    static async Task<int> Main(string[] args)
-    {
-      var services = Environment.Setup(args);
+	{
+		static async Task<int> Main(string[] args)
+		{
+			var services = Environment.Setup(args);
 
-      if (args.Any(a => a == "--help" || a == "-h" || a == "/h"))
-        return ShowHelp(services.GetRequiredService<IConfiguration>());
+			if (args.Any(a => a == "--help" || a == "-h" || a == "/h"))
+				return ShowHelp(services.GetRequiredService<IConfiguration>());
 
-      return await new GameConsole(services).Play(); 
-    }
+			return await new GameConsole(services).Play();
+		}
 
-    private static int ShowHelp(IConfiguration configuration)
-    {
-      var helpText = configuration["lang"] == Constants.Dutch
+		private static int ShowHelp(IConfiguration configuration)
+		{
+			var helpText = configuration["lang"] == Constants.Dutch
 ? @"Missiecode: R136
 Copyright (c) R.I.P.
 
@@ -54,13 +54,13 @@ Options:
     --help, -h
         Show usage information.";
 
-      helpText = helpText.Replace("{command}", Path.GetFileName(Process.GetCurrentProcess().MainModule!.FileName));
-      helpText = helpText.Replace("{languages}", string.Join(", ", configuration.GetSection(Constants.Languages).GetChildren().Select(cs => cs.Key)));
-      helpText = helpText.Replace("{defaultlanguage}", configuration[Constants.DefaultLanguage]);
+			helpText = helpText.Replace("{command}", Path.GetFileName(Process.GetCurrentProcess().MainModule!.FileName));
+			helpText = helpText.Replace("{languages}", string.Join(", ", configuration.GetSection(Constants.Languages).GetChildren().Select(cs => cs.Key)));
+			helpText = helpText.Replace("{defaultlanguage}", configuration[Constants.DefaultLanguage]);
 
-      Console.WriteLine(helpText);
+			Console.WriteLine(helpText);
 
-      return 0;
-    }
+			return 0;
+		}
 	}
 }
