@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Web", "src\R136.Web\R136.Web.csproj", "{F656A736-0FE8-45F4-8B2B-2A0DA42B0D47}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4FA7BD6A-CD6B-4D92-97D1-7D725C5E51A3} = {4FA7BD6A-CD6B-4D92-97D1-7D725C5E51A3}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Entities", "src\R136.Entities\R136.Entities.csproj", "{CB341DF9-1ECF-4ABC-AACB-EAFE4A866910}"
 EndProject
@@ -14,6 +17,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Core", "src\R136.Core\R136.Core.csproj", "{3B183D9F-4C79-41A1-9772-517696185F0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R136.Shell", "src\R136.Shell\R136.Shell.csproj", "{30AC54D4-CE76-4CBE-886E-5364D4BBF4AC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4FA7BD6A-CD6B-4D92-97D1-7D725C5E51A3} = {4FA7BD6A-CD6B-4D92-97D1-7D725C5E51A3}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{551F56AA-A2F0-4F1D-AE0D-DDAA65C693ED}"
 	ProjectSection(SolutionItems) = preProject
