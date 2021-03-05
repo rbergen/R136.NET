@@ -67,7 +67,7 @@ namespace R136.Entities.Items
 			AddTexts(texts, TextID.CanStrikeAgain);
 			return Result.InputRequested
 			(
-				new ContinuationStatus() { Key = ContinuationKey, Number = (int)strikable.ID },
+				new() { Key = ContinuationKey, Number = (int)strikable.ID },
 				Facilities.Configuration.YesNoInputSpecs,
 				texts.ToArray()
 			);
@@ -89,7 +89,7 @@ namespace R136.Entities.Items
 			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
 				return Result.InputRequested
 				(
-					new ContinuationStatus() { Key = ContinuationKey, Number = (int)animate.ID },
+					new() { Key = ContinuationKey, Number = (int)animate.ID },
 					Facilities.Configuration.YesNoInputSpecs,
 					Facilities.TextsMap[this, (int)TextID.InvalidYesNoAnswer]
 				);

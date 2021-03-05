@@ -61,7 +61,7 @@ namespace R136.Shell
 				if (status == null)
 					status = new();
 
-				var language = configuration["lang"];
+				string language = configuration["lang"];
 				if (language != null)
 					status.Language = language;
 

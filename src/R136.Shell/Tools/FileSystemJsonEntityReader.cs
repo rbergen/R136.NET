@@ -25,8 +25,8 @@ namespace R136.Shell.Tools
 		{
 			try
 			{
-				var fileName = $"{label}.json";
-				var jsonFilePath = groupLabel != null ? Path.Join(_basePath, groupLabel, fileName) : Path.Join(_basePath, fileName);
+				string fileName = $"{label}.json";
+				string jsonFilePath = groupLabel != null ? Path.Join(_basePath, groupLabel, fileName) : Path.Join(_basePath, fileName);
 				_logger?.LogDebug($"loading {groupLabel}.{label}...");
 
 				var result = JsonSerializer.Deserialize<TEntity>(await File.ReadAllTextAsync(jsonFilePath, Encoding.UTF8));

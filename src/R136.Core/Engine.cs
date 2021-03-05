@@ -41,7 +41,7 @@ namespace R136.Core
 
 		public void StartLoadEntities(string[] groupLabels)
 		{
-			foreach (var label in groupLabels)
+			foreach (string label in groupLabels)
 			{
 				var entities = LoadEntities(label);
 				if (entities != null)
@@ -156,7 +156,7 @@ namespace R136.Core
 
 			var startRoom = CurrentRoom;
 			var texts = new List<string>();
-			var isAnimateTriggered = false;
+			bool isAnimateTriggered = false;
 
 			foreach (var animate in presentAnimates)
 			{
@@ -190,12 +190,12 @@ namespace R136.Core
 			if (_player!.LifePoints == 0)
 				return Result.EndRequested(GetTexts(TextID.PlayerDead));
 
-			var terms = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+			string[] terms = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 
 			if (terms.Length == 0)
 				return Result.Error(GetTexts(TextID.NoCommand));
 
-			(var processor, var id, var command, var findResult) = _processors!.FindByName(terms[0]);
+			(var processor, var id, string? command, var findResult) = _processors!.FindByName(terms[0]);
 
 			var result = findResult switch
 			{

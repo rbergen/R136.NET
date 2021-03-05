@@ -17,13 +17,13 @@ namespace R136.Entities.Global
 
 		static Facilities()
 		{
-			Randomizer = new Random();
-			TextsMap = new TypedTextsMap<int>();
-			AnimateStatusTextsMap = new TypedTextsMap<AnimateStatus>();
-			ItemTextsMap = new KeyedTextsMap<ItemID, Item.TextType>();
-			CommandTextsMap = new KeyedTextsMap<CommandID, int>();
-			Configuration = new Configuration();
-			Logger = new Logger();
+			Randomizer = new();
+			TextsMap = new();
+			AnimateStatusTextsMap = new();
+			ItemTextsMap = new();
+			CommandTextsMap = new();
+			Configuration = new();
+			Logger = new();
 		}
 
 	}

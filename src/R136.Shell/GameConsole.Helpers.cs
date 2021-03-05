@@ -30,7 +30,7 @@ namespace R136.Shell
 			if (_status?.Texts != null)
 			{
 				_texts.Clear();
-				foreach (var text in _status.Texts)
+				foreach (string text in _status.Texts)
 				{
 					WritePlainText(text);
 					_texts.Enqueue(text);
@@ -48,7 +48,7 @@ namespace R136.Shell
 
 			Console.ForegroundColor = color;
 
-			(var left, var top) = Console.GetCursorPosition();
+			(int left, int top) = Console.GetCursorPosition();
 
 			ClearLine(top, left + 1);
 		}
@@ -67,7 +67,7 @@ namespace R136.Shell
 
 			Console.Write(Constants.Prompt);
 
-			var input = Console.ReadLine() ?? string.Empty;
+			string input = Console.ReadLine() ?? string.Empty;
 			totalCharacters = input.Length + Constants.Prompt.Length;
 
 			Console.ForegroundColor = color;
@@ -80,7 +80,7 @@ namespace R136.Shell
 			if (message.Count != 1 || !((string)message).StartsWith("<table>"))
 				return message;
 
-			var messageText = (string)message;
+			string messageText = message;
 
 			messageText = Regex.Replace(messageText, @"<h\d>", "**");
 			messageText = Regex.Replace(messageText, @"</h\d>", "**\n");
@@ -115,7 +115,7 @@ namespace R136.Shell
 			if (StringValues.IsNullOrEmpty(texts))
 				return;
 
-			var plainText = texts.ToPlainText();
+			string plainText = texts.ToPlainText();
 			WritePlainText(plainText);
 			_texts.Enqueue(plainText);
 
@@ -125,15 +125,15 @@ namespace R136.Shell
 
 		private void WritePlainText(string plainText)
 		{
-			var consoleWidth = Console.WindowWidth;
-			var rowCountDown = Console.WindowHeight - 1;
+			int consoleWidth = Console.WindowWidth;
+			int rowCountDown = Console.WindowHeight - 1;
 
-			foreach (var item in plainText.Split('\n'))
+			foreach (string item in plainText.Split('\n'))
 			{
-				var plainLine = item;
+				string plainLine = item;
 				while (plainLine.Length >= consoleWidth)
 				{
-					var lastFittingSpace = plainLine.LastIndexOf(' ', consoleWidth - 1);
+					int lastFittingSpace = plainLine.LastIndexOf(' ', consoleWidth - 1);
 					if (lastFittingSpace <= 0)
 						break;
 
@@ -159,7 +159,7 @@ namespace R136.Shell
 		{
 			var strings = new List<string>();
 			var languageSections = _configuration!.GetSection(Constants.Languages).GetChildren();
-			var codes = string.Join(", ", languageSections.Select(cs => cs.Key));
+			string codes = string.Join(", ", languageSections.Select(cs => cs.Key));
 
 			foreach (var section in languageSections)
 				strings.Add(section[Constants.LanguageSwitchInstructionText].Replace("{codes}", codes));

@@ -84,7 +84,7 @@ namespace R136.Entities
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
 			if (snapshot == null)
-				snapshot = new Snapshot();
+				snapshot = new();
 
 			snapshot.LifePoints = _lifePoints;
 			snapshot.LifePointsFromConfig = _lifePointsFromConfig;

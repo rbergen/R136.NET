@@ -17,7 +17,7 @@ namespace R136.Shell
 
 		public void Run()
 		{
-			var screenRightX = Console.WindowWidth - 1;
+			int screenRightX = Console.WindowWidth - 1;
 
 			var foreColor = Console.ForegroundColor;
 			var backColor = Console.BackgroundColor;
@@ -26,13 +26,13 @@ namespace R136.Shell
 			Console.BackgroundColor = ConsoleColor.Gray;
 			Console.Clear();
 
-			var spiderX = (screenRightX - _blocks.GetWidth(Block.Spider)) / 2;
+			int spiderX = (screenRightX - _blocks.GetWidth(Block.Spider)) / 2;
 
 			LowerSpider(spiderX);
 
-			var leftLetterFinalX = screenRightX / 2 - _blocks.GetWidth(Block.LetterR) - LetterSpaceWidth;
+			int leftLetterFinalX = screenRightX / 2 - _blocks.GetWidth(Block.LetterR) - LetterSpaceWidth;
 
-			var screenMiddleX = screenRightX / 2;
+			int screenMiddleX = screenRightX / 2;
 			if ((screenRightX % 2) == 0)
 				screenMiddleX--;
 
@@ -83,21 +83,21 @@ namespace R136.Shell
 
 		private void SwoopInLetters(int screenMiddleX, int leftLetterFinalX)
 		{
-			var letterWidth = _blocks.GetWidth(Block.LetterR);
-			var letterRightX = _blocks.GetWidth(Block.LetterR) - 1;
-			var letterBottomY = _blocks.BlockRowCount - 1;
+			int letterWidth = _blocks.GetWidth(Block.LetterR);
+			int letterRightX = _blocks.GetWidth(Block.LetterR) - 1;
+			int letterBottomY = _blocks.BlockRowCount - 1;
 
-			var screenRightX = Console.WindowWidth - 1;
+			int screenRightX = Console.WindowWidth - 1;
 
 			// Introduce letters from either side of the screen
-			for (var i = 0; i < letterWidth; i++)
+			for (int i = 0; i < letterWidth; i++)
 			{
 				WriteBlock(0, 2, ConsoleColor.Black, _blocks[Block.LetterR], letterRightX - i, 0, letterRightX, letterBottomY);
 				WriteBlock(screenRightX - i, 2, ConsoleColor.Black, _blocks[Block.LetterP], 0, 0, i, letterBottomY);
 			}
 
-			var rightLetterFirstX = screenRightX - letterWidth;
-			var flowIndex = 0;
+			int rightLetterFirstX = screenRightX - letterWidth;
+			int flowIndex = 0;
 
 			// Bring the letters to the center
 			for (; flowIndex < leftLetterFinalX; flowIndex++)
@@ -123,12 +123,12 @@ namespace R136.Shell
 
 		private void SwoopInDigits(int screenMiddleX, int spiderX, int leftLetterfinalX)
 		{
-			var screenRightX = Console.WindowWidth - 1;
-			var screenBottomY = Console.WindowHeight - 1;
-			var letterWidth = _blocks.GetWidth(Block.LetterR);
-			var digitsWidth = _blocks.GetWidth(Block.Digits);
+			int screenRightX = Console.WindowWidth - 1;
+			int screenBottomY = Console.WindowHeight - 1;
+			int letterWidth = _blocks.GetWidth(Block.LetterR);
+			int digitsWidth = _blocks.GetWidth(Block.Digits);
 
-			var lettersTopY = (screenBottomY - _blocks.BlockRowCount) / 2;
+			int lettersTopY = (screenBottomY - _blocks.BlockRowCount) / 2;
 			if (lettersTopY < 2)
 				lettersTopY = 2;
 
@@ -136,17 +136,17 @@ namespace R136.Shell
 			WriteSection(screenMiddleX, 0, ConsoleColor.Black, " ");
 			WriteSection(screenMiddleX, 1, ConsoleColor.Black, " ");
 
-			for (var i = 2; i < 2 + _blocks.BlockRowCount; i++)
+			for (int i = 2; i < 2 + _blocks.BlockRowCount; i++)
 				WriteSection(screenMiddleX, i, ConsoleColor.Black, ClearRightLetterSection);
 
-			for (var i = 2 + _blocks.BlockRowCount; i < SpiderDropHeight; i++)
+			for (int i = 2 + _blocks.BlockRowCount; i < SpiderDropHeight; i++)
 				WriteSection(screenMiddleX, i, ConsoleColor.Black, " ");
 
-			for (var i = SpiderDropHeight; i < SpiderDropHeight + _blocks.BlockRowCount; i++)
+			for (int i = SpiderDropHeight; i < SpiderDropHeight + _blocks.BlockRowCount; i++)
 				WriteSection(spiderX, i, ConsoleColor.Black, ClearSpiderSection);
 
 			// Lower the R to the vertical middle of the screen
-			for (var i = 2; i < lettersTopY; i++)
+			for (int i = 2; i < lettersTopY; i++)
 			{
 				WriteBlock(leftLetterfinalX, i, ConsoleColor.Black, _blocks[Block.LetterR, BlockPosition.Lower]);
 
@@ -158,15 +158,15 @@ namespace R136.Shell
 				Thread.Sleep(5);
 			}
 
-			var digitsFinalX = leftLetterfinalX + letterWidth + 3;
-			var digitsBottomY = _blocks.BlockRowCount - 1;
+			int digitsFinalX = leftLetterfinalX + letterWidth + 3;
+			int digitsBottomY = _blocks.BlockRowCount - 1;
 
 			// Introduce the digits from the right-hand side of the screen
-			for (var i = 0; i < digitsWidth; i++)
+			for (int i = 0; i < digitsWidth; i++)
 				WriteBlock(screenRightX - i, lettersTopY, ConsoleColor.Red, _blocks[Block.Digits], 0, 0, i, digitsBottomY);
 
 			// Bring the digits to the center
-			for (var i = screenRightX - digitsWidth; i >= digitsFinalX; i--)
+			for (int i = screenRightX - digitsWidth; i >= digitsFinalX; i--)
 			{
 				WriteBlock(i, lettersTopY, ConsoleColor.Red, _blocks[Block.Digits]);
 				WriteBlock(i + digitsWidth, lettersTopY, ConsoleColor.Red, _blocks[Block.Space]);
@@ -184,7 +184,7 @@ namespace R136.Shell
 		{
 			Console.ForegroundColor = color;
 
-			foreach (var rowString in blockStrings)
+			foreach (string rowString in blockStrings)
 			{
 				Console.SetCursorPosition(x, y++);
 				Console.Write(rowString);
@@ -226,7 +226,7 @@ namespace R136.Shell
 			{
 				_strings = new string[Enum.GetValues<Block>().Length][][];
 
-				var blockPositionCount = Enum.GetValues<BlockPosition>().Length;
+				int blockPositionCount = Enum.GetValues<BlockPosition>().Length;
 
 				_strings[(int)Block.Spider] = new string[blockPositionCount][];
 				_strings[(int)Block.LetterR] = new string[blockPositionCount][];

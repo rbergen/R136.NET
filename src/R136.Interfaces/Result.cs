@@ -41,7 +41,7 @@ namespace R136.Interfaces
 
 		public Result WrapInputRequest(string key, int[]? numbers = null, string[]? texts = null)
 			=> IsInputRequest
-			? InputRequested(new ContinuationStatus() { Key = key, InnerStatus = ContinuationStatus, Texts = texts, Numbers = numbers }, InputSpecs!, Message)
+			? InputRequested(new() { Key = key, InnerStatus = ContinuationStatus, Texts = texts, Numbers = numbers }, InputSpecs!, Message)
 			: this;
 
 		public static ContinuationStatus? UnwrapContinuationStatus(string key, ContinuationStatus status)

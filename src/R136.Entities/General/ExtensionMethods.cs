@@ -36,7 +36,7 @@ namespace R136.Entities.General
 
 			foreach (var substring in substrings)
 			{
-				var index = subject.IndexOf(substring);
+				int index = subject.IndexOf(substring);
 				if (index >= 0)
 					return (index, substring);
 			}

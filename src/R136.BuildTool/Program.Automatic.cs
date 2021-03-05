@@ -24,7 +24,7 @@ namespace R136.BuildTool
 			ConversionTask[]? tasks;
 			try
 			{
-				var jsonString = File.ReadAllText(arguments.ConfigFileName!, Encoding.UTF8);
+				string jsonString = File.ReadAllText(arguments.ConfigFileName!, Encoding.UTF8);
 				tasks = JsonSerializer.Deserialize<ConversionTask[]>(jsonString, new JsonSerializerOptions()
 				{
 					AllowTrailingCommas = true,
@@ -55,7 +55,7 @@ namespace R136.BuildTool
 				Console.WriteLine();
 			}
 
-			(var tag, var errorCount, var warningCount) = GetCompoundTagResult(taskTags);
+			(string tag, int errorCount, int warningCount) = GetCompoundTagResult(taskTags);
 
 			Console.WriteLine($"{tag} Task processing completed, of which {errorCount} with errors and {warningCount} with warnings.");
 
@@ -100,7 +100,7 @@ namespace R136.BuildTool
 				Console.WriteLine();
 			}
 
-			(var taskTag, var errorCount, var warningCount) = GetCompoundTagResult(conversionTags);
+			(string taskTag, int errorCount, int warningCount) = GetCompoundTagResult(conversionTags);
 
 			Console.WriteLine($"{indent}{taskTag} Processing for directory {task.Directory} completed, with {errorCount} errors and {warningCount} warnings.");
 			return taskTag;
@@ -109,8 +109,8 @@ namespace R136.BuildTool
 
 		private static (string tag, int errorCount, int warningCount) GetCompoundTagResult(IEnumerable<string> tags)
 		{
-			var errorCount = tags.Count(Tags.IsError);
-			var warningCount = tags.Count(Tags.IsWarning);
+			int errorCount = tags.Count(Tags.IsError);
+			int warningCount = tags.Count(Tags.IsWarning);
 
 			string tag = errorCount > 0 ? Tags.Error
 				: warningCount > 0 ? Tags.Warning
@@ -168,7 +168,7 @@ namespace R136.BuildTool
 
 			if (readOnly)
 			{
-				Console.WriteLine($"{indent}{Tags.Info} Read-only run, so skipping write for {entity}.");
+				Console.WriteLine($"{indent}{Tags.Info} Read-only run, so skipping write of {entity}.");
 				return Tags.Success;
 			}
 

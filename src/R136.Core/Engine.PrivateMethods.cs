@@ -209,7 +209,7 @@ namespace R136.Core
 			if (!result.IsSuccess && !result.IsFailure)
 				return result;
 
-			List<string> texts = new();
+			var texts = new List<string>();
 
 			texts.AddRangeIfNotNull(result.Message);
 

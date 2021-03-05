@@ -38,7 +38,7 @@ namespace R136.Shell
 			set
 			{
 				if (_status == null)
-					_status = new Status();
+					_status = new();
 
 				_status.InputSpecs = value;
 			}
@@ -50,7 +50,7 @@ namespace R136.Shell
 			set
 			{
 				if (_status == null)
-					_status = new Status();
+					_status = new();
 
 				_status.ContinuationStatus = value;
 			}
@@ -59,7 +59,7 @@ namespace R136.Shell
 		public async Task<int> Play()
 		{
 			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
-			var language = _languages?.Language ?? Constants.Dutch;
+			string language = _languages?.Language ?? Constants.Dutch;
 
 			var task = _engine.Initialize(language);
 
@@ -83,8 +83,8 @@ namespace R136.Shell
 
 		private async Task RunEngineLoop()
 		{
-			var firstRun = true;
-			var proceed = true;
+			bool firstRun = true;
+			bool proceed = true;
 
 			while (proceed)
 			{
@@ -132,7 +132,7 @@ namespace R136.Shell
 		{
 			while (true)
 			{
-				var input = GetInput(out var inputLineLength);
+				string input = GetInput(out var inputLineLength);
 
 				if (await ApplyLanguageChange(input))
 					continue;
@@ -143,7 +143,7 @@ namespace R136.Shell
 					? _engine!.Continue(ContinuationStatus, input)
 					: _engine!.Run(input);
 
-				(_, var top) = Console.GetCursorPosition();
+				(_, int top) = Console.GetCursorPosition();
 				ClearLine(top - 1, inputLineLength);
 
 				if (result.IsError)
@@ -162,7 +162,7 @@ namespace R136.Shell
 					continue;
 				}
 
-				var finalInput = Constants.Prompt + input + '\n';
+				string finalInput = Constants.Prompt + input + '\n';
 				Console.WriteLine(finalInput);
 				_texts.Enqueue(finalInput);
 
@@ -197,7 +197,7 @@ namespace R136.Shell
 			if (_languages == null)
 				return false;
 
-			var segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			string[] segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if ((segments?.Length ?? 0) == 2 && segments![0] == "lang")
 			{
 				_languages.Language = segments![1];

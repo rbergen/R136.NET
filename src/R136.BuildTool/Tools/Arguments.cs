@@ -12,7 +12,7 @@
 
 			for (int i = 0; i < args.Length; i++)
 			{
-				var arg = args[i];
+				string arg = args[i];
 				if (arg == "--test" || arg == "-t")
 				{
 					arguments.IsTest = true;

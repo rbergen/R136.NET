@@ -56,8 +56,8 @@ namespace R136.Entities.CommandProcessors
 
 			var assembly = typeof(EntityBase).Assembly;
 			var version = assembly.GetName().Version;
-			var versionText = version != null ? $"{version.Major}.{version.Minor}" : "?.?";
-			var copyrightText = ((AssemblyCopyrightAttribute?)assembly.GetCustomAttributes(false).FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute))?.Copyright;
+			string versionText = version != null ? $"{version.Major}.{version.Minor}" : "?.?";
+			string? copyrightText = ((AssemblyCopyrightAttribute?)assembly.GetCustomAttributes(false).FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute))?.Copyright;
 
 			return Result.Success(GetTexts(CommandID.Info, Default, "version", versionText).ReplaceInAll("{copyright}", copyrightText ?? string.Empty));
 		}
@@ -120,7 +120,7 @@ namespace R136.Entities.CommandProcessors
 			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
 			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
 				return Result.InputRequested(
-					new ContinuationStatus() { Key = ContinuationKey },
+					new() { Key = ContinuationKey },
 					Facilities.Configuration.YesNoInputSpecs,
 					GetTexts(EndTextID.InvalidYesNoAnswer)
 				);

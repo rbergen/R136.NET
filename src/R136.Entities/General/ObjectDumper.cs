@@ -92,10 +92,10 @@ namespace R136.Entities.General
 
 				else
 				{
-					var isEnumerable = typeof(IEnumerable).IsAssignableFrom(type);
+					bool isEnumerable = typeof(IEnumerable).IsAssignableFrom(type);
 					Write($"{memberInfo.Name}: {(isEnumerable ? EnumerableMarker : ClassMarker)}");
 
-					var alreadyTouched = !isEnumerable && AlreadyTouched(value);
+					bool alreadyTouched = !isEnumerable && AlreadyTouched(value);
 					_level++;
 
 					if (!alreadyTouched)
@@ -136,7 +136,7 @@ namespace R136.Entities.General
 				return false;
 
 			var hash = value.GetHashCode();
-			for (var i = 0; i < _hashListOfFoundElements.Count; i++)
+			for (int i = 0; i < _hashListOfFoundElements.Count; i++)
 			{
 				if (_hashListOfFoundElements[i] == hash)
 					return true;

@@ -104,7 +104,7 @@ namespace R136.Web.Pages
 
 		private async Task CycleEngine()
 		{
-			var proceed = true;
+			bool proceed = true;
 
 			while (proceed)
 			{

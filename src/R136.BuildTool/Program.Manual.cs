@@ -55,22 +55,22 @@ namespace R136.BuildTool
 		private static bool Confirm(string prompt)
 		{
 			Console.Write($"{prompt} [y/N]: ");
-			var input = Console.ReadLine();
+			string? input = Console.ReadLine();
 			return input != null && input.Trim().ToLower() == "y";
 		}
 
 		private static (T? entity, string? path) ReadEntity<T>(string name) where T : class
 		{
 			Console.Write($"*{name}* JSON file path (Enter to skip): ");
-			var input = Console.ReadLine();
+			string? input = Console.ReadLine();
 			if (string.IsNullOrWhiteSpace(input))
 				return (null, null);
 
-			var jsonFilePath = input.Trim();
+			string jsonFilePath = input.Trim();
 
 			try
 			{
-				var jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
+				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
 				var entity = JsonSerializer.Deserialize<T>(jsonString, _entityDeserializerOptions);
 
 				return (entity, jsonFilePath);
@@ -93,7 +93,7 @@ namespace R136.BuildTool
 
 		private static void ProcessEntity<T>(string name) where T : class
 		{
-			(var entity, var path) = ReadEntity<T>(name);
+			(var entity, string? path) = ReadEntity<T>(name);
 
 			if (entity == null || path == null)
 				return;
@@ -124,7 +124,7 @@ namespace R136.BuildTool
 
 		private static void ProcessTexts(string name)
 		{
-			(var texts, var path) = ReadEntity<TypedTextsMap<int>.Initializer[]>(name);
+			(var texts, string? path) = ReadEntity<TypedTextsMap<int>.Initializer[]>(name);
 
 			if (texts == null || path == null)
 				return;
@@ -140,7 +140,7 @@ namespace R136.BuildTool
 
 		private static void ProcessItems(string name)
 		{
-			(var items, var path) = ReadEntity<Item.Initializer[]>(name);
+			(var items, string? path) = ReadEntity<Item.Initializer[]>(name);
 
 			if (items == null || path == null)
 				return;
@@ -159,7 +159,7 @@ namespace R136.BuildTool
 
 		private static void ProcessCommands(string name)
 		{
-			(var commands, var path) = ReadEntity<CommandInitializer[]>(name);
+			(var commands, string? path) = ReadEntity<CommandInitializer[]>(name);
 
 			if (commands == null || path == null)
 				return;
@@ -181,7 +181,7 @@ namespace R136.BuildTool
 
 		private static void ProcessConfiguration(string name)
 		{
-			(var configuration, var jsonFilePath) = ReadEntity<Configuration>(name);
+			(var configuration, string? jsonFilePath) = ReadEntity<Configuration>(name);
 
 			if (configuration == null || jsonFilePath == null)
 				return;
@@ -191,7 +191,7 @@ namespace R136.BuildTool
 
 		private static void ProcessRooms(string name)
 		{
-			(var rooms, var path) = ReadEntity<Room.Initializer[]>(name);
+			(var rooms, string? path) = ReadEntity<Room.Initializer[]>(name);
 
 			if (rooms == null || path == null)
 				return;

@@ -18,13 +18,13 @@ namespace R136.Web.Tools
 		public HttpJsonEntityReader(IServiceProvider services, Uri baseUri)
 		{
 			_logger = services.GetService<ILogger<HttpJsonEntityReader>>();
-			_client = new HttpClient() { BaseAddress = baseUri };
+			_client = new() { BaseAddress = baseUri };
 			_logger?.LogDebug($"created with base URI {_client.BaseAddress}");
 		}
 
 		public async Task<TEntity?> ReadEntity<TEntity>(string? groupLabel, string label)
 		{
-			var fullLabel = groupLabel != null ? $"{groupLabel}/{label}" : label;
+			string fullLabel = groupLabel != null ? $"{groupLabel}/{label}" : label;
 
 			try
 			{

@@ -21,13 +21,14 @@ namespace R136.Entities
 
 			foreach (var initializer in initializers)
 			{
-				rooms[initializer.ID] = new Room(
-					initializer.ID,
-					initializer.Name,
-					initializer.Description,
-					initializer.IsDark,
-					initializer.IsForest
-				);
+				rooms[initializer.ID] = new
+					(
+						initializer.ID,
+						initializer.Name,
+						initializer.Description,
+						initializer.IsDark,
+						initializer.IsForest
+					);
 			}
 
 			foreach (var initializer in initializers)

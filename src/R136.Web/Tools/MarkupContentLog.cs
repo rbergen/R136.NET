@@ -35,7 +35,7 @@ namespace R136.Web.Tools
 
 		public void AddRaw(ContentBlockType type, StringValues text)
 		{
-			_blocks.Add(new ContentBlock()
+			_blocks.Add(new()
 			{
 				Type = type,
 				Text = text
@@ -49,7 +49,7 @@ namespace R136.Web.Tools
 			if (texts == StringValues.Empty)
 				return;
 
-			_blocks.Add(new ContentBlock()
+			_blocks.Add(new()
 			{
 				Type = type,
 				ResultCode = resultCode,

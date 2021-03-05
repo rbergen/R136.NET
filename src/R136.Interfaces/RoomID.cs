@@ -9,7 +9,7 @@
 
 		SlimeCave = 20, BlackCave, DrugCave, HornyCave, StraitjacketCave = 24,
 		NeglectedCave = 25, EmptyCave26, MainCave, HieroglyphsCave, StenchCave = 29,
-		GloomyCave = 30, fluorescentcave, SmallCave, IceCave, CactusCave = 34,
+		GloomyCave = 30, FluorescentCave, SmallCave, IceCave, CactusCave = 34,
 		StalagmiteCave = 35, StormCave, MistCave, SpiralstaircaseCave1, TentacleCave = 39,
 
 		GarbageCave = 40, EchoCave, SecretCave, FoodCave, GnuCave = 44,

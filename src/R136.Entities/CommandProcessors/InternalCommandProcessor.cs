@@ -45,12 +45,12 @@ namespace R136.Entities.CommandProcessors
 			if (parameters == null)
 				return InvalidCommandResult;
 
-			var terms = parameters.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+			string[] terms = parameters.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 2)
 				return InvalidCommandResult;
 
-			var propertyName = terms[0];
-			var propertyValue = terms[1].Trim();
+			string propertyName = terms[0];
+			string propertyValue = terms[1].Trim();
 
 			try
 			{
@@ -89,11 +89,11 @@ namespace R136.Entities.CommandProcessors
 			if (parameters == null)
 				return InvalidCommandResult;
 
-			var terms = parameters.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			string[] terms = parameters.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if (terms.Length != 1)
 				return InvalidCommandResult;
 
-			var propertyName = terms[0];
+			string propertyName = terms[0];
 
 			try
 			{

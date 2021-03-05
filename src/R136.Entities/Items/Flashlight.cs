@@ -73,7 +73,7 @@ namespace R136.Entities.Items
 			{
 				IsOn = false;
 
-				var isDark = StatusManager?.IsDark ?? true;
+				bool isDark = StatusManager?.IsDark ?? true;
 
 				return Result.Success(GetTexts(isDark ? TextID.LightOffInDark : TextID.LightOff));
 			}
@@ -120,7 +120,7 @@ namespace R136.Entities.Items
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
 			if (snapshot == null)
-				snapshot = new Snapshot();
+				snapshot = new();
 
 			base.TakeSnapshot(snapshot);
 			snapshot.LampPoints = _lampPoints;

@@ -23,7 +23,7 @@ namespace R136.Shell
 
 		private static int ShowHelp(IConfiguration configuration)
 		{
-			var helpText = configuration["lang"] == Constants.Dutch
+			string helpText = configuration["lang"] == Constants.Dutch
 ? @"Missiecode: R136
 Copyright (c) R.I.P.
 
