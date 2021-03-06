@@ -133,35 +133,4 @@ namespace R136.Entities
 			public string[] Texts { get; set; } = Array.Empty<string>();
 		}
 	}
-
-	public enum CommandID
-	{
-		GoEast,
-		GoWest,
-		GoNorth,
-		GoSouth,
-		GoUp,
-		GoDown,
-		Use,
-		Combine,
-		Pickup,
-		PutDown,
-		Inspect,
-		Wait,
-		End,
-		Status,
-		Help,
-		ConfigGet,
-		ConfigSet,
-		Info,
-		ConfigList
-	}
-
-	public enum CommandProcessorID
-	{
-		General,
-		Internal,
-		Item,
-		Location
-	}
 }

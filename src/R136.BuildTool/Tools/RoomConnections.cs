@@ -1,4 +1,5 @@
-﻿using R136.Entities;
+﻿using R136.BuildTool.Rooms;
+using R136.Entities;
 using R136.Interfaces;
 using System.Collections.Generic;
 
@@ -44,7 +45,7 @@ namespace R136.BuildTool.Tools
 			// Blocked routes
 			for (int i = 0; i < _blockedConnections.Length; i++)
 			{
-				var blockedConnection = BlockedConnections[i];
+				var blockedConnection = _blockedConnections[i];
 				rooms[(int)blockedConnection.Room].Connections!.Remove(blockedConnection.Direction);
 			}
 
@@ -57,12 +58,6 @@ namespace R136.BuildTool.Tools
 				rooms[(int)room].IsForest = true;
 		}
 
-		public record LevelConnection
-		{
-			public RoomID From { get; init; }
-			public Direction Direction { get; init; }
-			public RoomID To { get; init; }
-		}
 
 		private static readonly LevelConnection[] _levelConnections =
 		{
@@ -111,7 +106,7 @@ namespace R136.BuildTool.Tools
 			new() { Room = RoomID.MainCave, Direction = Direction.West },
 			new() { Room = RoomID.MainCave, Direction = Direction.North },
 			new() { Room = RoomID.HieroglyphsCave, Direction = Direction.West },
-			new() { Room = RoomID.fluorescentCave, Direction = Direction.South },
+			new() { Room = RoomID.FluorescentCave, Direction = Direction.South },
 			new() { Room = RoomID.SmallCave, Direction = Direction.North },
 			new() { Room = RoomID.IceCave, Direction = Direction.East },
 			new() { Room = RoomID.CactusCave, Direction = Direction.West },
