@@ -50,7 +50,7 @@ namespace R136.Entities.Animates
 
 		public override Result ApplyItem(ItemID item)
 		{
-			if (item != ItemID.Pornbook)
+			if (item != ItemID.Booklet)
 				return Result.Error();
 
 			Status = AnimateStatus.Dying;

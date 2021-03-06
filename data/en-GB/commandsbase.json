@@ -1,34 +1,34 @@
 ﻿[
 	{
-		"ID": 0,
+		"ID": "GoEast",
 		"Name": "east"
 	},
 	{
-		"ID": 1,
+		"ID": "GoWest",
 		"Name": "west"
 	},
 	{
-		"ID": 2,
+		"ID": "GoNorth",
 		"Name": "north"
 	},
 	{
-		"ID": 3,
+		"ID": "GoSouth",
 		"Name": "south"
 	},
 	{
-		"ID": 4,
+		"ID": "GoUp",
 		"Name": "ascend"
 	},
 	{
-		"ID": 5,
+		"ID": "GoDown",
 		"Name": "descend"
 	},
 	{
-		"ID": 6,
+		"ID": "Use",
 		"Name": "use"
 	},
 	{
-		"ID": 7,
+		"ID": "Combine",
 		"Name": "combine",
 		"TextMap": [
 			{
@@ -59,11 +59,11 @@
 		]
 	},
 	{
-		"ID": 8,
+		"ID": "Pickup",
 		"Name": "pickup"
 	},
 	{
-		"ID": 9,
+		"ID": "PutDown",
 		"Name": "lay",
 		"TextMap": [
 			{
@@ -81,7 +81,7 @@
 		]
 	},
 	{
-		"ID": 10,
+		"ID": "Inspect",
 		"Name": "inspect",
 		"TextMap": [
 			{
@@ -93,7 +93,7 @@
 		]
 	},
 	{
-		"ID": 11,
+		"ID": "Wait",
 		"Name": "bide",
 		"TextMap": [
 			{
@@ -109,7 +109,7 @@
 		]
 	},
 	{
-		"ID": 12,
+		"ID": "End",
 		"Name": "finish",
 		"TextMap": [
 			{
@@ -133,7 +133,7 @@
 		]
 	},
 	{
-		"ID": 13,
+		"ID": "Status",
 		"Name": "report",
 		"TextMap": [
 			{
@@ -182,7 +182,7 @@
 		]
 	},
 	{
-		"ID": 14,
+		"ID": "Help",
 		"Name": "help",
 		"TextMap": [
 			{
@@ -212,7 +212,7 @@
 		]
 	},
 	{
-		"ID": 15,
+		"ID": "ConfigGet",
 		"Name": "configget",
 		"FullMatch":  true,
 		"TextMap": [
@@ -225,7 +225,7 @@
 		]
 	},
 	{
-		"ID": 16,
+		"ID": "ConfigSet",
 		"Name": "configset",
 		"FullMatch": true,
 		"TextMap": [
@@ -238,7 +238,7 @@
 		]
 	},
 	{
-		"ID": 17,
+		"ID": "Info",
 		"Name": "info",
 		"TextMap": [
 			{
@@ -250,7 +250,7 @@
 		]
 	},
 	{
-		"ID": 18,
+		"ID": "ConfigList",
 		"Name": "configlist",
 		"FullMatch": true
 	}

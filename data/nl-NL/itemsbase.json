@@ -1,255 +1,255 @@
 ﻿[
 	{
-		"ID": 0,
+		"ID": "HoundMeat",
 		"Name": "het hellehondvlees",
 		"Description": "Het is een goor stuk vlees dat naar kots ruikt.",
 		"UseTexts": [
 			"Dat lijkt me niet verstandig."
 		],
-		"StartRoom": 80,
-		"UsableOn": [ 8 ]
+		"StartRoom": "None",
+		"UsableOn": [ "Barbecue" ]
 	},
 	{
-		"ID": 1,
+		"ID": "HeatSuit",
 		"Name": "het hittepak",
 		"Description": "Dit aluminiumkleurig pak beschermt je tegen grote hitte of kou.",
-		"StartRoom": 4,
+		"StartRoom": "Forest4",
 		"Wearable": true,
 		"UseTexts": [
-			"Je hebt het pak al aan." 
+			"Je hebt het pak al aan."
 		]
 	},
 	{
-		"ID": 2,
+		"ID": "GreenCrystal",
 		"Name": "het groene kristal",
 		"Description": "Het is een helder, groengekleurd kristal. Even zie je een mysterieuze twinkeling.",
-		"StartRoom": 80,
+		"StartRoom": "None",
 		"UseTexts": [
 			"Je gooit het kristal in de lucht en vangt het weer op. Het valt bijna uit je hand als-ie landt."
 		],
-		"UsableOn": [ 12 ]
+		"UsableOn": [ "DragonHead" ]
 	},
 	{
-		"ID": 3,
+		"ID": "Sword",
 		"Name": "het zwaard",
 		"Description": "Het is een magisch zwaard dat er niet al te sterk uit ziet, maar veel kracht uitstraalt. In het heft zit een paarse robijn.",
-		"StartRoom": 5,
+		"StartRoom": "Forest5",
 		"UseTexts": [
 			"Je kantelt het zwaard wat en pulkt aan de kling."
 		],
-		"UsableOn": [ 0, 2 ]
+		"UsableOn": [ "HellHound", "Plant" ]
 	},
 	{
-		"ID": 4,
+		"ID": "Bone",
 		"Name": "het bot",
 		"Description": "Het is een menselijk, verbleekt dijbeen, dat er sterk uit ziet. Je kunt er veel kracht mee zetten.",
-		"StartRoom": 13,
+		"StartRoom": "SwampPath",
 		"UseTexts": [
 			"Je laat een uiteinde van het bot een paar keer op je hoofd stuiteren. Het klinkt wat hol."
 		],
-		"UsableOn": [ 6 ],
+		"UsableOn": [ "Door" ],
 		"KeepAfterUse": true
 	},
 	{
-		"ID": 5,
+		"ID": "Diskette",
 		"Name": "de diskette",
 		"Description": "Het is een grijze 3,5 inch diskette van het merk 'Spirits' met daarop waarschijnlijk belangrijke data.",
-		"StartRoom": 20,
+		"StartRoom": "SlimeCave",
 		"UseTexts": [
 			"Je schuift het metalen klepje aan de kant. Er lijkt dun magnetisch plastic achter te zitten."
 		],
-		"UsableOn": [ 11 ]
+		"UsableOn": [ "Computer" ]
 	},
 	{
-		"ID": 6,
+		"ID": "Hashis",
 		"Name": "de hasj",
 		"Description": "Het is een zakje met spul dat lijkt op tabak.",
-		"StartRoom": 22,
+		"StartRoom": "DrugCave",
 		"UseTexts": [
 			"Je wrijft het zakje heen weer tussen je vingers. De inhoud verbrokkelt wat."
 		],
-		"UsableOn": [ 8 ]
+		"UsableOn": [ "Barbecue" ]
 	},
 	{
-		"ID": 7,
+		"ID": "RedCrystal",
 		"Name": "het rode kristal",
 		"Description": "Het is een helder, roodgekleurd kristal. Even zie je een mysterieuze twinkeling.",
-		"StartRoom": 80,
+		"StartRoom": "None",
 		"UseTexts": [
 			"Je knijpt in het kristal. Er komt geen bloed uit."
 		],
-		"UsableOn": [ 12 ]
+		"UsableOn": [ "DragonHead" ]
 	},
 	{
-		"ID": 8,
+		"ID": "Nightcap",
 		"Name": "de slaapmuts",
 		"Description": "Het is een Mickey Mouse-slaapmuts met vrolijke kleuren.",
-		"StartRoom": 24,
+		"StartRoom": "StraitjacketCave",
 		"UseTexts": [
 			"Je zet de slaapmuts op je hoofd. Hij past niet en zakt er weer af."
 		],
-		"UsableOn": [ 4 ]
+		"UsableOn": [ "Dragon" ]
 	},
 	{
-		"ID": 9,
+		"ID": "Bomb",
 		"Name": "de positronenbom",
 		"Description": "De bom bestaat uit een aantal dunne buizen in een cilinder. Daaromheen zitten een aantal slangetjes. Er klinkt een vreemd gebrom dat uit een rooster komt. Er zit een bordje op: \"-5° - 105°, Codenaam: R136\".",
-		"StartRoom": 27,
+		"StartRoom": "MainCave",
 		"UseTexts": [
 			"Je kunt geen knop vinden waarop je kunt drukken."
 		],
-		"UsableOn": [ 13 ]
+		"UsableOn": [ "Lava" ]
 	},
 	{
-		"ID": 10,
+		"ID": "FlashLight",
 		"Name": "de zaklamp",
 		"Description": "Het is een zwarte, aluminium zaklamp met een halogeenlampje erin.",
-		"StartRoom": 31,
+		"StartRoom": "FluorescentCave",
 		"BlockPutdown": true,
-		"Components": [ 10, 18 ],
+		"Components": [ "FlashLight", "Batteries" ],
 		"CombineTexts": [
 			"Je schroeft de zaklamp open en schudt totdat de oude batterijen er uit komen vallen. Daarna steek je de \"trommelbatterijen\" erin en schroeft de lamp weer dicht. Nadat je een paar keer op de zaklantaarn hebt geslagen zie je dat hij het doet."
 		],
 		"KeepAfterUse": true
 	},
 	{
-		"ID": 11,
+		"ID": "Bandage",
 		"Name": "het verband",
 		"Description": "Het is een witte doos met een rood kruis waarin wat verband en een paar pleisters zitten.",
-		"StartRoom": 39,
+		"StartRoom": "TentacleCave",
 		"UseTexts": [
 			"Je pakt het verband en de pleisters en plaatst ze over je wonden. Je bijt even op je lippen van de pijn als het verband je nog bloedende wonden raakt.",
 			"Je bent weer zo goed als nieuw."
 		]
 	},
 	{
-		"ID": 12,
+		"ID": "Flamethrower",
 		"Name": "de vlammenwerper",
 		"Description": "De vlammenwerper bestaat uit een pijp, een zuur- en een brandstoffles en een activatieknop. Uit de pijp komt een klein waakvlammetje.",
-		"StartRoom": 40,
+		"StartRoom": "GarbageCave",
 		"UseTexts": [
 			"Je pielt wat aan de trekker. \"Pfft\", zegt de vlammenwerper."
 		],
-		"UsableOn": [ 9 ],
+		"UsableOn": [ "Tree" ],
 		"KeepAfterUse": true
 	},
 	{
-		"ID": 13,
+		"ID": "Cookbook",
 		"Name": "het kookboek",
 		"Description": "Het is een oud, vergeeld kookboek met daarin een koekjesrecept. Er staat: 'Pak wat hellehond en wat hasj, en gooi het in de barbecue.' Dat is alles.",
-		"StartRoom": 43,
+		"StartRoom": "FoodCave",
 		"UseTexts": [
 			"Je draait het kookboek ondersteboven. Het valt je op dat de tekst nu op zijn kop staat."
 		]
 	},
 	{
-		"ID": 14,
+		"ID": "TNT",
 		"Name": "de tnt",
 		"Description": "De T.N.T. is een bosje rode staven met een velletje waarop staat: 'Pas op! Schokgevoelig!'",
-		"StartRoom": 51,
+		"StartRoom": "EmptyCave51",
 		"UseTexts": [
 			"Je pakt een staafje en gooit het op de grond. Er volgt een explosie die samengaat met een harde knal. Je wordt even verblind door de flits van de ontploffing. Door de klap val je even flauw."
 		]
 	},
 	{
-		"ID": 15,
+		"ID": "GasCanister",
 		"Name": "het mosterdgaspatroon",
 		"Description": "Het is een patroon dat mosterdgas onder druk bevat. Er zitten draadjes aan en je kunt niets vinden om hem te activeren.",
-		"StartRoom": 80,
+		"StartRoom": "None",
 		"UseTexts": [
 			"Je schudt wat met het patroon. Je hoort niets."
 		]
 	},
 	{
-		"ID": 16,
+		"ID": "PoisonedMeat",
 		"Name": "het giftige vlees",
 		"Description": "Het is een stuk vlees dat er op zich lekker uit ziet, maar een paar groene vlekken heeft. Er zit een dode mier op.",
-		"StartRoom": 52,
+		"StartRoom": "SafeCave",
 		"UseTexts": [
 			"Dat lijkt me niet verstandig."
 		],
-		"UsableOn": [ 3 ]
+		"UsableOn": [ "Gnu" ]
 	},
 	{
-		"ID": 17,
+		"ID": "Ignition",
 		"Name": "de ontsteking",
 		"Description": "De ontsteking is een kastje met een T-vormige hendel erop.",
-		"StartRoom": 60,
+		"StartRoom": "ScoobyCave",
 		"UseTexts": [
 			"Je drukt de hendel omlaag, maar er gebeurt niets. Misschien ontbreekt er nog iets?"
 		]
 	},
 	{
-		"ID": 18,
+		"ID": "Batteries",
 		"Name": "het pakje batterijen",
 		"Description": "Het is een pakketje met penlights. Konijntjes kunnen er uren mee trommelen.",
-		"StartRoom": 61,
+		"StartRoom": "RadioactiveCave",
 		"BlockPutdown": true,
 		"UseTexts": [
 			"Je steekt twee batterijen in je neusgaten en de andere twee in je oren. Je wordt er niet warm of koud van, dus je steekt de batterijen weer in het pakje."
 		]
 	},
 	{
-		"ID": 19,
+		"ID": "GasMask",
 		"Name": "het gasmasker",
 		"Description": "Het is een groen masker met een rond filter en 2 plastic ooggaten.",
-		"StartRoom": 62,
+		"StartRoom": "ICave",
 		"Wearable": true,
 		"UseTexts": [
 			"Je hebt het gasmasker al op."
 		]
 	},
 	{
-		"ID": 20,
+		"ID": "Paper",
 		"Name": "het papier",
 		"Description": "Het is een geel vel papier met gekrulde hoeken. Het handschrift is bijna onleesbaar, en met moeite ontcijfer je: 'Voed de drakekop met de drie gekleurde kristallen'.",
-		"StartRoom": 80,
+		"StartRoom": "None",
 		"UseTexts": [
 			"Je probeert er een vliegtuigje van te vouwen, maar ontdekt dat je vergeten bent hoe dat moet."
 		]
 	},
 	{
-		"ID": 21,
+		"ID": "Booklet",
 		"Name": "het boekje",
 		"Description": "Het is een vies, kleverig boekje met op de voorkant een ontklede trol. Je krijgt kotsneigingen.",
-		"StartRoom": 70,
+		"StartRoom": "DamnationCave",
 		"UseTexts": [
 			"Je kunt je niet indenken wat je hiermee aan moet."
 		],
-		"UsableOn": [ 1 ]
+		"UsableOn": [ "RedTroll" ]
 	},
 	{
-		"ID": 22,
+		"ID": "BlueCrystal",
 		"Name": "het blauwe kristal",
 		"Description": "Het is een helder, blauwgekleurd kristal. Even zie je een mysterieuze twinkeling.",
-		"StartRoom": 72,
+		"StartRoom": "RedCave",
 		"UseTexts": [
 			"Je krabt je achterhoofd met een punt van het kristal."
 		],
-		"UsableOn": [ 12 ]
+		"UsableOn": [ "DragonHead" ]
 	},
 	{
-		"ID": 23,
+		"ID": "Cookie",
 		"Name": "het koekje",
 		"Description": "Het is een rond koekje dat naar ammoniak stinkt.",
-		"StartRoom": 80,
+		"StartRoom": "None",
 		"UseTexts": [
 			"Je ruikt eens aan het koekje en besluit het daarbij maar te laten."
 		],
-		"UsableOn": [ 4 ]
+		"UsableOn": [ "Dragon" ]
 	},
 	{
-		"ID": 24,
+		"ID": "GasGrenade",
 		"Name": "de mosterdgasgranaat",
 		"Description": "Door het indrukken van de hendel kan het mosterdgas ontstnappen.",
-		"StartRoom": 80,
+		"StartRoom": "None",
 		"UseTexts": [
 			"Dat lijkt me hier geen goed idee."
 		],
-		"Components": [ 15, 17 ],
+		"Components": [ "GasCanister", "Ignition" ],
 		"CombineTexts": [
 			"Je plaatst de ontsteker op het mosterdgaspatroon. Na enig friemelen is het resultaat een werkende mosterdgasgranaat."
 		],
-		"UsableOn": [ 5 ]
+		"UsableOn": [ "Swelling" ]
 	}
 ]

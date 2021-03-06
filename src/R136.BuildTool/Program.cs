@@ -1,15 +1,23 @@
 ﻿using R136.BuildTool.Tools;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace R136.BuildTool
 {
 	partial class Program
 	{
-		private static readonly JsonSerializerOptions _entityDeserializerOptions = new()
+		private static readonly JsonSerializerOptions _entityDeserializerOptions;
+
+		static Program()
 		{
-			ReadCommentHandling = JsonCommentHandling.Skip,
-			AllowTrailingCommas = true
-		};
+			_entityDeserializerOptions = new()
+			{
+				ReadCommentHandling = JsonCommentHandling.Skip,
+				AllowTrailingCommas = true
+			};
+
+			_entityDeserializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
+		}
 
 		static void Main(string[] args)
 		{

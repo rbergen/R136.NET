@@ -51,13 +51,13 @@ namespace R136.BuildTool
 			foreach (var task in tasks)
 			{
 				Console.WriteLine($"{Tags.Info} Starting processing for directory {task.Directory}...");
-				ExecuteTask(arguments.IsTest, IndentSection, task);
+				taskTags.Add(ExecuteTask(arguments.IsTest, IndentSection, task));
 				Console.WriteLine();
 			}
 
 			(string tag, int errorCount, int warningCount) = GetCompoundTagResult(taskTags);
 
-			Console.WriteLine($"{tag} Task processing completed, of which {errorCount} with errors and {warningCount} with warnings.");
+			Console.WriteLine($"{tag} Processing of {tasks.Length} tasks completed, of which {errorCount} with errors and {warningCount} with warnings.");
 
 			if (arguments.ShouldWait)
 			{

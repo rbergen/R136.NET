@@ -1,7 +1,7 @@
 ﻿[
 	{
-		"ID": 0,
-		"StartRoom": 2,
+		"ID": "HellHound",
+		"StartRoom": "Forest2",
 		"StrikeCount": 4,
 		"StatusTexts": {
 			"Initial": [
@@ -24,8 +24,8 @@
 		}
 	},
 	{
-		"ID": 1,
-		"StartRoom": 23,
+		"ID": "RedTroll",
+		"StartRoom": "HornyCave",
 		"StatusTexts": {
 			"Initial": [
 				"You've disturbed the peace of the red troll. He looks deeply annoyed."
@@ -41,7 +41,7 @@
 			],
 			"Dying": [
 				"Excitedly, the troll snatches the booklet. He flips through it and turns more and more red. At some point a gurgling noise emerges from the creature, and he blows up with a bang. The remains of the troll slowly drip down from the cave walls.",
-				"Suddenly, you see something glimmer."				
+				"Suddenly, you see something glimmer."
 			],
 			"Done": [
 				"Peaces of the torn-up troll are spread throughout the cave. Slime pulls at your shoes, and a filthy stench creeps up your nose."
@@ -49,8 +49,8 @@
 		}
 	},
 	{
-		"ID": 2,
-		"StartRoom": 25,
+		"ID": "Plant",
+		"StartRoom": "NeglectedCave",
 		"StrikeCount": 6,
 		"StatusTexts": {
 			"Initial": [
@@ -74,8 +74,8 @@
 		}
 	},
 	{
-		"ID": 3,
-		"StartRoom": 44,
+		"ID": "Gnu",
+		"StartRoom": "GnuCave",
 		"StatusTexts": {
 			"Initial": [
 				"There is a big, hairy gnu here, that looks at you with two sneaky eyes. Between the hairs of its fur there are all kinds of small creeping creatures that you have never seen before. A horrible smell comes off the beast. Drooling and puffing heavily, it approaches you."
@@ -93,8 +93,8 @@
 		}
 	},
 	{
-		"ID": 4,
-		"StartRoom": 50,
+		"ID": "Dragon",
+		"StartRoom": "TortureCave",
 		"StatusTexts": {
 			"Initial": [
 				"A large dragon resides in this cave. It has multiple heads, each of which watch you with yellow eyes. It's entire skin is covered in mold, and from its mouths hang long, brown tongues, from which a biting acid drips.",
@@ -124,8 +124,8 @@
 		}
 	},
 	{
-		"ID": 5,
-		"StartRoom": 75,
+		"ID": "Swelling",
+		"StartRoom": "BatCave",
 		"StatusTexts": {
 			"Initial": [
 				"There is a creature here that can be best described as a lump. It looks at you with two sneaky eyes, scavy spots are on its skin, and algae grow on the corners of its mouth. With its long, slippery tentacles it holds on to all walls of the cave, blocking your path."
@@ -147,8 +147,8 @@
 		}
 	},
 	{
-		"ID": 6,
-		"StartRoom": 45,
+		"ID": "Door",
+		"StartRoom": "EmptyCave45",
 		"StatusTexts": {
 			"Initial": [
 				"A large door that is rusted shut is at the northern side. It can no longer be opened with bare hands."
@@ -163,8 +163,8 @@
 		}
 	},
 	{
-		"ID": 7,
-		"StartRoom": 58,
+		"ID": "Voices",
+		"StartRoom": "TalkingCave",
 		"StatusTexts": {
 			"Initial": [
 				"Out of nothing you suddenly hear a few voices. With difficulty you can understand them:",
@@ -177,8 +177,8 @@
 		}
 	},
 	{
-		"ID": 8,
-		"StartRoom": 17,
+		"ID": "Barbecue",
+		"StartRoom": "EmptySpace17",
 		"StatusTexts": {
 			"Initial": [
 				"In this open space, a barbecue is burning nicely."
@@ -199,8 +199,8 @@
 		}
 	},
 	{
-		"ID": 9,
-		"StartRoom": 10,
+		"ID": "Tree",
+		"StartRoom": "Forest10",
 		"StatusTexts": {
 			"Initial": [
 				"In a small, open area there is a large, bone-dry, dead tree. There's a sign on the stem that reads \"Smoking and naked flames prohibited\"."
@@ -217,8 +217,8 @@
 		}
 	},
 	{
-		"ID": 10,
-		"StartRoom": 4,
+		"ID": "GreenCrystal",
+		"StartRoom": "Forest4",
 		"StatusTexts": {
 			"Initial": [
 				"You trip over something. Due to the overgrowth you can't see what it is."
@@ -226,8 +226,8 @@
 		}
 	},
 	{
-		"ID": 11,
-		"StartRoom": 41,
+		"ID": "Computer",
+		"StartRoom": "EchoCave",
 		"StatusTexts": {
 			"Initial": [
 				"There's a Beull-branded computer that consists of a cabinet with a 3.5\" drive and a monitor. The monitor displays: \"Please enter data disk\"."
@@ -245,8 +245,8 @@
 		}
 	},
 	{
-		"ID": 12,
-		"StartRoom": 32,
+		"ID": "DragonHead",
+		"StartRoom": "SmallCave",
 		"StatusTexts": {
 			"Initial": [
 				"There's a heavy, closed door in the north. Next to it is a dragon's head with an open mouth. There's a heavy lock on the door."
@@ -273,8 +273,8 @@
 		}
 	},
 	{
-		"ID": 13,
-		"StartRoom": 59,
+		"ID": "Lava",
+		"StartRoom": "LavaPit",
 		"StatusTexts": {
 			"Initial": [
 				"In front of you, there's a crater from which lava bubbles up. A thick vapor emerges from the lava, and a red glow lights the surroundings. The heat is enormous, but the thermal suit protects you from burning."
@@ -289,8 +289,8 @@
 		}
 	},
 	{
-		"ID": 14,
-		"StartRoom": 71,
+		"ID": "Vacuum",
+		"StartRoom": "VacuumCave",
 		"StatusTexts": {
 			"Initial": [
 				"Because there is no air in this cave, both your lungs collapse. A horrible pain shoots through you like a lightning bolt. You fall backwards out of the cave, where you briefly lose consciousness."
@@ -298,8 +298,8 @@
 		}
 	},
 	{
-		"ID": 15,
-		"StartRoom": 67,
+		"ID": "PaperHatch",
+		"StartRoom": "ECave",
 		"StatusTexts": {
 			"Initial": [
 				"There's a closed, wooden hatch in the ceiling. You can't reach it."
@@ -313,7 +313,7 @@
 		}
 	},
 	{
-		"ID": 21,
+		"ID": "SwampBase",
 		"Virtual": true,
 		"StatusTexts": {
 			"Initial": [
@@ -323,20 +323,20 @@
 		}
 	},
 	{
-		"ID": 16,
-		"StartRoom": 3
+		"ID": "NorthSwamp",
+		"StartRoom": "NorthSwamp"
 	},
 	{
-		"ID": 17,
-		"StartRoom": 8
+		"ID": "MiddleSwamp",
+		"StartRoom": "MiddleSwamp"
 	},
 	{
-		"ID": 18,
-		"StartRoom": 18
+		"ID": "SouthSwamp",
+		"StartRoom": "SouthSwamp"
 	},
 	{
-		"ID": 19,
-		"StartRoom": 37,
+		"ID": "Mist",
+		"StartRoom": "MistCave",
 		"StatusTexts": {
 			"Initial": [
 				"A strange, dense fog dominates this cave, because of which you can't see your hand in front of your eyes. You lose orientation, and stumble around the cave in panic, looking for a way out.",
@@ -345,8 +345,8 @@
 		}
 	},
 	{
-		"ID": 20,
-		"StartRoom": 79,
+		"ID": "Teleporter",
+		"StartRoom": "TeleportCave",
 		"StatusTexts": {
 			"Initial": [
 				"When you walk into this cave, you see a number of pulsating lights on the ceiling. Against one of the walls, there's an enormous machine with a number of control panels and displays.",

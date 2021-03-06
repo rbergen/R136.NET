@@ -1,378 +1,378 @@
 ﻿[
 	{
-		"ID": 0,
+		"ID": "Forest0",
 		"Name": "in het bos",
 		"Description": "Dit is een uithoek van een donker bos. Overal hoor je enge geluiden."
 	},
 	{
-		"ID": 1,
+		"ID": "Forest1",
 		"Name": "in het bos",
-		"Description": "Aan de zuidkant zie je een hek dat toegang geeft tot een donkere plaats."	
+		"Description": "Aan de zuidkant zie je een hek dat toegang geeft tot een donkere plaats."
 	},
 	{
-		"ID": 2,
+		"ID": "Forest2",
 		"Name": "in het bos",
 		"Description": "Er komt een modderige geur uit het oosten."
 	},
 	{
-		"ID": 3,
+		"ID": "NorthSwamp",
 		"Name": "in het moeras",
 		"Description": "Er hangt een griezelige nevel over het stinkende oppervlak."
 	},
 	{
-		"ID": 4,
+		"ID": "Forest4",
 		"Name": "in het bos",
 		"Description": "Er komt een modderige geur uit het westen."
 	},
 	{
-		"ID": 5,
+		"ID": "Forest5",
 		"Name": "in het bos",
 		"Description": "Pas op voor de laaghangende takken!"
 	},
 	{
-		"ID": 6,
+		"ID": "Cemetery",
 		"Name": "op de begraafplaats",
 		"Description": "Een lucht van rottend vlees dringt in je neus. Je denkt dat je een grafsteen ziet bewegen."
 	},
 	{
-		"ID": 7,
+		"ID": "Forest7",
 		"Name": "in het bos"
 	},
 	{
-		"ID": 8,
+		"ID": "MiddleSwamp",
 		"Name": "in het moeras",
 		"Description": "Er hangt een griezelige nevel over het stinkende oppervlak."
 	},
 	{
-		"ID": 9,
+		"ID": "EmptySpace9",
 		"Name": "op een open plek",
 		"Description": "Er komt een modderige geur uit het westen."
 	},
 	{
-		"ID": 10,
+		"ID": "Forest10",
 		"Name": "in het bos"
 	},
 	{
-		"ID": 11,
+		"ID": "Forest11",
 		"Name": "in het bos",
 		"Description": "Je trapt bijna in een berenklem."
 	},
 	{
-		"ID": 12,
+		"ID": "EmptySpace12",
 		"Name": "op een open plek",
 		"Description": "Door de mist zie je nog net de omtrekken van het donkere bos."
 	},
 	{
-		"ID": 13,
+		"ID": "SwampPath",
 		"Name": "op het moeraspad",
 		"Description": "Er ligt hier een skelet, waarschijnlijk een van je voorgangers."
 	},
 	{
-		"ID": 14,
+		"ID": "EmptySpace14",
 		"Name": "op een open plek",
 		"Description": "Bij het licht van een halve maan onderscheid je nog net de vorm van een galg."
 	},
 	{
-		"ID": 15,
+		"ID": "Forest15",
 		"Name": "in het bos",
 		"Description": "In de verte hoor je het trieste gehuil van een weerwolf."
 	},
 	{
-		"ID": 16,
+		"ID": "Forest16",
 		"Name": "in het bos"
 	},
 	{
-		"ID": 17, 
+		"ID": "EmptySpace17",
 		"Name": "op een open plek",
 		"Description": "Er ligt hier een dood konijn dat wordt belaagd door vliegen."
 	},
 	{
-		"ID": 18,
+		"ID": "SouthSwamp",
 		"Name": "in het moeras",
 		"Description": "Er hangt een griezelige nevel over het stinkende oppervlak."
 	},
 	{
-		"ID": 19,
+		"ID": "Ruin",
 		"Name": "in de ruïne",
 		"Description": "De ruïne is een spookachtige bouwval. Er is hier een wankele trap die naar beneden leidt."
 	},
 	{
-		"ID": 20,
+		"ID": "SlimeCave",
 		"Name": "in de slijmgrot",
 		"Description": "De wanden van deze grot zijn bekleed met een snotachtig slijm."
 	},
 	{
-		"ID": 21,
+		"ID": "BlackCave",
 		"Name": "in de zwarte grot",
 		"Description": "Je ziet geen hand voor ogen."
 	},
 	{
-		"ID": 22,
+		"ID": "DrugCave",
 		"Name": "in de drugsgrot"
 	},
 	{
-		"ID": 23,
+		"ID": "HornyCave",
 		"Name": "in de geile grot",
 		"Description": "Aan de muren hangen gelige, gescheurde Playboy-posters."
 	},
 	{
-		"ID": 24,
+		"ID": "StraitjacketCave",
 		"Name": "in de dwangbuisgrot",
 		"Description": "Er hangt hier een dwangbuis, met daarin een verminkt lijk."
 	},
 	{
-		"ID": 25,
+		"ID": "NeglectedCave",
 		"Name": "in een verwaarloosde grot"
 	},
 	{
-		"ID": 26,
+		"ID": "EmptyCave26",
 		"Name": "in een lege grot"
 	},
 	{
-		"ID": 27,
+		"ID": "MainCave",
 		"Name": "in de hoofdgrot",
 		"Description": "Er staat hier een batterij aan mysterieuze apparatuur."
 	},
 	{
-		"ID": 28,
+		"ID": "HieroglyphsCave",
 		"Name": "in de hiërogliefengrot",
 		"Description": "Op de wanden staan hiërogliefen waar je geen wijs uit wordt."
 	},
 	{
-		"ID": 29,
+		"ID": "StenchCave",
 		"Name": "in de stankgrot",
 		"Description": "Er hangt hier een smerige lucht die je herinnert aan de zware lucht van een beerput."
 	},
 	{
-		"ID": 30,
+		"ID": "GloomyCave",
 		"Name": "in een troosteloze grot"
 	},
 	{
-		"ID": 31,
+		"ID": "FluorescentCave",
 		"Name": "in de TL-grot",
 		"Description": "De grot wordt zwak verlicht door een lichtbron die hoog aan het plafond hangt."
 	},
 	{
-		"ID": 32,
+		"ID": "SmallCave",
 		"Name": "in een kleine grot"
 	},
 	{
-		"ID": 33,
+		"ID": "IceCave",
 		"Name": "in de ijsgrot",
 		"Description": "In deze grot lijkt het net of alles van ijs is, en je krijgt rillingen."
 	},
 	{
-		"ID": 34,
+		"ID": "CactusCave",
 		"Name": "in de kaktusgrot",
 		"Description": "Je bent omringd door giftige kaktussen die in deze grot staan."
 	},
 	{
-		"ID": 35,
+		"ID": "StalagmiteCave",
 		"Name": "in de stalagmietengrot",
 		"Description": "Hier zie je een traliewerk van stalagmieten."
 	},
 	{
-		"ID": 36,
+		"ID": "StormCave",
 		"Name": "in de stormgrot",
 		"Description": "Door deze grot loeit een harde wind, waardoor je je vast moet grijpen aan een van de wanden."
 	},
 	{
-		"ID": 37,
+		"ID": "MistCave",
 		"Name": "in de mistgrot"
 	},
 	{
-		"ID": 38,
+		"ID": "SpiralstaircaseCave1",
 		"Name": "in een wenteltrapgrot",
 		"Description": "In deze grot bevindt zich een grote, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
 	},
 	{
-		"ID": 39,
+		"ID": "TentacleCave",
 		"Name": "in de tentakelgrot",
 		"Description": "Van alle kanten komen grote tentakels die je aftasten en groene sporen op je huid achterlaten."
 	},
 	{
-		"ID": 40,
+		"ID": "GarbageCave",
 		"Name": "in de vuilnisgrot",
 		"Description": "In deze grot ligt een grote stapel rottende etensresten. De stank is bijna ondraaglijk."
 	},
 	{
-		"ID": 41,
+		"ID": "EchoCave",
 		"Name": "in de echogrot",
 		"Description": "Hier worden alle geluiden die je maakt tegen de wanden geëcho'd."
 	},
 	{
-		"ID": 42,
+		"ID": "SecretCave",
 		"Name": "in de geheime grot",
 		"Description": "Op de grond van deze grot liggen allerlei onbekende en geheimzinnige voorwerpen."
 	},
 	{
-		"ID": 43,
+		"ID": "FoodCave",
 		"Name": "in de voedselgrot",
 		"Description": "Zo te ruiken is dit waarschijnlijk eens een keuken geweest..."
 	},
 	{
-		"ID": 44,
+		"ID": "GnuCave",
 		"Name": "in de grot van de gnoe",
 		"Description": "Hier liggen de geraamtes van wezens die eerder ten prooi zijn gevallen aan de gnoe."
 	},
 	{
-		"ID": 45,
+		"ID": "EmptyCave45",
 		"Name": "in een lege grot"
 	},
 	{
-		"ID": 46,
+		"ID": "EyeCave",
 		"Name": "in de ogengrot",
 		"Description": "Van alle kanten wordt je bespied door rode, bloeddoorlopen ogen die precies volgen wat je doet."
 	},
 	{
-		"ID": 47,
+		"ID": "RockCave",
 		"Name": "in de rotsgrot",
 		"Description": "Overal zie je hier scherpe rotspunten. Aan een aantal ervan zitten bruine korsten."
 	},
 	{
-		"ID": 48,
+		"ID": "Emptiness",
 		"Name": "in de leegte"
 	},
 	{
-		"ID": 49,
+		"ID": "Sandbank",
 		"Name": "op de zandbank",
 		"Description": "Op de vloer liggen vreemde patronen, gevormd uit verschillende soorten zand."
 	},
 	{
-		"ID": 50,
+		"ID": "TortureCave",
 		"Name": "in de martelgrot",
 		"Description": "Onder de vage schemering van de martelvuren zie je nog net een duimschroef en wat stekelige voorwerpen waar nog wat bloed aan zit."
 	},
 	{
-		"ID": 51,
+		"ID": "EmptyCave51",
 		"Name": "in een lege grot"
 	},
 	{
-		"ID": 52,
+		"ID": "SafeCave",
 		"Name": "in de veilige grot",
 		"Description": "Dit is de enige grot waar je je een beetje veilig voelt."
 	},
 	{
-		"ID": 53,
+		"ID": "NarrowCleft",
 		"Name": "in de nauwe rotsspleet",
 		"Description": "Aan alle kanten wordt je omringd door hoge rotsmuren. Alleen in het westen zie je een opening."
 	},
 	{
-		"ID": 54,
+		"ID": "OilCave",
 		"Name": "in de oliegrot",
 		"Description": "Vanuit het zuiden verspreidt zich een enorme hitte, die in deze grot nog net draaglijk is."
 	},
 	{
-		"ID": 55,
+		"ID": "EmptyCave55",
 		"Name": "in een lege grot"
 	},
 	{
-		"ID": 56,
+		"ID": "SpiralstaircaseCave2",
 		"Name": "in een wenteltrapgrot",
 		"Description": "In deze grot bevindt zich een grote, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
 	},
 	{
-		"ID": 57,
+		"ID": "SpiderCave",
 		"Name": "in de spinnengrot",
 		"Description": "Het wemelt hier van de tarantula's. Bij elke stap die je zet hoor je het onder je voeten kraken, en ze kruipen langs je benen omhoog."
 	},
 	{
-		"ID": 58,
+		"ID": "TalkingCave",
 		"Name": "in de pratende grot"
 	},
 	{
-		"ID": 59,
+		"ID": "LavaPit",
 		"Name": "op de lavaput"
 	},
 	{
-		"ID": 60,
+		"ID": "ScoobyCave",
 		"Name": "in de skoebiegrot",
 		"Description": "Uit alle richtingen komen rare geluiden, als in een gesticht."
 	},
 	{
-		"ID": 61,
+		"ID": "RadioactiveCave",
 		"Name": "in de radioactieve grot",
 		"Description": "Door de hoge radioactiviteit is deze grot zwak verlicht."
 	},
 	{
-		"ID": 62,
+		"ID": "ICave",
 		"Name": "in de i-grot"
 	},
 	{
-		"ID": 63,
+		"ID": "PCave",
 		"Name": "in de p-grot"
 	},
 	{
-		"ID": 64,
+		"ID": "ACave",
 		"Name": "in de a-grot",
 		"Description": "In deze grot bevindt zich het stenen beeld van een oud, jou onbekend wezen."
 	},
 	{
-		"ID": 65,
+		"ID": "DeathCave",
 		"Name": "in de dodengrot",
 		"Description": "De naam van deze grot spreekt voor zich..."
 	},
 	{
-		"ID": 66,
+		"ID": "RCave",
 		"Name": "in de r-grot"
 	},
 	{
-		"ID": 67,
+		"ID": "ECave",
 		"Name": "in de e-grot"
 	},
 	{
-		"ID": 68,
+		"ID": "SpiralstaircaseCave3",
 		"Name": "in een wenteltrapgrot",
 		"Description": "In deze grot bevindt zich een grote, stenen wenteltrap die waarschijnlijk naar andere niveaus leidt."
 	},
 	{
-		"ID": 69,
+		"ID": "CapitalPCave",
 		"Name": "in de P-grot"
 	},
 	{
-		"ID": 70,
+		"ID": "DamnationCave",
 		"Name": "in de grot der verdoemenis",
 		"Description": "In deze grot heerst een haast verstikkende sfeer, en je voelt je niet prettig."
 	},
 	{
-		"ID": 71,
+		"ID": "VacuumCave",
 		"Name": "in de vacuumgrot"
 	},
 	{
-		"ID": 72,
+		"ID": "RedCave",
 		"Name": "in de rode grot"
 	},
 	{
-		"ID": 73,
+		"ID": "NeonCave",
 		"Name": "in de neongrot",
 		"Description": "Deze grot is fel gekleurd. Er staan patronen die je doen denken aan zwarte magie."
 	},
 	{
-		"ID": 74,
+		"ID": "BloodCave",
 		"Name": "in de bloedgrot",
 		"Description": "Het geraamte van een groot beest ligt hier op de grond en een aantal ingewanden liggen ernaast."
 	},
 	{
-		"ID": 75,
+		"ID": "BatCave",
 		"Name": "in de vleermuisgrot",
 		"Description": "In deze grot fladderen overal vleermuizen, op zoek naar hun prooi."
 	},
 	{
-		"ID": 76,
+		"ID": "SnakeCave",
 		"Name": "in de slangengrot",
 		"Description": "Je hoort het geluid van een ratelslang. Bij de weg naar het noorden staat een doodskop getekend, die een gevaar aanduidt."
 	},
 	{
-		"ID": 77,
+		"ID": "LobeCave",
 		"Name": "in de kwabbengrot"
 	},
 	{
-		"ID": 78,
+		"ID": "SlipperyCave",
 		"Name": "in de glibbergrot",
 		"Description": "Je glijdt bijna uit over de zeepachtige prut die overal in de grot ligt. Tussen de glibberige massa steekt een paal omhoog met daarop een pijl die naar het oosten wijst."
 	},
 	{
-		"ID": 79,
+		"ID": "TeleportCave",
 		"Name": "in de teleportgrot"
 	}
 ]
