@@ -22,14 +22,8 @@ namespace R136.Core
 			snapshot.HasTreeBurned = _hasTreeBurned;
 			snapshot.DoNext = DoNext;
 			snapshot.LocationCommandProcessor = _processors!.LocationProcessor.TakeSnapshot();
-			snapshot.Items = _items!.Values
-												.Where(item => item is not Flashlight)
-												.Select(item => item.TakeSnapshot())
-												.ToArray();
-			snapshot.Flashlight = ((Flashlight)_items![ItemID.Flashlight]).TakeSnapshot();
-			snapshot.Animates = _animates!.Values
-													.Select(animate => animate.TakeSnapshot())
-													.ToArray();
+			Item.TakeSnapshots(snapshot, _items!);
+			Animate.TakeSnapshots(snapshot, _animates!);
 			snapshot.Player = _player!.TakeSnapshot();
 
 			return snapshot;
@@ -64,18 +58,8 @@ namespace R136.Core
 			else
 				result = false;
 
-			if (snapshot.Items != null)
-			{
-				foreach (var item in snapshot.Items)
-					result &= _items![item.ID].RestoreSnapshot(AddEntities(item));
-			}
-			else
-				result = false;
-
-			if (snapshot.Flashlight != null)
-				result &= ((Flashlight)_items![ItemID.Flashlight]).RestoreSnapshot(AddEntities(snapshot.Flashlight));
-			else
-				result = false;
+			Item.RestoreSnapshots(snapshot, _items!);
+			Animate.RestoreSnapshots(snapshot, _animates!);
 
 			if (snapshot.Animates != null)
 			{
@@ -93,7 +77,7 @@ namespace R136.Core
 			return result;
 		}
 
-		public class Snapshot
+		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer
 		{
 			public Configuration? Configuration { get; set; }
 			public bool HasTreeBurned { get; set; }

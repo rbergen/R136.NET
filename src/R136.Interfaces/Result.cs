@@ -19,12 +19,12 @@ namespace R136.Interfaces
 		private static readonly Result _error = new(ResultCode.Error);
 
 		public static Result Success() => _success;
-		public static Result Success(StringValues message) => new(ResultCode.Success, message);
-		public static Result Success(string message) => new(ResultCode.Success, new string[] { message });
+		public static Result Success(StringValues message, bool pauseRequested = false) => new(ResultCode.Success, message, pauseRequested);
+		public static Result Success(string message, bool pauseRequested = false) => new(ResultCode.Success, new string[] { message }, pauseRequested);
 
 		public static Result Failure() => _failure;
-		public static Result Failure(StringValues message) => new(ResultCode.Failure, message);
-		public static Result Failure(string message) => new(ResultCode.Failure, new string[] { message });
+		public static Result Failure(StringValues message, bool pauseRequested = false) => new(ResultCode.Failure, message, pauseRequested);
+		public static Result Failure(string message, bool pauseRequested = false) => new(ResultCode.Failure, new string[] { message }, pauseRequested);
 
 		public static Result Error() => _error;
 		public static Result Error(StringValues message) => new(ResultCode.Error, message);
@@ -60,8 +60,9 @@ namespace R136.Interfaces
 		public ResultCode Code { get; }
 		public StringValues Message { get; }
 		public ContinuationStatus? ContinuationStatus { get; }
-
 		public InputSpecs? InputSpecs { get; }
+		public bool PauseRequested { get; set; } = false;
+
 		public bool IsSuccess => Code == ResultCode.Success;
 		public bool IsFailure => Code == ResultCode.Failure;
 		public bool IsError => Code == ResultCode.Error;
@@ -71,12 +72,12 @@ namespace R136.Interfaces
 		public Result(ResultCode code)
 			=> Code = code;
 
-		public Result(ResultCode code, StringValues message)
+		public Result(ResultCode code, StringValues message, bool pauseRequested = false)
 		{
 			if (code == ResultCode.InputRequested)
 				throw new ArgumentException("ResultCode ContinuationRequested requires InputSpecs", nameof(code));
 
-			(Code, Message) = (code, message);
+			(Code, Message, PauseRequested) = (code, message, pauseRequested);
 		}
 
 		public Result(ContinuationStatus status, InputSpecs specs, StringValues message)

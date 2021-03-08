@@ -1,4 +1,5 @@
-﻿using R136.BuildTool.Tasks;
+﻿using R136.BuildTool.Rooms;
+using R136.BuildTool.Tasks;
 using R136.BuildTool.Tools;
 using R136.Entities;
 using R136.Entities.General;
@@ -102,7 +103,7 @@ namespace R136.BuildTool
 
 			(string taskTag, int errorCount, int warningCount) = GetCompoundTagResult(conversionTags);
 
-			Console.WriteLine($"{indent}{taskTag} Processing for directory {task.Directory} completed, with {errorCount} errors and {warningCount} warnings.");
+			Console.WriteLine($"{indent}{taskTag} Processing for directory {task.Directory} completed, with {errorCount} error(s) and {warningCount} warning(s).");
 			return taskTag;
 		}
 
@@ -122,29 +123,29 @@ namespace R136.BuildTool
 		private static string CombinePath(string directory, string fileName)
 			=> Path.Join(directory, fileName);
 
-		private static string ProcessEntity<TEntity>(bool readOnly, string indent, Entity entity, string inputPath, string outputPath)
-			=> ProcessEntity<TEntity>(readOnly, indent, entity, inputPath, outputPath, null);
+		private static string ProcessEntity<TEntity>(bool readOnly, string indent, Entity entity, string inputPath, string outputPath) where TEntity : class
+			=> ProcessEntity<TEntity, TEntity>(readOnly, indent, entity, inputPath, outputPath, null);
 
 		private static string ProcessRooms(bool readOnly, string indent, Entity entity, string inputPath, string outputPath)
 		{
-			return ProcessEntity<Room.Initializer[]>(readOnly, indent, entity, inputPath, outputPath, MakeConnections);
+			return ProcessEntity<RoomData, Room.Initializer[]>(readOnly, indent, entity, inputPath, outputPath, MakeConnections);
 
-			string MakeConnections(string indent, Room.Initializer[] rooms)
+			Room.Initializer[]? MakeConnections(string indent, RoomData data)
 			{
 				Console.WriteLine($"{indent}{Tags.Info} Setting up connections between {entity}.");
-				RoomConnections.Apply(rooms);
-
-				return Tags.Success;
+				return data.CompileConnections($"{indent}{IndentSection}");
 			}
 		}
 
-		private static string ProcessEntity<TEntity>(bool readOnly, string indent, Entity entity, string inputPath, string outputPath, Func<string, TEntity, string>? processor)
+		private static string ProcessEntity<TInput, TOutput>(bool readOnly, string indent, Entity entity, string inputPath, string outputPath, Func<string, TInput, TOutput?>? processor) 
+			where TInput : class
+			where TOutput : class
 		{
-			TEntity? entityObject;
+			TInput? inputObject;
 
 			try
 			{
-				entityObject = JsonSerializer.Deserialize<TEntity>(File.ReadAllText(inputPath, Encoding.UTF8), _entityDeserializerOptions);
+				inputObject = JsonSerializer.Deserialize<TInput>(File.ReadAllText(inputPath, Encoding.UTF8), _entityDeserializerOptions);
 			}
 			catch (Exception e)
 			{
@@ -152,21 +153,31 @@ namespace R136.BuildTool
 				return Tags.Error;
 			}
 
-			if (entityObject == null)
+			if (inputObject == null)
 			{
 				Console.WriteLine($"{indent}{Tags.Warning} File {inputPath} contains no {entity}, skipping conversion.");
 				return Tags.Warning;
 			}
 
-			if (entityObject is ICollection collectionEntity)
+			if (inputObject is ICollection collectionEntity)
 				Console.WriteLine($"{indent}{Tags.Info} Read {collectionEntity.Count} {entity}.");
 			else
 				Console.WriteLine($"{indent}{Tags.Info} Read {entity}.");
 
-			if (processor != null && Tags.IsError(processor(indent, entityObject)))
-					return Tags.Error;
+			TOutput? outputObject;
+			
+			if (processor != null) 
+				outputObject = processor(indent, inputObject);
 
-			if (readOnly)
+			else 
+				outputObject = inputObject as TOutput;
+
+			if (outputObject == null)
+			{
+				Console.WriteLine($"{indent}{Tags.Error} Nothing to write, aborting processing of {entity}.");
+				return Tags.Error;
+			} 
+			else if (readOnly)
 			{
 				Console.WriteLine($"{indent}{Tags.Info} Read-only run, so skipping write of {entity}.");
 				return Tags.Success;
@@ -174,7 +185,7 @@ namespace R136.BuildTool
 
 			try
 			{
-				File.WriteAllText(outputPath, JsonSerializer.Serialize(entityObject), Encoding.UTF8);
+				File.WriteAllText(outputPath, JsonSerializer.Serialize(outputObject), Encoding.UTF8);
 			}
 			catch (Exception e)
 			{
@@ -197,19 +208,5 @@ namespace R136.BuildTool
 				Entity.Texts => ProcessEntity<TypedTextsMap<int>.Initializer[]>,
 				_ => throw new ArgumentException("Unknown entity", nameof(entity))
 			};
-
-		private static class Tags
-		{
-			public const string Info = "  ";
-			public const string Success = "++";
-			public const string Warning = "--";
-			public const string Error = "!!";
-
-			public static bool IsError(string s)
-				=> s == Error;
-
-			public static bool IsWarning(string s)
-				=> s == Warning;
-		}
 	}
 }

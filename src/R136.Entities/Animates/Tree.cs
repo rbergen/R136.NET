@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 
 namespace R136.Entities.Animates
 {
-	public class Tree : Animate
+	public class Tree : Animate, IFireNotificationProvider, IGameServiceProvider
 	{
 		public static Animate Create(Initializer initializer)
 			=> new Tree(initializer.ID, initializer.StartRoom);
@@ -24,7 +25,7 @@ namespace R136.Entities.Animates
 
 			if (Status == AnimateStatus.Operating)
 			{
-				if (!(StatusManager?.IsInPosession(ItemID.HeatSuit) ?? false))
+				if (!(Player?.IsInPosession(ItemID.HeatSuit) ?? false))
 				{
 					statusTexts = GetTextsForStatus(AnimateStatus.SelfInjury);
 					if (statusTexts.Count > 0)
@@ -48,5 +49,8 @@ namespace R136.Entities.Animates
 			IsTriggered = true;
 			return Result.Success();
 		}
+
+		public void RegisterServices(IServiceCollection serviceCollection)
+			=> serviceCollection.AddSingleton<IFireNotificationProvider>(this);
 	}
 }

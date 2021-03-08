@@ -11,8 +11,8 @@ namespace R136.Entities.Animates
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
-			if (StatusManager != null)
-				StatusManager.CurrentRoom = RoomID.Forest1;
+			if (Player != null)
+				Player.CurrentRoom = RoomID.Forest1;
 		}
 	}
 }

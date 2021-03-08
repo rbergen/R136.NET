@@ -19,7 +19,7 @@ namespace R136.Entities.Animates
 					if (status == AnimateStatus.Initial && Facilities.Configuration.FreezeAnimates)
 						break;
 
-					StatusManager?.DecreaseHealth();
+					Player?.DecreaseHealth();
 
 					Status = Facilities.Randomizer.Next(2) == 0
 						? AnimateStatus.PreparingNextAttack

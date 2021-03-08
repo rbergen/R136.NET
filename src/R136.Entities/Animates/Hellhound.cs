@@ -24,7 +24,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Attack:
-					StatusManager?.DecreaseHealth();
+					Player?.DecreaseHealth();
 					Status = AnimateStatus.PreparingNextAttack;
 
 					break;

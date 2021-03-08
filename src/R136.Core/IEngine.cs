@@ -13,10 +13,9 @@ namespace R136.Core
 		InputSpecs CommandInputSpecs { get; }
 		StringValues StartMessage { get; }
 		StringValues RoomStatus { get; }
-		StringValues ProgressAnimateStatus();
+		Result ProgressAnimateStatus();
 		NextStep DoNext { get; }
 		Result Run(string input);
-		void EndPause();
 	}
 
 	public enum NextStep
@@ -24,7 +23,6 @@ namespace R136.Core
 		ShowStartMessage,
 		ShowRoomStatus,
 		ProgressAnimateStatus,
-		RunCommand,
-		Pause
+		RunCommand
 	}
 }

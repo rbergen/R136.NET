@@ -1,378 +1,791 @@
-﻿[
-	{
-		"ID": "Forest0",
-		"Name": "in the forest",
-		"Description": "This is the far corner of a dark forest. Scary sounds come from every direction."
-	},
-	{
-		"ID": "Forest1",
-		"Name": "in the forest",
-		"Description": "Towards the south, you see a gate that gives access to a dark place."
-	},
-	{
-		"ID": "Forest2",
-		"Name": "in the forest",
-		"Description": "There is a muddy smell coming from the east."
-	},
-	{
-		"ID": "NorthSwamp",
-		"Name": "in the swamp",
-		"Description": "A creepy mist hangs over the smelly surface."
-	},
-	{
-		"ID": "Forest4",
-		"Name": "in the forest",
-		"Description": "There is a muddy smell coming from the west."
-	},
-	{
-		"ID": "Forest5",
-		"Name": "in the forest",
-		"Description": "Mind the low-hanging branches!"
-	},
-	{
-		"ID": "Cemetery",
-		"Name": "at the cemetery",
-		"Description": "The smell of rotting flesh creeps up your nose. You think you see a tombstone move."
-	},
-	{
-		"ID": "Forest7",
-		"Name": "in the forest"
-	},
-	{
-		"ID": "MiddleSwamp",
-		"Name": "in the swamp",
-		"Description": "A creepy mist hangs over the smelly surface."
-	},
-	{
-		"ID": "EmptySpace9",
-		"Name": "at an open space",
-		"Description": "There is a muddy smell coming from the west."
-	},
-	{
-		"ID": "Forest10",
-		"Name": "in the forest"
-	},
-	{
-		"ID": "Forest11",
-		"Name": "in the forest",
-		"Description": "You almost step into a bear trap."
-	},
-	{
-		"ID": "EmptySpace12",
-		"Name": "at an open space",
-		"Description": "Through the mist you can just make out the outline of the dark forest."
-	},
-	{
-		"ID": "SwampPath",
-		"Name": "on the swamp path",
-		"Description": "There's a skeleton here, probably one of your predecessors."
-	},
-	{
-		"ID": "EmptySpace14",
-		"Name": "at an open space",
-		"Description": "In the light of a half moon you can just make out the shape of a gallow."
-	},
-	{
-		"ID": "Forest15",
-		"Name": "in the forest",
-		"Description": "In the distance you hear the sad howl of a werewolf."
-	},
-	{
-		"ID": "Forest16",
-		"Name": "in the forest"
-	},
-	{
-		"ID": "EmptySpace17",
-		"Name": "at an open space",
-		"Description": "There's a dead rabbit on the ground that's being attacked by flies."
-	},
-	{
-		"ID": "SouthSwamp",
-		"Name": "in the swamp",
-		"Description": "A creepy mist hangs over the smelly surface."
-	},
-	{
-		"ID": "Ruin",
-		"Name": "in the ruins",
-		"Description": "The ruins are a spooky rubble. There is a shaky staircase that leads downwards."
-	},
-	{
-		"ID": "SlimeCave",
-		"Name": "in the slime cave",
-		"Description": "The walls of the cave are covered in a snotty slime."
-	},
-	{
-		"ID": "BlackCave",
-		"Name": "in the black cave",
-		"Description": "You can't see your hand in front of your face."
-	},
-	{
-		"ID": "DrugCave",
-		"Name": "in the drugs cave"
-	},
-	{
-		"ID": "HornyCave",
-		"Name": "in the horny cave",
-		"Description": "Affixed to the wall are yellow, torn Playboy posters."
-	},
-	{
-		"ID": "StraitjacketCave",
-		"Name": "in the straitjacket cave",
-		"Description": "There's a straitjacket hanging from the ceiling, with a mutilated body in it."
-	},
-	{
-		"ID": "NeglectedCave",
-		"Name": "in a neglected cave"
-	},
-	{
-		"ID": "EmptyCave26",
-		"Name": "in an empty cave"
-	},
-	{
-		"ID": "MainCave",
-		"Name": "in the main cave",
-		"Description": "There is a battery of mysterious equipment, here."
-	},
-	{
-		"ID": "HieroglyphsCave",
-		"Name": "in the hieroglyphs cave",
-		"Description": "There are symbols on the walls that you can not make sense of."
-	},
-	{
-		"ID": "StenchCave",
-		"Name": "in the stench cave",
-		"Description": "The filthy stench that lingers here reminds you of the heavy smell of a cesspool."
-	},
-	{
-		"ID": "GloomyCave",
-		"Name": "in a disconsolate cave"
-	},
-	{
-		"ID": "FluorescentCave",
-		"Name": "in the fluorescent cave",
-		"Description": "The cave is weakly lit by a light source that hangs high at the ceiling."
-	},
-	{
-		"ID": "SmallCave",
-		"Name": "in a small cave"
-	},
-	{
-		"ID": "IceCave",
-		"Name": "in the ice cave",
-		"Description": "In this cave everything looks like it is made out of ice. It gives you the shivers."
-	},
-	{
-		"ID": "CactusCave",
-		"Name": "in the cactus cave",
-		"Description": "You're surrounded by poisonous cactuses that are present in this cave."
-	},
-	{
-		"ID": "StalagmiteCave",
-		"Name": "in the stalagmite cave",
-		"Description": "You see a railing of stalagmites."
-	},
-	{
-		"ID": "StormCave",
-		"Name": "in the storm cave",
-		"Description": "A hard wind blows through this cave that makes you hold on to one of the walls."
-	},
-	{
-		"ID": "MistCave",
-		"Name": "in the mist cave"
-	},
-	{
-		"ID": "SpiralstaircaseCave1",
-		"Name": "in a stairwell cave",
-		"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
-	},
-	{
-		"ID": "TentacleCave",
-		"Name": "in the tentacle cave",
-		"Description": "Large tentacles come from all directions. They scan your body and leave green traces on your skin."
-	},
-	{
-		"ID": "GarbageCave",
-		"Name": "in the garbage cave",
-		"Description": "There is large pile of rotting food remains in this cave. The stench is almost unbearable."
-	},
-	{
-		"ID": "EchoCave",
-		"Name": "in the echo cave",
-		"Description": "All sounds you make echo back from the walls."
-	},
-	{
-		"ID": "SecretCave",
-		"Name": "in the secret cave",
-		"Description": "On the floor of the cave there's a wide range of unfamiliar and mysterious objects."
-	},
-	{
-		"ID": "FoodCave",
-		"Name": "in the food cave",
-		"Description": "It smells like this probably was a kitchen at some point..."
-	},
-	{
-		"ID": "GnuCave",
-		"Name": "in the cave of the gnu",
-		"Description": "Scattered around are skeletons of creatures that fell prey to the gnu before."
-	},
-	{
-		"ID": "EmptyCave45",
-		"Name": "in an empty cave"
-	},
-	{
-		"ID": "EyeCave",
-		"Name": "in the eye cave",
-		"Description": "From all angles you are looked at by red, blood-shot eyes that precisely follow your actions."
-	},
-	{
-		"ID": "RockCave",
-		"Name": "in the rock cave",
-		"Description": "You see sharp rock edges everywhere. Brown crusts are attached to some of them."
-	},
-	{
-		"ID": "Emptiness",
-		"Name": "in the emptiness"
-	},
-	{
-		"ID": "Sandbank",
-		"Name": "at the sandbank",
-		"Description": "On the ground you see strange patterns, made out of different types of sand."
-	},
-	{
-		"ID": "TortureCave",
-		"Name": "in the torture cave",
-		"Description": "Under the vague shimmer of the torture fires, you can just see a thumbscrew and some pointy objects that still have some blood attached to them."
-	},
-	{
-		"ID": "EmptyCave51",
-		"Name": "in an empty cave"
-	},
-	{
-		"ID": "SafeCave",
-		"Name": "in the safe cave",
-		"Description": "This is the only cave in which you feel some safety."
-	},
-	{
-		"ID": "NarrowCleft",
-		"Name": "in the narrow cleft",
-		"Description": "You're surrounded by high rock walls at all sides. You only see an opening at the western side."
-	},
-	{
-		"ID": "OilCave",
-		"Name": "in the oil cave",
-		"Description": "An enormous heat spreads from the south that is only just bearable in this cave."
-	},
-	{
-		"ID": "EmptyCave55",
-		"Name": "in an empty cave"
-	},
-	{
-		"ID": "SpiralstaircaseCave2",
-		"Name": "in a stairwell cave",
-		"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
-	},
-	{
-		"ID": "SpiderCave",
-		"Name": "in the spider cave",
-		"Description": "It's teeming with tarantulas, here. You hear crunching with every step you take, and you feel them crawling up your legs."
-	},
-	{
-		"ID": "TalkingCave",
-		"Name": "in the talking cave"
-	},
-	{
-		"ID": "LavaPit",
-		"Name": "at the lava pit"
-	},
-	{
-		"ID": "ScoobyCave",
-		"Name": "in the scooby cave",
-		"Description": "Weird noises come from all directions, as if in a mental institution."
-	},
-	{
-		"ID": "RadioactiveCave",
-		"Name": "in the radioactive cave",
-		"Description": "Due to the high level of radioactivity, this cave is dimly lit."
-	},
-	{
-		"ID": "ICave",
-		"Name": "in the e cave"
-	},
-	{
-		"ID": "PCave",
-		"Name": "in the p cave"
-	},
-	{
-		"ID": "ACave",
-		"Name": "in the a cave",
-		"Description": "This caves houses the stone statue of an old creature that is unfamiliar to you."
-	},
-	{
-		"ID": "DeathCave",
-		"Name": "in the cave of death",
-		"Description": "The name of this cave speaks for itself..."
-	},
-	{
-		"ID": "RCave",
-		"Name": "in the leftover letter cave"
-	},
-	{
-		"ID": "ECave",
-		"Name": "in the r cave"
-	},
-	{
-		"ID": "SpiralstaircaseCave3",
-		"Name": "in a stairwell cave",
-		"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
-	},
-	{
-		"ID": "CapitalPCave",
-		"Name": "in the P cave"
-	},
-	{
-		"ID": "DamnationCave",
-		"Name": "in the damnation cave",
-		"Description": "An almost suffocating atmosphere dominates this cave. You don't feel comfortable here."
-	},
-	{
-		"ID": "VacuumCave",
-		"Name": "in the vacuum cave"
-	},
-	{
-		"ID": "RedCave",
-		"Name": "in the red cave"
-	},
-	{
-		"ID": "NeonCave",
-		"Name": "in the neon cave",
-		"Description": "This cave is brightly coloured. There are patterns that remind you of black magic."
-	},
-	{
-		"ID": "BloodCave",
-		"Name": "in the blood cave",
-		"Description": "There's a skeleton of a large beast on the ground, and some of its guts are next to it."
-	},
-	{
-		"ID": "BatCave",
-		"Name": "in the bat cave",
-		"Description": "Bats are fluttering everywhere in this cave, looking for their prey."
-	},
-	{
-		"ID": "SnakeCave",
-		"Name": "in the snake cave",
-		"Description": "You hear the sound of a rattle-snake. At the northern end there's a drawing of a skull, signifying danger."
-	},
-	{
-		"ID": "LobeCave",
-		"Name": "in the lobe cave"
-	},
-	{
-		"ID": "SlipperyCave",
-		"Name": "in the slippery cave",
-		"Description": "You nearly slip over the soap-like goo that is everywhere in this cave. Somewhere in the slippery mass, a pole sticks up that has an arrow attached to it, which points east."
-	},
-	{
-		"ID": "TeleportCave",
-		"Name": "in the teleport cave"
-	}
-]
+﻿{
+	"Rooms": [
+		{
+			"ID": "Forest0",
+			"Name": "in the forest",
+			"Description": "This is the far corner of a dark forest. Scary sounds come from every direction.",
+			"IsForest": true
+		},
+		{
+			"ID": "Forest1",
+			"Name": "in the forest",
+			"Description": "Towards the south, you see a gate that gives access to a dark place.",
+			"IsForest": true
+		},
+		{
+			"ID": "Forest2",
+			"Name": "in the forest",
+			"Description": "There is a muddy smell coming from the east.",
+			"IsForest": true
+		},
+		{
+			"ID": "NorthSwamp",
+			"Name": "in the swamp",
+			"Description": "A creepy mist hangs over the smelly surface."
+		},
+		{
+			"ID": "Forest4",
+			"Name": "in the forest",
+			"Description": "There is a muddy smell coming from the west.",
+			"IsForest": true
+		},
+		{
+			"ID": "Forest5",
+			"Name": "in the forest",
+			"Description": "Mind the low-hanging branches!",
+			"IsForest": true
+		},
+		{
+			"ID": "Cemetery",
+			"Name": "at the cemetery",
+			"Description": "The smell of rotting flesh creeps up your nose. You think you see a tombstone move."
+		},
+		{
+			"ID": "Forest7",
+			"Name": "in the forest",
+			"IsForest": true
+		},
+		{
+			"ID": "MiddleSwamp",
+			"Name": "in the swamp",
+			"Description": "A creepy mist hangs over the smelly surface."
+		},
+		{
+			"ID": "EmptySpace9",
+			"Name": "at an open space",
+			"Description": "There is a muddy smell coming from the west."
+		},
+		{
+			"ID": "Forest10",
+			"Name": "in the forest",
+			"IsForest": true
+		},
+		{
+			"ID": "Forest11",
+			"Name": "in the forest",
+			"Description": "You almost step into a bear trap.",
+			"IsForest": true
+		},
+		{
+			"ID": "EmptySpace12",
+			"Name": "at an open space",
+			"Description": "Through the mist you can just make out the outline of the dark forest."
+		},
+		{
+			"ID": "SwampPath",
+			"Name": "on the swamp path",
+			"Description": "There's a skeleton here, probably one of your predecessors."
+		},
+		{
+			"ID": "EmptySpace14",
+			"Name": "at an open space",
+			"Description": "In the light of a half moon you can just make out the shape of a gallow."
+		},
+		{
+			"ID": "Forest15",
+			"Name": "in the forest",
+			"Description": "In the distance you hear the sad howl of a werewolf.",
+			"IsForest": true
+		},
+		{
+			"ID": "Forest16",
+			"Name": "in the forest",
+			"IsForest": true
+		},
+		{
+			"ID": "EmptySpace17",
+			"Name": "at an open space",
+			"Description": "There's a dead rabbit on the ground that's being attacked by flies."
+		},
+		{
+			"ID": "SouthSwamp",
+			"Name": "in the swamp",
+			"Description": "A creepy mist hangs over the smelly surface."
+		},
+		{
+			"ID": "Ruin",
+			"Name": "in the ruins",
+			"Description": "The ruins are a spooky rubble. There is a shaky staircase that leads downwards."
+		},
+		{
+			"ID": "SlimeCave",
+			"Name": "in the slime cave",
+			"Description": "The walls of the cave are covered in a snotty slime."
+		},
+		{
+			"ID": "BlackCave",
+			"Name": "in the black cave",
+			"Description": "You can't see your hand in front of your face."
+		},
+		{
+			"ID": "DrugCave",
+			"Name": "in the drugs cave"
+		},
+		{
+			"ID": "HornyCave",
+			"Name": "in the horny cave",
+			"Description": "Affixed to the wall are yellow, torn Playboy posters."
+		},
+		{
+			"ID": "StraitjacketCave",
+			"Name": "in the straitjacket cave",
+			"Description": "There's a straitjacket hanging from the ceiling, with a mutilated body in it."
+		},
+		{
+			"ID": "NeglectedCave",
+			"Name": "in a neglected cave"
+		},
+		{
+			"ID": "EmptyCave26",
+			"Name": "in an empty cave"
+		},
+		{
+			"ID": "MainCave",
+			"Name": "in the main cave",
+			"Description": "There is a battery of mysterious equipment, here."
+		},
+		{
+			"ID": "HieroglyphsCave",
+			"Name": "in the hieroglyphs cave",
+			"Description": "There are symbols on the walls that you can not make sense of."
+		},
+		{
+			"ID": "StenchCave",
+			"Name": "in the stench cave",
+			"Description": "The filthy stench that lingers here reminds you of the heavy smell of a cesspool."
+		},
+		{
+			"ID": "GloomyCave",
+			"Name": "in a disconsolate cave"
+		},
+		{
+			"ID": "FluorescentCave",
+			"Name": "in the fluorescent cave",
+			"Description": "The cave is weakly lit by a light source that hangs high at the ceiling."
+		},
+		{
+			"ID": "SmallCave",
+			"Name": "in a small cave"
+		},
+		{
+			"ID": "IceCave",
+			"Name": "in the ice cave",
+			"Description": "In this cave everything looks like it is made out of ice. It gives you the shivers."
+		},
+		{
+			"ID": "CactusCave",
+			"Name": "in the cactus cave",
+			"Description": "You're surrounded by poisonous cactuses that are present in this cave."
+		},
+		{
+			"ID": "StalagmiteCave",
+			"Name": "in the stalagmite cave",
+			"Description": "You see a railing of stalagmites."
+		},
+		{
+			"ID": "StormCave",
+			"Name": "in the storm cave",
+			"Description": "A hard wind blows through this cave that makes you hold on to one of the walls."
+		},
+		{
+			"ID": "MistCave",
+			"Name": "in the mist cave"
+		},
+		{
+			"ID": "SpiralstaircaseCave1",
+			"Name": "in a stairwell cave",
+			"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
+		},
+		{
+			"ID": "TentacleCave",
+			"Name": "in the tentacle cave",
+			"Description": "Large tentacles come from all directions. They scan your body and leave green traces on your skin."
+		},
+		{
+			"ID": "GarbageCave",
+			"Name": "in the garbage cave",
+			"Description": "There is large pile of rotting food remains in this cave. The stench is almost unbearable."
+		},
+		{
+			"ID": "EchoCave",
+			"Name": "in the echo cave",
+			"Description": "All sounds you make echo back from the walls."
+		},
+		{
+			"ID": "SecretCave",
+			"Name": "in the secret cave",
+			"Description": "On the floor of the cave there's a wide range of unfamiliar and mysterious objects."
+		},
+		{
+			"ID": "FoodCave",
+			"Name": "in the food cave",
+			"Description": "It smells like this probably was a kitchen at some point..."
+		},
+		{
+			"ID": "GnuCave",
+			"Name": "in the cave of the gnu",
+			"Description": "Scattered around are skeletons of creatures that fell prey to the gnu before."
+		},
+		{
+			"ID": "EmptyCave45",
+			"Name": "in an empty cave"
+		},
+		{
+			"ID": "EyeCave",
+			"Name": "in the eye cave",
+			"Description": "From all angles you are looked at by red, blood-shot eyes that precisely follow your actions."
+		},
+		{
+			"ID": "RockCave",
+			"Name": "in the rock cave",
+			"Description": "You see sharp rock edges everywhere. Brown crusts are attached to some of them."
+		},
+		{
+			"ID": "Emptiness",
+			"Name": "in the emptiness"
+		},
+		{
+			"ID": "Sandbank",
+			"Name": "at the sandbank",
+			"Description": "On the ground you see strange patterns, made out of different types of sand."
+		},
+		{
+			"ID": "TortureCave",
+			"Name": "in the torture cave",
+			"Description": "Under the vague shimmer of the torture fires, you can just see a thumbscrew and some pointy objects that still have some blood attached to them."
+		},
+		{
+			"ID": "EmptyCave51",
+			"Name": "in an empty cave"
+		},
+		{
+			"ID": "SafeCave",
+			"Name": "in the safe cave",
+			"Description": "This is the only cave in which you feel some safety."
+		},
+		{
+			"ID": "NarrowCleft",
+			"Name": "in the narrow cleft",
+			"Description": "You're surrounded by high rock walls at all sides. You only see an opening at the western side."
+		},
+		{
+			"ID": "OilCave",
+			"Name": "in the oil cave",
+			"Description": "An enormous heat spreads from the south that is only just bearable in this cave."
+		},
+		{
+			"ID": "EmptyCave55",
+			"Name": "in an empty cave"
+		},
+		{
+			"ID": "SpiralstaircaseCave2",
+			"Name": "in a stairwell cave",
+			"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
+		},
+		{
+			"ID": "SpiderCave",
+			"Name": "in the spider cave",
+			"Description": "It's teeming with tarantulas, here. You hear crunching with every step you take, and you feel them crawling up your legs."
+		},
+		{
+			"ID": "TalkingCave",
+			"Name": "in the talking cave"
+		},
+		{
+			"ID": "LavaPit",
+			"Name": "at the lava pit"
+		},
+		{
+			"ID": "ScoobyCave",
+			"Name": "in the scooby cave",
+			"Description": "Weird noises come from all directions, as if in a mental institution."
+		},
+		{
+			"ID": "RadioactiveCave",
+			"Name": "in the radioactive cave",
+			"Description": "Due to the high level of radioactivity, this cave is dimly lit."
+		},
+		{
+			"ID": "ICave",
+			"Name": "in the e cave"
+		},
+		{
+			"ID": "PCave",
+			"Name": "in the p cave"
+		},
+		{
+			"ID": "ACave",
+			"Name": "in the a cave",
+			"Description": "This caves houses the stone statue of an old creature that is unfamiliar to you."
+		},
+		{
+			"ID": "DeathCave",
+			"Name": "in the cave of death",
+			"Description": "The name of this cave speaks for itself..."
+		},
+		{
+			"ID": "RCave",
+			"Name": "in the leftover letter cave"
+		},
+		{
+			"ID": "ECave",
+			"Name": "in the r cave"
+		},
+		{
+			"ID": "SpiralstaircaseCave3",
+			"Name": "in a stairwell cave",
+			"Description": "There is a large, circular stairwell that is made out of stone. It looks like it leads to other levels."
+		},
+		{
+			"ID": "CapitalPCave",
+			"Name": "in the P cave"
+		},
+		{
+			"ID": "DamnationCave",
+			"Name": "in the damnation cave",
+			"Description": "An almost suffocating atmosphere dominates this cave. You don't feel comfortable here."
+		},
+		{
+			"ID": "VacuumCave",
+			"Name": "in the vacuum cave"
+		},
+		{
+			"ID": "RedCave",
+			"Name": "in the red cave"
+		},
+		{
+			"ID": "NeonCave",
+			"Name": "in the neon cave",
+			"Description": "This cave is brightly coloured. There are patterns that remind you of black magic."
+		},
+		{
+			"ID": "BloodCave",
+			"Name": "in the blood cave",
+			"Description": "There's a skeleton of a large beast on the ground, and some of its guts are next to it."
+		},
+		{
+			"ID": "BatCave",
+			"Name": "in the bat cave",
+			"Description": "Bats are fluttering everywhere in this cave, looking for their prey."
+		},
+		{
+			"ID": "SnakeCave",
+			"Name": "in the snake cave",
+			"Description": "You hear the sound of a rattle-snake. At the northern end there's a drawing of a skull, signifying danger."
+		},
+		{
+			"ID": "LobeCave",
+			"Name": "in the lobe cave"
+		},
+		{
+			"ID": "SlipperyCave",
+			"Name": "in the slippery cave",
+			"Description": "You nearly slip over the soap-like goo that is everywhere in this cave. Somewhere in the slippery mass, a pole sticks up that has an arrow attached to it, which points east."
+		},
+		{
+			"ID": "TeleportCave",
+			"Name": "in the teleport cave"
+		}
+	],
+	"LevelWidth": 5,
+	"LevelDepth": 4,
+	"FirstCave": "SlimeCave",
+	"LightCaves": [
+		"FluorescentCave",
+		"RadioactiveCave",
+		"Emptiness",
+		"Sandbank",
+		"NarrowCleft"
+	],
+	"LevelConnections":	[
+			{
+				"From": "Cemetery",
+				"Direction": "Down",
+				"To": "CactusCave"
+			},
+			{
+				"From": "Ruin",
+				"Direction": "Down",
+				"To": "BlackCave"
+			},
+			{
+				"From": "BlackCave",
+				"Direction": "Up",
+				"To": "Ruin"
+			},
+			{
+				"From": "HieroglyphsCave",
+				"Direction": "Down",
+				"To": "TalkingCave"
+			},
+			{
+				"From": "StormCave",
+				"Direction": "Down",
+				"To": "EyeCave"
+			},
+			{
+				"From": "SpiralstaircaseCave1",
+				"Direction": "Down",
+				"To": "SpiralstaircaseCave2"
+			},
+			{
+				"From": "EyeCave",
+				"Direction": "Up",
+				"To": "StormCave"
+			},
+			{
+				"From": "SpiralstaircaseCave2",
+				"Direction": "Up",
+				"To": "SpiralstaircaseCave1"
+			},
+			{
+				"From": "SpiralstaircaseCave2",
+				"Direction": "Down",
+				"To": "SpiralstaircaseCave3"
+			},
+			{
+				"From": "TalkingCave",
+				"Direction": "Up",
+				"To": "HieroglyphsCave"
+			},
+			{
+				"From": "SpiralstaircaseCave3",
+				"Direction": "Up",
+				"To": "SpiralstaircaseCave2"
+			}
+		],
+	"BlockedConnections": [
+		{
+			"Room": "NorthSwamp",
+			"Direction": "West"
+		},
+		{
+			"Room": "NorthSwamp",
+			"Direction": "East"
+		},
+		{
+			"Room": "NorthSwamp",
+			"Direction": "South"
+		},
+		{
+			"Room": "MiddleSwamp",
+			"Direction": "West"
+		},
+		{
+			"Room": "MiddleSwamp",
+			"Direction": "East"
+		},
+		{
+			"Room": "MiddleSwamp",
+			"Direction": "North"
+		},
+		{
+			"Room": "MiddleSwamp",
+			"Direction": "South"
+		},
+		{
+			"Room": "Forest5",
+			"Direction": "East"
+		},
+		{
+			"Room": "Cemetery",
+			"Direction": "West"
+		},
+		{
+			"Room": "Forest11",
+			"Direction": "East"
+		},
+		{
+			"Room": "EmptySpace12",
+			"Direction": "West"
+		},
+		{
+			"Room": "SouthSwamp",
+			"Direction": "West"
+		},
+		{
+			"Room": "SouthSwamp",
+			"Direction": "East"
+		},
+		{
+			"Room": "SouthSwamp",
+			"Direction": "North"
+		},
+		{
+			"Room": "Ruin",
+			"Direction": "West"
+		},
+		{
+			"Room": "SlimeCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "BlackCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "DrugCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "DrugCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "HornyCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "HornyCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "StraitjacketCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "NeglectedCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "NeglectedCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "EmptyCave26",
+			"Direction": "West"
+		},
+		{
+			"Room": "EmptyCave26",
+			"Direction": "East"
+		},
+		{
+			"Room": "MainCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "MainCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "MainCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "HieroglyphsCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "FluorescentCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "SmallCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "IceCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "CactusCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "CactusCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "StormCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "MistCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "MistCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "MistCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "TentacleCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "GarbageCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "EchoCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "EchoCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "SecretCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "SecretCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "FoodCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "FoodCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "GnuCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "EmptyCave45",
+			"Direction": "North"
+		},
+		{
+			"Room": "EyeCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "RockCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "Emptiness",
+			"Direction": "South"
+		},
+		{
+			"Room": "SafeCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "SafeCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "NarrowCleft",
+			"Direction": "North"
+		},
+		{
+			"Room": "NarrowCleft",
+			"Direction": "East"
+		},
+		{
+			"Room": "NarrowCleft",
+			"Direction": "South"
+		},
+		{
+			"Room": "OilCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "EmptyCave55",
+			"Direction": "East"
+		},
+		{
+			"Room": "SpiralstaircaseCave2",
+			"Direction": "West"
+		},
+		{
+			"Room": "SpiderCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "TalkingCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "LavaPit",
+			"Direction": "West"
+		},
+		{
+			"Room": "ScoobyCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "RadioactiveCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "RadioactiveCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "DeathCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "RCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "RCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "ECave",
+			"Direction": "South"
+		},
+		{
+			"Room": "DamnationCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "DamnationCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "VacuumCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "VacuumCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "VacuumCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "RedCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "RedCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "RedCave",
+			"Direction": "East"
+		},
+		{
+			"Room": "NeonCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "BloodCave",
+			"Direction": "South"
+		},
+		{
+			"Room": "BatCave",
+			"Direction": "North"
+		},
+		{
+			"Room": "TeleportCave",
+			"Direction": "West"
+		},
+		{
+			"Room": "TeleportCave",
+			"Direction": "North"
+		}
+	]
+}

@@ -11,23 +11,23 @@ namespace R136.Entities.Animates
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
-			if (StatusManager == null)
+			if (Player == null)
 				return;
 
 			switch (ID)
 			{
 				case AnimateID.NorthSwamp:
-					StatusManager.CurrentRoom = RoomID.EmptyCave51;
+					Player.CurrentRoom = RoomID.EmptyCave51;
 
 					break;
 
 				case AnimateID.MiddleSwamp:
-					StatusManager.CurrentRoom = RoomID.GloomyCave;
+					Player.CurrentRoom = RoomID.GloomyCave;
 
 					break;
 
 				case AnimateID.SouthSwamp:
-					StatusManager.CurrentRoom = RoomID.RockCave;
+					Player.CurrentRoom = RoomID.RockCave;
 
 					break;
 			}

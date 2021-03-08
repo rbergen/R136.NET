@@ -1,10 +1,12 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.DependencyInjection;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
+using System;
 
 namespace R136.Entities.Animates
 {
-	class Gnu : Animate, INotifyRoomChangeRequested
+	class Gnu : Animate, IGameServiceBasedConfigurator
 	{
 		public static Animate Create(Initializer initializer)
 			=> new Gnu(initializer.ID, initializer.StartRoom);
@@ -22,7 +24,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Attack:
-					StatusManager?.DecreaseHealth();
+					Player?.DecreaseHealth();
 
 					break;
 
@@ -43,8 +45,7 @@ namespace R136.Entities.Animates
 			return Result.Success();
 		}
 
-
-		public void RoomChanged(RoomChangeRequestedEventArgs e)
+		public void RoomChangedHandler(RoomChangeRequestedEventArgs e)
 		{
 			if (e.From == CurrentRoom && Status != AnimateStatus.Done)
 			{
@@ -53,6 +54,12 @@ namespace R136.Entities.Animates
 			}
 		}
 
-		public void RoomChangeRequested(RoomChangeRequestedEventArgs args) { }
+		public void Configure(IServiceProvider serviceProvider)
+		{
+			var roomChangeNotifier = serviceProvider.GetService<IRoomChangeNotificationProvider>();
+
+			if (roomChangeNotifier != null)
+				roomChangeNotifier.RoomChanged += RoomChangedHandler;
+		}
 	}
 }

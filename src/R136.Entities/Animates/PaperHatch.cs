@@ -1,10 +1,12 @@
-﻿using R136.Entities.General;
+﻿using Microsoft.Extensions.DependencyInjection;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
+using System;
 
 namespace R136.Entities.Animates
 {
-	class PaperHatch : Animate, ITriggerable
+	class PaperHatch : Animate, IGameServiceBasedConfigurator
 	{
 		public static Animate Create(Initializer initializer)
 			=> new PaperHatch(initializer.ID, initializer.StartRoom);
@@ -29,6 +31,14 @@ namespace R136.Entities.Animates
 				Status = AnimateStatus.Operating;
 
 			IsTriggered = true;
+		}
+
+		public void Configure(IServiceProvider serviceProvider)
+		{
+			var paperRouteNotifier = serviceProvider.GetService<IPaperRouteNotificationProvider>();
+
+			if (paperRouteNotifier != null)
+				paperRouteNotifier.PaperRouteCompleted += Trigger;
 		}
 	}
 }

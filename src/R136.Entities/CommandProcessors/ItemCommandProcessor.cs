@@ -8,12 +8,17 @@ using System.Linq;
 
 namespace R136.Entities.CommandProcessors
 {
-	class ItemCommandProcessor : ActingCommandProcessor, IContinuable
+	class ItemCommandProcessor : CommandProcessor, IContinuable
 	{
 		private const int Default = 0;
 		private const string ContinuationKey = "M54ym08ugrEYkp4tpTu1";
 
-		public ItemCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Item, items, animates) { }
+		protected IReadOnlyDictionary<ItemID, Item> _items;
+		protected IReadOnlyDictionary<AnimateID, Animate> _animates;
+
+
+		public ItemCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Item)
+			=> (_items, _animates) = (items, animates);
 
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 			=> id switch
@@ -47,7 +52,7 @@ namespace R136.Entities.CommandProcessors
 
 			return item == null
 				? result
-				: (StatusManager?.IsDark ?? false)
+				: (Player?.IsDark ?? false)
 				? Result.Failure(GetTexts(CommandID.Inspect, Default))
 				: Result.Success(item.Description);
 		}
@@ -102,9 +107,8 @@ namespace R136.Entities.CommandProcessors
 			if (items.Distinct().Count() != items.Length)
 				return Result.Failure(GetTexts(CombineTextID.CantCombineWithItself));
 
-			var combineItem = Items.Values
-				.Where(item => item is ICompound<Item>)
-				.Cast<ICompound<Item>>()
+			var combineItem = _items.Values
+				.OfType<ICompound<Item>>()
 				.FirstOrDefault(combineItem => combineItem.Components.Intersect(items).Count() == combineItem.Components.Count);
 
 			if (combineItem == null)
@@ -127,7 +131,7 @@ namespace R136.Entities.CommandProcessors
 			if (item == null)
 				return result;
 
-			var presentAnimate = Animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
+			var presentAnimate = _animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
 
 			if (presentAnimate == null || item is not UsableItem usableItem || !usableItem.UsableOn.Contains(presentAnimate))
 				return item.Use().WrapInputRequest(ContinuationKey, (int)item.ID);
@@ -173,7 +177,7 @@ namespace R136.Entities.CommandProcessors
 			if (parameters == null || parameters == string.Empty)
 				return (null, Result.Error(GetTexts(TextID.NoParameterGiven, "command", command)));
 
-			(Item? item, FindResult result) = Items.Values.Where(item => item.CurrentRoom == player.CurrentRoom.ID).ToList().FindItemByName(parameters);
+			(Item? item, FindResult result) = _items.Values.Where(item => item.CurrentRoom == player.CurrentRoom.ID).ToList().FindItemByName(parameters);
 
 			return result switch
 			{
@@ -188,7 +192,7 @@ namespace R136.Entities.CommandProcessors
 
 		private Result DoContinuation(ContinuationStatus status, string input)
 		{
-			if (status.Number != null && Items[(ItemID)status.Number] is IContinuable item)
+			if (status.Number != null && _items[(ItemID)status.Number] is IContinuable item)
 				return item.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey);
 
 			return Result.Error();

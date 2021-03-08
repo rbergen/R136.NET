@@ -101,7 +101,7 @@ namespace R136.Shell
 						break;
 
 					case NextStep.ProgressAnimateStatus:
-						_messages.AddIfNotEmpty(_engine.ProgressAnimateStatus());
+						ProcessResult(_engine.ProgressAnimateStatus());
 
 						break;
 
@@ -111,15 +111,6 @@ namespace R136.Shell
 							SaveStatus(_engine.CommandInputSpecs);
 
 						proceed = await RunCommand();
-
-						break;
-					case NextStep.Pause:
-						WriteMessages();
-						SaveStatus(null);
-
-						WaitForKey();
-
-						_engine.EndPause();
 
 						break;
 				}
@@ -243,6 +234,18 @@ namespace R136.Shell
 				case ResultCode.Success:
 				case ResultCode.Failure:
 					_messages.AddIfNotEmpty(result.Message);
+
+					if (result.PauseRequested)
+					{
+						WriteMessages();
+
+						if (_status != null)
+							_status.Pausing = true;
+						
+						SaveStatus(null);
+
+						WaitForKey();
+					}
 
 					break;
 			}

@@ -92,7 +92,6 @@ namespace R136.Web.Pages
 		private async Task ProceedClickedAsync()
 		{
 			_pause = false;
-			Engine.EndPause();
 			await CycleEngine();
 		}
 
@@ -121,18 +120,12 @@ namespace R136.Web.Pages
 						break;
 
 					case NextStep.ProgressAnimateStatus:
-						ContentLog.Add(ContentBlockType.AnimateStatus, Engine.ProgressAnimateStatus());
+						proceed = await ProcessResult(Engine.ProgressAnimateStatus(), ContentBlockType.AnimateStatus);
 
 						break;
 
 					case NextStep.RunCommand:
 						_inputSpecs = Engine.CommandInputSpecs;
-						proceed = false;
-						await SaveSnapshots();
-
-						break;
-					case NextStep.Pause:
-						_pause = true;
 						proceed = false;
 						await SaveSnapshots();
 
@@ -225,6 +218,13 @@ namespace R136.Web.Pages
 				case ResultCode.Success:
 				case ResultCode.Failure:
 					ContentLog.Add(blockType, result.Code, result.Message);
+
+					if (result.PauseRequested)
+					{
+						_pause = true;
+						await SaveSnapshots();
+						return false;
+					}
 
 					return true;
 			}

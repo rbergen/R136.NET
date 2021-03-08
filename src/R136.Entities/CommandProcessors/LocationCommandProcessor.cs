@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
@@ -8,19 +9,15 @@ using System.Linq;
 
 namespace R136.Entities.CommandProcessors
 {
-	public class LocationCommandProcessor : ActingCommandProcessor, ISnappable<LocationCommandProcessor.Snapshot>
+	public class LocationCommandProcessor : CommandProcessor, IPaperRouteNotificationProvider, IRoomChangeNotificationProvider, IGameServiceProvider, ISnappable<LocationCommandProcessor.Snapshot>
 	{
 		public event Action? PaperRouteCompleted;
-		private event Action<RoomChangeRequestedEventArgs>? RoomChanged;
-		private event Action<RoomChangeRequestedEventArgs>? RoomChangeRequested;
+		public event Action<RoomChangeRequestedEventArgs>? RoomChanged;
+		public event Action<RoomChangeRequestedEventArgs>? RoomChangeRequested;
 
 		private int _paperrouteIndex = 0;
 
-		public LocationCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Location, items, animates)
-		{
-			RegisterRoomChangedListeners(items);
-			RegisterRoomChangedListeners(animates);
-		}
+		public LocationCommandProcessor() : base(CommandProcessorID.Location) { }
 
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 		{
@@ -50,15 +47,6 @@ namespace R136.Entities.CommandProcessors
 			CheckPaperRoute(toRoom.ID);
 
 			return Result.Success();
-		}
-
-		private void RegisterRoomChangedListeners<TEntityKey, TEntityValue>(IReadOnlyDictionary<TEntityKey, TEntityValue> entities)
-		{
-			foreach (var requestNotifiee in entities.Values.Where(entity => entity is INotifyRoomChangeRequested).Cast<INotifyRoomChangeRequested>())
-			{
-				RoomChangeRequested += requestNotifiee.RoomChangeRequested;
-				RoomChanged += requestNotifiee.RoomChanged;
-			}
 		}
 
 		private static Direction? CommandToDirection(CommandID id) => id switch
@@ -105,6 +93,12 @@ namespace R136.Entities.CommandProcessors
 			_paperrouteIndex = snapshot.PaperRouteIndex;
 
 			return true;
+		}
+
+		public void RegisterServices(IServiceCollection serviceCollection)
+		{
+			serviceCollection.AddSingleton<IRoomChangeNotificationProvider>(this);
+			serviceCollection.AddSingleton<IPaperRouteNotificationProvider>(this);
 		}
 
 		public class Snapshot

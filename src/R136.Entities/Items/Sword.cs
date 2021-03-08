@@ -10,6 +10,8 @@ namespace R136.Entities.Items
 	{
 		private const string ContinuationKey = "myp3ybBgaJznuoTCcRpj";
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameters are part of delegate interface")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Legibility")]
 		public static Sword Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates, IReadOnlyDictionary<ItemID, Item> items)
 			=> new
 			(
@@ -61,7 +63,7 @@ namespace R136.Entities.Items
 			}
 
 			if (Facilities.Randomizer.NextDouble() > .3)
-				return Result.Failure(texts.ToArray());
+				return Result.Failure(texts.ToArray(), true);
 
 			texts.Add(string.Empty);
 			AddTexts(texts, TextID.CanStrikeAgain);

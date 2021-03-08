@@ -12,10 +12,10 @@ namespace R136.Entities.Animates
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
-			if (!Facilities.Configuration.FreezeAnimates && StatusManager != null)
+			if (!Facilities.Configuration.FreezeAnimates && Player != null)
 			{
-				StatusManager.DecreaseHealth(HealthImpact.Severe);
-				StatusManager.CurrentRoom = RoomID.SnakeCave;
+				Player.DecreaseHealth(HealthImpact.Severe);
+				Player.CurrentRoom = RoomID.SnakeCave;
 			}
 		}
 	}
