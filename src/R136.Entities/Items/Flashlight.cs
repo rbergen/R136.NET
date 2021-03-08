@@ -88,7 +88,7 @@ namespace R136.Entities.Items
 				return Result.Success(GetTexts(TextID.LightOn));
 			}
 
-			return Result.Failure(GetTexts(TextID.NeedBatteries));
+			return Result.Failure(GetTexts(TextID.NeedBatteries), true);
 		}
 
 		public Result Combine(Item first, Item second)

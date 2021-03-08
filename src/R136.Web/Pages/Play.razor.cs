@@ -16,8 +16,9 @@ namespace R136.Web.Pages
 		private ContinuationStatus _continuationStatus = null;
 		private InputSpecs _inputSpecs;
 		private MarkupString? _error = null;
-		private bool _ended = false;
-		private bool _pause = false;
+		private bool _hasEnded = false;
+		private bool _isPaused = false;
+		private ElementReference _focusElement;
 
 		[Parameter]
 		public string Language { get; set; }
@@ -44,7 +45,15 @@ namespace R136.Web.Pages
 		public string Action { get; set; }
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
-			=> await JSRuntime.InvokeAsync<bool>("stretchToHeight", "contentlog", "app");
+		{
+			await JSRuntime.InvokeAsync<bool>("R136JS.stretchToHeight", "contentlog", "app");
+
+			try
+			{
+				await _focusElement.FocusAsync();
+			}
+			catch { }
+		}
 
 		protected override async Task OnInitializedAsync()
 		{
@@ -57,6 +66,7 @@ namespace R136.Web.Pages
 					await LoadSnapshot<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey, ContentLog.RestoreSnapshot);
 					await LoadSnapshot<ContinuationStatus>(Constants.ContinuationStatusStorageKey, snapshot => { _continuationStatus = snapshot; return true; });
 					await LoadSnapshot<InputSpecs>(Constants.InputSpecsStorageKey, snapshot => { _inputSpecs = snapshot; return true; });
+					await LoadSnapshot<bool>(Constants.IsPausedStorageKey, snapshot => { _isPaused = snapshot; return true; });
 				}
 				else
 					await RemoveSnapshots();
@@ -91,13 +101,13 @@ namespace R136.Web.Pages
 
 		private async Task ProceedClickedAsync()
 		{
-			_pause = false;
+			_isPaused = false;
 			await CycleEngine();
 		}
 
 		private void RestartClickedAsync()
 		{
-			_ended = false;
+			_hasEnded = false;
 			NavigationManager.NavigateTo("/", true);
 		}
 
@@ -148,6 +158,7 @@ namespace R136.Web.Pages
 			await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
 			await SaveSnapshot(Constants.ContinuationStatusStorageKey, _continuationStatus);
 			await SaveSnapshot(Constants.InputSpecsStorageKey, _inputSpecs);
+			await SaveSnapshot(Constants.IsPausedStorageKey, _isPaused);
 		}
 
 		private async Task RemoveSnapshots()
@@ -156,6 +167,7 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
 			await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);
 			await LocalStorage.RemoveItemAsync(Constants.InputSpecsStorageKey);
+			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
 		private async Task SubmitInput(EventArgs e)
@@ -210,7 +222,7 @@ namespace R136.Web.Pages
 					ContentLog.Add(blockType, result.Code, result.Message);
 					_error = null;
 					_continuationStatus = null;
-					_ended = true;
+					_hasEnded = true;
 
 					await RemoveSnapshots();
 					return false;
@@ -221,7 +233,7 @@ namespace R136.Web.Pages
 
 					if (result.PauseRequested)
 					{
-						_pause = true;
+						_isPaused = true;
 						await SaveSnapshots();
 						return false;
 					}

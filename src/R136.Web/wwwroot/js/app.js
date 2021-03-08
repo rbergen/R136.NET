@@ -1,44 +1,55 @@
-﻿window.scrollToElementId = (elementId) => {
+﻿var R136JS = R136JS || {};
+
+R136JS.scrollToElementId = function(elementId) {
   var element = document.getElementById(elementId);
-  if(!element)
+
+  if (!element)
       return false;
 
   element.scrollIntoView({ behavior: "smooth" });
+
   return true;
 }
 
-window.stretchToHeight = (from, to) => {
+R136JS.stretchToHeight = function(from, to) {
   var fromElement = $("#" + from);
   var toElement = $("#" + to);
+
   if (fromElement == null || toElement == null)
     return false;
-//  if (fromElement.height() > toElement.height())
-    toElement.height(fromElement.height());
+
+  toElement.height(fromElement.height());
+
   return true;
 }
 
-var blinkTexts = [];
-var blinkCount = 0;
+R136JS.blinkTexts = [];
+R136JS.blinkCount = 0;
 
-if ($("#blinkTextMessage")) {
-  $(".blinkTextContent").each(function () {
-    blinkTexts[blinkCount++] = $(this).text();
-  });
+R136JS.blinkInit = function() {
+  if ($("#blinkTextMessage")) {
+    $(".blinkTextContent").each(function() {
+      R136JS.blinkTexts[R136JS.blinkCount++] = $(this).text();
+    });
+
+    return true;
+  }
+
+  return false;
 }
 
-function blinkText() {
+R136JS.blinkText = function() {
   var blinkTextDiv = $("#blinkTextMessage");
   if (!blinkTextDiv)
     return;
 
-  if (blinkCount >= blinkTexts.length)
-    blinkCount = 0;
+  if (this.blinkCount >= this.blinkTexts.length)
+    this.blinkCount = 0;
 
-  blinkTextDiv.html(blinkTexts[blinkCount++]);
-  blinkTextDiv.fadeIn(300).animate({ opacity: 1.0 }).fadeOut(300,
-      function () {
-        return blinkText();
-      }
-    );
+  blinkTextDiv.html(this.blinkTexts[this.blinkCount++]);
+  blinkTextDiv.fadeIn(300).animate({ opacity: 1.0 }).fadeOut(300, () => this.blinkText());
 }
-blinkText();
+
+if (R136JS.blinkInit())
+  R136JS.blinkText();
+

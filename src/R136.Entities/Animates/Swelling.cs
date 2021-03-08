@@ -45,7 +45,7 @@ namespace R136.Entities.Animates
 				return Result.Error();
 
 			Status = AnimateStatus.Dying;
-			IsTriggered = true;
+			Trigger();
 			return Result.Success();
 		}
 	}

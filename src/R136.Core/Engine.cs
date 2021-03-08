@@ -153,28 +153,24 @@ namespace R136.Core
 			if (presentAnimates.Count == 0)
 				return Result.Success();
 
-			var startRoom = _player!.CurrentRoom;
 			var texts = new List<string>();
 			bool isAnimateTriggered = false;
 
 			foreach (var animate in presentAnimates)
 			{
+				if (texts.Count > 0)
+					texts.Add(string.Empty);
+
+				texts.AddRangeIfNotNull(animate.ProgressStatus());
+
 				if (animate.IsTriggered)
 				{
 					isAnimateTriggered = true;
 					animate.ResetTrigger();
 				}
-
-				if (texts.Count > 0)
-					texts.Add(string.Empty);
-
-				texts.AddRangeIfNotNull(animate.ProgressStatus());
 			}
 
-			if (_player!.CurrentRoom != startRoom)
-				DoNext = NextStep.ShowRoomStatus;
-			else
-				DoNext = NextStep.RunCommand;
+			DoNext = isAnimateTriggered ? NextStep.ShowRoomStatus : NextStep.RunCommand;
 
 			return Result.Success(texts.ToArray(), isAnimateTriggered);
 		}
@@ -214,7 +210,7 @@ namespace R136.Core
 			Result DoContinuation(ContinuationStatus status, string input)
 			{
 				if (status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
-					return processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, (int)_processors![(CommandProcessorID)status.Number]!.ID);
+					return processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, status.Number.Value);
 
 				return Result.Error();
 			}

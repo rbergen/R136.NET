@@ -14,6 +14,8 @@ namespace R136.Entities.Animates
 		{
 			if (Player != null)
 			{
+				Trigger();
+
 				switch (Facilities.Randomizer.Next(3))
 				{
 					case 0:

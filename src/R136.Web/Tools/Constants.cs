@@ -16,6 +16,7 @@
 		public const string ContinuationStatusStorageKey = "ContinuationStatusSnapshot";
 		public const string InputSpecsStorageKey = "InputSpecsSnapshot";
 		public const string LanguageStorageKey = "Language";
+		public const string IsPausedStorageKey = "IsPaused";
 
 		public const string Dutch = "nl-NL";
 		public const string English = "en-GB";

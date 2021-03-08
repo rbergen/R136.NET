@@ -12,11 +12,11 @@
 
 <div class="footer fixed-bottom">
 
-	@if (_pause)
+	@if (_isPaused)
 	{
 	<ProceedButtonBar OnProceedClicked="ProceedClickedAsync" />
 	}
-	else @if (_ended)
+	else @if (_hasEnded)
 	{
 	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel)" />
 	}
@@ -33,7 +33,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text">&gt;</span>
 						</div>
-						<input type="text" maxlength="@(_inputSpecs?.MaxLength ?? 100)" style="text-transform: @((_inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)" />
+						<input @ref="_focusElement" type="text" maxlength="@(_inputSpecs?.MaxLength ?? 100)" style="text-transform: @((_inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)" />
 					</div>
 				</div>
 				<div class="col-md-auto">

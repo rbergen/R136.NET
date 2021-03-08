@@ -18,6 +18,8 @@ namespace R136.Entities.Animates
 			if (!Facilities.Configuration.FreezeAnimates && textStatus == AnimateStatus.Initial
 				&& Player != null && !Player.IsInPosession(ItemID.HeatSuit))
 			{
+				Trigger();
+
 				textStatus = AnimateStatus.SelfInjury;
 				Player.DecreaseHealth(HealthImpact.Severe);				
 				Player.CurrentRoom = RoomID.OilCave;

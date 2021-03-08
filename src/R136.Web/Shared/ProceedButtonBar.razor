@@ -7,7 +7,7 @@
 			&nbsp;
 		</div>
 		<div class="col-md-auto">
-			<button type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? LanguageProvider.GetConfigurationValue(Constants.ProceedButtonLabel))</button>
+			<button @ref="_focusElement" type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? LanguageProvider.GetConfigurationValue(Constants.ProceedButtonLabel))</button>
 		</div>
 		<div class="col">
 			&nbsp;
@@ -17,6 +17,17 @@
 
 
 @code {
+	private ElementReference _focusElement;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		try
+		{
+			await _focusElement.FocusAsync();
+		}
+		catch { }
+	}
+
 	[Parameter]
 	public EventCallback OnProceedClicked { get; set; }
 

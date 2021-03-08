@@ -54,7 +54,7 @@ namespace R136.Entities.CommandProcessors
 				? result
 				: (Player?.IsDark ?? false)
 				? Result.Failure(GetTexts(CommandID.Inspect, Default))
-				: Result.Success(item.Description);
+				: Result.Success(item.Description, true);
 		}
 
 		private Result ExecutePutDown(string command, string? parameters, Player player)
@@ -65,7 +65,7 @@ namespace R136.Entities.CommandProcessors
 				return result;
 
 			if (!item.IsPutdownAllowed)
-				return Result.Failure(GetTextsWithItem(CommandID.PutDown, (int)PutDownTextID.CantPutDown, item));
+				return Result.Failure(GetTextsWithItem(CommandID.PutDown, (int)PutDownTextID.CantPutDown, item), true);
 
 			if (player.RemoveFromInventory(item))
 			{
@@ -105,14 +105,14 @@ namespace R136.Entities.CommandProcessors
 			}
 
 			if (items.Distinct().Count() != items.Length)
-				return Result.Failure(GetTexts(CombineTextID.CantCombineWithItself));
+				return Result.Failure(GetTexts(CombineTextID.CantCombineWithItself), true);
 
 			var combineItem = _items.Values
 				.OfType<ICompound<Item>>()
 				.FirstOrDefault(combineItem => combineItem.Components.Intersect(items).Count() == combineItem.Components.Count);
 
 			if (combineItem == null)
-				return Result.Failure(GetTexts(CombineTextID.DoesntCombine));
+				return Result.Failure(GetTexts(CombineTextID.DoesntCombine), true);
 
 			foreach (var item in items)
 				player.RemoveFromInventory(item!);
@@ -121,6 +121,7 @@ namespace R136.Entities.CommandProcessors
 
 			player.AddToInventory(combineItem.Self);
 
+			result.PauseRequested = true;
 			return result;
 		}
 
@@ -188,14 +189,16 @@ namespace R136.Entities.CommandProcessors
 		}
 
 		public Result Continue(ContinuationStatus status, string input)
-			=> Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input, DoContinuation);
-
-		private Result DoContinuation(ContinuationStatus status, string input)
 		{
-			if (status.Number != null && _items[(ItemID)status.Number] is IContinuable item)
-				return item.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey);
+			return Result.ContinueWrappedContinuationStatus(ContinuationKey, status, input, DoContinuation);
 
-			return Result.Error();
+			Result DoContinuation(ContinuationStatus status, string input)
+			{
+				if (status.Number != null && _items[(ItemID)status.Number] is IContinuable item)
+					return item.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, status.Number.Value);
+
+				return Result.Error();
+			}
 		}
 
 		private enum TextID

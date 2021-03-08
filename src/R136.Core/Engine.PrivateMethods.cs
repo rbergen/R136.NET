@@ -239,7 +239,7 @@ namespace R136.Core
 					texts.AddRange(notifieeTexts);
 			}
 
-			DoNext = _animates!.Values.Any(animate => animate.IsTriggered) ? NextStep.ProgressAnimateStatus : NextStep.ShowRoomStatus;
+			DoNext =  PresentAnimates.Any(animate => animate.IsTriggered) ? NextStep.ProgressAnimateStatus : NextStep.ShowRoomStatus;
 
 			return texts.Count == 0 ? result : new Result(result.Code, texts.ToArray(), result.PauseRequested);
 		}

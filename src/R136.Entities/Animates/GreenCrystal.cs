@@ -19,10 +19,8 @@ namespace R136.Entities.Animates
 				StatusManager?.Place(ItemID.GreenCrystal);
 		}
 
-		public void Trigger()
-		{
-			Status = AnimateStatus.Done;
-		}
+		protected override void Trigger()
+			=>	Status = AnimateStatus.Done;
 
 		public void Configure(IServiceProvider serviceProvider)
 		{

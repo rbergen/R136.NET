@@ -65,13 +65,19 @@ namespace R136.Shell
 
 			if (!(_status?.IsLoaded ?? false))
 			{
-				new Animation().Run();
+				if (_services.GetService<IConfiguration>()?[Constants.IntroParam] != Constants.ParamNo)
+				{
+					new Animation().Run();
 
-				WritePlainText(_introTexts[language]);
-				WaitForKey();
+					WritePlainText(_introTexts[language]);
+					WaitForKey();
+				}
+
 				Console.Clear();
 				ShowLanguageSwitchInstructions();
 			}
+			else
+				Console.Clear();
 
 			await task;
 			RestoreStatus();
@@ -189,7 +195,7 @@ namespace R136.Shell
 				return false;
 
 			string[] segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			if ((segments?.Length ?? 0) == 2 && segments![0] == "lang")
+			if ((segments?.Length ?? 0) == 2 && segments![0] == Constants.LanguageParam)
 			{
 				_languages.Language = segments![1];
 
@@ -227,8 +233,11 @@ namespace R136.Shell
 
 				case ResultCode.EndRequested:
 					_messages.AddIfNotEmpty(result.Message);
+					WriteMessages();
 
 					_status?.Remove();
+
+					WaitForKey();
 					break;
 
 				case ResultCode.Success:

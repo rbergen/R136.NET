@@ -25,12 +25,12 @@ namespace R136.Entities.Animates
 			}
 		}
 
-		public void Trigger()
+		protected override void Trigger()
 		{
 			if (Status == AnimateStatus.Initial)
 				Status = AnimateStatus.Operating;
 
-			IsTriggered = true;
+			base.Trigger();
 		}
 
 		public void Configure(IServiceProvider serviceProvider)

@@ -178,6 +178,12 @@
 				"Texts": [
 					"* {item}"
 				]
+			},
+			{
+				"ID": 7,
+				"Texts": [
+					"Your flashlight contains \"bunny batteries\"."
+				]
 			}
 		]
 	},

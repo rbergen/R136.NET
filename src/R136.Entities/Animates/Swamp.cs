@@ -14,6 +14,8 @@ namespace R136.Entities.Animates
 			if (Player == null)
 				return;
 
+			Trigger();
+
 			switch (ID)
 			{
 				case AnimateID.NorthSwamp:

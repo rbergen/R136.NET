@@ -13,7 +13,7 @@ namespace R136.Entities
 	{
 		public AnimateID ID { get; private set; }
 		public RoomID CurrentRoom { get; set; }
-		public bool IsTriggered { get; protected set; }
+		public bool IsTriggered { get; private set; }
 
 		protected AnimateStatus Status { get; set; }
 
@@ -95,6 +95,9 @@ namespace R136.Entities
 
 		public virtual void ResetTrigger()
 			=> IsTriggered = false;
+
+		protected virtual void Trigger()
+			=> IsTriggered = true;
 
 		private static Func<Initializer, Animate>? GetCreateMethod(AnimateID id) => id switch
 		{
@@ -185,15 +188,21 @@ namespace R136.Entities
 		protected StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
 			=> StrikesLeft = strikeCount;
 
+		public bool IsSeriouslyInjured => StrikesLeft == 1;
+
+		public bool IsDead => StrikesLeft == 0;
+
 		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Sword)
 				return Result.Error();
 
-			if (--StrikesLeft == 0)
+			StrikesLeft--;
+
+			if (IsDead)
 			{
 				Status = AnimateStatus.Dying;
-				IsTriggered = true;
+				Trigger();
 				return Result.Success();
 			}
 

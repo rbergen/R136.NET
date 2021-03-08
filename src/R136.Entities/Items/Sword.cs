@@ -51,12 +51,13 @@ namespace R136.Entities.Items
 			else
 			{
 				AddTexts(texts, TextID.Hit);
+				strikable.ApplyItem(this);
 
-				if (strikable.ApplyItem(this).IsSuccess)
+				if (strikable.IsDead)
 					return Result.Success(texts.ToArray());
 			}
 
-			if (strikable.StrikesLeft == 1)
+			if (strikable.IsSeriouslyInjured)
 			{
 				texts.Add(string.Empty);
 				AddTexts(texts, TextID.SeriouslyInjured);

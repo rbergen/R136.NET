@@ -333,10 +333,5 @@ namespace R136.Entities
 				? Result.Failure()
 				: Result.Success(CombineTexts);
 		}
-
-		private enum TextID
-		{
-			CantCombineWithItself = 0,
-		}
 	}
 }
