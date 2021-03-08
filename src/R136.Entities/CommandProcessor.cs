@@ -1,4 +1,5 @@
-﻿using R136.Entities.CommandProcessors;
+﻿using Microsoft.Extensions.DependencyInjection;
+using R136.Entities.CommandProcessors;
 using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
@@ -15,13 +16,19 @@ namespace R136.Entities
 		protected CommandProcessor(CommandProcessorID id)
 			=> ID = id;
 
-		public static CommandProcessorMap CreateMap
+		public static CommandProcessorMap UpdateOrCreateMap
 			(
+			CommandProcessorMap? sourceMap,
 			ICollection<CommandInitializer> initializers,
 			IReadOnlyDictionary<ItemID, Item> items,
 			IReadOnlyDictionary<AnimateID, Animate> animates
 			)
 		{
+			LocationCommandProcessor.Snapshot? snapshot = null;
+
+			if (sourceMap != null)
+				snapshot = sourceMap.LocationProcessor.TakeSnapshot();
+
 			var map = new CommandProcessorMap(initializers, items, animates);
 
 			foreach (var initializer in initializers)
@@ -33,13 +40,16 @@ namespace R136.Entities
 				}
 			}
 
+			if (snapshot != null)
+				map.LocationProcessor.RestoreSnapshot(snapshot);
+
 			return map;
 		}
 
 		public abstract Result Execute(CommandID id, string command, string? parameters, Player player);
 	}
 
-	public class CommandProcessorMap
+	public class CommandProcessorMap : IGameServiceProvider, IGameServiceBasedConfigurator
 	{
 		private readonly Dictionary<(string command, bool fullMatch), CommandID> _commandIdMap;
 		private readonly ItemCommandProcessor _itemProcessor;
@@ -49,20 +59,21 @@ namespace R136.Entities
 
 		public CommandProcessorMap
 			(
-			ICollection<CommandInitializer> initializers,
-			IReadOnlyDictionary<ItemID, Item> items,
-			IReadOnlyDictionary<AnimateID, Animate> animates
+				ICollection<CommandInitializer> initializers,
+				IReadOnlyDictionary<ItemID, Item> items,
+				IReadOnlyDictionary<AnimateID, Animate> animates
 			)
 		{
 			_commandIdMap = new Dictionary<(string, bool), CommandID>();
 			_itemProcessor = new ItemCommandProcessor(items, animates);
-			LocationProcessor = new LocationCommandProcessor(items, animates);
+			LocationProcessor = new LocationCommandProcessor();
 			_generalProcessor = new GeneralCommandProcessor();
 			_internalProcessor = new InternalCommandProcessor();
 
 			foreach (var initializer in initializers)
 				_commandIdMap[(initializer.Name, initializer.FullMatch)] = initializer.ID;
 		}
+
 
 		public CommandProcessor this[CommandID id]
 			=> id switch
@@ -109,15 +120,11 @@ namespace R136.Entities
 				? (this[foundItems[0].Value], foundItems[0].Value, foundItems[0].Key.command, result)
 				: (null, null, null, result);
 		}
-	}
 
-	public abstract class ActingCommandProcessor : CommandProcessor
-	{
-		protected IReadOnlyDictionary<ItemID, Item> Items { get; }
-		protected IReadOnlyDictionary<AnimateID, Animate> Animates { get; }
+		public void RegisterServices(IServiceCollection serviceCollection)
+			=> LocationProcessor.RegisterServices(serviceCollection);
 
-		public ActingCommandProcessor(CommandProcessorID id, IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(id)
-			=> (Items, Animates) = (items, animates);
+		public void Configure(IServiceProvider serviceProvider) {}
 	}
 
 	public class CommandInitializer

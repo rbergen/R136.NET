@@ -27,7 +27,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					if (!(StatusManager?.IsInPosession(ItemID.GasMask) ?? false))
+					if (!(Player?.IsInPosession(ItemID.GasMask) ?? false))
 						textStatus = AnimateStatus.SelfInjury;
 
 					StatusManager?.OpenConnection(Direction.North, RoomID.DamnationCave);
@@ -45,7 +45,7 @@ namespace R136.Entities.Animates
 				return Result.Error();
 
 			Status = AnimateStatus.Dying;
-			IsTriggered = true;
+			Trigger();
 			return Result.Success();
 		}
 	}

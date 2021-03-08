@@ -6,7 +6,6 @@ namespace R136.Entities.Global
 {
 	public static class Facilities
 	{
-		public static IServiceProvider? Services { get; set; }
 		public static Random Randomizer { get; }
 		public static TypedTextsMap<int> TextsMap { get; }
 		public static TypedTextsMap<AnimateStatus> AnimateStatusTextsMap { get; }

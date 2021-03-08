@@ -29,7 +29,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Attack:
-					StatusManager?.DecreaseHealth();
+					Player?.DecreaseHealth();
 
 					break;
 
@@ -54,14 +54,14 @@ namespace R136.Entities.Animates
 			if (item == ItemID.Cookie)
 			{
 				Status = AnimateStatus.FirstStep;
-				IsTriggered = true;
+				Trigger();
 				return Result.Success();
 			}
 
 			if (item == ItemID.Nightcap && Status == AnimateStatus.FirstWait)
 			{
 				Status = AnimateStatus.SecondStep;
-				IsTriggered = true;
+				Trigger();
 				return Result.Success();
 			}
 

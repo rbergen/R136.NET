@@ -1,7 +1,8 @@
 {
   "profiles": {
     "R136.Shell": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "--intro no"
     }
   }
 }

@@ -13,12 +13,20 @@ namespace R136.Entities
 	{
 		public AnimateID ID { get; private set; }
 		public RoomID CurrentRoom { get; set; }
-		public bool IsTriggered { get; protected set; }
+		public bool IsTriggered { get; private set; }
 
 		protected AnimateStatus Status { get; set; }
 
-		public static IReadOnlyDictionary<AnimateID, Animate> CreateMap(ICollection<Initializer> initializers)
+		public static IReadOnlyDictionary<AnimateID, Animate> UpdateOrCreateMap(IReadOnlyDictionary<AnimateID, Animate>? sourceMap, ICollection<Initializer> initializers)
 		{
+			SnapshotContainer? snapshot = null;
+
+			if (sourceMap != null)
+			{
+				snapshot = new();
+				TakeSnapshots(snapshot, sourceMap);
+			}
+
 			Dictionary<AnimateID, Animate> animates = new(initializers.Count);
 
 			foreach (var initializer in initializers)
@@ -38,7 +46,28 @@ namespace R136.Entities
 				animates[initializer.ID] = createMethod.Invoke(initializer);
 			}
 
+			if (snapshot != null)
+				RestoreSnapshots(snapshot, animates);
+
 			return animates;
+		}
+
+		public static void TakeSnapshots(ISnapshotContainer container, IReadOnlyDictionary<AnimateID, Animate> animates)
+			=> container.Animates = animates.Values
+				.Select(animate => animate.TakeSnapshot())
+				.ToArray();
+
+		public static bool RestoreSnapshots(ISnapshotContainer container, IReadOnlyDictionary<AnimateID, Animate> animates)
+		{
+			if (container.Animates == null)
+				return false;
+
+			bool result = true;
+
+			foreach (var animate in container.Animates)
+				result &= animates[animate.ID].RestoreSnapshot(animate);
+
+			return result;
 		}
 
 		protected Animate(AnimateID id, RoomID startRoom)
@@ -66,6 +95,9 @@ namespace R136.Entities
 
 		public virtual void ResetTrigger()
 			=> IsTriggered = false;
+
+		protected virtual void Trigger()
+			=> IsTriggered = true;
 
 		private static Func<Initializer, Animate>? GetCreateMethod(AnimateID id) => id switch
 		{
@@ -137,6 +169,16 @@ namespace R136.Entities
 			public int StrikesLeft { get; set; }
 			public bool IsTriggered { get; set; }
 		}
+
+		public interface ISnapshotContainer
+		{
+			Snapshot[]? Animates { get; set; }
+		}
+
+		private class SnapshotContainer : ISnapshotContainer
+		{
+			public Snapshot[]? Animates { get; set; }
+		}
 	}
 
 	abstract class StrikableAnimate : Animate, ISnappable<Animate.Snapshot>
@@ -146,15 +188,21 @@ namespace R136.Entities
 		protected StrikableAnimate(AnimateID id, RoomID startRoom, int strikeCount) : base(id, startRoom)
 			=> StrikesLeft = strikeCount;
 
+		public bool IsSeriouslyInjured => StrikesLeft == 1;
+
+		public bool IsDead => StrikesLeft == 0;
+
 		public override Result ApplyItem(ItemID item)
 		{
 			if (item != ItemID.Sword)
 				return Result.Error();
 
-			if (--StrikesLeft == 0)
+			StrikesLeft--;
+
+			if (IsDead)
 			{
 				Status = AnimateStatus.Dying;
-				IsTriggered = true;
+				Trigger();
 				return Result.Success();
 			}
 

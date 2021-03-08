@@ -7,6 +7,12 @@
 		public const string TitleText = nameof(TitleText);
 		public const string ProceedText = nameof(ProceedText);
 		public const string LanguageSwitchText = nameof(LanguageSwitchText);
+		
+		public const string IntroParam = "intro";
+		public const string LanguageParam = "lang";
+		public const string LoadParam = "load";
+		public const string ParamNo = "no";
+		public const string ParamYes = "yes";
 
 		public const string Languages = nameof(Languages);
 		public const string DefaultLanguage = nameof(DefaultLanguage);

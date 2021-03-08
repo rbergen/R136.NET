@@ -1,4 +1,5 @@
-﻿using R136.BuildTool.Tools;
+﻿using R136.BuildTool.Rooms;
+using R136.BuildTool.Tools;
 using R136.Entities;
 using R136.Entities.General;
 using R136.Entities.Global;
@@ -191,12 +192,15 @@ namespace R136.BuildTool
 
 		private static void ProcessRooms(string name)
 		{
-			(var rooms, string? path) = ReadEntity<Room.Initializer[]>(name);
+			(var data, string? path) = ReadEntity<RoomData>(name);
 
-			if (rooms == null || path == null)
+			if (data == null || path == null)
 				return;
 
-			RoomConnections.Apply(rooms);
+			var rooms = data.CompileConnections();
+
+			if (rooms == null)
+				return;
 
 			WriteEntity(rooms, name, path);
 		}

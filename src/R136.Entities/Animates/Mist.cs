@@ -12,18 +12,20 @@ namespace R136.Entities.Animates
 
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
-			if (StatusManager != null)
+			if (Player != null)
 			{
+				Trigger();
+
 				switch (Facilities.Randomizer.Next(3))
 				{
 					case 0:
-						StatusManager.CurrentRoom = RoomID.StormCave;
+						Player.CurrentRoom = RoomID.StormCave;
 						break;
 					case 1:
-						StatusManager.CurrentRoom = RoomID.SmallCave;
+						Player.CurrentRoom = RoomID.SmallCave;
 						break;
 					case 2:
-						StatusManager.CurrentRoom = RoomID.SpiralstaircaseCave1;
+						Player.CurrentRoom = RoomID.SpiralstaircaseCave1;
 						break;
 				}
 			}

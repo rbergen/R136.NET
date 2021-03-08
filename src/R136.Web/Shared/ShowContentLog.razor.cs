@@ -24,7 +24,7 @@ namespace R136.Web.Shared
 			if (_blockID == null)
 				return;
 
-			await JSRuntime.InvokeAsync<bool>("scrollToElementId", _blockID);
+			await JSRuntime.InvokeAsync<bool>("R136JS.scrollToElementId", _blockID);
 		}
 	}
 }

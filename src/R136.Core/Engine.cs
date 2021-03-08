@@ -12,8 +12,7 @@ namespace R136.Core
 {
 	public partial class Engine : IEngine
 	{
-		public IServiceProvider? Services { get; set; }
-		public IStatusManager StatusManager => this;
+		public IServiceProvider? ContextServices { get; set; }
 
 		private const string EngineNotInitialized = "Engine not initialized";
 		private const string IncorrectNextStep = "Step inconsistent with DoNext";
@@ -54,15 +53,15 @@ namespace R136.Core
 			if (IsInitialized)
 				return true;
 
-			if (Services == null)
+			if (ContextServices == null)
 				return false;
 
-			Facilities.Services = Services;
+			Facilities.Logger.Services = ContextServices;
 
 			ObjectDumper.WriteClassType = false;
 			ObjectDumper.WriteBidirectionalReferences = false;
 
-			var entityReader = Services.GetService<IEntityReader>();
+			var entityReader = ContextServices.GetService<IEntityReader>();
 			if (entityReader == null)
 				return false;
 
@@ -113,7 +112,7 @@ namespace R136.Core
 				var playerRoom = _player!.CurrentRoom;
 				texts.AddRangeIfNotNull(GetTexts(TextID.YouAreAt, "room", playerRoom.Name));
 
-				if (IsDark)
+				if (_player!.IsDark)
 					texts.AddRangeIfNotNull(GetTexts(TextID.TooDarkToSee));
 
 				else
@@ -129,7 +128,7 @@ namespace R136.Core
 				if (wayLine != null)
 					texts.Add(wayLine);
 
-				if (!IsDark)
+				if (!_player!.IsDark)
 				{
 					var itemLine = GetItemLine(playerRoom);
 					if (itemLine != null)
@@ -145,41 +144,35 @@ namespace R136.Core
 			}
 		}
 
-		public StringValues ProgressAnimateStatus()
+		public Result ProgressAnimateStatus()
 		{
 			if (!ValidateStep(NextStep.ProgressAnimateStatus))
-				return StringValues.Empty;
+				return Result.Error(IncorrectNextStep);
 
 			var presentAnimates = PresentAnimates;
 			if (presentAnimates.Count == 0)
-				return StringValues.Empty;
+				return Result.Success();
 
-			var startRoom = CurrentRoom;
 			var texts = new List<string>();
 			bool isAnimateTriggered = false;
 
 			foreach (var animate in presentAnimates)
 			{
+				if (texts.Count > 0)
+					texts.Add(string.Empty);
+
+				texts.AddRangeIfNotNull(animate.ProgressStatus());
+
 				if (animate.IsTriggered)
 				{
 					isAnimateTriggered = true;
 					animate.ResetTrigger();
 				}
-
-				if (texts.Count > 0)
-					texts.Add(string.Empty);
-
-				texts.AddRangeIfNotNull(animate.ProgressStatus());
 			}
 
-			if (CurrentRoom != startRoom)
-				DoNext = NextStep.ShowRoomStatus;
-			else if (isAnimateTriggered)
-				DoNext = NextStep.Pause;
-			else
-				DoNext = NextStep.RunCommand;
+			DoNext = isAnimateTriggered ? NextStep.ShowRoomStatus : NextStep.RunCommand;
 
-			return texts.ToArray();
+			return Result.Success(texts.ToArray(), isAnimateTriggered);
 		}
 
 		public Result Run(string input)
@@ -217,14 +210,11 @@ namespace R136.Core
 			Result DoContinuation(ContinuationStatus status, string input)
 			{
 				if (status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
-					return processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, (int)_processors![(CommandProcessorID)status.Number]!.ID);
+					return processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, status.Number.Value);
 
 				return Result.Error();
 			}
 		}
-
-		public void EndPause()
-			=> DoNext = NextStep.ShowRoomStatus;
 
 		private enum TextID
 		{

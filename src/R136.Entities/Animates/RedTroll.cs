@@ -29,7 +29,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Attack:
-					StatusManager?.DecreaseHealth();
+					Player?.DecreaseHealth();
 					Status = AnimateStatus.PreparingNextAttack;
 
 					break;
@@ -54,7 +54,7 @@ namespace R136.Entities.Animates
 				return Result.Error();
 
 			Status = AnimateStatus.Dying;
-			IsTriggered = true;
+			Trigger();
 			return Result.Success();
 		}
 	}

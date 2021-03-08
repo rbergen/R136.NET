@@ -36,6 +36,9 @@ namespace R136.Shell
 					_texts.Enqueue(text);
 				}
 			}
+
+			if (_status?.Pausing ?? false)
+				WaitForKey();
 		}
 
 		private void WaitForKey()
@@ -51,6 +54,9 @@ namespace R136.Shell
 			(int left, int top) = Console.GetCursorPosition();
 
 			ClearLine(top, left + 1);
+
+			if (_status != null)
+				_status.Pausing = false;
 		}
 
 		private static void ClearLine(int row, int length)

@@ -15,15 +15,20 @@ namespace R136.Shell
 		{
 			var services = Environment.Setup(args);
 
-			if (args.Any(a => a == "--help" || a == "-h" || a == "/h"))
+			if (args.Any(a
+				=> a.Equals("--help", StringComparison.InvariantCultureIgnoreCase)
+					|| a.Equals("-h", StringComparison.InvariantCultureIgnoreCase)
+					|| a.Equals("/h", StringComparison.InvariantCultureIgnoreCase)))
+			{
 				return ShowHelp(services.GetRequiredService<IConfiguration>());
+			}
 
 			return await new GameConsole(services).Play();
 		}
 
 		private static int ShowHelp(IConfiguration configuration)
 		{
-			string helpText = configuration["lang"] == Constants.Dutch
+			string helpText = configuration[Constants.LanguageParam] == Constants.Dutch
 ? @"Missiecode: R136
 Copyright (c) R.I.P.
 
@@ -36,7 +41,10 @@ Opties:
     --load yes|no
         Laad spelstatus indien beschikbaar (yes), of laad deze niet (no). Standaard is yes, wat betekent dat het spel zal verdergaan waar het was toen het de vorige keer werd afgebroken.
 
-    --help, -h
+		--intro yes|no
+        Laat bij een nieuw spel de intro-animatie en -tekst wel (yes) of niet (no) zien. Standaard is yes, wat betekent dat de intro wel wordt getoond.
+
+    --help, -h, /h
         Toon gebruiksinformatie."
 
 : @"Mission code: R136
@@ -50,6 +58,9 @@ Options:
 
     --load yes|no
         Load game status if available (yes), or don't load it (no). The default is yes, which means the game will continue where it got interrupted the last time it was run.
+
+		--intro yes|no
+        Shows the intro animation and text when starting a new game (yes), or doesn't (no). The default is yes, which means that the intro is shown.
 
     --help, -h
         Show usage information.";

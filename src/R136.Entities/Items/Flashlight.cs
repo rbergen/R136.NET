@@ -1,13 +1,15 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace R136.Entities.Items
 {
-	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding, ISnappable<Flashlight.Snapshot>
+	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding, ISnappable<Flashlight.Snapshot>, ILightsource, IGameServiceProvider, IGameServiceBasedConfigurator
 	{
 		private int? _lampPoints;
 		private int? _lampPointsFromConfig;
@@ -19,6 +21,8 @@ namespace R136.Entities.Items
 		public StringValues CombineTexts
 			=> Facilities.ItemTextsMap[ID, TextType.Combine];
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameters are part of delegate interface")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Legibility")]
 		public static Flashlight Create
 			(
 				Initializer initializer,
@@ -73,7 +77,7 @@ namespace R136.Entities.Items
 			{
 				IsOn = false;
 
-				bool isDark = StatusManager?.IsDark ?? true;
+				bool isDark = Player?.IsDark ?? true;
 
 				return Result.Success(GetTexts(isDark ? TextID.LightOffInDark : TextID.LightOff));
 			}
@@ -84,7 +88,7 @@ namespace R136.Entities.Items
 				return Result.Success(GetTexts(TextID.LightOn));
 			}
 
-			return Result.Failure(GetTexts(TextID.NeedBatteries));
+			return Result.Failure(GetTexts(TextID.NeedBatteries), true);
 		}
 
 		public Result Combine(Item first, Item second)
@@ -143,6 +147,12 @@ namespace R136.Entities.Items
 
 			return true;
 		}
+
+		public void RegisterServices(IServiceCollection serviceCollection)
+			=> serviceCollection.AddSingleton<ILightsource>(this);
+
+		public void Configure(IServiceProvider serviceProvider)
+			=> serviceProvider.GetService<ITurnEndingProvider>()?.RegisterListener(this);
 
 		public new class Snapshot : Item.Snapshot
 		{

@@ -23,6 +23,7 @@ namespace R136.Shell.Tools
 		public Engine.Snapshot? EngineSnapshot { get; set; }
 		public string? Language { get; set; }
 		public string[]? Texts { get; set; }
+		public bool Pausing { get; set; }
 
 		[JsonIgnore]
 		public bool IsLoaded { get; private set; } = false;

@@ -19,8 +19,16 @@ namespace R136.Entities
 		public bool IsPutdownAllowed { get; }
 		public bool IsWearable { get; }
 
-		public static IReadOnlyDictionary<ItemID, Item> CreateOrUpdateMap(IReadOnlyDictionary<ItemID, Item>? sourceMap, ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static IReadOnlyDictionary<ItemID, Item> UpdateOrCreateMap(IReadOnlyDictionary<ItemID, Item>? sourceMap, ICollection<Initializer> initializers, IReadOnlyDictionary<AnimateID, Animate> animates)
 		{
+			SnapshotContainer? snapshot = null;
+
+			if (sourceMap != null)
+			{
+				snapshot = new();
+				TakeSnapshots(snapshot, sourceMap);
+			}
+
 			Dictionary<ItemID, Item> items = new(initializers.Count);
 
 			var compoundInitializers = new List<Initializer>();
@@ -38,10 +46,10 @@ namespace R136.Entities
 					if (initializer.Components != null && initializer.Components.Length == 2)
 						compoundInitializers.Add(initializer);
 					else
-						items[initializer.ID] = RegisterTexts(UsableItem.Create(sourceMap?[initializer.ID], initializer, animates), initializer);
+						items[initializer.ID] = RegisterTexts(UsableItem.Create(initializer, animates), initializer);
 				}
 				else
-					items[initializer.ID] = RegisterTexts(Create(sourceMap?[initializer.ID], initializer), initializer);
+					items[initializer.ID] = RegisterTexts(Create(initializer), initializer);
 			}
 
 			foreach (var initializer in compoundInitializers)
@@ -54,7 +62,40 @@ namespace R136.Entities
 				items[initializer.ID] = RegisterTexts(initializerMethod.Value.Invoke(initializer, animates, items), initializer);
 			}
 
+			if (snapshot != null)
+				RestoreSnapshots(snapshot, items);
+
 			return items;
+		}
+
+		public static void TakeSnapshots(ISnapshotContainer container, IReadOnlyDictionary<ItemID, Item> items)
+		{
+			container.Items = items.Values
+				.Where(item => item is not Flashlight)
+				.Select(item => item.TakeSnapshot())
+				.ToArray();
+
+			container.Flashlight = (items[ItemID.Flashlight] as Flashlight)?.TakeSnapshot();
+		}
+
+		public static bool RestoreSnapshots(ISnapshotContainer container, IReadOnlyDictionary<ItemID, Item> items)
+		{
+			bool result = true;
+
+			if (container.Items != null)
+			{
+				foreach (var item in container.Items)
+					result &= items![item.ID].RestoreSnapshot(item);
+			}
+			else
+				result = false;
+
+			if (container.Flashlight != null)
+				result &= (items[ItemID.Flashlight] as Flashlight)?.RestoreSnapshot(container.Flashlight) ?? false;
+			else
+				result = false;
+
+			return result;
 		}
 
 		private static Item RegisterTexts(Item item, Initializer initializer)
@@ -65,13 +106,13 @@ namespace R136.Entities
 			return item;
 		}
 
-		static Item Create(Item? sourceItem, Initializer initializer)
+		static Item Create(Initializer initializer)
 			=> new
 			(
 				initializer.ID,
 				initializer.Name,
 				initializer.Description,
-				sourceItem?.CurrentRoom ?? initializer.StartRoom,
+				initializer.StartRoom,
 				initializer.Wearable,
 				!initializer.BlockPutdown
 				);
@@ -80,20 +121,21 @@ namespace R136.Entities
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
 			= (id, name, description, startRoom, isWearable, isPutdownAllowed);
 
-		public virtual Result Use() => Result.Failure(UsageTexts);
+		public virtual Result Use() => Result.Failure(UsageTexts, true);
 
 		protected StringValues UsageTexts
 		{
 			get => Facilities.ItemTextsMap[ID, TextType.Use];
 		}
-		private static Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>? GetCreateMethod(ItemID id) => id switch
-		{
-			ItemID.TNT => Tnt.Create,
-			ItemID.Flashlight => Flashlight.Create,
-			ItemID.Bandage => Bandage.Create,
-			ItemID.Sword => Sword.Create,
-			_ => null
-		};
+		private static Func<Initializer, IReadOnlyDictionary<AnimateID, Animate>, IReadOnlyDictionary<ItemID, Item>, Item>? GetCreateMethod(ItemID id) 
+			=> id switch
+			{
+				ItemID.TNT => Tnt.Create,
+				ItemID.Flashlight => Flashlight.Create,
+				ItemID.Bandage => Bandage.Create,
+				ItemID.Sword => Sword.Create,
+				_ => null
+			};
 
 		public virtual Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
@@ -151,6 +193,18 @@ namespace R136.Entities
 			public RoomID Room { get; set; }
 		}
 
+		public interface ISnapshotContainer
+		{
+			Snapshot[]? Items { get; set; }
+			Flashlight.Snapshot? Flashlight { get; set; }
+		}
+
+		private class SnapshotContainer : ISnapshotContainer
+		{
+			public Snapshot[]? Items { get; set; }
+			public Flashlight.Snapshot? Flashlight { get; set; }
+		}
+
 		public class TextsInitializer : KeyedTextsMap<ItemID, TextType>.IInitializer
 		{
 			private readonly Initializer _initializer;
@@ -189,13 +243,13 @@ namespace R136.Entities
 		public ICollection<Animate> UsableOn { get; }
 		bool KeepsAfterUse { get; }
 
-		public static UsableItem Create(Item? sourceItem, Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
+		public static UsableItem Create(Initializer initializer, IReadOnlyDictionary<AnimateID, Animate> animates)
 			=> new
 			(
 				initializer.ID,
 				initializer.Name,
 				initializer.Description,
-				sourceItem?.CurrentRoom ?? initializer.StartRoom,
+				initializer.StartRoom,
 				initializer.UsableOn!.Select(animateID => animates[animateID]).ToArray(),
 				initializer.Wearable,
 				!initializer.BlockPutdown,
@@ -224,7 +278,7 @@ namespace R136.Entities
 			var result = animate.ApplyItem(ID);
 
 			if (result.IsSuccess && !KeepsAfterUse)
-				StatusManager?.RemoveFromPossession(ID);
+				Player?.RemoveFromPossession(ID);
 
 			return result;
 		}
@@ -278,11 +332,6 @@ namespace R136.Entities
 			return !Components.Contains(first) || !Components.Contains(second) || first == second
 				? Result.Failure()
 				: Result.Success(CombineTexts);
-		}
-
-		private enum TextID
-		{
-			CantCombineWithItself = 0,
 		}
 	}
 }

@@ -13,7 +13,11 @@ namespace R136.Entities.Animates
 		protected override void ProgressStatusInternal(AnimateStatus status)
 		{
 			if (!Facilities.Configuration.FreezeAnimates && status == AnimateStatus.Initial)
+			{
+				Trigger();
+
 				Status = AnimateStatus.Done;
+			}
 		}
 	}
 }

@@ -21,17 +21,7 @@ namespace R136.Core
 		}
 
 		private static IServiceCollection AddR136(IServiceCollection serviceCollection)
-		{
-			var engine = new Engine();
-
-			return serviceCollection
-				.AddSingleton<IEngine>(sp =>
-				{
-					engine.Services = sp;
-					return engine;
-				})
-				.AddSingleton(engine.StatusManager);
-		}
+			=> serviceCollection.AddSingleton<IEngine>(sp => new Engine {	ContextServices = sp });
 
 		public static void PreLoadR136Async(this IServiceProvider serviceProvider, string[] entityGroups)
 			=> serviceProvider.GetRequiredService<IEngine>().StartLoadEntities(entityGroups);

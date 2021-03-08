@@ -16,11 +16,13 @@ namespace R136.Entities.Animates
 			var textStatus = Status;
 
 			if (!Facilities.Configuration.FreezeAnimates && textStatus == AnimateStatus.Initial
-				&& StatusManager != null && !StatusManager.IsInPosession(ItemID.HeatSuit))
+				&& Player != null && !Player.IsInPosession(ItemID.HeatSuit))
 			{
+				Trigger();
+
 				textStatus = AnimateStatus.SelfInjury;
-				StatusManager.DecreaseHealth(HealthImpact.Severe);
-				StatusManager.CurrentRoom = RoomID.OilCave;
+				Player.DecreaseHealth(HealthImpact.Severe);				
+				Player.CurrentRoom = RoomID.OilCave;
 			}
 
 			return GetTextsForStatus(textStatus);

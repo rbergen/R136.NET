@@ -33,7 +33,7 @@ namespace R136.Entities.Animates
 				return Result.Error();
 
 			Status = AnimateStatus.Operating;
-			IsTriggered = true;
+			Trigger();
 			return Result.Success();
 		}
 	}

@@ -6,6 +6,8 @@ namespace R136.Entities.Items
 {
 	class Bandage : Item
 	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameters are part of delegate interface")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Legibility")]
 		public static Bandage Create
 			(
 				Initializer initializer,
@@ -34,12 +36,12 @@ namespace R136.Entities.Items
 
 		public override Result Use()
 		{
-			if (StatusManager != null && StatusManager.LifePoints == Facilities.Configuration.LifePoints)
+			if (Player != null && Player.LifePoints == Facilities.Configuration.LifePoints)
 				return Result.Success(Facilities.TextsMap[this, (int)TextID.FullHealth]);
 
-			StatusManager?.RestoreHealth();
+			Player?.RestoreHealth();
 
-			return Result.Success(UsageTexts);
+			return Result.Success(UsageTexts, true);
 		}
 
 		private enum TextID

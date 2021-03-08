@@ -19,10 +19,10 @@ namespace R136.Core
 
 		private TypedEntityTaskCollection? LoadEntities(string groupLabel)
 		{
-			if (Services == null)
+			if (ContextServices == null)
 				return null;
 
-			var entityReader = Services.GetService<IEntityReader>();
+			var entityReader = ContextServices.GetService<IEntityReader>();
 			if (entityReader == null)
 				return null;
 
@@ -67,40 +67,32 @@ namespace R136.Core
 				if (animates == null)
 					return false;
 
-				if (_animates?[AnimateID.Tree] is Tree oldTree)
-					oldTree.Burned -= HandleTreeBurning;
-
-				if (_animates?[AnimateID.PaperHatch] is ITriggerable oldPaperHatch && _processors != null)
-					_processors.LocationProcessor.PaperRouteCompleted -= oldPaperHatch.Trigger;
-
-				_animates = Animate.CreateMap(animates);
+				_animates = Animate.UpdateOrCreateMap(_animates, animates);
 
 				var items = await entityMap.Get<Item.Initializer[]>();
 				if (items == null)
 					return false;
 
-				_items = Item.CreateOrUpdateMap(_items, items, _animates);
+				_items = Item.UpdateOrCreateMap(_items, items, _animates);
 
 				var commands = await entityMap.Get<CommandInitializer[]>();
 				if (commands == null)
 					return false;
 
-				_processors = CommandProcessor.CreateMap(commands, _items, _animates);
+				_processors = CommandProcessor.UpdateOrCreateMap(_processors, commands, _items, _animates);
 
 				if (_player == null)
-					_player = new Player(_rooms[Facilities.Configuration.StartRoom]);
+					_player = new Player(_rooms, Facilities.Configuration.StartRoom);
+				
 				else
-					_player.CurrentRoom = _rooms[_player.CurrentRoom.ID];
+				{
+					var snapshot = _player.TakeSnapshot();
+					snapshot.Items = _items;
+					snapshot.Rooms = _rooms;
+					_player.RestoreSnapshot(snapshot);
+				}
 
-				if (_animates[AnimateID.Tree] is Tree newTree)
-					newTree.Burned += HandleTreeBurning;
-
-				if (_animates[AnimateID.PaperHatch] is ITriggerable newPaperHatch)
-					_processors.LocationProcessor.PaperRouteCompleted += newPaperHatch.Trigger;
-
-				_turnEndingNotifiees.Clear();
-				RegisterTurnEndingNotifiees(_items.Values);
-				RegisterTurnEndingNotifiees(_animates.Values);
+				SetupServices();
 
 				return true;
 			}
@@ -111,10 +103,37 @@ namespace R136.Core
 			}
 		}
 
-		private void RegisterTurnEndingNotifiees<TEntity>(IEnumerable<TEntity> entities)
+		private void SetupServices()
 		{
-			foreach (var notifiee in entities.Where(entity => entity is INotifyTurnEnding).Cast<INotifyTurnEnding>())
-				_turnEndingNotifiees.Add(notifiee.TurnEnding);
+			_turnEndingNotifiees.Clear();
+
+			var serviceCollection = new ServiceCollection();
+			RegisterServices(serviceCollection);
+			RegisterServices(serviceCollection, _items!.Values.OfType<IGameServiceProvider>());
+			RegisterServices(serviceCollection, _animates!.Values.OfType<IGameServiceProvider>());
+			_processors!.RegisterServices(serviceCollection);
+			_player!.RegisterServices(serviceCollection);
+
+			var serviceProvider = serviceCollection.BuildServiceProvider();
+			Configure(serviceProvider);
+			Configure(serviceProvider, _items!.Values.OfType<IGameServiceBasedConfigurator>());
+			Configure(serviceProvider, _animates!.Values.OfType<IGameServiceBasedConfigurator>());
+			_processors!.Configure(serviceProvider);
+			_player!.Configure(serviceProvider);
+
+			EntityBase.GameServices = serviceProvider;
+		}
+
+		private static void RegisterServices(IServiceCollection serviceCollection, IEnumerable<IGameServiceProvider> entities)
+		{
+			foreach (var entity in entities)
+				entity.RegisterServices(serviceCollection);
+		}
+
+		private static void Configure(IServiceProvider serviceProvider, IEnumerable<IGameServiceBasedConfigurator> entities)
+		{
+			foreach (var entity in entities)
+				entity.Configure(serviceProvider);
 		}
 
 		private bool ValidateStep(NextStep step)
@@ -190,7 +209,7 @@ namespace R136.Core
 		}
 
 		private bool IsInCurrentRoom(Animate animate)
-			=> animate.CurrentRoom == CurrentRoom;
+			=> animate.CurrentRoom == _player!.CurrentRoom.ID;
 
 		private bool IsAnimatePresent
 			=> _animates!.Values.Any(IsInCurrentRoom);
@@ -220,25 +239,22 @@ namespace R136.Core
 					texts.AddRange(notifieeTexts);
 			}
 
-			DoNext = _animates!.Values.Any(animate => animate.IsTriggered) ? NextStep.ProgressAnimateStatus : NextStep.ShowRoomStatus;
+			DoNext =  PresentAnimates.Any(animate => animate.IsTriggered) ? NextStep.ProgressAnimateStatus : NextStep.ShowRoomStatus;
 
-			return texts.Count == 0 ? result : new Result(result.Code, texts.ToArray());
+			return texts.Count == 0 ? result : new Result(result.Code, texts.ToArray(), result.PauseRequested);
 		}
 
-		private void PlaceAt(ItemID item, RoomID room)
+		private void PlaceAt(ItemID item, Room room)
 		{
-			if (_items![item].CurrentRoom == RoomID.None && !IsInPosession(item))
-				_items![item].CurrentRoom = room;
+			if (_items![item].CurrentRoom == RoomID.None && !_player!.IsInPosession(item))
+				_items![item].CurrentRoom = room.ID;
 		}
 
-		private void HandleTreeBurning()
+		private void HandleBurning()
 		{
 			_hasTreeBurned = true;
 
-			if (_animates![AnimateID.GreenCrystal] is ITriggerable greenCrystal)
-				greenCrystal.Trigger();
-
-			PlaceAt(ItemID.GreenCrystal, Facilities.Configuration.GreenCrystalRoom);
+			PlaceAt(ItemID.GreenCrystal, _rooms![Facilities.Configuration.GreenCrystalRoom]);
 		}
 
 		private enum ItemLineText

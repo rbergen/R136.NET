@@ -5,9 +5,8 @@ namespace R136.Entities.Items
 {
 	class Tnt : Item
 	{
-#pragma warning disable IDE0079 // Remove unnecessary suppression
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Parameters are part of delegate interface")]
-#pragma warning restore IDE0079 // Remove unnecessary suppression
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Legibility")]
 		public static Tnt Create
 			(
 				Initializer initializer,
@@ -29,7 +28,7 @@ namespace R136.Entities.Items
 
 		public override Result Use()
 		{
-			StatusManager?.DecreaseHealth();
+			Player?.DecreaseHealth();
 
 			return base.Use();
 		}

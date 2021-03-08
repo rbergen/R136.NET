@@ -15,14 +15,12 @@ namespace R136.Shell
 			=> RegisterServices(AppDomain.CurrentDomain.BaseDirectory, args);
 
 		private static IConfiguration SetupConfiguration(string basePath, string[] args)
-		{
-			return new ConfigurationBuilder()
-					.SetBasePath(basePath)
-					.AddJsonFile("appsettings.json")
-					.AddEnvironmentVariables()
-					.AddCommandLine(args)
-					.Build();
-		}
+			=> new ConfigurationBuilder()
+				.SetBasePath(basePath)
+				.AddJsonFile("appsettings.json")
+				.AddEnvironmentVariables()
+				.AddCommandLine(args)
+				.Build();
 
 		private static ServiceProvider RegisterServices(string basePath, string[] args)
 		{
@@ -55,13 +53,13 @@ namespace R136.Shell
 			{
 				Status? status = null;
 
-				if (configuration["load"] != "no")
+				if (configuration[Constants.LoadParam] != Constants.ParamNo)
 					status = Status.Load(serviceProvider);
 
 				if (status == null)
 					status = new();
 
-				string language = configuration["lang"];
+				string language = configuration[Constants.LanguageParam];
 				if (language != null)
 					status.Language = language;
 

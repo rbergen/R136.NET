@@ -92,7 +92,11 @@ namespace R136.Entities.CommandProcessors
 			else
 			{
 				if (player.FindInInventory(ItemID.Flashlight) is Flashlight flashlight)
+				{
 					AddStatusTexts(texts, flashlight.IsOn ? StatusTextID.FlashlightOn : StatusTextID.FlashlightOff);
+					if (flashlight.HasBatteries)
+						AddStatusTexts(texts, StatusTextID.FlashlightHasBatteries);
+				}
 
 				AddStatusTexts(texts, StatusTextID.InventoryHeader);
 				foreach (var item in player.Inventory)
@@ -138,7 +142,8 @@ namespace R136.Entities.CommandProcessors
 			FlashlightOff,
 			NoInventory,
 			InventoryHeader,
-			InventoryItem
+			InventoryItem,
+			FlashlightHasBatteries
 		}
 
 		private enum EndTextID

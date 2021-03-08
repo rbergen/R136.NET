@@ -1,17 +1,22 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using R136.Entities.General;
 using R136.Entities.Global;
+using R136.Entities.Items;
 using R136.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
-	public class Player : EntityBase, ISnappable<Player.Snapshot>
+	public class Player : EntityBase, IPlayer, IGameServiceProvider, IGameServiceBasedConfigurator, ISnappable<Player.Snapshot>
 	{
 		private int? _lifePoints;
 		private int? _lifePointsFromConfig;
+		private ILightsource? _lightsource;
+		private IReadOnlyDictionary<RoomID, Room> _rooms;
 
 		public Room CurrentRoom { get; set; }
 
@@ -19,8 +24,8 @@ namespace R136.Entities
 
 		private readonly List<Item> _inventory;
 
-		public Player(Room startRoom)
-			=> (_lifePoints, _lifePointsFromConfig, CurrentRoom, _inventory) = (null, null, startRoom, new List<Item>());
+		public Player(IReadOnlyDictionary<RoomID, Room> rooms, RoomID startRoom)
+			=> (_lifePoints, _lifePointsFromConfig, _rooms, CurrentRoom, _inventory) = (null, null, rooms, rooms[startRoom], new List<Item>());
 
 		public int LifePoints
 		{
@@ -33,6 +38,15 @@ namespace R136.Entities
 			}
 
 			private set => _lifePoints = value;
+		}
+
+		public bool IsDark
+			=> CurrentRoom.IsDark && !(_lightsource?.IsOn ?? false);
+
+		RoomID IPlayer.CurrentRoom 
+		{
+			get => CurrentRoom.ID; 
+			set => CurrentRoom = _rooms[value]; 
 		}
 
 		private StringValues GetNamedTexts(TextID id, Item item) => Facilities.TextsMap[this, (int)id].ReplaceInAll("{item}", item.Name);
@@ -99,9 +113,10 @@ namespace R136.Entities
 			if (snapshot.Rooms == null || snapshot.Items == null)
 				return false;
 
+			_rooms = snapshot.Rooms;
 			_lifePoints = snapshot.LifePoints;
 			_lifePointsFromConfig = snapshot.LifePointsFromConfig;
-			CurrentRoom = snapshot.Rooms[snapshot.Room];
+			CurrentRoom = _rooms[snapshot.Room];
 
 			_inventory.Clear();
 			if (snapshot.Inventory != null)
@@ -109,6 +124,23 @@ namespace R136.Entities
 
 			return true;
 		}
+
+		public bool IsInPosession(ItemID item)
+			=> FindInInventory(item) != null;
+
+		public void RemoveFromPossession(ItemID id)
+		{
+			var item = FindInInventory(id);
+
+			if (item != null)
+				RemoveFromInventory(item);
+		}
+
+		public void RegisterServices(IServiceCollection serviceCollection)
+			=> serviceCollection.AddSingleton<IPlayer>(this);
+
+		public void Configure(IServiceProvider serviceProvider)
+			=> _lightsource = serviceProvider.GetService<ILightsource>();
 
 		public class Snapshot : IRoomsReader, IItemsReader
 		{
