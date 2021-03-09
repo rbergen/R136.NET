@@ -18,7 +18,6 @@ namespace R136.Web.Tools
 		private readonly List<ContentBlock> _blocks = new();
 		public int MaxBlockCount { get; set; } = DefaultMaxBlockCount;
 		public int SaveBlockCount { get; set; } = DefaultSaveBlockCount;
-
 		public bool IsTrimmed { get; private set; } = false;
 
 		public IEnumerator<ContentBlock> GetEnumerator()
@@ -58,18 +57,6 @@ namespace R136.Web.Tools
 
 			Trim();
 		}
-
-		public bool IsEmpty
-			=> _blocks.Count == 0;
-
-		public bool IsSingleBlock
-			=> _blocks.Count == 1;
-
-		public ContentBlock LastBlock
-			=> _blocks[^1];
-
-		public IEnumerable<ContentBlock> AllButLast()
-			=> _blocks.DropLast(1);
 
 		public int Count
 			=> _blocks.Count;

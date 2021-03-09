@@ -125,33 +125,36 @@ namespace R136.Shell
 			WritePlainText(plainText);
 			_texts.Enqueue(plainText);
 
-			while (_texts.Count > 20)
+			while (_texts.Count > 25)
 				_texts.Dequeue();
 		}
 
 		private void WritePlainText(string plainText)
 		{
-			int consoleWidth = Console.WindowWidth;
 			int rowCountDown = Console.WindowHeight - 1;
 
 			foreach (string item in plainText.Split('\n'))
-			{
-				string plainLine = item;
-				while (plainLine.Length >= consoleWidth)
-				{
-					int lastFittingSpace = plainLine.LastIndexOf(' ', consoleWidth - 1);
-					if (lastFittingSpace <= 0)
-						break;
-
-					WritePlainLine(plainLine[..(lastFittingSpace)], ref rowCountDown);
-					plainLine = plainLine[(lastFittingSpace + 1)..];
-				}
-
-				WritePlainLine(plainLine, ref rowCountDown);
-			}
+				rowCountDown = WriteWordWrappedPlainSentence(rowCountDown, item);
 		}
 
-		private void WritePlainLine(string plainLine, ref int rowCountDown)
+		private int WriteWordWrappedPlainSentence(int rowCountDown, string item)
+		{
+			int consoleWidth = Console.WindowWidth;
+			string plainLine = item;
+			while (plainLine.Length >= consoleWidth)
+			{
+				int lastFittingSpace = plainLine.LastIndexOf(' ', consoleWidth - 1);
+				if (lastFittingSpace <= 0)
+					break;
+
+				rowCountDown = WritePlainLine(plainLine[..(lastFittingSpace)], rowCountDown);
+				plainLine = plainLine[(lastFittingSpace + 1)..];
+			}
+
+			return WritePlainLine(plainLine, rowCountDown);
+		}
+
+		private int WritePlainLine(string plainLine, int rowCountDown)
 		{
 			Console.WriteLine(plainLine);
 			if (--rowCountDown == 0)
@@ -159,6 +162,8 @@ namespace R136.Shell
 				WaitForKey();
 				rowCountDown = Console.WindowHeight - 1;
 			}
+
+			return rowCountDown;
 		}
 
 		private void ShowLanguageSwitchInstructions()

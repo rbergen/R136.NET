@@ -1,14 +1,47 @@
-﻿using R136.Entities;
-using R136.Entities.CommandProcessors;
+﻿using Microsoft.Extensions.DependencyInjection;
+using R136.Entities;
 using R136.Entities.Global;
-using R136.Entities.Items;
 using R136.Interfaces;
 using System;
 
 namespace R136.Core
 {
-	public partial class Engine : ISnappable<Engine.Snapshot>
+	public partial class Engine : IStatusManager, IGameServiceProvider, IGameServiceBasedConfigurator, ITurnEndingProvider, ISnappable<Engine.Snapshot>
 	{
+		public void Place(ItemID item)
+		{
+			if (!IsInitialized)
+				throw new InvalidOperationException(EngineNotInitialized);
+
+			PlaceAt(item, _player!.CurrentRoom);
+		}
+
+		public void OpenConnection(Direction direction, RoomID toRoom)
+		{
+			if (!IsInitialized)
+				throw new InvalidOperationException(EngineNotInitialized);
+
+			if (!_player!.CurrentRoom.Connections.ContainsKey(direction))
+				_player!.CurrentRoom.Connections[direction] = _rooms![toRoom];
+		}
+
+		public void RegisterServices(IServiceCollection serviceCollection)
+		{
+			serviceCollection.AddSingleton<IStatusManager>(this);
+			serviceCollection.AddSingleton<ITurnEndingProvider>(this);
+		}
+
+		public void Configure(IServiceProvider serviceProvider)
+		{
+			var fireProvider = serviceProvider.GetService<IFireNotificationProvider>();
+
+			if (fireProvider != null)
+				fireProvider.Burned += HandleBurning;			
+		}
+
+		public void RegisterListener(INotifyTurnEnding listener)
+		=> _turnEndingNotifiees.Add(listener.TurnEnding);
+
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
 			if (!IsInitialized)
@@ -24,17 +57,6 @@ namespace R136.Core
 			Item.TakeSnapshots(snapshot, _items!);
 			Animate.TakeSnapshots(snapshot, _animates!);
 			snapshot.Player = _player!.TakeSnapshot();
-
-			return snapshot;
-		}
-
-		private TSnapshot AddEntities<TSnapshot>(TSnapshot snapshot)
-		{
-			if (snapshot is IRoomsReader roomsReader)
-				roomsReader.Rooms = _rooms;
-
-			if (snapshot is IItemsReader itemsReader)
-				itemsReader.Items = _items;
 
 			return snapshot;
 		}
@@ -74,19 +96,6 @@ namespace R136.Core
 				result = false;
 
 			return result;
-		}
-
-		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer
-		{
-			public Configuration? Configuration { get; set; }
-			public bool HasTreeBurned { get; set; }
-			public bool IsAnimateTriggered { get; set; }
-			public NextStep DoNext { get; set; }
-			public LocationCommandProcessor.Snapshot? LocationCommandProcessor { get; set; }
-			public Item.Snapshot[]? Items { get; set; }
-			public Flashlight.Snapshot? Flashlight { get; set; }
-			public Animate.Snapshot[]? Animates { get; set; }
-			public Player.Snapshot? Player { get; set; }
 		}
 	}
 }

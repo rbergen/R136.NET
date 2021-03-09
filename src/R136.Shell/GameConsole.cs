@@ -63,6 +63,18 @@ namespace R136.Shell
 
 			var task = _engine.Initialize(language);
 
+			HandleIntro(language);
+
+			await task;
+			RestoreStatus();
+
+			await RunEngineLoop();
+
+			return Success;
+		}
+
+		private void HandleIntro(string language)
+		{
 			if (!(_status?.IsLoaded ?? false))
 			{
 				if (_services.GetService<IConfiguration>()?[Constants.IntroParam] != Constants.ParamNo)
@@ -78,13 +90,6 @@ namespace R136.Shell
 			}
 			else
 				Console.Clear();
-
-			await task;
-			RestoreStatus();
-
-			await RunEngineLoop();
-
-			return Success;
 		}
 
 		private async Task RunEngineLoop()
@@ -145,17 +150,7 @@ namespace R136.Shell
 
 				if (result.IsError)
 				{
-					ConsoleColor color = Console.ForegroundColor;
-					Console.ForegroundColor = ConsoleColor.Red;
-
-					var errorLine = Constants.ReversePrompt + (result.Message != StringValues.Empty ? result.Message : "An unspecified error occurred");
-					Console.Write(errorLine);
-
-					Console.ForegroundColor = color;
-
-					Console.ReadKey();
-
-					ClearLine(top - 1, errorLine.Length + 1);
+					ShowInputError(result, top);
 					continue;
 				}
 
@@ -178,6 +173,21 @@ namespace R136.Shell
 			}
 		}
 
+		private static void ShowInputError(Result result, int top)
+		{
+			ConsoleColor color = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+
+			var errorLine = Constants.ReversePrompt + (result.Message != StringValues.Empty ? result.Message : "An unspecified error occurred");
+			Console.Write(errorLine);
+
+			Console.ForegroundColor = color;
+
+			Console.ReadKey();
+
+			ClearLine(top - 1, errorLine.Length + 1);
+		}
+
 		private string ApplyInputSpecs(string input)
 		{
 			if (InputSpecs?.IsLowerCase ?? false)
@@ -195,27 +205,25 @@ namespace R136.Shell
 				return false;
 
 			string[] segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			if ((segments?.Length ?? 0) == 2 && segments![0] == Constants.LanguageParam)
-			{
-				_languages.Language = segments![1];
+			if ((segments?.Length ?? 0) != 2 || segments![0] != Constants.LanguageParam)
+				return false;
 
-				Console.Title = _languages.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
-				var result = _engine!.SetEntityGroup(_languages.Language);
+			_languages.Language = segments![1];
 
-				_texts.Enqueue(Constants.Prompt + input);
-				WriteText(new string[] {
-					string.Empty,
-					_languages.GetConfigurationValue(Constants.LanguageSwitchText) ?? Constants.LanguageSwitchText,
-					string.Empty
-				});
+			Console.Title = _languages.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
+			var result = _engine!.SetEntityGroup(_languages.Language);
 
-				SaveStatus(_status?.InputSpecs);
+			_texts.Enqueue(Constants.Prompt + input);
+			WriteText(new string[] {
+				string.Empty,
+				_languages.GetConfigurationValue(Constants.LanguageSwitchText) ?? Constants.LanguageSwitchText,
+				string.Empty
+			});
 
-				await result;
-				return true;
-			}
+			SaveStatus(_status?.InputSpecs);
 
-			return false;
+			await result;
+			return true;
 		}
 
 		private void ProcessResult(Result result)
@@ -252,7 +260,6 @@ namespace R136.Shell
 							_status.Pausing = true;
 						
 						SaveStatus(null);
-
 						WaitForKey();
 					}
 

@@ -86,6 +86,9 @@ namespace R136.Entities
 				LifePoints = 0;
 		}
 
+		public bool IsDead
+			=> LifePoints == 0;
+
 		public void RestoreHealth()
 		{
 			if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)

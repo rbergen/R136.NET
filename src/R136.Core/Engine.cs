@@ -12,27 +12,6 @@ namespace R136.Core
 {
 	public partial class Engine : IEngine
 	{
-		public IServiceProvider? ContextServices { get; set; }
-
-		private const string EngineNotInitialized = "Engine not initialized";
-		private const string IncorrectNextStep = "Step inconsistent with DoNext";
-		private const string ConfigurationLabel = "configuration";
-		private const string PropertiesLabel = "properties";
-		private const string CommandsLabel = "commands";
-		private const string TextsLabel = "texts";
-		private const string RoomsLabel = "rooms";
-		private const string AnimatesLabel = "animates";
-		private const string ItemsLabel = "items";
-		private const string ContinuationKey = "x8KQUbtDPZwlzWT5AOeJ";
-
-		private IReadOnlyDictionary<RoomID, Room>? _rooms;
-		private IReadOnlyDictionary<ItemID, Item>? _items;
-		private IReadOnlyDictionary<AnimateID, Animate>? _animates;
-		private Player? _player;
-		private CommandProcessorMap? _processors;
-		private bool _hasTreeBurned = false;
-		private readonly Dictionary<string, TypedEntityTaskCollection> _entityTaskMap = new();
-
 		public NextStep DoNext { get; private set; } = NextStep.ShowStartMessage;
 		public InputSpecs CommandInputSpecs => Facilities.Configuration.CommandInputSpecs;
 
@@ -110,19 +89,7 @@ namespace R136.Core
 				var texts = new List<string>();
 
 				var playerRoom = _player!.CurrentRoom;
-				texts.AddRangeIfNotNull(GetTexts(TextID.YouAreAt, "room", playerRoom.Name));
-
-				if (_player!.IsDark)
-					texts.AddRangeIfNotNull(GetTexts(TextID.TooDarkToSee));
-
-				else
-				{
-					if (playerRoom.IsForest && _hasTreeBurned)
-						texts.AddRangeIfNotNull(GetTexts(TextID.BurnedForestDescription));
-
-					else if (playerRoom.Description != null)
-						texts.Add(playerRoom.Description);
-				}
+				AddRoomInformation(texts, playerRoom);
 
 				var wayLine = GetWayLine(playerRoom);
 				if (wayLine != null)
@@ -153,22 +120,7 @@ namespace R136.Core
 			if (presentAnimates.Count == 0)
 				return Result.Success();
 
-			var texts = new List<string>();
-			bool isAnimateTriggered = false;
-
-			foreach (var animate in presentAnimates)
-			{
-				if (texts.Count > 0)
-					texts.Add(string.Empty);
-
-				texts.AddRangeIfNotNull(animate.ProgressStatus());
-
-				if (animate.IsTriggered)
-				{
-					isAnimateTriggered = true;
-					animate.ResetTrigger();
-				}
-			}
+			(var texts, bool isAnimateTriggered) = ProgressPresentAnimateStatuses(presentAnimates);
 
 			DoNext = isAnimateTriggered ? NextStep.ShowRoomStatus : NextStep.RunCommand;
 
@@ -180,7 +132,7 @@ namespace R136.Core
 			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
-			if (_player!.LifePoints == 0)
+			if (_player!.IsDead)
 				return Result.EndRequested(GetTexts(TextID.PlayerDead));
 
 			string[] terms = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
@@ -214,20 +166,6 @@ namespace R136.Core
 
 				return Result.Error();
 			}
-		}
-
-		private enum TextID
-		{
-			NoCommand,
-			InvalidCommand,
-			AmbiguousCommand,
-			StartMessage,
-			YouAreAt,
-			TooDarkToSee,
-			BurnedForestDescription,
-			ItemLineTexts,
-			WayLineTexts,
-			PlayerDead
 		}
 	}
 }

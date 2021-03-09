@@ -14,8 +14,6 @@ namespace R136.Core
 {
 	public partial class Engine
 	{
-		private readonly List<Func<StringValues>> _turnEndingNotifiees = new();
-
 		private TypedEntityTaskCollection? LoadEntities(string groupLabel)
 		{
 			if (ContextServices == null)
@@ -143,6 +141,23 @@ namespace R136.Core
 			return DoNext == step;
 		}
 
+		private void AddRoomInformation(List<string> texts, Room playerRoom)
+		{
+			texts.AddRangeIfNotNull(GetTexts(TextID.YouAreAt, "room", playerRoom.Name));
+
+			if (_player!.IsDark)
+				texts.AddRangeIfNotNull(GetTexts(TextID.TooDarkToSee));
+
+			else
+			{
+				if (playerRoom.IsForest && _hasTreeBurned)
+					texts.AddRangeIfNotNull(GetTexts(TextID.BurnedForestDescription));
+
+				else if (playerRoom.Description != null)
+					texts.Add(playerRoom.Description);
+			}
+		}
+
 		private string? GetItemLine(Room room)
 		{
 			var items = _items!.Values.Where(item => item.CurrentRoom == room.ID).ToArray();
@@ -207,20 +222,27 @@ namespace R136.Core
 			return wayLineList[(int)WayLineText.MultipleWayFormat].Replace("{ways}", waySection);
 		}
 
-		private bool IsInCurrentRoom(Animate animate)
-			=> animate.CurrentRoom == _player!.CurrentRoom.ID;
+		private static (List<string> texts, bool isAnimateTriggered) ProgressPresentAnimateStatuses(ICollection<Animate> presentAnimates)
+		{
+			var texts = new List<string>();
+			bool isAnimateTriggered = false;
 
-		private bool IsAnimatePresent
-			=> _animates!.Values.Any(IsInCurrentRoom);
+			foreach (var animate in presentAnimates)
+			{
+				if (texts.Count > 0)
+					texts.Add(string.Empty);
 
-		private ICollection<Animate> PresentAnimates
-			=> _animates!.Values.Where(IsInCurrentRoom).ToArray();
+				texts.AddRangeIfNotNull(animate.ProgressStatus());
 
-		private StringValues GetTexts(TextID id)
-			=> Facilities.TextsMap[this, (int)id];
+				if (animate.IsTriggered)
+				{
+					isAnimateTriggered = true;
+					animate.ResetTrigger();
+				}
+			}
 
-		private StringValues GetTexts(TextID id, string tag, string content)
-			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", content);
+			return (texts, isAnimateTriggered);
+		}
 
 		private Result DoPostRunProcessing(Result result)
 		{
@@ -243,10 +265,36 @@ namespace R136.Core
 			return texts.Count == 0 ? result : new Result(result.Code, texts.ToArray(), result.PauseRequested);
 		}
 
+		private bool IsInCurrentRoom(Animate animate)
+			=> animate.CurrentRoom == _player!.CurrentRoom.ID;
+
+		private bool IsAnimatePresent
+			=> _animates!.Values.Any(IsInCurrentRoom);
+
+		private ICollection<Animate> PresentAnimates
+			=> _animates!.Values.Where(IsInCurrentRoom).ToArray();
+
+		private StringValues GetTexts(TextID id)
+			=> Facilities.TextsMap[this, (int)id];
+
+		private StringValues GetTexts(TextID id, string tag, string content)
+			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", content);
+
 		private void PlaceAt(ItemID item, Room room)
 		{
 			if (_items![item].CurrentRoom == RoomID.None && !_player!.IsInPosession(item))
 				_items![item].CurrentRoom = room.ID;
+		}
+
+		private TSnapshot AddEntities<TSnapshot>(TSnapshot snapshot)
+		{
+			if (snapshot is IRoomsReader roomsReader)
+				roomsReader.Rooms = _rooms;
+
+			if (snapshot is IItemsReader itemsReader)
+				itemsReader.Items = _items;
+
+			return snapshot;
 		}
 
 		private void HandleBurning()
@@ -254,22 +302,6 @@ namespace R136.Core
 			_hasTreeBurned = true;
 
 			PlaceAt(ItemID.GreenCrystal, _rooms![Facilities.Configuration.GreenCrystalRoom]);
-		}
-
-		private enum ItemLineText
-		{
-			SingleItem,
-			MultipleItemsFormat,
-			LastTwoItems,
-			EarlierItem
-		}
-
-		private enum WayLineText
-		{
-			SingleWay = 6,
-			MultipleWayFormat,
-			LastTwoWays,
-			EarlierWay
 		}
 	}
 }
