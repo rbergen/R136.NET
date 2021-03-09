@@ -15,7 +15,6 @@ namespace R136.Web
 {
 	public class Program
 	{
-
 		public static async Task Main(string[] args)
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -24,24 +23,25 @@ namespace R136.Web
 			var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
 
 			builder.Services
-			.AddLogging(builder => builder
-				.AddBrowserConsole()
-				.SetMinimumLevel(LogLevel.Debug)
-			)
-			.AddScoped(sp => new HttpClient { BaseAddress = baseUri })
-			.AddSingleton(new MarkupContentLog()
-			{
-				MaxBlockCount = builder.Configuration.GetValue<int>(Constants.MaxContentLogBlockCount),
-				SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
-			})
-			.AddR136(sp => new HttpJsonEntityReader(sp, new Uri(baseUri, "data/")))
-			.AddBlazoredLocalStorage()
-			.AddScoped<ILanguageProvider>(sp => new LanguageProvider() { Services = sp });
+				.AddLogging
+				(	builder => builder
+					.AddBrowserConsole()
+					.SetMinimumLevel(LogLevel.Debug)
+				)
+				.AddScoped(sp => new HttpClient { BaseAddress = baseUri })
+				.AddSingleton(new MarkupContentLog()
+				{
+					MaxBlockCount = builder.Configuration.GetValue<int>(Constants.MaxContentLogBlockCount),
+					SaveBlockCount = builder.Configuration.GetValue<int>(Constants.SaveContentLogBlockCount)
+				})
+				.AddR136(sp => new HttpJsonEntityReader(sp, new Uri(baseUri, "data/")))
+				.AddBlazoredLocalStorage()
+				.AddScoped<ILanguageProvider>(sp => new LanguageProvider() { Services = sp });
 
 			var host = builder.Build();
 
-			host.Services.PreLoadR136Async(
-				builder
+			host.Services.PreLoadR136Async
+			(	builder
 				.Configuration
 				.GetSection(Constants.Languages)
 				.GetChildren()

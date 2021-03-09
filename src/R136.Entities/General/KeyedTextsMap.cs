@@ -6,11 +6,10 @@ using System.Linq;
 namespace R136.Entities.General
 {
 	public class KeyedTextsMap<TDictKey, TTextKey>
-			where TDictKey : notnull
-			where TTextKey : struct
+		where TDictKey : notnull
+		where TTextKey : struct
 	{
-		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map
-			= new();
+		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map = new();
 
 		public IDictionary<TTextKey, StringValues>? this[TDictKey key]
 		{
@@ -76,7 +75,6 @@ namespace R136.Entities.General
 		public interface IInitializer
 		{
 			TTextKey ID { get; }
-
 			string[]? Texts { get; }
 		}
 	}

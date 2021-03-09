@@ -31,21 +31,21 @@ namespace R136.Shell
 				.ReadFrom.Configuration(configuration)
 				.CreateLogger();
 
-			serviceCollection
+			var serviceProvider = serviceCollection
 				.AddSingleton(configuration)
 				.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, true))
 				.AddSingleton(SetupStatus)
 				.AddSingleton<ILanguageProvider>(sp => new LanguageProvider() { Services = sp })
-				.AddR136(sp => new FileSystemJsonEntityReader(sp, Path.Combine(basePath, "data")));
-
-			var serviceProvider = serviceCollection.BuildServiceProvider();
-			serviceProvider
-				.PreLoadR136Async(configuration
-					.GetSection(Constants.Languages)
-					.GetChildren()
-					.Select(section => section.Key)
-					.ToArray()
-				 );
+				.AddR136(sp => new FileSystemJsonEntityReader(sp, Path.Combine(basePath, "data")))
+				.BuildServiceProvider();
+			
+			serviceProvider.PreLoadR136Async
+			(	configuration
+				.GetSection(Constants.Languages)
+				.GetChildren()
+				.Select(section => section.Key)
+				.ToArray()
+			);
 
 			return serviceProvider;
 

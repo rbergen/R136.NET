@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace R136.Entities.General
 {
 	public class TypedTextsMap<TTextKey> : KeyedTextsMap<string, TTextKey> where TTextKey : struct

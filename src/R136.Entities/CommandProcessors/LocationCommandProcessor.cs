@@ -47,16 +47,17 @@ namespace R136.Entities.CommandProcessors
 			return Result.Success();
 		}
 
-		private static Direction? CommandToDirection(CommandID id) => id switch
-		{
-			CommandID.GoEast => Direction.East,
-			CommandID.GoWest => Direction.West,
-			CommandID.GoNorth => Direction.North,
-			CommandID.GoSouth => Direction.South,
-			CommandID.GoUp => Direction.Up,
-			CommandID.GoDown => Direction.Down,
-			_ => null
-		};
+		private static Direction? CommandToDirection(CommandID id) 
+			=> id switch
+			{
+				CommandID.GoEast => Direction.East,
+				CommandID.GoWest => Direction.West,
+				CommandID.GoNorth => Direction.North,
+				CommandID.GoSouth => Direction.South,
+				CommandID.GoUp => Direction.Up,
+				CommandID.GoDown => Direction.Down,
+				_ => null
+			};
 
 		private void CheckPaperRoute(RoomID toRoom)
 		{

@@ -123,10 +123,12 @@ namespace R136.Entities.CommandProcessors
 
 			var yesNoInputSpecs = Facilities.Configuration.YesNoInputSpecs;
 			if (yesNoInputSpecs.Permitted != null && yesNoInputSpecs.MaxLength == 1 && !yesNoInputSpecs.Permitted.Contains(input))
-				return Result.InputRequested(
-					new() { Key = ContinuationKey },
-					Facilities.Configuration.YesNoInputSpecs,
-					GetTexts(EndTextID.InvalidYesNoAnswer)
+				return Result.InputRequested
+					(
+						new() { Key = ContinuationKey },
+						Facilities.Configuration.YesNoInputSpecs,
+						GetTexts(EndTextID.InvalidYesNoAnswer
+					)
 				);
 
 			return input == Facilities.Configuration.YesInput

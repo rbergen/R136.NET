@@ -30,7 +30,6 @@ namespace R136.BuildTool.Rooms
 			}
 
 			Console.WriteLine($"{indent}{Tags.Info} Found {Rooms.Length} room definitions.");
-
 			Console.WriteLine($"{indent}{Tags.Info} Connecting rooms with direct neighbours, marking rooms from {FirstCave} onwards as dark with {LightCaves?.Length ?? 0} exceptions.");
 
 			for (int i = 0; i < Rooms.Length; i++)

@@ -18,7 +18,9 @@ namespace R136.Web.Pages
 		private MarkupString? _error = null;
 		private bool _hasEnded = false;
 		private bool _isPaused = false;
+#pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference _focusElement;
+#pragma warning restore IDE0044 // Add readonly modifier
 
 		[Parameter]
 		public string Language { get; set; }
