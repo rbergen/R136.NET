@@ -4,6 +4,7 @@ using R136.Core;
 using R136.Shell.Tools;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -18,7 +19,6 @@ namespace R136.Shell
 			=> new ConfigurationBuilder()
 				.SetBasePath(basePath)
 				.AddJsonFile("appsettings.json")
-				.AddEnvironmentVariables()
 				.AddCommandLine(args)
 				.Build();
 
@@ -38,14 +38,8 @@ namespace R136.Shell
 				.AddSingleton<ILanguageProvider>(sp => new LanguageProvider() { Services = sp })
 				.AddR136(sp => new FileSystemJsonEntityReader(sp, Path.Combine(basePath, "data")))
 				.BuildServiceProvider();
-			
-			serviceProvider.PreLoadR136Async
-			(	configuration
-				.GetSection(Constants.Languages)
-				.GetChildren()
-				.Select(section => section.Key)
-				.ToArray()
-			);
+
+			serviceProvider.PreLoadR136Async(GetAvailableLanguages().ToArray());
 
 			return serviceProvider;
 
@@ -60,11 +54,18 @@ namespace R136.Shell
 					status = new();
 
 				string language = configuration[Constants.LanguageParam];
-				if (language != null)
+
+				if (language != null && GetAvailableLanguages().Contains(language))
 					status.Language = language;
 
 				return status;
 			}
+
+			IEnumerable<string> GetAvailableLanguages() 
+				=> configuration
+					.GetSection(Constants.Languages)
+					.GetChildren()
+					.Select(section => section.Key);
 		}
 
 	}
