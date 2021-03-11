@@ -61,7 +61,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5DE1B7A0-C671-4DD2-85CC-603C5FAB7BD2}"
 	ProjectSection(SolutionItems) = preProject
 		src\buildtool.bat = src\buildtool.bat
-		buildtool.sh = buildtool.sh
+		src\buildtool.sh = src\buildtool.sh
 		src\conversions.json = src\conversions.json
 		src\SolutionInfo.cs = src\SolutionInfo.cs
 	EndProjectSection
