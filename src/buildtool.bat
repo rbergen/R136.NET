@@ -1,11 +1,13 @@
 @echo off
 
+set BUILDTOOL_PATH=R136.BuildTool\bin\Debug\net5.0\R136.BuildTool.exe
+
 pushd %~dp0 
 
-if exist R136.BuildTool\bin\Debug\net5.0\R136.BuildTool.exe (
-	R136.BuildTool\bin\Debug\net5.0\R136.BuildTool.exe %* .\conversions.json
+if exist %BUILDTOOL_PATH% (
+	%BUILDTOOL_PATH% %* .\conversions.json
 ) else (
-	echo "BuildTool not available at R136.BuildTool\bin\Debug\net5.0\R136.BuildTool.exe, skipping JSON conversion."
+	echo BuildTool not available at %BUILDTOOL_PATH%, skipping JSON conversion.
 )
 
 popd

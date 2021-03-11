@@ -73,8 +73,12 @@
     <Folder Include="wwwroot\data\nl-NL\" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="call ..\buildtool.bat --nowait" />
-  </Target>
+	<Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
+		<Exec Command="call ..\buildtool.bat --nowait" />
+	</Target>
+
+	<Target Name="JSONConversion_Other" AfterTargets="Build" Condition=" '$(OS)' != 'Windows_NT' ">
+		<Exec Command="/bin/bash ../buildtool.sh --nowait" />
+	</Target>
 
 </Project>
