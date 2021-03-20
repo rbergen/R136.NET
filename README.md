@@ -26,3 +26,22 @@ Concerning the the game itself:
 * It has been converted from a purely C-like procedural implementation to an object-oriented one.
 * Much of it (including all visible texts) can now be configured through JSON files. 
 * It now runs in English as well as Dutch, and features on-the-spot switching between those two languages.
+
+## Building
+On any system that has a .NET 5.0 SDK installed, R136.NET can be built using Visual Studio 2019, the dotnet command line interface or another tool that uses the latter.
+
+The Shell and Web projects have an optional build-time dependency on the BuildTool project; the latter takes care of processing the base .json files in the data directory structure to their production counterparts. The dependency is optional in the sense that the JSON processing is simply skipped if the BuildTool executable is not found when building the dependent projects.
+
+In case of Visual Studio 2019, this dependency is taken care of in the solution file. When building individual projects using the command-line, the BuildTool should be built first if JSON processing is desired. This can be done by running the following command from the src subdirectory before building a dependent project:
+
+```
+$ dotnet build R136.BuildTool/R136.BuildTool.csproj
+```
+
+The dependent project can then be built, after (Shell used as an example):
+
+```
+$ dotnet build R136.Shell/R136.Shell.csproj
+```
+
+I've successfully built the Shell project on Windows and Linux (Cloud9 Amazon Linux 2, to be precise), following these instructions.
