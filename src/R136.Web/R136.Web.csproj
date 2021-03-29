@@ -8,6 +8,11 @@
 	</PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\data\en-GB\.gitignore" />
+    <Content Remove="wwwroot\data\nl-NL\.gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
 
@@ -66,11 +71,6 @@
   <ItemGroup>
     <ProjectReference Include="..\R136.Core\R136.Core.csproj" />
     <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\data\en-GB\" />
-    <Folder Include="wwwroot\data\nl-NL\" />
   </ItemGroup>
 
 	<Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">

@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="data\en-GB\.gitignore" />
+    <None Remove="data\nl-NL\.gitignore" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,11 +77,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R136.Core\R136.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="data\en-GB\" />
-    <Folder Include="data\nl-NL\" />
   </ItemGroup>
 
   <Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
