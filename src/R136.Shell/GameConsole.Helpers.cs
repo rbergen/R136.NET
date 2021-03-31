@@ -3,6 +3,7 @@ using R136.Interfaces;
 using R136.Shell.Tools;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,6 +11,12 @@ namespace R136.Shell
 {
 	partial class GameConsole
 	{
+		private static readonly Random _random = new();
+
+		private long _bpsPrintDelay;
+		private int _bpsPrintCount;
+		private bool _bpsPrintEnabled;
+		
 		private void SaveStatus(InputSpecs? inputSpecs)
 		{
 			if (_status == null)
@@ -30,7 +37,7 @@ namespace R136.Shell
 			if (_status?.Texts != null)
 			{
 				_texts.Clear();
-				foreach (string text in _status.Texts)
+				foreach (string text in string.Join("\n", _status.Texts).Split('\n').TakeLast(Console.WindowHeight))
 				{
 					WritePlainText(text);
 					_texts.Enqueue(text);
@@ -46,7 +53,7 @@ namespace R136.Shell
 			ConsoleColor color = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.White;
 
-			Console.Write(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
+			BPSPrint(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
 			Console.ReadKey();
 
 			Console.ForegroundColor = color;
@@ -59,10 +66,10 @@ namespace R136.Shell
 				_status.Pausing = false;
 		}
 
-		private static void ClearLine(int row, int length)
+		private void ClearLine(int row, int length)
 		{
 			Console.SetCursorPosition(0, row);
-			Console.Write(new string(' ', length));
+			BPSPrint(new string(' ', length));
 			Console.SetCursorPosition(0, row);
 		}
 
@@ -156,7 +163,7 @@ namespace R136.Shell
 
 		private int WritePlainLine(string plainLine, int rowCountDown)
 		{
-			Console.WriteLine(plainLine);
+			BPSPrint(plainLine + Console.Out.NewLine);
 			if (--rowCountDown == 0)
 			{
 				WaitForKey();
@@ -165,6 +172,77 @@ namespace R136.Shell
 
 			return rowCountDown;
 		}
+
+		private void BPSPrint(string text)
+		{
+			if (!_bpsPrintEnabled || text.Length == 0)
+			{
+				Console.Write(text);
+				return;
+			}
+
+			var stopwatch = new Stopwatch();
+			int i;
+			for (i = 0; i < (text.Length - _bpsPrintCount); i += _bpsPrintCount)
+			{
+				stopwatch.Restart();
+				while (stopwatch.ElapsedTicks < _bpsPrintDelay) { }
+				Console.Write(text.Substring(i, _bpsPrintCount));
+			}
+			stopwatch.Restart();
+			while (stopwatch.ElapsedTicks < _bpsPrintDelay) { }
+			Console.Write(text[i..]);
+		}
+
+		private void Initialize()
+		{
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.Gray;
+			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
+
+			var bpsConfig = _configuration[Constants.BPSParam];
+			if (bpsConfig == null || bpsConfig == "off")
+			{
+				_bpsPrintEnabled = false;
+				return;
+			}
+
+			_bpsPrintEnabled = true;
+			_bpsPrintCount = 1;
+			_bpsPrintDelay = 0;
+
+			int top = Console.GetCursorPosition().Top;
+			Console.SetCursorPosition(0, top);
+			int width = Console.WindowWidth - 1;
+
+			Stopwatch stopwatch = Stopwatch.StartNew();
+			BPSPrint(RandomString(width));
+			stopwatch.Stop();
+			
+			Console.SetCursorPosition(0, top);
+			Console.Write(new string(' ', width));
+			Console.SetCursorPosition(0, top);
+
+			if (!int.TryParse(bpsConfig, out int bpsRate) || bpsRate < Constants.BPSMinimum)
+				bpsRate = Constants.BPSDefault;
+
+			long neededTicksPerChar = 10000 * 1000 / (bpsRate / 10);
+			long measuredTicksPerChar = stopwatch.ElapsedTicks / width;
+
+			if (neededTicksPerChar > measuredTicksPerChar)
+			{
+				_bpsPrintCount = 1;
+				_bpsPrintDelay = neededTicksPerChar - measuredTicksPerChar;
+			}
+			else
+			{
+				_bpsPrintCount = (int)(measuredTicksPerChar / neededTicksPerChar) + 1;
+				_bpsPrintDelay = _bpsPrintCount * neededTicksPerChar - measuredTicksPerChar;
+			}
+		}
+
+		public static string RandomString(int length)
+			=> new(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", length).Select(s => s[_random.Next(s.Length)]).ToArray());
 
 		private void ShowLanguageSwitchInstructions()
 		{

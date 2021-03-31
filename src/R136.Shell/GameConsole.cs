@@ -58,7 +58,8 @@ namespace R136.Shell
 
 		public async Task<int> Play()
 		{
-			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
+			Initialize();
+
 			string language = _languages?.Language ?? Constants.Dutch;
 
 			var task = _engine.Initialize(language);
@@ -145,7 +146,7 @@ namespace R136.Shell
 					? _engine!.Continue(ContinuationStatus, input)
 					: _engine!.Run(input);
 
-				(_, int top) = Console.GetCursorPosition();
+				int top = Console.GetCursorPosition().Top;
 				ClearLine(top - 1, inputLineLength);
 
 				if (result.IsError)
@@ -155,7 +156,7 @@ namespace R136.Shell
 				}
 
 				string finalInput = Constants.Prompt + input + '\n';
-				Console.WriteLine(finalInput);
+				BPSPrint(finalInput + Console.Out.NewLine);
 				_texts.Enqueue(finalInput);
 
 				ContinuationStatus = null;
@@ -173,13 +174,13 @@ namespace R136.Shell
 			}
 		}
 
-		private static void ShowInputError(Result result, int top)
+		private void ShowInputError(Result result, int top)
 		{
 			ConsoleColor color = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
 
 			var errorLine = Constants.ReversePrompt + (result.Message != StringValues.Empty ? result.Message : "An unspecified error occurred");
-			Console.Write(errorLine);
+			BPSPrint(errorLine);
 
 			Console.ForegroundColor = color;
 
@@ -279,7 +280,7 @@ De betreffende wetenschapper werd even blootgesteld aan de straling, en na het g
 Geschrokken door wat er gebeurde werd er besloten alles geheim te houden en het project te stoppen.
 De wetenschapper die aan de straling was blootgesteld hield zich niet aan de afspraak en stal wat van de agressieve stof. Hij bouwde een bom, de positronenbom genaamd.
 
-Hij vond dat de wereld de schuld had van zijn mutaties en hij wilde de wereld daarvoor laten boeten.Daarom verborg hij de bom, met een tijdmechanisme op een plaats die niemand zou durven betreden: de vallei der verderf.
+Hij vond dat de wereld de schuld had van zijn mutaties en hij wilde de wereld daarvoor laten boeten. Daarom verborg hij de bom, met een tijdmechanisme op een plaats die niemand zou durven betreden: de vallei der verderf.
 
 Eén van de wetenschappers rook onraad en wilde de zaak gaan onderzoeken. 
 Drie dagen later werd hij met een vleesmes in zijn rug op de stoep van zijn huis gevonden.
