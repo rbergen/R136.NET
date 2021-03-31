@@ -3,6 +3,7 @@ using R136.Interfaces;
 using R136.Shell.Tools;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -11,6 +12,12 @@ namespace R136.Shell
 {
 	partial class GameConsole
 	{
+		private long _baudPrintDelay;
+		private int _baudPrintCount;
+		private bool _baudPrintEnabled;
+		
+		private static readonly Random _random = new Random();
+
 		private void SaveStatus(InputSpecs? inputSpecs)
 		{
 			if (_status == null)
@@ -169,17 +176,74 @@ namespace R136.Shell
 
 		private void BaudPrint(string text)
 		{
-			if (!int.TryParse(_configuration[Constants.BaudParam], out int baud))
-				baud = 1200;
-
-			int wait = 10000 / baud;
-
-			foreach(var c in text)
+			if (!_baudPrintEnabled || text.Length == 0)
 			{
-				Thread.Sleep(wait);
-				Console.Write(c);
+				Console.Write(text);
+				return;
+			}
+
+			var stopwatch = new Stopwatch();
+			int i;
+			for (i = 0; i < (text.Length - _baudPrintCount); i += _baudPrintCount)
+			{
+				stopwatch.Restart();
+				while (stopwatch.ElapsedTicks < _baudPrintDelay) { }
+				Console.Write(text.Substring(i, _baudPrintCount));
+			}
+			stopwatch.Restart();
+			while (stopwatch.ElapsedTicks < _baudPrintDelay) { }
+			Console.Write(text.Substring(i));
+		}
+
+		private void SetupConsole()
+		{
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.Gray;
+			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
+
+			var baudConfig = _configuration[Constants.BaudParam];
+			if (baudConfig == null || baudConfig == "off")
+			{
+				_baudPrintEnabled = false;
+				return;
+			}
+
+			_baudPrintEnabled = true;
+			_baudPrintCount = 1;
+			_baudPrintDelay = 0;
+
+			int top = Console.GetCursorPosition().Top;
+			Console.SetCursorPosition(0, top);
+			int width = Console.WindowWidth - 1;
+
+			Stopwatch stopwatch = Stopwatch.StartNew();
+			BaudPrint(RandomString(width));
+			stopwatch.Stop();
+			
+			Console.SetCursorPosition(0, top);
+			Console.Write(new string(' ', width));
+			Console.SetCursorPosition(0, top);
+
+			if (!int.TryParse(baudConfig, out int baudRate))
+				baudRate = 1200;
+
+			long neededTicksPerChar = 10000 * 1000 / (baudRate / 10);
+			long measuredTicksPerChar = stopwatch.ElapsedTicks / width;
+
+			if (neededTicksPerChar > measuredTicksPerChar)
+			{
+				_baudPrintCount = 1;
+				_baudPrintDelay = neededTicksPerChar - measuredTicksPerChar;
+			}
+			else
+			{
+				_baudPrintCount = (int)(measuredTicksPerChar / neededTicksPerChar) + 1;
+				_baudPrintDelay = _baudPrintCount * neededTicksPerChar - measuredTicksPerChar;
 			}
 		}
+
+		public static string RandomString(int length)
+			=> new(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", length).Select(s => s[_random.Next(s.Length)]).ToArray());
 
 		private void ShowLanguageSwitchInstructions()
 		{

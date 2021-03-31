@@ -2,7 +2,7 @@
   "profiles": {
     "R136.Shell": {
       "commandName": "Project",
-      "commandLineArgs": "--intro no --baud 9600"
+      "commandLineArgs": "--intro yes --baud 1200"
     }
   }
 }

@@ -60,27 +60,8 @@ namespace R136.Shell
 
 		public async Task<int> Play()
 		{
-			Console.BackgroundColor = ConsoleColor.Black;
-			Console.ForegroundColor = ConsoleColor.Gray;
-			int top = Console.GetCursorPosition().Top;
-			Console.SetCursorPosition(0, top);
-			int width = Console.WindowWidth - 1;
-			Stopwatch stopwatch = Stopwatch.StartNew();
-			foreach (var c in new string('*', width))
-			{
-				Console.Write(c);
-				Thread.Sleep(0);
-			}
-			Console.SetCursorPosition(0, top);
-			foreach (var c in new string (' ', width))
-			{
-				Console.Write(c);
-				Thread.Sleep(0);
-			}
-			stopwatch.Stop();
-			Console.WriteLine();
+			SetupConsole();
 
-			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
 			string language = _languages?.Language ?? Constants.Dutch;
 
 			var task = _engine.Initialize(language);
