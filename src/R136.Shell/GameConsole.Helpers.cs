@@ -6,18 +6,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace R136.Shell
 {
 	partial class GameConsole
 	{
-		private long _baudPrintDelay;
-		private int _baudPrintCount;
-		private bool _baudPrintEnabled;
-		
-		private static readonly Random _random = new Random();
+		private static readonly Random _random = new();
 
+		private long _bpsPrintDelay;
+		private int _bpsPrintCount;
+		private bool _bpsPrintEnabled;
+		
 		private void SaveStatus(InputSpecs? inputSpecs)
 		{
 			if (_status == null)
@@ -54,7 +53,7 @@ namespace R136.Shell
 			ConsoleColor color = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.White;
 
-			BaudPrint(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
+			BPSPrint(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
 			Console.ReadKey();
 
 			Console.ForegroundColor = color;
@@ -70,7 +69,7 @@ namespace R136.Shell
 		private void ClearLine(int row, int length)
 		{
 			Console.SetCursorPosition(0, row);
-			BaudPrint(new string(' ', length));
+			BPSPrint(new string(' ', length));
 			Console.SetCursorPosition(0, row);
 		}
 
@@ -164,7 +163,7 @@ namespace R136.Shell
 
 		private int WritePlainLine(string plainLine, int rowCountDown)
 		{
-			BaudPrint(plainLine + Console.Out.NewLine);
+			BPSPrint(plainLine + Console.Out.NewLine);
 			if (--rowCountDown == 0)
 			{
 				WaitForKey();
@@ -174,9 +173,9 @@ namespace R136.Shell
 			return rowCountDown;
 		}
 
-		private void BaudPrint(string text)
+		private void BPSPrint(string text)
 		{
-			if (!_baudPrintEnabled || text.Length == 0)
+			if (!_bpsPrintEnabled || text.Length == 0)
 			{
 				Console.Write(text);
 				return;
@@ -184,61 +183,61 @@ namespace R136.Shell
 
 			var stopwatch = new Stopwatch();
 			int i;
-			for (i = 0; i < (text.Length - _baudPrintCount); i += _baudPrintCount)
+			for (i = 0; i < (text.Length - _bpsPrintCount); i += _bpsPrintCount)
 			{
 				stopwatch.Restart();
-				while (stopwatch.ElapsedTicks < _baudPrintDelay) { }
-				Console.Write(text.Substring(i, _baudPrintCount));
+				while (stopwatch.ElapsedTicks < _bpsPrintDelay) { }
+				Console.Write(text.Substring(i, _bpsPrintCount));
 			}
 			stopwatch.Restart();
-			while (stopwatch.ElapsedTicks < _baudPrintDelay) { }
-			Console.Write(text.Substring(i));
+			while (stopwatch.ElapsedTicks < _bpsPrintDelay) { }
+			Console.Write(text[i..]);
 		}
 
-		private void SetupConsole()
+		private void Initialize()
 		{
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Gray;
 			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
 
-			var baudConfig = _configuration[Constants.BaudParam];
-			if (baudConfig == null || baudConfig == "off")
+			var bpsConfig = _configuration[Constants.BPSParam];
+			if (bpsConfig == null || bpsConfig == "off")
 			{
-				_baudPrintEnabled = false;
+				_bpsPrintEnabled = false;
 				return;
 			}
 
-			_baudPrintEnabled = true;
-			_baudPrintCount = 1;
-			_baudPrintDelay = 0;
+			_bpsPrintEnabled = true;
+			_bpsPrintCount = 1;
+			_bpsPrintDelay = 0;
 
 			int top = Console.GetCursorPosition().Top;
 			Console.SetCursorPosition(0, top);
 			int width = Console.WindowWidth - 1;
 
 			Stopwatch stopwatch = Stopwatch.StartNew();
-			BaudPrint(RandomString(width));
+			BPSPrint(RandomString(width));
 			stopwatch.Stop();
 			
 			Console.SetCursorPosition(0, top);
 			Console.Write(new string(' ', width));
 			Console.SetCursorPosition(0, top);
 
-			if (!int.TryParse(baudConfig, out int baudRate))
-				baudRate = 1200;
+			if (!int.TryParse(bpsConfig, out int bpsRate) || bpsRate < Constants.BPSMinimum)
+				bpsRate = Constants.BPSDefault;
 
-			long neededTicksPerChar = 10000 * 1000 / (baudRate / 10);
+			long neededTicksPerChar = 10000 * 1000 / (bpsRate / 10);
 			long measuredTicksPerChar = stopwatch.ElapsedTicks / width;
 
 			if (neededTicksPerChar > measuredTicksPerChar)
 			{
-				_baudPrintCount = 1;
-				_baudPrintDelay = neededTicksPerChar - measuredTicksPerChar;
+				_bpsPrintCount = 1;
+				_bpsPrintDelay = neededTicksPerChar - measuredTicksPerChar;
 			}
 			else
 			{
-				_baudPrintCount = (int)(measuredTicksPerChar / neededTicksPerChar) + 1;
-				_baudPrintDelay = _baudPrintCount * neededTicksPerChar - measuredTicksPerChar;
+				_bpsPrintCount = (int)(measuredTicksPerChar / neededTicksPerChar) + 1;
+				_bpsPrintDelay = _bpsPrintCount * neededTicksPerChar - measuredTicksPerChar;
 			}
 		}
 

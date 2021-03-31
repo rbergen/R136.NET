@@ -175,7 +175,11 @@ namespace R136.Core
 			if (items.Length == 1)
 				return itemLineList[(int)ItemLineText.SingleItem].Replace("{item}", items[0].Name);
 
-			var itemSection = itemLineList[(int)ItemLineText.LastTwoItems].Replace("{seconditem}", items[^1].Name).Replace("{firstitem}", items[^2].Name);
+			var itemSection = itemLineList[(int)ItemLineText.LastTwoItems].ReplacePlaceholders(new Dictionary<string, object>
+			{
+				{ "seconditem", items[^1].Name },
+				{ "firstitem", items[^2].Name }
+			});
 
 			if (items.Length > 2)
 			{
@@ -207,7 +211,11 @@ namespace R136.Core
 			if (ways.Length == 1)
 				return wayLineList[(int)WayLineText.SingleWay].Replace("{way}", wayLineList[(int)ways[0]]);
 
-			var waySection = wayLineList[(int)WayLineText.LastTwoWays].Replace("{secondway}", wayLineList[(int)ways[^1]]).Replace("{firstway}", wayLineList[(int)ways[^2]]);
+			var waySection = wayLineList[(int)WayLineText.LastTwoWays].ReplacePlaceholders(new Dictionary<string, object>
+			{
+				{ "secondway", wayLineList[(int)ways[^1]] },
+				{ "firstway", wayLineList[(int)ways[^2]] }
+			});
 
 			if (ways.Length > 2)
 			{

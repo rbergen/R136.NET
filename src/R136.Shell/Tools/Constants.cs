@@ -11,7 +11,7 @@
 		public const string IntroParam = "intro";
 		public const string LanguageParam = "lang";
 		public const string LoadParam = "load";
-		public const string BaudParam = "baud";
+		public const string BPSParam = "bps";
 		public const string ParamNo = "no";
 		public const string ParamYes = "yes";
 
@@ -22,5 +22,8 @@
 		public const string English = "en-GB";
 		public const string Prompt = "> ";
 		public const string ReversePrompt = "< ";
+
+		public const int BPSMinimum = 110;
+		public const int BPSDefault = 2400;
 	}
 }

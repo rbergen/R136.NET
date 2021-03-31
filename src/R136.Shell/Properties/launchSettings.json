@@ -2,7 +2,7 @@
   "profiles": {
     "R136.Shell": {
       "commandName": "Project",
-      "commandLineArgs": "--intro yes --baud 1200"
+      "commandLineArgs": "--intro yes --bps 2400"
     }
   }
 }

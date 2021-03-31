@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace R136.Entities.General
 {
@@ -42,6 +43,22 @@ namespace R136.Entities.General
 			}
 
 			return (-1, null);
+		}
+
+		public static string ReplacePlaceholders(this string source, IReadOnlyDictionary<string, object> valueMap)
+		{
+			var regex = new Regex("{(?<placeholder>[a-z_][a-z0-9_]*?)}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+			return regex.Replace(source, ValueMapper);
+
+			string ValueMapper(Match match)
+			{
+				string key = match.Groups["placeholder"].Value;
+
+				return valueMap.TryGetValue(key, out object? value)
+					? value.ToString() ?? string.Empty
+					: key;
+			}
 		}
 	}
 }

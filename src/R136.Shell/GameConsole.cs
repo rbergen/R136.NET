@@ -6,8 +6,6 @@ using R136.Interfaces;
 using R136.Shell.Tools;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace R136.Shell
@@ -60,7 +58,7 @@ namespace R136.Shell
 
 		public async Task<int> Play()
 		{
-			SetupConsole();
+			Initialize();
 
 			string language = _languages?.Language ?? Constants.Dutch;
 
@@ -158,7 +156,7 @@ namespace R136.Shell
 				}
 
 				string finalInput = Constants.Prompt + input + '\n';
-				BaudPrint(finalInput + Console.Out.NewLine);
+				BPSPrint(finalInput + Console.Out.NewLine);
 				_texts.Enqueue(finalInput);
 
 				ContinuationStatus = null;
@@ -182,7 +180,7 @@ namespace R136.Shell
 			Console.ForegroundColor = ConsoleColor.Red;
 
 			var errorLine = Constants.ReversePrompt + (result.Message != StringValues.Empty ? result.Message : "An unspecified error occurred");
-			BaudPrint(errorLine);
+			BPSPrint(errorLine);
 
 			Console.ForegroundColor = color;
 
