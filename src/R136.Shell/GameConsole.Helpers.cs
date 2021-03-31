@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace R136.Shell
 {
@@ -30,7 +31,7 @@ namespace R136.Shell
 			if (_status?.Texts != null)
 			{
 				_texts.Clear();
-				foreach (string text in _status.Texts)
+				foreach (string text in string.Join("\n", _status.Texts).Split('\n').TakeLast(Console.WindowHeight))
 				{
 					WritePlainText(text);
 					_texts.Enqueue(text);
@@ -46,7 +47,7 @@ namespace R136.Shell
 			ConsoleColor color = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.White;
 
-			Console.Write(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
+			BaudPrint(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
 			Console.ReadKey();
 
 			Console.ForegroundColor = color;
@@ -59,10 +60,10 @@ namespace R136.Shell
 				_status.Pausing = false;
 		}
 
-		private static void ClearLine(int row, int length)
+		private void ClearLine(int row, int length)
 		{
 			Console.SetCursorPosition(0, row);
-			Console.Write(new string(' ', length));
+			BaudPrint(new string(' ', length));
 			Console.SetCursorPosition(0, row);
 		}
 
@@ -156,7 +157,7 @@ namespace R136.Shell
 
 		private int WritePlainLine(string plainLine, int rowCountDown)
 		{
-			Console.WriteLine(plainLine);
+			BaudPrint(plainLine + Console.Out.NewLine);
 			if (--rowCountDown == 0)
 			{
 				WaitForKey();
@@ -164,6 +165,20 @@ namespace R136.Shell
 			}
 
 			return rowCountDown;
+		}
+
+		private void BaudPrint(string text)
+		{
+			if (!int.TryParse(_configuration[Constants.BaudParam], out int baud))
+				baud = 1200;
+
+			int wait = 10000 / baud;
+
+			foreach(var c in text)
+			{
+				Thread.Sleep(wait);
+				Console.Write(c);
+			}
 		}
 
 		private void ShowLanguageSwitchInstructions()

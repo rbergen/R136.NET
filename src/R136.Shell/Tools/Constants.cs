@@ -11,6 +11,7 @@
 		public const string IntroParam = "intro";
 		public const string LanguageParam = "lang";
 		public const string LoadParam = "load";
+		public const string BaudParam = "baud";
 		public const string ParamNo = "no";
 		public const string ParamYes = "yes";
 

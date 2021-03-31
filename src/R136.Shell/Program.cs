@@ -44,6 +44,9 @@ Opties:
 		--intro yes|no
         Laat bij een nieuw spel de intro-animatie en -tekst wel (yes) of niet (no) zien. Standaard is yes, wat betekent dat de intro wel wordt getoond.
 
+		--baud <Waarde>
+				Zet de gesimuleerde baudrate van de terminal op de aangegeven waarde.
+
     --help, -h, /h
         Toon gebruiksinformatie."
 
@@ -61,6 +64,9 @@ Options:
 
 		--intro yes|no
         Shows the intro animation and text when starting a new game (yes), or doesn't (no). The default is yes, which means that the intro is shown.
+
+		--baud <Value>
+				Sets the simulated baud rate of the terminal to the indicated value.
 
     --help, -h
         Show usage information.";
