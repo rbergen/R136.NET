@@ -1,0 +1,11 @@
+{
+    "navigationFallback": {
+      "rewrite": "/index.html",
+      "exclude": ["/_content/*", "/_framework/*", "/css/*", "/data/*", "/js/*", "/*.{br,css,gz,ico,json,png}", "/css/*"]
+    },
+    "responseOverrides": {
+        "404": {
+            "rewrite": "/index.html"
+        }
+    }
+}
