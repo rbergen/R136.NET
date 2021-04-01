@@ -32,8 +32,8 @@ jobs:
           output_location: "wwwroot" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          PRE_BUILD_COMMAND: dotnet build --configuration Debug src/R136.BuildTool/R136.BuildTool.csproj
-          POST_BUILD_COMMAND: rm src/R136.Web/staticwebapp.config.json.{br,gz}
+          PRE_BUILD_COMMAND: dotnet build --configuration Debug /github/workspace/src/R136.BuildTool/R136.BuildTool.csproj
+          POST_BUILD_COMMAND: rm /github/workspace/src/R136.Web/wwwroot/staticwebapp.config.json.{br,gz}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
