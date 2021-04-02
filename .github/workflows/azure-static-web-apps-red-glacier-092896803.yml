@@ -36,6 +36,7 @@ jobs:
           output_location: "wwwroot" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
+          DOTNET_ROOT: /home/runner/.dotnet
           PRE_BUILD_COMMAND: dotnet build --configuration Debug /github/workspace/src/R136.BuildTool/R136.BuildTool.csproj
 
   close_pull_request_job:
