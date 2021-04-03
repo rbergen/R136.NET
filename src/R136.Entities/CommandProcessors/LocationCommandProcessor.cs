@@ -100,10 +100,26 @@ namespace R136.Entities.CommandProcessors
 			serviceCollection.AddSingleton<IPaperRouteNotificationProvider>(this);
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
+			private const int BinarySize = 2;
+
 			public int ID { get; set; }
 			public int PaperRouteIndex { get; set; }
+
+			public byte[] GetBinary()
+				=> new byte[BinarySize] { ID.ToByte(), PaperRouteIndex.ToByte() };
+
+			public int? SetBinary(Span<byte> value)
+			{
+				if (value.Length < BinarySize)
+					return null;
+
+				ID = value[0];
+				PaperRouteIndex = value[1];
+
+				return BinarySize;
+			}
 		}
 
 		private enum TextID

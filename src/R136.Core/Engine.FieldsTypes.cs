@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using R136.Entities;
 using R136.Entities.CommandProcessors;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
@@ -33,17 +34,86 @@ namespace R136.Core
 		private readonly List<Func<StringValues>> _turnEndingNotifiees = new();
 		private bool _hasTreeBurned = false;
 
-		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer
+		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer, ISnapshot
 		{
+			private const int BinaryBaseSize = 3;
+
 			public Configuration? Configuration { get; set; }
 			public bool HasTreeBurned { get; set; }
 			public bool IsAnimateTriggered { get; set; }
 			public NextStep DoNext { get; set; }
+
 			public LocationCommandProcessor.Snapshot? LocationCommandProcessor { get; set; }
 			public Item.Snapshot[]? Items { get; set; }
 			public Flashlight.Snapshot? Flashlight { get; set; }
 			public Animate.Snapshot[]? Animates { get; set; }
 			public Player.Snapshot? Player { get; set; }
+
+			public byte[] GetBinary()
+			{
+				List<byte> result = new();
+
+				result.Add(HasTreeBurned.ToByte());
+				result.Add(IsAnimateTriggered.ToByte());
+				result.Add(DoNext.ToByte());
+
+				result.AddRange(Configuration.ToBytes());
+				result.AddRange(LocationCommandProcessor.ToBytes());
+				result.AddRange(Items.SnapshotsToBytes());
+				result.AddRange(Flashlight.ToBytes());
+				result.AddRange(Animates.SnapshotsToBytes());
+				result.AddRange(Player.ToBytes());
+
+				return result.ToArray();
+			}
+
+			public int? SetBinary(Span<byte> value)
+			{
+				if (value.Length <= BinaryBaseSize)
+					return null;
+
+				HasTreeBurned = value[0].ToBool();
+				IsAnimateTriggered = value[1].ToBool();
+				DoNext = value[2].To<NextStep>();
+
+				int? readBytes = BinaryBaseSize;
+				int totalReadBytes = readBytes.Value;
+				Memory<byte> bytes = value[readBytes.Value..].ToArray();
+				bool abort = false;
+
+				Configuration = ProcessResult(bytes.Span.ToNullable<Configuration>());
+				if (abort) return null;
+
+				LocationCommandProcessor = ProcessResult(bytes.Span.ToNullable<LocationCommandProcessor.Snapshot>());
+				if (abort) return null;
+
+				Items = ProcessResult(bytes.Span.ToSnapshotArrayOf<Item.Snapshot>());
+				if (abort) return null;
+
+				Flashlight = ProcessResult(bytes.Span.ToNullable<Flashlight.Snapshot>());
+				if (abort) return null;
+
+				Animates = ProcessResult(bytes.Span.ToSnapshotArrayOf<Animate.Snapshot>());
+				if (abort) return null;
+
+				(Player, readBytes) = bytes.Span.ToNullable<Player.Snapshot>();
+
+				return readBytes != null ? totalReadBytes + readBytes : null;
+
+				TResult ProcessResult<TResult>((TResult item, int? readBytes) result)
+				{
+					if (readBytes == null || bytes.Length == readBytes)
+					{
+						abort = true;
+						return result.item;
+					}
+
+					bytes = bytes[readBytes.Value..];
+					totalReadBytes += readBytes.Value;
+
+					return result.item;
+				}
+			}
 		}
 
 		private enum TextID

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using R136.Entities.Animates;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
@@ -161,13 +162,39 @@ namespace R136.Entities
 			public Dictionary<AnimateStatus, string[]>? StatusTexts { get; set; }
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
+			private const int BinarySize = 5;
+
 			public AnimateID ID { get; set; }
 			public RoomID Room { get; set; }
 			public AnimateStatus Status { get; set; }
 			public int StrikesLeft { get; set; }
 			public bool IsTriggered { get; set; }
+
+			public byte[] GetBinary()
+				=> new byte[BinarySize] 
+				{ 
+					ID.ToByte(), 
+					Room.ToByte(), 
+					Status.ToByte(), 
+					StrikesLeft.ToByte(), 
+					IsTriggered.ToByte() 
+				};
+
+			public int? SetBinary(Span<byte> value)
+			{
+				if (value.Length < BinarySize)
+					return null;
+
+				ID = value[0].To<AnimateID>();
+				Room = value[1].To<RoomID>();
+				Status = value[2].To<AnimateStatus>();
+				StrikesLeft = value[3];
+				IsTriggered = value[4].ToBool();
+
+				return BinarySize;
+			}
 		}
 
 		public interface ISnapshotContainer

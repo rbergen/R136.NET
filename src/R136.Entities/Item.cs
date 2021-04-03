@@ -187,10 +187,23 @@ namespace R136.Entities
 			public bool KeepAfterUse { get; set; }
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
+			private const int BinarySize = 2;
+
 			public ItemID ID { get; set; }
 			public RoomID Room { get; set; }
+
+			public virtual byte[] GetBinary()
+				=> new byte[BinarySize] { ID.ToByte(), Room.ToByte() };
+
+			public virtual int? SetBinary(Span<byte> value)
+			{
+				ID = value[0].To<ItemID>();
+				Room = value[1].To<RoomID>();
+				
+				return BinarySize;
+			}
 		}
 
 		public interface ISnapshotContainer

@@ -156,10 +156,43 @@ namespace R136.Entities.Items
 
 		public new class Snapshot : Item.Snapshot
 		{
+			private const int BinarySize = 4;
+
 			public int? LampPoints { get; set; }
 			public int? LampPointsFromConfig { get; set; }
 			public bool IsOn { get; set; }
 			public bool HasBatteries { get; set; }
+
+			public override byte[] GetBinary()
+			{
+				byte[] baseBytes = base.GetBinary();
+				byte[] result = new byte[baseBytes.Length + BinarySize];
+				Array.Copy(baseBytes, result, baseBytes.Length);
+
+				int i = baseBytes.Length;
+				result[i++] = LampPoints.IntToByte();
+				result[i++] = LampPointsFromConfig.IntToByte();
+				result[i++] = IsOn.ToByte();
+				result[i++] = HasBatteries.ToByte();
+
+				return result;
+			}
+
+			public override int? SetBinary(Span<byte> value)
+			{
+				int? baseSize = base.SetBinary(value);
+
+				if (baseSize == null || value.Length < baseSize.Value + BinarySize)
+					return null;
+
+				int i = baseSize.Value;
+				LampPoints = value[i++].ToNullableInt();
+				LampPointsFromConfig = value[i++].ToNullableInt();
+				IsOn = value[i++].ToBool();
+				HasBatteries = value[i++].ToBool();
+
+				return i;
+			}
 		}
 
 		private enum TextID

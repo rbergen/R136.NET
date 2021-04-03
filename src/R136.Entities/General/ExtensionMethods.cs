@@ -86,6 +86,5 @@ namespace R136.Entities.General
 		public static StringValues Get<TIndex>(this TypedTextsMap<int> map, object key, TIndex index)
 			where TIndex : Enum
 			=> map[key, Convert.ToInt32(index)];
-
 	}
 }

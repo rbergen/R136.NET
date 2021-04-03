@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,10 +72,20 @@ namespace R136.Web.Tools
 			}
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
 			public bool IsTrimmed { get; set; }
 			public ContentBlock[]? ContentBlocks { get; set; }
+
+			public byte[] GetBinary()
+			{
+				
+			}
+
+			public int? SetBinary(Span<byte> value)
+			{
+				throw new System.NotImplementedException();
+			}
 		}
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
@@ -99,14 +111,41 @@ namespace R136.Web.Tools
 			=> _blocks[index];
 	}
 
-	public class ContentBlock
+	public class ContentBlock : ISnapshot
 	{
+		private const int BinaryBaseSize = 2;
+
 		public ContentBlockType Type { get; set; }
 		public ResultCode? ResultCode { get; set; }
 		public string? Text { get; set; }
 
 		[JsonIgnore]
 		public MarkupString Content => (MarkupString)(Text ?? string.Empty);
+
+		public byte[] GetBinary()
+		{
+			List<byte> result = new();
+
+			result.Add(Type.ToByte());
+			result.Add(ResultCode.EnumToByte());
+			result.AddRange(Text.TextToBytes());
+
+			return result.ToArray();
+		}
+
+		public int? SetBinary(Span<byte> value)
+		{
+			if (value.Length <= BinaryBaseSize)
+				return null;
+
+			Type = value[0].To<ContentBlockType>();
+			ResultCode = value[1].ToNullable<ResultCode>();
+
+			int? readBytes;
+			(Text, readBytes) = value[2..].ToText();
+
+			return readBytes != null ? readBytes + BinaryBaseSize : null;
+		}
 	}
 
 	public enum ContentBlockType

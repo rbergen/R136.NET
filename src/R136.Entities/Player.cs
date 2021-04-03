@@ -144,8 +144,10 @@ namespace R136.Entities
 		public void Configure(IServiceProvider serviceProvider)
 			=> _lightsource = serviceProvider.GetService<ILightsource>();
 
-		public class Snapshot : IRoomsReader, IItemsReader
+		public class Snapshot : IRoomsReader, IItemsReader, ISnapshot
 		{
+			private const int BinaryBaseSize = 4;
+
 			public int ID { get; set; }
 			public int? LifePoints { get; set; }
 			public int? LifePointsFromConfig { get; set; }
@@ -157,6 +159,39 @@ namespace R136.Entities
 
 			[JsonIgnore]
 			public IReadOnlyDictionary<RoomID, Room>? Rooms { get; set; }
+
+			public byte[] GetBinary()
+			{
+				byte[] inventoryBytes = Inventory.EnumsToBytes();
+				byte[] result = new byte[inventoryBytes.Length + BinaryBaseSize];
+
+				Array.Copy(inventoryBytes, result, inventoryBytes.Length);
+
+				int i = inventoryBytes.Length;
+				result[i++] = ID.ToByte();
+				result[i++] = LifePoints.IntToByte();
+				result[i++] = LifePointsFromConfig.IntToByte();
+				result[i++] = Room.ToByte();
+
+				return result;
+			}
+
+			public int? SetBinary(Span<byte> value)
+			{
+				(ItemID[]? inventory, int? bytesRead) = value.ToEnumArrayOf<ItemID>();
+				if (bytesRead == null || value.Length < bytesRead.Value + BinaryBaseSize)
+					return null;
+
+				Inventory = inventory;
+
+				int i = bytesRead.Value;
+				ID = value[i++];
+				LifePoints = value[i++].ToNullableInt();
+				LifePointsFromConfig = value[i++].ToNullableInt();
+				Room = value[i++].To<RoomID>();
+
+				return i;
+			}
 		}
 
 		private enum TextID
