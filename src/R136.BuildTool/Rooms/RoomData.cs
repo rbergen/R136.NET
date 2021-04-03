@@ -1,5 +1,6 @@
 ﻿using R136.BuildTool.Tools;
 using R136.Entities;
+using R136.Entities.General;
 using R136.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace R136.BuildTool.Rooms
 
 			for (int i = 0; i < Rooms.Length; i++)
 			{
-				if (i >= (int)FirstCave)
+				if (i >= Convert.ToInt32(FirstCave))
 					Rooms[i].IsDark = !(LightCaves?.Contains((RoomID)i) ?? false);
 
 				Rooms[i].Connections = new Dictionary<Direction, RoomID>(6)
@@ -73,7 +74,7 @@ namespace R136.BuildTool.Rooms
 
 				// Connect layers
 				foreach (var connection in LevelConnections)
-					Rooms[(int)connection.From].Connections![connection.Direction] = connection.To;
+					Rooms.Get(connection.From).Connections![connection.Direction] = connection.To;
 			}
 
 			if (BlockedConnections != null)
@@ -82,7 +83,7 @@ namespace R136.BuildTool.Rooms
 
 				// Blocked routes
 				foreach (var blockedConnection in BlockedConnections)
-					Rooms[(int)blockedConnection.Room].Connections!.Remove(blockedConnection.Direction);
+					Rooms.Get(blockedConnection.Room).Connections!.Remove(blockedConnection.Direction);
 			}
 
 			return Rooms;

@@ -1,4 +1,5 @@
-﻿using R136.Entities.Global;
+﻿using R136.Entities.General;
+using R136.Entities.Global;
 using R136.Interfaces;
 using System.Collections.Generic;
 
@@ -37,7 +38,7 @@ namespace R136.Entities.Items
 		public override Result Use()
 		{
 			if (Player != null && Player.LifePoints == Facilities.Configuration.LifePoints)
-				return Result.Success(Facilities.TextsMap[this, (int)TextID.FullHealth]);
+				return Result.Success(Facilities.TextsMap.Get(this, TextID.FullHealth));
 
 			Player?.RestoreHealth();
 

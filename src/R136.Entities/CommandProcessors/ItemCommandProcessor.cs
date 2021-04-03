@@ -10,7 +10,6 @@ namespace R136.Entities.CommandProcessors
 {
 	class ItemCommandProcessor : CommandProcessor, IContinuable
 	{
-		private const int Default = 0;
 		private const string ContinuationKey = "M54ym08ugrEYkp4tpTu1";
 
 		protected IReadOnlyDictionary<ItemID, Item> _items;
@@ -53,7 +52,7 @@ namespace R136.Entities.CommandProcessors
 			return item == null
 				? result
 				: (Player?.IsDark ?? false)
-				? Result.Failure(GetTexts(CommandID.Inspect, Default))
+				? Result.Failure(GetTexts(CommandID.Inspect, InspectTextID.TooDarkToSee))
 				: Result.Success(item.Description, true);
 		}
 
@@ -65,12 +64,12 @@ namespace R136.Entities.CommandProcessors
 				return result;
 
 			if (!item.IsPutdownAllowed)
-				return Result.Failure(GetTextsWithItem(CommandID.PutDown, (int)PutDownTextID.CantPutDown, item), true);
+				return Result.Failure(GetTextsWithItem(CommandID.PutDown, PutDownTextID.CantPutDown, item), true);
 
 			if (player.RemoveFromInventory(item))
 			{
 				item.CurrentRoom = player.CurrentRoom.ID;
-				return Result.Success(GetTextsWithItem(CommandID.PutDown, (int)PutDownTextID.PutDown, item));
+				return Result.Success(GetTextsWithItem(CommandID.PutDown, PutDownTextID.PutDown, item));
 			}
 
 			return Result.Error();
@@ -81,7 +80,7 @@ namespace R136.Entities.CommandProcessors
 			if (parameters == null)
 				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
-			(var separatorIndex, var separator) = parameters.IndexOfAny(GetTexts(CommandID.Combine, (int)CombineTextID.ItemSeparators));
+			(var separatorIndex, var separator) = parameters.IndexOfAny(GetTexts(CommandID.Combine, CombineTextID.ItemSeparators));
 			if (separatorIndex < 1 || separatorIndex + separator!.Length == parameters.Length)
 				return Result.Error(GetTexts(CombineTextID.InvalidParametersGiven, "command", command));
 
@@ -141,22 +140,22 @@ namespace R136.Entities.CommandProcessors
 		}
 
 		private StringValues GetTexts(TextID id)
-			=> Facilities.TextsMap[this, (int)id];
+			=> Facilities.TextsMap.Get(this, id);
 
 		private StringValues GetTexts(TextID id, string tag, string parameter)
 			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", parameter);
 
-		private static StringValues GetTexts(CommandID commandId, int textId)
-			=> Facilities.CommandTextsMap[commandId, textId];
+		private static StringValues GetTexts<TIndex>(CommandID commandId, TIndex textId) where TIndex : Enum
+			=> Facilities.CommandTextsMap.Get(commandId, textId);
 
-		private static StringValues GetTextsWithItem(CommandID commandID, int textId, Item item)
+		private static StringValues GetTextsWithItem<TIndex>(CommandID commandID, TIndex textId, Item item) where TIndex : Enum
 			=> GetTexts(commandID, textId).ReplaceInAll("{item}", item.Name);
 
 		private static StringValues GetTexts(CombineTextID id, string tag, string content)
 			=> GetTexts(id).ReplaceInAll($"{{{tag}}}", content);
 
 		private static StringValues GetTexts(CombineTextID id)
-			=> GetTexts(CommandID.Combine, (int)id);
+			=> GetTexts(CommandID.Combine, id);
 
 		private (Item?, Result) FindOwnedItem(string command, string? itemName, Player player)
 		{
@@ -215,6 +214,11 @@ namespace R136.Entities.CommandProcessors
 			ItemSeparators,
 			CantCombineWithItself,
 			DoesntCombine
+		}
+
+		private enum InspectTextID
+		{
+			TooDarkToSee
 		}
 
 		private enum PutDownTextID

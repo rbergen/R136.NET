@@ -75,7 +75,7 @@ namespace R136.Entities.CommandProcessors
 		}
 
 		private StringValues GetTexts(TextID id)
-			=> Facilities.TextsMap[this, (int)id];
+			=> Facilities.TextsMap.Get(this, id);
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{

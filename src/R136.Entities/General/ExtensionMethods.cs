@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -60,5 +61,31 @@ namespace R136.Entities.General
 					: key;
 			}
 		}
+
+		public static TValue Get<TValue, TIndex>(this IReadOnlyList<TValue> list, TIndex index) where TIndex : Enum
+			=> list[Convert.ToInt32(index)];
+
+		public static void Set<TValue, TIndex>(this IList<TValue> list, TIndex index, TValue value) where TIndex : Enum
+			=> list[Convert.ToInt32(index)] = value;
+
+		public static TValue Get<TValue, TIndex1, TIndex2>(this TValue[][] array, TIndex1 index1, TIndex2 index2) 
+			where TIndex1 : Enum
+			where TIndex2 : Enum
+			=> array[Convert.ToInt32(index1)][Convert.ToInt32(index2)];
+
+		public static void Set<TValue, TIndex1, TIndex2>(this TValue[][] array, TIndex1 index1, TIndex2 index2, TValue value) 
+			where TIndex1 : Enum
+			where TIndex2 : Enum
+			=> array[Convert.ToInt32(index1)][Convert.ToInt32(index2)] = value;
+
+		public static StringValues Get<TDictKey, TIndex>(this KeyedTextsMap<TDictKey, int> map, TDictKey key, TIndex index)
+			where TDictKey : notnull
+			where TIndex : Enum
+			=> map[key, Convert.ToInt32(index)];
+
+		public static StringValues Get<TIndex>(this TypedTextsMap<int> map, object key, TIndex index)
+			where TIndex : Enum
+			=> map[key, Convert.ToInt32(index)];
+
 	}
 }

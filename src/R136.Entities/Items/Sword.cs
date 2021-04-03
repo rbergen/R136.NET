@@ -77,7 +77,7 @@ namespace R136.Entities.Items
 		}
 
 		private void AddTexts(List<string> texts, TextID id)
-			=> texts.AddRangeIfNotNull(Facilities.TextsMap[this, (int)id]);
+			=> texts.AddRangeIfNotNull(Facilities.TextsMap.Get(this, id));
 
 		public Result Continue(ContinuationStatus status, string input)
 		{
@@ -94,7 +94,7 @@ namespace R136.Entities.Items
 				(
 					new() { Key = ContinuationKey, Number = (int)animate.ID },
 					Facilities.Configuration.YesNoInputSpecs,
-					Facilities.TextsMap[this, (int)TextID.InvalidYesNoAnswer]
+					Facilities.TextsMap.Get(this, TextID.InvalidYesNoAnswer)
 				);
 
 			return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(animate) : Result.Failure();

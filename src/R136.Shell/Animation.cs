@@ -1,4 +1,5 @@
-﻿using System;
+﻿using R136.Entities.General;
+using System;
 using System.Threading;
 
 namespace R136.Shell
@@ -228,14 +229,14 @@ namespace R136.Shell
 
 				int blockPositionCount = Enum.GetValues<BlockPosition>().Length;
 
-				_strings[(int)Block.Spider] = new string[blockPositionCount][];
-				_strings[(int)Block.LetterR] = new string[blockPositionCount][];
-				_strings[(int)Block.LetterP] = new string[1][];
-				_strings[(int)Block.Space] = new string[1][];
-				_strings[(int)Block.Digits] = new string[1][];
+				_strings.Set(Block.Spider, new string[blockPositionCount][]);
+				_strings.Set(Block.LetterR, new string[blockPositionCount][]);
+				_strings.Set(Block.LetterP, new string[1][]);
+				_strings.Set(Block.Space, new string[1][]);
+				_strings.Set(Block.Digits, new string[1][]);
 
 
-				_strings[(int)Block.Spider][(int)BlockPosition.Upper] = new string[]
+				_strings.Set(Block.Spider, BlockPosition.Upper, new string[]
 				{
 					"  ▄▄▄        ▄ █ ▄        ▄▄▄  ",
 					" ▄▀  ▀▀▄▄  ▄▀ ▀█▀ ▀▄  ▄▄▀▀  ▀▄ ",
@@ -245,9 +246,9 @@ namespace R136.Shell
 					"   ▄▀▀▀                 ▀▀▀▄   ",
 					"  █                         █  ",
 					" ▀▀                         ▀▀ ",
-				};
+				});
 
-				_strings[(int)Block.Spider][(int)BlockPosition.Lower] = new string[]
+				_strings.Set(Block.Spider, BlockPosition.Lower, new string[]
 				{
 					"               █               ",
 					"  █▀▀▄▄     ▄▀▄█▄▀▄     ▄▄▀▀█  ",
@@ -257,9 +258,9 @@ namespace R136.Shell
 					" ▀▀ ▄▄▄▀▀▀ ▀▀▀▀▀▀▀▀▀ ▀▀▀▄▄▄ ▀▀ ",
 					"  ▄▀                       ▀▄  ",
 					" ▄█                         █▄ "
-				};
+				});
 
-				_strings[(int)Block.LetterR][(int)BlockPosition.Upper] = new string[]
+				_strings.Set(Block.LetterR, BlockPosition.Upper, new string[]
 				{
 					"█▀▀▀▀▀▀▀▀▀▀▄",
 					"█          █",
@@ -269,8 +270,9 @@ namespace R136.Shell
 					"█       ▀▄  ",
 					"█         ▀▄",
 					"            "
-				};
-				_strings[(int)Block.LetterR][(int)BlockPosition.Lower] = new string[]
+				});
+
+				_strings.Set(Block.LetterR, BlockPosition.Lower, new string[]
 				{
 					"▄▄▄▄▄▄▄▄▄▄▄ ",
 					"█          █",
@@ -280,9 +282,9 @@ namespace R136.Shell
 					"█      ▀▄   ",
 					"█        ▀▄ ",
 					"▀          ▀"
-				};
+				});
 
-				_strings[(int)Block.LetterP][0] = new string[]
+				_strings.Get(Block.LetterP)[0] = new string[]
 				{
 					"█▀▀▀▀▀▀▀▀▀▀▄",
 					"█          █",
@@ -294,7 +296,7 @@ namespace R136.Shell
 					"            "
 				};
 
-				_strings[(int)Block.Space][0] = new string[]
+				_strings.Get(Block.Space)[0] = new string[]
 				{
 					" ",
 					" ",
@@ -306,7 +308,7 @@ namespace R136.Shell
 					" "
 				};
 
-				_strings[(int)Block.Digits][0] = new string[]
+				_strings.Get(Block.Digits)[0] = new string[]
 				{
 					"▄█   ▄▀▀▀▀▀▄   ▄▀▀▀▀▀▄",
 					" █         █   █      ",
@@ -322,13 +324,13 @@ namespace R136.Shell
 			}
 
 			public string[] this[Block block, BlockPosition position]
-				=> _strings[(int)block][(int)(_strings[(int)block].Length == 1 ? 0 : position)];
+				=> _strings.Get(block, _strings.Get(block).Length == 1 ? 0 : position);
 
 			public string[] this[Block block]
-				=> _strings[(int)block][0];
+				=> _strings.Get(block)[0];
 
 			public int GetWidth(Block block)
-				=> _strings[(int)block][0][0].Length;
+				=> _strings.Get(block)[0][0].Length;
 		}
 	}
 }

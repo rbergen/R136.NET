@@ -3,6 +3,7 @@ using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,6 @@ namespace R136.Entities.CommandProcessors
 {
 	class GeneralCommandProcessor : CommandProcessor, IContinuable
 	{
-		private const int Default = 0;
 		private const string ContinuationKey = "QkztbraYG4TCSdtqayuU";
 
 		public GeneralCommandProcessor() : base(CommandProcessorID.General) { }
@@ -27,25 +27,25 @@ namespace R136.Entities.CommandProcessors
 				_ => Result.Error()
 			};
 
-		private static StringValues GetTexts(CommandID commandId, int textId)
-			=> Facilities.CommandTextsMap[commandId, textId];
+		private static StringValues GetTexts<TIndex>(CommandID commandId, TIndex textId) where TIndex : Enum
+			=> Facilities.CommandTextsMap.Get(commandId, textId);
 
-		private static StringValues GetTexts(CommandID commandID, int textId, string tag, string content)
+		private static StringValues GetTexts<TIndex>(CommandID commandID, TIndex textId, string tag, string content) where TIndex : Enum
 			=> GetTexts(commandID, textId).ReplaceInAll($"{{{tag}}}", content);
 
-		private static StringValues GetTexts(EndTextID id)
-			=> GetTexts(CommandID.End, (int)id);
+		private static StringValues GetTexts<TIndex>(TIndex id) where TIndex : Enum
+			=> GetTexts(CommandID.End, id);
 
 		private static void AddStatusTexts(List<string> list, StatusTextID id)
-			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, (int)id));
+			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, id));
 		private static void AddStatusTexts(List<string> list, StatusTextID id, string tag, string content)
-			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, (int)id, tag, content));
+			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, id, tag, content));
 
 		private Result? ValidateEmptyParameters(string command, string? parameters)
-			=> parameters == null ? null : Result.Error(Facilities.TextsMap[this, (int)TextID.CommandSyntax].ReplaceInAll("{command}", command));
+			=> parameters == null ? null : Result.Error(Facilities.TextsMap.Get(this, TextID.Default).ReplaceInAll("{command}", command));
 
 		private static Result ExecuteHelp()
-			=> Result.Success(GetTexts(CommandID.Help, Default));
+			=> Result.Success(GetTexts(CommandID.Help, TextID.Default));
 
 		private Result ExecuteInfo(string command, string? parameters)
 		{
@@ -59,7 +59,7 @@ namespace R136.Entities.CommandProcessors
 			string versionText = version != null ? $"{version.Major}.{version.Minor}" : "?.?";
 			string? copyrightText = ((AssemblyCopyrightAttribute?)assembly.GetCustomAttributes(false).FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute))?.Copyright;
 
-			return Result.Success(GetTexts(CommandID.Info, Default, "version", versionText).ReplaceInAll("{copyright}", copyrightText ?? string.Empty));
+			return Result.Success(GetTexts(CommandID.Info, TextID.Default, "version", versionText).ReplaceInAll("{copyright}", copyrightText ?? string.Empty));
 		}
 
 		private Result ExecuteWait(string command, string? parameters)
@@ -69,7 +69,7 @@ namespace R136.Entities.CommandProcessors
 			if (validateResult != null)
 				return validateResult;
 
-			var waitTexts = GetTexts(CommandID.Wait, Default).ToArray();
+			var waitTexts = GetTexts(CommandID.Wait, TextID.Default).ToArray();
 
 			return waitTexts == null ? Result.Success() : Result.Success(waitTexts[Facilities.Randomizer.Next(waitTexts.Length)]);
 		}
@@ -157,7 +157,7 @@ namespace R136.Entities.CommandProcessors
 
 		private enum TextID
 		{
-			CommandSyntax
+			Default
 		}
 	}
 }

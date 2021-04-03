@@ -24,21 +24,5 @@ namespace R136.Shell.Tools
 
 		public static bool EqualsAny(this string s, ICollection<string> options, StringComparison comparison = StringComparison.Ordinal)
 			=> options.Any(o => s.Equals(o, comparison));
-
-		public static string ReplacePlaceholders(this string source, IReadOnlyDictionary<string, object> valueMap)
-		{
-			var regex = new Regex("{(?<placeholder>[a-z_][a-z0-9_]*?)}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-			return regex.Replace(source, ValueMapper);
-
-			string ValueMapper(Match match)
-			{
-				string key = match.Groups["placeholder"].Value;
-
-				return valueMap.TryGetValue(key, out object? value)
-					? value.ToString() ?? string.Empty
-					: key;
-			}
-		}
 	}
 }

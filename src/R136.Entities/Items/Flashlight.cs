@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
@@ -68,7 +69,7 @@ namespace R136.Entities.Items
 
 		public Item Self => this;
 
-		private StringValues GetTexts(TextID id) => Facilities.TextsMap[this, (int)id];
+		private StringValues GetTexts(TextID id) => Facilities.TextsMap.Get(this, id);
 
 		public override Result Use()
 		{
@@ -108,12 +109,12 @@ namespace R136.Entities.Items
 				LampPoints--;
 
 			if (LampPoints == 10)
-				return Facilities.TextsMap[this, (int)TextID.BatteriesLow];
+				return Facilities.TextsMap.Get(this, TextID.BatteriesLow);
 
 			if (LampPoints == 0)
 			{
 				IsOn = false;
-				return Facilities.TextsMap[this, (int)TextID.BatteriesEmpty];
+				return Facilities.TextsMap.Get(this, TextID.BatteriesEmpty);
 			}
 
 			return StringValues.Empty;

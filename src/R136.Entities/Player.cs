@@ -48,7 +48,7 @@ namespace R136.Entities
 			set => CurrentRoom = _rooms[value]; 
 		}
 
-		private StringValues GetNamedTexts(TextID id, Item item) => Facilities.TextsMap[this, (int)id].ReplaceInAll("{item}", item.Name);
+		private StringValues GetNamedTexts(TextID id, Item item) => Facilities.TextsMap.Get(this, id).ReplaceInAll("{item}", item.Name);
 
 		public Result AddToInventory(Item item)
 		{
@@ -80,7 +80,7 @@ namespace R136.Entities
 			if (Facilities.Configuration.Immortal)
 				return;
 
-			LifePoints -= (int)impact;
+			LifePoints -= Convert.ToInt32(impact);
 
 			if (LifePoints < 0)
 				LifePoints = 0;
