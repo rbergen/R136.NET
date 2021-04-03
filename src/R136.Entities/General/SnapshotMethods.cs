@@ -181,7 +181,7 @@ namespace R136.Entities.General
 			{
 				return (Encoding.UTF8.GetString(value), stringByteLength + 5);
 			}
-			catch (Exception ex) { }
+			catch (Exception) { }
 
 			return (null, null);
 		}
