@@ -6,14 +6,10 @@
 		<img class="rounded-3 my-2" style="height: 50px;" src="r136.png" alt="R136" />&nbsp;
 	</div>
 	<div class="col text-danger text-center">
-		<h1><strong>@LanguageProvider.GetConfigurationValue(Constants.HeaderText)</strong></h1>
+		<h1><strong>@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.HeaderText))</strong></h1>
 	</div>
 	<div class="col-2 text-end">
-		@if (ShowStatusIcon)
-		{
-			<i class="far fa-save text-white me-2" @onclick="FloppyClicked"></i>
-		}
-		<a href="#" class="text-decoration-none link-light" @onclick="DutchClicked">
+		<a class="text-decoration-none link-light" role="button" @onclick="DutchClicked">
 			@if (LanguageProvider.Language == Constants.Dutch)
 			{
 				<strong>nl</strong>
@@ -24,7 +20,7 @@
 			}
 		</a>
 		<span class="text-white">&vert;</span>
-		<a href="#" class="text-decoration-none link-light" @onclick="EnglishClicked">
+		<a class="text-decoration-none link-light" role="button" @onclick="EnglishClicked">
 			@if (LanguageProvider.Language == Constants.English)
 			{
 				<strong>en</strong>
@@ -34,6 +30,14 @@
 				<span>en</span>
 			}
 		</a>
+		@if (ShowStatusIcon)
+		{
+			<i class="far fa-save ms-3 floppy-icon" role="button" @onclick="FloppyClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusHeaderText)"></i>
+		}
+		else
+		{
+			<i class="far fa-save text-dark ms-3"></i>
+		}
 	</div>
 </div>
 

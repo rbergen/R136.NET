@@ -49,7 +49,7 @@ namespace R136.Web.Pages
 		public ILanguageProvider LanguageProvider { get; set; }
 
 		[Parameter]
-		public string Action { get; set; }
+		public string GameData { get; set; }
 
 		private ConciseStatus ComposeStatus()
 			=> new()
@@ -58,8 +58,25 @@ namespace R136.Web.Pages
 				EngineSnapshot = Engine.TakeSnapshot(),
 				MarkupContentLog = ContentLog.TakeSnapshot(),
 				ContinuationStatus = _continuationStatus,
+				Language = LanguageProvider.Language,
 				InputSpecs = _inputSpecs
 			};
+
+		private async Task ApplyStatus(ConciseStatus status)
+		{
+			_isPaused = status.IsPaused;
+			Engine.RestoreSnapshot(status.EngineSnapshot);
+			ContentLog.RestoreSnapshot(status.MarkupContentLog);
+			_continuationStatus = status.ContinuationStatus;
+			LanguageProvider.Language = status.Language;
+			_inputSpecs = status.InputSpecs;
+
+			await SaveSnapshot(Constants.R136EngineBytesKey, Constants.R136EngineStorageKey, status.EngineSnapshot);
+			await SaveSnapshot(Constants.ContentLogStorageKey, status.MarkupContentLog);
+			await SaveSnapshot(Constants.ContinuationStatusBytesKey, Constants.ContinuationStatusStorageKey, status.ContinuationStatus);
+			await SaveSnapshot(Constants.InputSpecsBytesKey, Constants.InputSpecsStorageKey, status.InputSpecs);
+			await SaveSnapshot(Constants.IsPausedStorageKey, _isPaused);
+		}
 
 		private void ShowGameStatus()
 		{
@@ -70,8 +87,32 @@ namespace R136.Web.Pages
 			_showGameStatusModal = true;
 		}
 
-		private void ProcessStatusText(string text)
-		{ }
+		private async Task StatusTextSubmitted(string text)
+		{
+			await ProcessStatusText(text);
+		}
+
+		private async Task<bool> ProcessStatusText(string text)
+		{
+			byte[] bytes = null;
+			ConciseStatus status = new();
+
+			try
+			{
+				bytes = Convert.FromBase64String(text.Trim());
+			}
+			catch (Exception) { }
+
+			if (bytes == null || status.LoadBytes(bytes) == null || !status.IsLoaded)
+			{
+				_error = (MarkupString)LanguageProvider.GetConfigurationValue(Constants.InvalidGameStatusError);
+				return false;
+			}
+
+			await ApplyStatus(status);
+			
+			return true;
+		}
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
@@ -88,7 +129,7 @@ namespace R136.Web.Pages
 		{
 			await Engine.Initialize(LanguageProvider.Language);
 
-			if (await LocalStorage.ContainsSavedGame())
+			if ((string.IsNullOrEmpty(GameData) || !await ProcessStatusText(GameData)) && await LocalStorage.ContainsSavedGame())
 			{
 				if (await LoadSnapshot<Engine.Snapshot>(Constants.R136EngineBytesKey, Constants.R136EngineStorageKey, Engine.RestoreSnapshot))
 				{

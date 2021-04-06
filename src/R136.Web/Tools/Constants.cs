@@ -7,6 +7,7 @@
 		public const string MaxContentLogBlockCount = nameof(MaxContentLogBlockCount);
 		public const string SaveContentLogBlockCount = nameof(SaveContentLogBlockCount);
 		public const string HeaderText = nameof(HeaderText);
+		public const string GameStatusHeaderText = nameof(GameStatusHeaderText);
 		public const string GameStatusText = nameof(GameStatusText);
 		public const string CopyText = nameof(CopyText);
 		public const string PasteText = nameof(PasteText);
@@ -16,6 +17,9 @@
 		public const string Languages = nameof(Languages);
 		public const string DefaultLanguage = nameof(DefaultLanguage);
 		public const string LanguageSwitchText = nameof(LanguageSwitchText);
+		public const string InvalidGameStatusError = nameof(InvalidGameStatusError);
+		public const string GameStatusCopyHoverText = nameof(GameStatusCopyHoverText);
+		public const string GameStatusLinkHoverText = nameof(GameStatusLinkHoverText);
 
 		public const string R136EngineBytesKey = "R136EngineBytes";
 		public const string ContinuationStatusBytesKey = "ContinuationStatusBytes";

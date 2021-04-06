@@ -7,7 +7,7 @@
 			&nbsp;
 		</div>
 		<div class="col-md-auto">
-			<button @ref="_focusElement" type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? LanguageProvider.GetConfigurationValue(Constants.ProceedButtonLabel))</button>
+			<button @ref="_focusElement" type="button" class="btn btn-light" @onclick="ReportProceedClick">@(ButtonLabel ?? (MarkupString)LanguageProvider.GetConfigurationValue(Constants.ProceedButtonLabel))</button>
 		</div>
 		<div class="col">
 			&nbsp;
@@ -32,7 +32,7 @@
 	public EventCallback OnProceedClicked { get; set; }
 
 	[Parameter]
-	public string ButtonLabel { get; set; } = null;
+	public MarkupString? ButtonLabel { get; set; } = null;
 
 	protected async Task ReportProceedClick(MouseEventArgs e)
 		=> await OnProceedClicked.InvokeAsync();

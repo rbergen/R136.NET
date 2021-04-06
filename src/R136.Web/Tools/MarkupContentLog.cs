@@ -81,12 +81,25 @@ namespace R136.Web.Tools
 
 			public void AddBytes(List<byte> bytes)
 			{
-				(IsTrimmed || (ContentBlocks != null && ContentBlocks.Length > 1)).AddByte(bytes);
-				
 				if (ContentBlocks == null)
+				{
+					IsTrimmed.AddByte(bytes);
 					ContentBlocks.AddSnapshotsBytes(bytes);
-				else
-					ContentBlocks.TakeLast(1).ToArray().AddSnapshotsBytes(bytes);
+					return;
+				}
+
+				List<ContentBlock> blocks = new(ContentBlocks
+					.Reverse()
+					.SkipWhile(block => block.Type == ContentBlockType.LanguageSwitch)
+					.TakeWhile(block => block.Type != ContentBlockType.Input)
+					.Reverse()
+				);
+
+				if (ContentBlocks.Length > 0 && ContentBlocks[^1].Type == ContentBlockType.LanguageSwitch)
+					blocks.Add(ContentBlocks[^1]);
+
+				(IsTrimmed || blocks.FirstOrDefault() != ContentBlocks.FirstOrDefault()).AddByte(bytes);
+				blocks.ToArray().AddSnapshotsBytes(bytes);
 			}
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)

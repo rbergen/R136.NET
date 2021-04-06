@@ -19,6 +19,8 @@ namespace R136.Web.Tools
 		public ContinuationStatus? ContinuationStatus { get; set; }
 		public InputSpecs? InputSpecs { get; set; }
 		public bool IsPaused { get; set; }
+		public bool IsLoaded { get; set; }
+		public string? Language { get; set; }
 
 		public void AddBytes(List<byte> bytes)
 		{
@@ -27,7 +29,9 @@ namespace R136.Web.Tools
 			EngineSnapshot.AddSnapshotBytes(bytes);
 			MarkupContentLog.AddSnapshotBytes(bytes);
 			ContinuationStatus.AddSnapshotBytes(bytes);
+			Language.AddTextBytes(bytes);
 			InputSpecs.AddSnapshotBytes(bytes);
+			true.AddByte(bytes);
 		}
 
 		public int? LoadBytes(ReadOnlyMemory<byte> bytes)
@@ -35,7 +39,7 @@ namespace R136.Web.Tools
 			if (bytes.Length <= BaseBytesSize || !Enumerable.SequenceEqual(bytes[0..Watermark.Length].ToArray(), Watermark))
 				return null;
 
-			IsPaused = bytes.Span[0].ToBool();
+			IsPaused = bytes.Span[Watermark.Length].ToBool();
 
 			int totalBytesRead = BaseBytesSize;
 			bytes = bytes[totalBytesRead..];
@@ -50,10 +54,15 @@ namespace R136.Web.Tools
 			ContinuationStatus = bytes.ToNullable<ContinuationStatus>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 			if (abort) return null;
 
-			int? bytesRead;
-			(InputSpecs, bytesRead) = bytes.ToNullable<InputSpecs>();
+			Language = bytes.ToText().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
 
-			return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
+			InputSpecs = bytes.ToNullable<InputSpecs>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
+
+			IsLoaded = bytes.Span[0].ToBool();
+
+			return totalBytesRead + 1;
 		}
 	}
 }

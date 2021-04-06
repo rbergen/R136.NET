@@ -23,6 +23,10 @@ R136JS.stretchToHeight = function(from, to) {
   return true;
 }
 
+R136JS.setClipboard = function(text) {
+  navigator.clipboard.writeText(text);
+}
+
 R136JS.blinkTexts = [];
 R136JS.blinkCount = 0;
 
