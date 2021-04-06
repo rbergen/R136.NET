@@ -129,7 +129,7 @@ namespace R136.BuildTool
 			if (texts == null || path == null)
 				return;
 
-			var maps = new TypedTextsMap<int>();
+			TypedTextsMap<int> maps = new();
 			maps.LoadInitializers(texts);
 
 			Console.WriteLine($"{name} map after load:");

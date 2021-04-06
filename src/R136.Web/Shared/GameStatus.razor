@@ -1,0 +1,57 @@
+﻿@inject ILanguageProvider LanguageProvider
+
+@if (Visible)
+{
+<div class="modal fade show" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="width: 60%; max-width: 60%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.GameStatusHeaderText))</h4>
+			</div>
+			<div class="modal-body">
+				<p>
+					@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.GameStatusText))
+				</p>
+				<ul class="nav nav-tabs">
+					@if (_displayedTab == null || _displayedTab == Tab.Copy)
+					{
+						<li class="nav-item">
+							<a class="nav-link @(_selectedTab == Tab.Copy ? "active" : string.Empty)" role="@(_selectedTab != Tab.Copy ? "button" : "none")" @onclick="CopyTabClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CopyText))</a>
+						</li>
+					}
+					@if (_displayedTab == null || _displayedTab == Tab.Paste)
+					{
+						<li class="nav-item">
+							<a class="nav-link @(_selectedTab == Tab.Paste ? "active" : string.Empty)" role="@(_selectedTab != Tab.Paste ? "button" : "none")" @onclick="PasteTabClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.PasteText))</a>
+						</li>
+					}
+				</ul>
+				@if (_selectedTab == Tab.Paste)
+				{
+					<form @onsubmit="@SubmitInput">
+						<textarea class="form-control" id="status-text" style="height: 200px" @bind="@_enteredText" @bind:event="oninput"></textarea><br />
+						<input type="submit" class="btn btn-primary" disabled="@string.IsNullOrWhiteSpace(_enteredText)" value="@LanguageProvider.GetConfigurationValue(Constants.OKText)" />
+						<button class="btn btn-outline-secondary" @onclick="CancelClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CancelText))</button>
+					</form>
+				}
+				else
+				{
+					<div class="container p-0 m-0 g-0">
+						<div class="row ps-0 ms-0">
+							<div class="col ps-0 ms-0">
+								<textarea class="form-control" style="height: 200px" readonly>@StatusText</textarea><br />
+							</div>
+							<div class="col-md-auto ms-0 ps-0">
+								<div class="row"><div class="col"><i class="far fa-copy link-secondary text-decoration-none" role="button" @onclick="CopyClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusCopyHoverText)"></i></div></div>
+								<div class="row"><div class="col"><i class="fas fa-link link-secondary text-decoration-none" role="button" @onclick="LinkClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusLinkHoverText)"></i></div></div>
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-primary" @onclick="CancelClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CloseText))</button>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-backdrop fade show"></div>
+}

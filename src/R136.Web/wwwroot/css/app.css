@@ -13,6 +13,14 @@ html, body, .page {
     border-color: #1861ac;
 }
 
+.floppy-icon {
+  color: grey;
+}
+
+.floppy-icon:hover {
+  color: whitesmoke;
+}
+
 .content {
     padding-top: 1.1rem;
 }

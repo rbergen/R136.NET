@@ -4,6 +4,7 @@ using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace R136.Entities.CommandProcessors
 {
@@ -30,8 +31,8 @@ namespace R136.Entities.CommandProcessors
 			if (!player.CurrentRoom.Connections.ContainsKey(direction.Value))
 				return Result.Failure(GetTexts(TextID.CantGoThere));
 
-			var fromRoom = player.CurrentRoom;
-			var toRoom = player.CurrentRoom.Connections[direction.Value];
+			Room fromRoom = player.CurrentRoom;
+			Room toRoom = player.CurrentRoom.Connections[direction.Value];
 
 			var args = new RoomChangeRequestedEventArgs(fromRoom.ID, toRoom.ID);
 			RoomChangeRequested?.Invoke(args);
@@ -100,13 +101,35 @@ namespace R136.Entities.CommandProcessors
 			serviceCollection.AddSingleton<IPaperRouteNotificationProvider>(this);
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
 			public int ID { get; set; }
 			public int PaperRouteIndex { get; set; }
+
+			public void AddBytes(List<byte> bytes)
+			{
+				ID.AddBytes(bytes);
+				PaperRouteIndex.AddBytes(bytes);
+			}
+
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				int? bytesRead;
+				int totalBytesRead = 0;
+
+				(ID, bytesRead) = bytes.ToInt();
+				if (bytesRead == null) return null;
+
+				bytes = bytes[bytesRead.Value..];
+				totalBytesRead += bytesRead.Value;
+
+				(PaperRouteIndex, bytesRead) = bytes.ToInt();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
+			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			CommandSyntax,
 			CantGoThere

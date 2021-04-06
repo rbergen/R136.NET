@@ -1,6 +1,6 @@
 ﻿namespace R136.Entities.General
 {
-	public enum FindResult
+	public enum FindResult : byte
 	{
 		Found,
 		NotFound,

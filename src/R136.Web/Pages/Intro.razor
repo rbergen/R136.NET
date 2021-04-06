@@ -3,9 +3,12 @@
 @inject NavigationManager NavigationManager
 @inject IConfiguration Configuration
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@inject ILanguageProvider LanguageProvider 
+@inject ILanguageProvider LanguageProvider
 
-<PageHeader LanguageChanged="LanguageChanged"/>
+
+<GameStatus ShowTab="GameStatus.Tab.Paste" TextSubmitted="StatusTextSubmitted" @bind-Visible="_showGameStatusModal" />
+
+<PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="@((e) => _showGameStatusModal = true)" />
 
 <div class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col text-light">
@@ -60,17 +63,17 @@
 			</p>
 			<p>
 				Shocked by what happened, it was decided to keep everything a secret and end the project.<br />
-				The scientist who was exposed to the radiation did not stick to the agreement, and stole some of the aggressive matter. He built a new kind of bomb, a positron bomb. 
+				The scientist who was exposed to the radiation did not stick to the agreement, and stole some of the aggressive matter. He built a new kind of bomb, a positron bomb.
 			</p>
 			<p>
-				It was his opinion that the world was to blame for his mutations, and he wanted the world to pay for it. For that reason he hid the bomb with a time mechanism, in a place no one would 
+				It was his opinion that the world was to blame for his mutations, and he wanted the world to pay for it. For that reason he hid the bomb with a time mechanism, in a place no one would
 				dare to enter: the valley of perdition.
 			</p>
 			<p>
 				One of the scientists suspected malice and wanted to investigate the matter.<br />
 				Three days later, he was found in front of his house with a butcher's knife in his back.<br />
 				When his house was searched, two things were found: the location of the bomb, and low-level radioactive footsteps. <br />
-				Your colleague and you understood what was going on, and you decided that it was necessary to intervene. Because you're not really a hero, it was decided that the other scientist would 
+				Your colleague and you understood what was going on, and you decided that it was necessary to intervene. Because you're not really a hero, it was decided that the other scientist would
 				make the trip. You would stay behind to coordinate his travels via a secret radio frequency.<br />
 				You never heard from him again.
 			</p>
@@ -87,14 +90,19 @@
 	<ProceedButtonBar OnProceedClicked="@((e) => NavigationManager.NavigateTo("/play"))" />
 </div>
 
-@code 
+@code
 {
+	private bool _showGameStatusModal = false;
+
 	private void LanguageChanged()
 		=> StateHasChanged();
 
+	private void StatusTextSubmitted(string text)
+		=> NavigationManager.NavigateTo($"/play/{HttpUtility.UrlEncode(text)}");
+
 	protected override async Task OnInitializedAsync()
 	{
-		if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
+		if (await LocalStorage.ContainsSavedGame())
 			NavigationManager.NavigateTo("/play");
 	}
 }

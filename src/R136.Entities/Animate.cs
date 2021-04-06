@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using R136.Entities.Animates;
+using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
@@ -161,13 +162,43 @@ namespace R136.Entities
 			public Dictionary<AnimateStatus, string[]>? StatusTexts { get; set; }
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
+			private const int BytesBaseSize = 4;
+
 			public AnimateID ID { get; set; }
 			public RoomID Room { get; set; }
 			public AnimateStatus Status { get; set; }
 			public int StrikesLeft { get; set; }
 			public bool IsTriggered { get; set; }
+
+			public void AddBytes(List<byte> bytes)
+			{
+				ID.AddByte(bytes);
+				Room.AddByte(bytes);
+				Status.AddByte(bytes);
+				IsTriggered.AddByte(bytes);
+				StrikesLeft.AddBytes(bytes);
+			}
+
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				if (bytes.Length <= BytesBaseSize)
+					return null;
+
+				var span = bytes.Span;
+
+				ID = span[0].To<AnimateID>();
+				Room = span[1].To<RoomID>();
+				Status = span[2].To<AnimateStatus>();
+				IsTriggered = span[3].ToBool();
+
+				int? bytesRead;
+
+				(StrikesLeft, bytesRead) = bytes[BytesBaseSize..].ToInt();
+
+				return bytesRead != null ? BytesBaseSize + bytesRead : null;
+			}
 		}
 
 		public interface ISnapshotContainer
@@ -226,7 +257,7 @@ namespace R136.Entities
 		}
 	}
 
-	public enum AnimateStatus
+	public enum AnimateStatus : byte
 	{
 		Initial,
 		PreparingFirstAttack,

@@ -187,10 +187,31 @@ namespace R136.Entities
 			public bool KeepAfterUse { get; set; }
 		}
 
-		public class Snapshot
+		public class Snapshot : ISnapshot
 		{
+			private const int BinarySize = 2;
+
 			public ItemID ID { get; set; }
 			public RoomID Room { get; set; }
+
+			public virtual void AddBytes(List<byte> bytes)
+			{
+				ID.AddByte(bytes);
+				Room.AddByte(bytes);
+			}
+
+			public virtual int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				if (bytes.Length < BinarySize)
+					return null;
+
+				var span = bytes.Span;
+
+				ID = span[0].To<ItemID>();
+				Room = span[1].To<RoomID>();
+				
+				return BinarySize;
+			}
 		}
 
 		public interface ISnapshotContainer
@@ -225,7 +246,7 @@ namespace R136.Entities
 				};
 		}
 
-		public enum TextType
+		public enum TextType : byte
 		{
 			Use,
 			Combine
@@ -275,7 +296,7 @@ namespace R136.Entities
 			if (!UsableOn.Contains(animate))
 				return Use();
 
-			var result = animate.ApplyItem(ID);
+			Result result = animate.ApplyItem(ID);
 
 			if (result.IsSuccess && !KeepsAfterUse)
 				Player?.RemoveFromPossession(ID);

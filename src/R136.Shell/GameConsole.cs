@@ -142,7 +142,7 @@ namespace R136.Shell
 
 				input = ApplyInputSpecs(input);
 
-				var result = ContinuationStatus != null
+				Result result = ContinuationStatus != null
 					? _engine!.Continue(ContinuationStatus, input)
 					: _engine!.Run(input);
 

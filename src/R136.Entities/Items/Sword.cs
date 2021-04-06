@@ -43,7 +43,7 @@ namespace R136.Entities.Items
 			if (animate is not StrikableAnimate strikable || !UsableOn.Contains(animate))
 				return Use();
 
-			var texts = new List<string>();
+			List<string> texts = new();
 
 			if (Facilities.Randomizer.NextDouble() > .7)
 				AddTexts(texts, TextID.Miss);
@@ -100,7 +100,7 @@ namespace R136.Entities.Items
 			return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(animate) : Result.Failure();
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			Miss,
 			Hit,

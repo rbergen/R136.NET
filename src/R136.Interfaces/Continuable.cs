@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace R136.Interfaces
 {
-	public class ContinuationStatus
+	public class ContinuationStatus : ISnapshot
 	{
 		public string? Key { get; set; }
 		public string[]? Texts { get; set; }
@@ -27,6 +29,34 @@ namespace R136.Interfaces
 
 				Numbers[0] = value.Value;
 			}
+		}
+
+		public void AddBytes(List<byte> bytes)
+		{
+			Key.AddTextBytes(bytes);
+			Texts.AddTextsBytes(bytes);
+			Numbers.AddIntsBytes(bytes);
+			InnerStatus.AddSnapshotBytes(bytes);
+		}
+
+		public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+		{
+			int totalBytesRead = 0;
+			bool abort = false;
+
+			Key = bytes.ToText().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
+
+			Texts = bytes.ToTextArray().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
+
+			Numbers = bytes.ToIntArray().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
+
+			int? bytesRead;
+			(InnerStatus, bytesRead) = bytes.ToNullable<ContinuationStatus>();
+
+			return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
 		}
 	}
 

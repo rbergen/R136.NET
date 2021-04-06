@@ -1,8 +1,10 @@
-﻿@page "/play"
+﻿@page "/play/{*gameData}"
 
 @inject IConfiguration Configuration 
 
-<PageHeader LanguageChanged="LanguageChanged" />
+<GameStatus StatusText="@_statusText" TextSubmitted="StatusTextSubmitted" @bind-Visible="_showGameStatusModal"/>
+
+<PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="ShowGameStatus" />
 
 <div id="contentlog" class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col">
@@ -18,7 +20,7 @@
 	}
 	else @if (_hasEnded)
 	{
-	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel)" />
+	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel))" />
 	}
 	else
 	{

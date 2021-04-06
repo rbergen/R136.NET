@@ -33,20 +33,74 @@ namespace R136.Core
 		private readonly List<Func<StringValues>> _turnEndingNotifiees = new();
 		private bool _hasTreeBurned = false;
 
-		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer
+		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer, ISnapshot
 		{
+			private const int BytesBaseSize = 3;
+
 			public Configuration? Configuration { get; set; }
 			public bool HasTreeBurned { get; set; }
 			public bool IsAnimateTriggered { get; set; }
 			public NextStep DoNext { get; set; }
+
 			public LocationCommandProcessor.Snapshot? LocationCommandProcessor { get; set; }
 			public Item.Snapshot[]? Items { get; set; }
 			public Flashlight.Snapshot? Flashlight { get; set; }
 			public Animate.Snapshot[]? Animates { get; set; }
 			public Player.Snapshot? Player { get; set; }
+
+			public void AddBytes(List<byte> bytes)
+			{
+				HasTreeBurned.AddByte(bytes);
+				IsAnimateTriggered.AddByte(bytes);
+				DoNext.AddByte(bytes);
+
+				Configuration.AddSnapshotBytes(bytes);
+				LocationCommandProcessor.AddSnapshotBytes(bytes);
+				Items.AddSnapshotsBytes(bytes);
+				Flashlight.AddSnapshotBytes(bytes);
+				Animates.AddSnapshotsBytes(bytes);
+				Player.AddSnapshotBytes(bytes);
+			}
+
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				if (bytes.Length <= BytesBaseSize)
+					return null;
+
+				var span = bytes.Span;
+
+				HasTreeBurned = span[0].ToBool();
+				IsAnimateTriggered = span[1].ToBool();
+				DoNext = span[2].To<NextStep>();
+
+				bytes = bytes[BytesBaseSize..];
+
+				int totalBytesRead = BytesBaseSize;
+				bool abort = false;
+
+				Configuration = bytes.ToNullable<Configuration>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				LocationCommandProcessor = bytes.ToNullable<LocationCommandProcessor.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				Items = bytes.ToSnapshotArrayOf<Item.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				Flashlight = bytes.ToNullable<Flashlight.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				Animates = bytes.ToSnapshotArrayOf<Animate.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				int? bytesRead;
+				(Player, bytesRead) = bytes.ToNullable<Player.Snapshot>();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
+			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			NoCommand,
 			InvalidCommand,
@@ -60,7 +114,7 @@ namespace R136.Core
 			PlayerDead
 		}
 
-		private enum ItemLineText
+		private enum ItemLineText : byte
 		{
 			SingleItem,
 			MultipleItemsFormat,
@@ -68,7 +122,7 @@ namespace R136.Core
 			EarlierItem
 		}
 
-		private enum WayLineText
+		private enum WayLineText : byte
 		{
 			SingleWay = 6,
 			MultipleWayFormat,

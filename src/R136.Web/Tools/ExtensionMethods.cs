@@ -1,7 +1,9 @@
-﻿using Markdig;
+﻿using Blazored.LocalStorage;
+using Markdig;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 #nullable enable
 
@@ -63,6 +65,9 @@ namespace R136.Web.Tools
 					yield return buffer.Dequeue();
 			}
 		}
+
+		public static async Task<bool> ContainsSavedGame(this ILocalStorageService storageService)
+			=> await storageService.ContainKeyAsync(Constants.R136EngineBytesKey) || await storageService.ContainKeyAsync(Constants.R136EngineStorageKey);
 	}
 }
 

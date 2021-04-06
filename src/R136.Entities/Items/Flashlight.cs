@@ -156,13 +156,52 @@ namespace R136.Entities.Items
 
 		public new class Snapshot : Item.Snapshot
 		{
+			private const int BytesBaseSize = 2;
+
 			public int? LampPoints { get; set; }
 			public int? LampPointsFromConfig { get; set; }
 			public bool IsOn { get; set; }
 			public bool HasBatteries { get; set; }
+
+			public override void AddBytes(List<byte> bytes)
+			{
+				base.AddBytes(bytes);
+				IsOn.AddByte(bytes);
+				HasBatteries.AddByte(bytes);
+				LampPoints.AddIntBytes(bytes);
+				LampPointsFromConfig.AddIntBytes(bytes);
+			}
+
+			public override int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				int? bytesRead = base.LoadBytes(bytes);
+
+				if (bytesRead == null || bytes.Length < bytesRead.Value + BytesBaseSize)
+					return null;
+
+				int totalBytesRead = bytesRead.Value;
+
+				var span = bytes.Span;
+
+				IsOn = span[bytesRead.Value].ToBool();
+				HasBatteries = span[bytesRead.Value + 1].ToBool();
+
+				totalBytesRead += BytesBaseSize;
+				bytes = bytes[totalBytesRead..];
+
+				(LampPoints, bytesRead) = bytes.ToNullableInt();
+				if (bytesRead == null) return null;
+
+				bytes = bytes[bytesRead.Value..];
+				totalBytesRead += bytesRead.Value;
+
+				(LampPointsFromConfig, bytesRead) = bytes.ToNullableInt();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
+			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			LightOff,
 			LightOffInDark,

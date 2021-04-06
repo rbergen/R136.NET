@@ -20,8 +20,8 @@ namespace R136.Shell
 		{
 			int screenRightX = Console.WindowWidth - 1;
 
-			var foreColor = Console.ForegroundColor;
-			var backColor = Console.BackgroundColor;
+			ConsoleColor foreColor = Console.ForegroundColor;
+			ConsoleColor backColor = Console.BackgroundColor;
 
 			Console.CursorVisible = false;
 			Console.BackgroundColor = ConsoleColor.Gray;
@@ -203,13 +203,13 @@ namespace R136.Shell
 			}
 		}
 
-		private enum BlockPosition
+		private enum BlockPosition : byte
 		{
 			Upper = 0,
 			Lower = 1
 		}
 
-		private enum Block
+		private enum Block : byte
 		{
 			Spider = 0,
 			LetterR = 1,

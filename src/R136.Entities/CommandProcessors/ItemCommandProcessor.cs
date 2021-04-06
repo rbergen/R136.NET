@@ -37,7 +37,7 @@ namespace R136.Entities.CommandProcessors
 			if (item == null)
 				return findResult;
 
-			var result = player.AddToInventory(item);
+			Result result = player.AddToInventory(item);
 
 			if (result.IsSuccess)
 				item.CurrentRoom = RoomID.None;
@@ -126,7 +126,7 @@ namespace R136.Entities.CommandProcessors
 
 		private Result ExecuteUse(string command, string? parameters, Player player)
 		{
-			(var item, var result) = FindOwnedItem(command, parameters, player);
+			(var item, Result result) = FindOwnedItem(command, parameters, player);
 
 			if (item == null)
 				return result;
@@ -200,7 +200,7 @@ namespace R136.Entities.CommandProcessors
 			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			NoParameterGiven,
 			DontOwnParameter,
@@ -208,7 +208,7 @@ namespace R136.Entities.CommandProcessors
 			ParameterNotPresent,
 		}
 
-		private enum CombineTextID
+		private enum CombineTextID : byte
 		{
 			InvalidParametersGiven,
 			ItemSeparators,
@@ -216,12 +216,12 @@ namespace R136.Entities.CommandProcessors
 			DoesntCombine
 		}
 
-		private enum InspectTextID
+		private enum InspectTextID : byte
 		{
 			TooDarkToSee
 		}
 
-		private enum PutDownTextID
+		private enum PutDownTextID : byte
 		{
 			CantPutDown,
 			PutDown

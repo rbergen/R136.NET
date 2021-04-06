@@ -17,7 +17,7 @@ namespace R136.Entities.Animates
 
 		public override StringValues ProgressStatus()
 		{
-			var texts = new List<string>();
+			List<string> texts = new();
 
 			var statusTexts = GetTextsForStatus(Status);
 			if (statusTexts.Count > 0)

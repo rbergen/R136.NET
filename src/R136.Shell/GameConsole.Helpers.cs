@@ -112,7 +112,7 @@ namespace R136.Shell
 
 		private void WriteMessages()
 		{
-			var lines = new List<string>();
+			List<string> lines = new();
 			foreach (var message in _messages)
 			{
 				lines.AddRange(FilterHTML(message));
@@ -181,7 +181,7 @@ namespace R136.Shell
 				return;
 			}
 
-			var stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			int i;
 			for (i = 0; i < (text.Length - _bpsPrintCount); i += _bpsPrintCount)
 			{
@@ -246,7 +246,7 @@ namespace R136.Shell
 
 		private void ShowLanguageSwitchInstructions()
 		{
-			var strings = new List<string>();
+			List<string> strings = new();
 			var languageSections = _configuration!.GetSection(Constants.Languages).GetChildren();
 			string codes = string.Join(", ", languageSections.Select(cs => cs.Key));
 

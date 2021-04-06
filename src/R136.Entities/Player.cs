@@ -144,8 +144,10 @@ namespace R136.Entities
 		public void Configure(IServiceProvider serviceProvider)
 			=> _lightsource = serviceProvider.GetService<ILightsource>();
 
-		public class Snapshot : IRoomsReader, IItemsReader
+		public class Snapshot : IRoomsReader, IItemsReader, ISnapshot
 		{
+			private const int BytesBaseSize = 1;
+
 			public int ID { get; set; }
 			public int? LifePoints { get; set; }
 			public int? LifePointsFromConfig { get; set; }
@@ -157,9 +159,45 @@ namespace R136.Entities
 
 			[JsonIgnore]
 			public IReadOnlyDictionary<RoomID, Room>? Rooms { get; set; }
+
+			public void AddBytes(List<byte> bytes)
+			{
+				Room.AddByte(bytes);
+				ID.AddBytes(bytes);
+				LifePoints.AddIntBytes(bytes);
+				LifePointsFromConfig.AddIntBytes(bytes);
+				Inventory.AddEnumsBytes(bytes);
+			}
+
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				if (bytes.Length <= BytesBaseSize)
+					return null;
+
+				Room = bytes.Span[0].To<RoomID>();
+
+				bytes = bytes[BytesBaseSize..];
+
+				int totalBytesRead = BytesBaseSize;
+				bool abort = false;
+
+				ID = bytes.ToInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				LifePoints = bytes.ToNullableInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				LifePointsFromConfig = bytes.ToNullableInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				int? bytesRead;
+				(Inventory, bytesRead) = bytes.ToEnumArrayOf<ItemID>();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
+			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			InventoryFull,
 			AddedToInventory,
