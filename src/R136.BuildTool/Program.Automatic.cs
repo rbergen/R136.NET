@@ -47,7 +47,7 @@ namespace R136.BuildTool
 			Console.WriteLine($"{Tags.Info} Read {tasks.Length} tasks from configuration file {arguments.ConfigFileName}. Starting task processing.");
 			Console.WriteLine();
 
-			var taskTags = new List<string>();
+			List<string> taskTags = new();
 
 			foreach (var task in tasks)
 			{
@@ -77,7 +77,7 @@ namespace R136.BuildTool
 				return Tags.Warning;
 			}
 
-			var conversionTags = new List<string>();
+			List<string> conversionTags = new();
 
 			foreach (var conversion in task.Conversions)
 			{

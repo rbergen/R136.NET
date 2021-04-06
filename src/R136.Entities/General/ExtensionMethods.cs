@@ -48,7 +48,7 @@ namespace R136.Entities.General
 
 		public static string ReplacePlaceholders(this string source, IReadOnlyDictionary<string, object> valueMap)
 		{
-			var regex = new Regex("{(?<placeholder>[a-z_][a-z0-9_]*?)}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+			Regex regex = new("{(?<placeholder>[a-z_][a-z0-9_]*?)}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
 			return regex.Replace(source, ValueMapper);
 

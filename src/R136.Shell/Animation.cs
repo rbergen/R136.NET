@@ -20,8 +20,8 @@ namespace R136.Shell
 		{
 			int screenRightX = Console.WindowWidth - 1;
 
-			var foreColor = Console.ForegroundColor;
-			var backColor = Console.BackgroundColor;
+			ConsoleColor foreColor = Console.ForegroundColor;
+			ConsoleColor backColor = Console.BackgroundColor;
 
 			Console.CursorVisible = false;
 			Console.BackgroundColor = ConsoleColor.Gray;

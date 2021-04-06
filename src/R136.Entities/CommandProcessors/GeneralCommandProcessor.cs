@@ -81,7 +81,7 @@ namespace R136.Entities.CommandProcessors
 			if (validateResult != null)
 				return validateResult;
 
-			var texts = new List<string>();
+			List<string> texts = new();
 
 			AddStatusTexts(texts, StatusTextID.Header);
 			AddStatusTexts(texts, StatusTextID.LifePoints, "lifepoints", player.LifePoints.ToString());

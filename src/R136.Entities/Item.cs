@@ -296,7 +296,7 @@ namespace R136.Entities
 			if (!UsableOn.Contains(animate))
 				return Use();
 
-			var result = animate.ApplyItem(ID);
+			Result result = animate.ApplyItem(ID);
 
 			if (result.IsSuccess && !KeepsAfterUse)
 				Player?.RemoveFromPossession(ID);

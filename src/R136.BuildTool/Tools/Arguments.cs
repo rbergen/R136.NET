@@ -8,7 +8,7 @@
 
 		public static Arguments Parse(string[] args)
 		{
-			var arguments = new Arguments();
+			Arguments arguments = new();
 
 			for (int i = 0; i < args.Length; i++)
 			{

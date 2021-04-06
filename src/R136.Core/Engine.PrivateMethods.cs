@@ -175,7 +175,7 @@ namespace R136.Core
 			if (items.Length == 1)
 				return itemLineTextList.Get(ItemLineText.SingleItem).Replace("{item}", items[0].Name);
 
-			var itemSection = itemLineTextList.Get(ItemLineText.LastTwoItems).ReplacePlaceholders(new Dictionary<string, object>
+			string itemSection = itemLineTextList.Get(ItemLineText.LastTwoItems).ReplacePlaceholders(new Dictionary<string, object>
 			{
 				{ "firstitem", items[^2].Name },
 				{ "seconditem", items[^1].Name }
@@ -183,7 +183,7 @@ namespace R136.Core
 
 			if (items.Length > 2)
 			{
-				var itemSectionBuilder = new StringBuilder();
+				StringBuilder itemSectionBuilder = new();
 				foreach (var component in items[..^2].Select(item => itemLineTextList.Get(ItemLineText.EarlierItem).Replace("{item}", item.Name)))
 					itemSectionBuilder.Append(component);
 
@@ -211,7 +211,7 @@ namespace R136.Core
 			if (ways.Length == 1)
 				return wayLineTextList.Get(WayLineText.SingleWay).Replace("{way}", wayLineTextList.Get(ways[0]));
 
-			var waySection = wayLineTextList.Get(WayLineText.LastTwoWays).ReplacePlaceholders(new Dictionary<string, object>
+			string waySection = wayLineTextList.Get(WayLineText.LastTwoWays).ReplacePlaceholders(new Dictionary<string, object>
 			{
 				{ "firstway", wayLineTextList.Get(ways[^2]) },
 				{ "secondway", wayLineTextList.Get(ways[^1]) }
@@ -219,7 +219,7 @@ namespace R136.Core
 
 			if (ways.Length > 2)
 			{
-				var waySectionBuilder = new StringBuilder();
+				StringBuilder waySectionBuilder = new();
 				foreach (var component in ways[..^2].Select(way => wayLineTextList.Get(WayLineText.EarlierWay).Replace("{way}", wayLineTextList.Get(way))))
 					waySectionBuilder.Append(component);
 

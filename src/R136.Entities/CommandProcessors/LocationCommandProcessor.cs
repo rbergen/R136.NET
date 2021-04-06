@@ -31,8 +31,8 @@ namespace R136.Entities.CommandProcessors
 			if (!player.CurrentRoom.Connections.ContainsKey(direction.Value))
 				return Result.Failure(GetTexts(TextID.CantGoThere));
 
-			var fromRoom = player.CurrentRoom;
-			var toRoom = player.CurrentRoom.Connections[direction.Value];
+			Room fromRoom = player.CurrentRoom;
+			Room toRoom = player.CurrentRoom.Connections[direction.Value];
 
 			var args = new RoomChangeRequestedEventArgs(fromRoom.ID, toRoom.ID);
 			RoomChangeRequested?.Invoke(args);

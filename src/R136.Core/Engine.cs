@@ -86,18 +86,18 @@ namespace R136.Core
 				if (!ValidateStep(NextStep.ShowRoomStatus))
 					return StringValues.Empty;
 
-				var texts = new List<string>();
+				List<string> texts = new();
 
-				var playerRoom = _player!.CurrentRoom;
+				Room playerRoom = _player!.CurrentRoom;
 				AddRoomInformation(texts, playerRoom);
 
-				var wayLine = GetWayLine(playerRoom);
+				string? wayLine = GetWayLine(playerRoom);
 				if (wayLine != null)
 					texts.Add(wayLine);
 
 				if (!_player!.IsDark)
 				{
-					var itemLine = GetItemLine(playerRoom);
+					string? itemLine = GetItemLine(playerRoom);
 					if (itemLine != null)
 					{
 						texts.Add(string.Empty);
@@ -142,7 +142,7 @@ namespace R136.Core
 
 			(var processor, var id, string? command, var findResult) = _processors!.FindByName(terms[0]);
 
-			var result = findResult switch
+			Result result = findResult switch
 			{
 				FindResult.Ambiguous => Result.Error(GetTexts(TextID.AmbiguousCommand, "command", input)),
 				FindResult.NotFound => Result.Error(GetTexts(TextID.InvalidCommand)),

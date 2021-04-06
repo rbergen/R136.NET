@@ -30,8 +30,8 @@
 				{
 					<form @onsubmit="@SubmitInput">
 						<textarea class="form-control" id="status-text" style="height: 200px" @bind="@_enteredText" @bind:event="oninput"></textarea><br />
-						<input type="submit" class="btn btn-primary" disabled="@string.IsNullOrWhiteSpace(_enteredText)" value="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.OKText))" />
-						<input type="button" class="btn btn-outline-secondary" value="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CancelText))" @onclick="CancelClicked" />
+						<input type="submit" class="btn btn-primary" disabled="@string.IsNullOrWhiteSpace(_enteredText)" value="@LanguageProvider.GetConfigurationValue(Constants.OKText)" />
+						<button class="btn btn-outline-secondary" @onclick="CancelClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CancelText))</button>
 					</form>
 				}
 				else
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="button" class="btn btn-primary" value="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CloseText))" @onclick="CancelClicked" />
+					<button class="btn btn-primary" @onclick="CancelClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CloseText))</button>
 				}
 			</div>
 		</div>
