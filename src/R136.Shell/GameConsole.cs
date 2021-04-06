@@ -78,7 +78,7 @@ namespace R136.Shell
 		{
 			if (!(_status?.IsLoaded ?? false))
 			{
-				if (_services.GetService<IConfiguration>()?[Constants.IntroParam] != Constants.ParamNo)
+				if (_configuration?[Constants.IntroParam] != Constants.ParamNo)
 				{
 					new Animation().Run();
 

@@ -45,6 +45,7 @@ namespace R136.Shell.Tools
 			catch (Exception e)
 			{
 				GetLogger(services)?.LogDebug($"Error while loading file as bytes: {e}");
+				result = null;
 			}
 
 			if (result?.IsLoaded ?? false)
