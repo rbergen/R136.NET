@@ -1,6 +1,6 @@
 ﻿namespace R136.Interfaces
 {
-	public enum AnimateID
+	public enum AnimateID : byte
 	{
 		HellHound,
 		RedTroll,

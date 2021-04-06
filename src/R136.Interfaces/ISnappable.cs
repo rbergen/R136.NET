@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace R136.Interfaces
 {
@@ -9,12 +10,11 @@ namespace R136.Interfaces
 
 		bool RestoreSnapshot(TSnapshot snapshot);
 	}
-}
 
-public interface ISnapshot
-{
-	byte[] GetBinary();
-	
-	int? SetBinary(Span<byte> value);
+	public interface ISnapshot
+	{
+		void AddBytes(List<byte> bytes);
 
+		int? LoadBytes(ReadOnlyMemory<byte> bytes);
+	}
 }

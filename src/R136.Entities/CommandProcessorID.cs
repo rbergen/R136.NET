@@ -1,6 +1,6 @@
 ﻿namespace R136.Entities
 {
-	public enum CommandProcessorID
+	public enum CommandProcessorID : byte
 	{
 		General,
 		Internal,

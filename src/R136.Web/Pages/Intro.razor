@@ -5,7 +5,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject ILanguageProvider LanguageProvider 
 
-<PageHeader LanguageChanged="LanguageChanged"/>
+<PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="false"/>
 
 <div class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col text-light">
@@ -94,7 +94,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
+		if (await LocalStorage.ContainsSavedGame())
 			NavigationManager.NavigateTo("/play");
 	}
 }

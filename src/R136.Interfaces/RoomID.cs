@@ -1,6 +1,6 @@
 ﻿namespace R136.Interfaces
 {
-	public enum RoomID
+	public enum RoomID : byte
 	{
 		Forest0 = 0, Forest1, Forest2, NorthSwamp, Forest4 = 4,
 		Forest5 = 5, Cemetery, Forest7, MiddleSwamp, EmptySpace9 = 9,

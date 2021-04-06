@@ -1,11 +1,12 @@
-﻿using R136.Entities.General;
+﻿using R136.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace R136.Entities.Global
 {
 	public class Configuration : LayoutProperties, ISnapshot
 	{
-		private const int BinarySize = 8;
+		private const int BytesBaseSize = 5;
 
 		public int LifePoints { get; set; } = 20;
 		public int? LampPoints { get; set; } = 60;
@@ -16,18 +17,18 @@ namespace R136.Entities.Global
 		public bool AutoOpenConnections { get; set; } = false;
 		public bool EnableConfigList { get; set; } = false;
 
-		public byte[] GetBinary()
-			=> new byte[BinarySize] 
-			{ 
-				LifePoints.ToByte(), 
-				LampPoints.IntToByte(), 
-				MaxInventory.IntToByte(), 
-				Immortal.ToByte(), 
-				FreezeAnimates.ToByte(), 
-				AutoPlaceItems.ToByte(), 
-				AutoOpenConnections.ToByte(), 
-				EnableConfigList.ToByte() 
-			};
+		public void AddBytes(List<byte> bytes)
+		{
+			Immortal.AddByte(bytes);
+			FreezeAnimates.AddByte(bytes);
+			AutoPlaceItems.AddByte(bytes);
+			AutoOpenConnections.AddByte(bytes);
+			EnableConfigList.AddByte(bytes);
+			LifePoints.AddBytes(bytes);
+			LampPoints.AddIntBytes(bytes);
+			MaxInventory.AddIntBytes(bytes);
+		}
+
 
 		public void Load(Configuration configuration)
 		{
@@ -41,21 +42,34 @@ namespace R136.Entities.Global
 			EnableConfigList = configuration.EnableConfigList;
 		}
 
-		public int? SetBinary(Span<byte> value)
+		public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 		{
-			if (value.Length < BinarySize)
+			if (bytes.Length < BytesBaseSize)
 				return null;
 
-			LifePoints = value[0];
-			LampPoints = value[1].ToNullableInt();
-			MaxInventory = value[2].ToNullableInt();
-			Immortal = value[3].ToBool();
-			FreezeAnimates = value[4].ToBool();
-			AutoPlaceItems = value[5].ToBool();
-			AutoOpenConnections = value[6].ToBool();
-			EnableConfigList = value[7].ToBool();
+			var span = bytes.Span;
 
-			return BinarySize;
+			Immortal = span[0].ToBool();
+			FreezeAnimates = span[1].ToBool();
+			AutoPlaceItems = span[2].ToBool();
+			AutoOpenConnections = span[3].ToBool();
+			EnableConfigList = span[4].ToBool();
+
+			bytes = bytes[BytesBaseSize..];
+
+			int totalBytesRead = BytesBaseSize;
+			bool abort = false;
+
+			LifePoints = bytes.ToInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
+
+			LampPoints = bytes.ToNullableInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+			if (abort) return null;
+
+			int? bytesRead;
+			(MaxInventory, bytesRead) = bytes.ToNullableInt();
+
+			return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
 		}
 	}
 }

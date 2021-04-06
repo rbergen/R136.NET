@@ -45,7 +45,7 @@ namespace R136.Entities.Items
 			return Result.Success(UsageTexts, true);
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			FullHealth
 		}

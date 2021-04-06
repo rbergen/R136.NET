@@ -194,13 +194,21 @@ namespace R136.Entities
 			public ItemID ID { get; set; }
 			public RoomID Room { get; set; }
 
-			public virtual byte[] GetBinary()
-				=> new byte[BinarySize] { ID.ToByte(), Room.ToByte() };
-
-			public virtual int? SetBinary(Span<byte> value)
+			public virtual void AddBytes(List<byte> bytes)
 			{
-				ID = value[0].To<ItemID>();
-				Room = value[1].To<RoomID>();
+				ID.AddByte(bytes);
+				Room.AddByte(bytes);
+			}
+
+			public virtual int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				if (bytes.Length < BinarySize)
+					return null;
+
+				var span = bytes.Span;
+
+				ID = span[0].To<ItemID>();
+				Room = span[1].To<RoomID>();
 				
 				return BinarySize;
 			}
@@ -238,7 +246,7 @@ namespace R136.Entities
 				};
 		}
 
-		public enum TextType
+		public enum TextType : byte
 		{
 			Use,
 			Combine

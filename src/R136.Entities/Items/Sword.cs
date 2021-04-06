@@ -100,7 +100,7 @@ namespace R136.Entities.Items
 			return input.ToLower() == Facilities.Configuration.YesInput ? UseOn(animate) : Result.Failure();
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			Miss,
 			Hit,

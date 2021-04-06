@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using R136.Entities;
 using R136.Entities.CommandProcessors;
-using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Entities.Items;
 using R136.Interfaces;
@@ -36,7 +35,7 @@ namespace R136.Core
 
 		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer, ISnapshot
 		{
-			private const int BinaryBaseSize = 3;
+			private const int BytesBaseSize = 3;
 
 			public Configuration? Configuration { get; set; }
 			public bool HasTreeBurned { get; set; }
@@ -49,74 +48,59 @@ namespace R136.Core
 			public Animate.Snapshot[]? Animates { get; set; }
 			public Player.Snapshot? Player { get; set; }
 
-			public byte[] GetBinary()
+			public void AddBytes(List<byte> bytes)
 			{
-				List<byte> result = new();
+				HasTreeBurned.AddByte(bytes);
+				IsAnimateTriggered.AddByte(bytes);
+				DoNext.AddByte(bytes);
 
-				result.Add(HasTreeBurned.ToByte());
-				result.Add(IsAnimateTriggered.ToByte());
-				result.Add(DoNext.ToByte());
-
-				result.AddRange(Configuration.ToBytes());
-				result.AddRange(LocationCommandProcessor.ToBytes());
-				result.AddRange(Items.SnapshotsToBytes());
-				result.AddRange(Flashlight.ToBytes());
-				result.AddRange(Animates.SnapshotsToBytes());
-				result.AddRange(Player.ToBytes());
-
-				return result.ToArray();
+				Configuration.AddSnapshotBytes(bytes);
+				LocationCommandProcessor.AddSnapshotBytes(bytes);
+				Items.AddSnapshotsBytes(bytes);
+				Flashlight.AddSnapshotBytes(bytes);
+				Animates.AddSnapshotsBytes(bytes);
+				Player.AddSnapshotBytes(bytes);
 			}
 
-			public int? SetBinary(Span<byte> value)
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 			{
-				if (value.Length <= BinaryBaseSize)
+				if (bytes.Length <= BytesBaseSize)
 					return null;
 
-				HasTreeBurned = value[0].ToBool();
-				IsAnimateTriggered = value[1].ToBool();
-				DoNext = value[2].To<NextStep>();
+				var span = bytes.Span;
 
-				int? readBytes = BinaryBaseSize;
-				int totalReadBytes = readBytes.Value;
-				Memory<byte> bytes = value[readBytes.Value..].ToArray();
+				HasTreeBurned = span[0].ToBool();
+				IsAnimateTriggered = span[1].ToBool();
+				DoNext = span[2].To<NextStep>();
+
+				bytes = bytes[BytesBaseSize..];
+
+				int totalBytesRead = BytesBaseSize;
 				bool abort = false;
 
-				Configuration = ProcessResult(bytes.Span.ToNullable<Configuration>());
+				Configuration = bytes.ToNullable<Configuration>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 				if (abort) return null;
 
-				LocationCommandProcessor = ProcessResult(bytes.Span.ToNullable<LocationCommandProcessor.Snapshot>());
+				LocationCommandProcessor = bytes.ToNullable<LocationCommandProcessor.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 				if (abort) return null;
 
-				Items = ProcessResult(bytes.Span.ToSnapshotArrayOf<Item.Snapshot>());
+				Items = bytes.ToSnapshotArrayOf<Item.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 				if (abort) return null;
 
-				Flashlight = ProcessResult(bytes.Span.ToNullable<Flashlight.Snapshot>());
+				Flashlight = bytes.ToNullable<Flashlight.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 				if (abort) return null;
 
-				Animates = ProcessResult(bytes.Span.ToSnapshotArrayOf<Animate.Snapshot>());
+				Animates = bytes.ToSnapshotArrayOf<Animate.Snapshot>().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 				if (abort) return null;
 
-				(Player, readBytes) = bytes.Span.ToNullable<Player.Snapshot>();
+				int? bytesRead;
+				(Player, bytesRead) = bytes.ToNullable<Player.Snapshot>();
 
-				return readBytes != null ? totalReadBytes + readBytes : null;
-
-				TResult ProcessResult<TResult>((TResult item, int? readBytes) result)
-				{
-					if (readBytes == null || bytes.Length == readBytes)
-					{
-						abort = true;
-						return result.item;
-					}
-
-					bytes = bytes[readBytes.Value..];
-					totalReadBytes += readBytes.Value;
-
-					return result.item;
-				}
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
 			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			NoCommand,
 			InvalidCommand,
@@ -130,7 +114,7 @@ namespace R136.Core
 			PlayerDead
 		}
 
-		private enum ItemLineText
+		private enum ItemLineText : byte
 		{
 			SingleItem,
 			MultipleItemsFormat,
@@ -138,7 +122,7 @@ namespace R136.Core
 			EarlierItem
 		}
 
-		private enum WayLineText
+		private enum WayLineText : byte
 		{
 			SingleWay = 6,
 			MultipleWayFormat,

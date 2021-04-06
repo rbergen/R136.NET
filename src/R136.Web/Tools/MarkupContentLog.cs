@@ -74,17 +74,32 @@ namespace R136.Web.Tools
 
 		public class Snapshot : ISnapshot
 		{
+			private const int BytesBaseSize = 1;
+
 			public bool IsTrimmed { get; set; }
 			public ContentBlock[]? ContentBlocks { get; set; }
 
-			public byte[] GetBinary()
+			public void AddBytes(List<byte> bytes)
 			{
+				(IsTrimmed || (ContentBlocks != null && ContentBlocks.Length > 1)).AddByte(bytes);
 				
+				if (ContentBlocks == null)
+					ContentBlocks.AddSnapshotsBytes(bytes);
+				else
+					ContentBlocks.TakeLast(1).ToArray().AddSnapshotsBytes(bytes);
 			}
 
-			public int? SetBinary(Span<byte> value)
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 			{
-				throw new System.NotImplementedException();
+				if (bytes.Length <= BytesBaseSize)
+					return null;
+
+				IsTrimmed = bytes.Span[0].ToBool();
+
+				int? bytesRead;
+				(ContentBlocks, bytesRead) = bytes[BytesBaseSize..].ToSnapshotArrayOf<ContentBlock>();
+
+				return bytesRead != null ? bytesRead + BytesBaseSize : null;
 			}
 		}
 
@@ -113,7 +128,7 @@ namespace R136.Web.Tools
 
 	public class ContentBlock : ISnapshot
 	{
-		private const int BinaryBaseSize = 2;
+		private const int BytesBaseSize = 2;
 
 		public ContentBlockType Type { get; set; }
 		public ResultCode? ResultCode { get; set; }
@@ -122,33 +137,31 @@ namespace R136.Web.Tools
 		[JsonIgnore]
 		public MarkupString Content => (MarkupString)(Text ?? string.Empty);
 
-		public byte[] GetBinary()
+		public void AddBytes(List<byte> bytes)
 		{
-			List<byte> result = new();
-
-			result.Add(Type.ToByte());
-			result.Add(ResultCode.EnumToByte());
-			result.AddRange(Text.TextToBytes());
-
-			return result.ToArray();
+			Type.AddByte(bytes);
+			ResultCode.AddEnumByte(bytes);
+			Text.AddTextBytes(bytes);
 		}
 
-		public int? SetBinary(Span<byte> value)
+		public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 		{
-			if (value.Length <= BinaryBaseSize)
+			if (bytes.Length <= BytesBaseSize)
 				return null;
 
-			Type = value[0].To<ContentBlockType>();
-			ResultCode = value[1].ToNullable<ResultCode>();
+			var span = bytes.Span;
+
+			Type = span[0].To<ContentBlockType>();
+			ResultCode = span[1].ToNullable<ResultCode>();
 
 			int? readBytes;
-			(Text, readBytes) = value[2..].ToText();
+			(Text, readBytes) = bytes[BytesBaseSize..].ToText();
 
-			return readBytes != null ? readBytes + BinaryBaseSize : null;
+			return readBytes != null ? readBytes + BytesBaseSize : null;
 		}
 	}
 
-	public enum ContentBlockType
+	public enum ContentBlockType : byte
 	{
 		StartMessage,
 		RoomStatus,

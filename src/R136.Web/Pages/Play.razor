@@ -2,7 +2,9 @@
 
 @inject IConfiguration Configuration 
 
-<PageHeader LanguageChanged="LanguageChanged" />
+<GameStatus StatusText="@(_statusText)" TextSubmitted="ProcessStatusText" @bind-Visible="_showGameStatusModal"/>
+
+<PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="ShowGameStatus" />
 
 <div id="contentlog" class="row bg-dark" style="padding-bottom: 50px">
 	<div class="col">

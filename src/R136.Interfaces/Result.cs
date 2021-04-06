@@ -3,7 +3,7 @@ using System;
 
 namespace R136.Interfaces
 {
-	public enum ResultCode
+	public enum ResultCode : byte
 	{
 		Success,
 		Failure,

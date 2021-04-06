@@ -1,6 +1,6 @@
 ﻿namespace R136.Interfaces
 {
-	public enum Direction
+	public enum Direction : byte
 	{
 		East,
 		West,

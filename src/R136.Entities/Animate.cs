@@ -164,7 +164,7 @@ namespace R136.Entities
 
 		public class Snapshot : ISnapshot
 		{
-			private const int BinarySize = 5;
+			private const int BytesBaseSize = 4;
 
 			public AnimateID ID { get; set; }
 			public RoomID Room { get; set; }
@@ -172,28 +172,32 @@ namespace R136.Entities
 			public int StrikesLeft { get; set; }
 			public bool IsTriggered { get; set; }
 
-			public byte[] GetBinary()
-				=> new byte[BinarySize] 
-				{ 
-					ID.ToByte(), 
-					Room.ToByte(), 
-					Status.ToByte(), 
-					StrikesLeft.ToByte(), 
-					IsTriggered.ToByte() 
-				};
-
-			public int? SetBinary(Span<byte> value)
+			public void AddBytes(List<byte> bytes)
 			{
-				if (value.Length < BinarySize)
+				ID.AddByte(bytes);
+				Room.AddByte(bytes);
+				Status.AddByte(bytes);
+				IsTriggered.AddByte(bytes);
+				StrikesLeft.AddBytes(bytes);
+			}
+
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				if (bytes.Length <= BytesBaseSize)
 					return null;
 
-				ID = value[0].To<AnimateID>();
-				Room = value[1].To<RoomID>();
-				Status = value[2].To<AnimateStatus>();
-				StrikesLeft = value[3];
-				IsTriggered = value[4].ToBool();
+				var span = bytes.Span;
 
-				return BinarySize;
+				ID = span[0].To<AnimateID>();
+				Room = span[1].To<RoomID>();
+				Status = span[2].To<AnimateStatus>();
+				IsTriggered = span[3].ToBool();
+
+				int? bytesRead;
+
+				(StrikesLeft, bytesRead) = bytes[BytesBaseSize..].ToInt();
+
+				return bytesRead != null ? BytesBaseSize + bytesRead : null;
 			}
 		}
 
@@ -253,7 +257,7 @@ namespace R136.Entities
 		}
 	}
 
-	public enum AnimateStatus
+	public enum AnimateStatus : byte
 	{
 		Initial,
 		PreparingFirstAttack,

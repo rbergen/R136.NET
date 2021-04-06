@@ -136,7 +136,7 @@ namespace R136.Entities.CommandProcessors
 				: Result.Success(GetTexts(EndTextID.EndCancelled));
 		}
 
-		private enum StatusTextID
+		private enum StatusTextID : byte
 		{
 			Header,
 			LifePoints,
@@ -148,14 +148,14 @@ namespace R136.Entities.CommandProcessors
 			FlashlightHasBatteries
 		}
 
-		private enum EndTextID
+		private enum EndTextID : byte
 		{
 			ConfirmEnd,
 			EndCancelled,
 			InvalidYesNoAnswer
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			Default
 		}

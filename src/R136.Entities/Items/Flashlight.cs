@@ -156,46 +156,52 @@ namespace R136.Entities.Items
 
 		public new class Snapshot : Item.Snapshot
 		{
-			private const int BinarySize = 4;
+			private const int BytesBaseSize = 2;
 
 			public int? LampPoints { get; set; }
 			public int? LampPointsFromConfig { get; set; }
 			public bool IsOn { get; set; }
 			public bool HasBatteries { get; set; }
 
-			public override byte[] GetBinary()
+			public override void AddBytes(List<byte> bytes)
 			{
-				byte[] baseBytes = base.GetBinary();
-				byte[] result = new byte[baseBytes.Length + BinarySize];
-				Array.Copy(baseBytes, result, baseBytes.Length);
-
-				int i = baseBytes.Length;
-				result[i++] = LampPoints.IntToByte();
-				result[i++] = LampPointsFromConfig.IntToByte();
-				result[i++] = IsOn.ToByte();
-				result[i++] = HasBatteries.ToByte();
-
-				return result;
+				base.AddBytes(bytes);
+				IsOn.AddByte(bytes);
+				HasBatteries.AddByte(bytes);
+				LampPoints.AddIntBytes(bytes);
+				LampPointsFromConfig.AddIntBytes(bytes);
 			}
 
-			public override int? SetBinary(Span<byte> value)
+			public override int? LoadBytes(ReadOnlyMemory<byte> bytes)
 			{
-				int? baseSize = base.SetBinary(value);
+				int? bytesRead = base.LoadBytes(bytes);
 
-				if (baseSize == null || value.Length < baseSize.Value + BinarySize)
+				if (bytesRead == null || bytes.Length < bytesRead.Value + BytesBaseSize)
 					return null;
 
-				int i = baseSize.Value;
-				LampPoints = value[i++].ToNullableInt();
-				LampPointsFromConfig = value[i++].ToNullableInt();
-				IsOn = value[i++].ToBool();
-				HasBatteries = value[i++].ToBool();
+				int totalBytesRead = bytesRead.Value;
 
-				return i;
+				var span = bytes.Span;
+
+				IsOn = span[bytesRead.Value].ToBool();
+				HasBatteries = span[bytesRead.Value + 1].ToBool();
+
+				totalBytesRead += BytesBaseSize;
+				bytes = bytes[totalBytesRead..];
+
+				(LampPoints, bytesRead) = bytes.ToNullableInt();
+				if (bytesRead == null) return null;
+
+				bytes = bytes[bytesRead.Value..];
+				totalBytesRead += bytesRead.Value;
+
+				(LampPointsFromConfig, bytesRead) = bytes.ToNullableInt();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
 			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			LightOff,
 			LightOffInDark,

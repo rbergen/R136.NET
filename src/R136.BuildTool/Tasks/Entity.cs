@@ -1,6 +1,6 @@
 ﻿namespace R136.BuildTool.Tasks
 {
-	enum Entity
+	enum Entity : byte
 	{
 		Animates,
 		Commands,

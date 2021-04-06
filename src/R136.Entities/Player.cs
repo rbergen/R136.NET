@@ -146,7 +146,7 @@ namespace R136.Entities
 
 		public class Snapshot : IRoomsReader, IItemsReader, ISnapshot
 		{
-			private const int BinaryBaseSize = 4;
+			private const int BytesBaseSize = 1;
 
 			public int ID { get; set; }
 			public int? LifePoints { get; set; }
@@ -160,41 +160,44 @@ namespace R136.Entities
 			[JsonIgnore]
 			public IReadOnlyDictionary<RoomID, Room>? Rooms { get; set; }
 
-			public byte[] GetBinary()
+			public void AddBytes(List<byte> bytes)
 			{
-				byte[] inventoryBytes = Inventory.EnumsToBytes();
-				byte[] result = new byte[inventoryBytes.Length + BinaryBaseSize];
-
-				Array.Copy(inventoryBytes, result, inventoryBytes.Length);
-
-				int i = inventoryBytes.Length;
-				result[i++] = ID.ToByte();
-				result[i++] = LifePoints.IntToByte();
-				result[i++] = LifePointsFromConfig.IntToByte();
-				result[i++] = Room.ToByte();
-
-				return result;
+				Room.AddByte(bytes);
+				ID.AddBytes(bytes);
+				LifePoints.AddIntBytes(bytes);
+				LifePointsFromConfig.AddIntBytes(bytes);
+				Inventory.AddEnumsBytes(bytes);
 			}
 
-			public int? SetBinary(Span<byte> value)
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 			{
-				(ItemID[]? inventory, int? bytesRead) = value.ToEnumArrayOf<ItemID>();
-				if (bytesRead == null || value.Length < bytesRead.Value + BinaryBaseSize)
+				if (bytes.Length <= BytesBaseSize)
 					return null;
 
-				Inventory = inventory;
+				Room = bytes.Span[0].To<RoomID>();
 
-				int i = bytesRead.Value;
-				ID = value[i++];
-				LifePoints = value[i++].ToNullableInt();
-				LifePointsFromConfig = value[i++].ToNullableInt();
-				Room = value[i++].To<RoomID>();
+				bytes = bytes[BytesBaseSize..];
 
-				return i;
+				int totalBytesRead = BytesBaseSize;
+				bool abort = false;
+
+				ID = bytes.ToInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				LifePoints = bytes.ToNullableInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				LifePointsFromConfig = bytes.ToNullableInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
+				if (abort) return null;
+
+				int? bytesRead;
+				(Inventory, bytesRead) = bytes.ToEnumArrayOf<ItemID>();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
 			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			InventoryFull,
 			AddedToInventory,

@@ -200,7 +200,7 @@ namespace R136.Entities.CommandProcessors
 			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			NoParameterGiven,
 			DontOwnParameter,
@@ -208,7 +208,7 @@ namespace R136.Entities.CommandProcessors
 			ParameterNotPresent,
 		}
 
-		private enum CombineTextID
+		private enum CombineTextID : byte
 		{
 			InvalidParametersGiven,
 			ItemSeparators,
@@ -216,12 +216,12 @@ namespace R136.Entities.CommandProcessors
 			DoesntCombine
 		}
 
-		private enum InspectTextID
+		private enum InspectTextID : byte
 		{
 			TooDarkToSee
 		}
 
-		private enum PutDownTextID
+		private enum PutDownTextID : byte
 		{
 			CantPutDown,
 			PutDown

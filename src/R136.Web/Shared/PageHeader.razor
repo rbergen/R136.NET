@@ -9,6 +9,10 @@
 		<h1><strong>@LanguageProvider.GetConfigurationValue(Constants.HeaderText)</strong></h1>
 	</div>
 	<div class="col-2 text-end">
+		@if (ShowStatusIcon)
+		{
+			<i class="far fa-save text-white me-2" @onclick="FloppyClicked"></i>
+		}
 		<a href="#" class="text-decoration-none link-light" @onclick="DutchClicked">
 			@if (LanguageProvider.Language == Constants.Dutch)
 			{
@@ -36,7 +40,16 @@
 @code  
 {
 	[Parameter]
+	public bool ShowStatusIcon { get; set; }
+
+	[Parameter]
 	public EventCallback LanguageChanged { get; set; }
+
+	[Parameter]
+	public EventCallback StatusIconClicked { get; set; }
+
+	private async Task FloppyClicked(MouseEventArgs e)
+		=> await StatusIconClicked.InvokeAsync();
 
 	private async Task DutchClicked(MouseEventArgs e)
 		=> await SetLanguage(Constants.Dutch);

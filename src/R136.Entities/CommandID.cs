@@ -1,6 +1,6 @@
 ﻿namespace R136.Entities
 {
-	public enum CommandID
+	public enum CommandID : byte
 	{
 		GoEast,
 		GoWest,

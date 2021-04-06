@@ -4,8 +4,10 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using R136.Core;
 using R136.Interfaces;
+using R136.Web.Shared;
 using R136.Web.Tools;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace R136.Web.Pages
@@ -18,6 +20,9 @@ namespace R136.Web.Pages
 		private MarkupString? _error = null;
 		private bool _hasEnded = false;
 		private bool _isPaused = false;
+		private string _statusText = string.Empty;
+		private bool _showGameStatusModal = false;
+
 #pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference _focusElement;
 #pragma warning restore IDE0044 // Add readonly modifier
@@ -46,6 +51,28 @@ namespace R136.Web.Pages
 		[Parameter]
 		public string Action { get; set; }
 
+		private ConciseStatus ComposeStatus()
+			=> new()
+			{
+				IsPaused = _isPaused,
+				EngineSnapshot = Engine.TakeSnapshot(),
+				MarkupContentLog = ContentLog.TakeSnapshot(),
+				ContinuationStatus = _continuationStatus,
+				InputSpecs = _inputSpecs
+			};
+
+		private void ShowGameStatus()
+		{
+			List<byte> bytes = new();
+			ComposeStatus().AddBytes(bytes);
+
+			_statusText = Convert.ToBase64String(bytes.ToArray());
+			_showGameStatusModal = true;
+		}
+
+		private void ProcessStatusText(string text)
+		{ }
+
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			await JSRuntime.InvokeAsync<bool>("R136JS.stretchToHeight", "contentlog", "app");
@@ -61,13 +88,13 @@ namespace R136.Web.Pages
 		{
 			await Engine.Initialize(LanguageProvider.Language);
 
-			if (await LocalStorage.ContainKeyAsync(Constants.R136EngineStorageKey))
+			if (await LocalStorage.ContainsSavedGame())
 			{
-				if (await LoadSnapshot<Engine.Snapshot>(Constants.R136EngineStorageKey, Engine.RestoreSnapshot))
+				if (await LoadSnapshot<Engine.Snapshot>(Constants.R136EngineBytesKey, Constants.R136EngineStorageKey, Engine.RestoreSnapshot))
 				{
 					await LoadSnapshot<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey, ContentLog.RestoreSnapshot);
-					await LoadSnapshot<ContinuationStatus>(Constants.ContinuationStatusStorageKey, snapshot => { _continuationStatus = snapshot; return true; });
-					await LoadSnapshot<InputSpecs>(Constants.InputSpecsStorageKey, snapshot => { _inputSpecs = snapshot; return true; });
+					await LoadSnapshot<ContinuationStatus>(Constants.ContinuationStatusBytesKey, Constants.ContinuationStatusStorageKey, snapshot => { _continuationStatus = snapshot; return true; });
+					await LoadSnapshot<InputSpecs>(Constants.InputSpecsBytesKey, Constants.InputSpecsStorageKey, snapshot => { _inputSpecs = snapshot; return true; });
 					await LoadSnapshot<bool>(Constants.IsPausedStorageKey, snapshot => { _isPaused = snapshot; return true; });
 				}
 				else
@@ -77,10 +104,33 @@ namespace R136.Web.Pages
 			await CycleEngine();
 		}
 
+		private async Task<bool> LoadSnapshot<TEntity>(string bytesKey, string storageKey, Func<TEntity, bool> loader) where TEntity : ISnapshot, new()
+		{
+			if (!await LocalStorage.ContainKeyAsync(bytesKey))
+				return await LoadSnapshot(storageKey, loader);
+
+			try
+			{
+				byte[] bytes = Convert.FromBase64String(await LocalStorage.GetItemAsync<string>(bytesKey));
+
+				TEntity entity = new();
+				if (entity.LoadBytes(bytes) == null)
+					return false;
+
+				return loader(entity);
+			}
+			catch (Exception ex)
+			{
+				Console.Write($"Error while restoring {nameof(TEntity)} byte snapshot from {bytesKey}: {ex}");
+				await LocalStorage.RemoveItemAsync(bytesKey);
+				return false;
+			}
+		}
+
 		private async Task<bool> LoadSnapshot<TEntity>(string storageKey, Func<TEntity, bool> loader)
 		{
 			if (!await LocalStorage.ContainKeyAsync(storageKey))
-				return true;
+				return false;
 
 			try
 			{
@@ -146,6 +196,22 @@ namespace R136.Web.Pages
 			}
 		}
 
+		private async Task SaveSnapshot<TEntity>(string storageBytesKey, string storageKey, TEntity entity) where TEntity : ISnapshot
+		{
+			if (entity != null)
+			{
+				List<byte> bytes = new();
+
+				entity.AddBytes(bytes);
+
+				await LocalStorage.SetItemAsync(storageBytesKey, Convert.ToBase64String(bytes.ToArray()));
+			}
+			else
+				await LocalStorage.RemoveItemAsync(storageBytesKey);
+
+			await LocalStorage.RemoveItemAsync(storageKey);
+		}
+
 		private async Task SaveSnapshot<TEntity>(string storageKey, TEntity entity)
 		{
 			if (entity != null)
@@ -156,15 +222,19 @@ namespace R136.Web.Pages
 
 		private async Task SaveSnapshots()
 		{
-			await LocalStorage.SetItemAsync(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
-			await LocalStorage.SetItemAsync(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
-			await SaveSnapshot(Constants.ContinuationStatusStorageKey, _continuationStatus);
-			await SaveSnapshot(Constants.InputSpecsStorageKey, _inputSpecs);
+			await SaveSnapshot(Constants.R136EngineBytesKey, Constants.R136EngineStorageKey, Engine.TakeSnapshot());
+			await SaveSnapshot(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
+			await SaveSnapshot(Constants.ContinuationStatusBytesKey, Constants.ContinuationStatusStorageKey, _continuationStatus);
+			await SaveSnapshot(Constants.InputSpecsBytesKey, Constants.InputSpecsStorageKey, _inputSpecs);
 			await SaveSnapshot(Constants.IsPausedStorageKey, _isPaused);
 		}
 
 		private async Task RemoveSnapshots()
 		{
+			await LocalStorage.RemoveItemAsync(Constants.R136EngineBytesKey);
+			await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusBytesKey);
+			await LocalStorage.RemoveItemAsync(Constants.InputSpecsBytesKey);
+
 			await LocalStorage.RemoveItemAsync(Constants.R136EngineStorageKey);
 			await LocalStorage.RemoveItemAsync(Constants.ContentLogStorageKey);
 			await LocalStorage.RemoveItemAsync(Constants.ContinuationStatusStorageKey);

@@ -18,7 +18,7 @@ namespace R136.Core
 		Result Run(string input);
 	}
 
-	public enum NextStep
+	public enum NextStep : byte
 	{
 		ShowStartMessage,
 		ShowRoomStatus,

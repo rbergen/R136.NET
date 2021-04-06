@@ -4,6 +4,7 @@ using R136.Entities.General;
 using R136.Entities.Global;
 using R136.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace R136.Entities.CommandProcessors
 {
@@ -102,27 +103,33 @@ namespace R136.Entities.CommandProcessors
 
 		public class Snapshot : ISnapshot
 		{
-			private const int BinarySize = 2;
-
 			public int ID { get; set; }
 			public int PaperRouteIndex { get; set; }
 
-			public byte[] GetBinary()
-				=> new byte[BinarySize] { ID.ToByte(), PaperRouteIndex.ToByte() };
-
-			public int? SetBinary(Span<byte> value)
+			public void AddBytes(List<byte> bytes)
 			{
-				if (value.Length < BinarySize)
-					return null;
+				ID.AddBytes(bytes);
+				PaperRouteIndex.AddBytes(bytes);
+			}
 
-				ID = value[0];
-				PaperRouteIndex = value[1];
+			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
+			{
+				int? bytesRead;
+				int totalBytesRead = 0;
 
-				return BinarySize;
+				(ID, bytesRead) = bytes.ToInt();
+				if (bytesRead == null) return null;
+
+				bytes = bytes[bytesRead.Value..];
+				totalBytesRead += bytesRead.Value;
+
+				(PaperRouteIndex, bytesRead) = bytes.ToInt();
+
+				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
 			}
 		}
 
-		private enum TextID
+		private enum TextID : byte
 		{
 			CommandSyntax,
 			CantGoThere

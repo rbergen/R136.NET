@@ -1,6 +1,6 @@
 ﻿namespace R136.Interfaces
 {
-	public enum ItemID
+	public enum ItemID : byte
 	{
 		HoundMeat,
 		HeatSuit,

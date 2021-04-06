@@ -203,13 +203,13 @@ namespace R136.Shell
 			}
 		}
 
-		private enum BlockPosition
+		private enum BlockPosition : byte
 		{
 			Upper = 0,
 			Lower = 1
 		}
 
-		private enum Block
+		private enum Block : byte
 		{
 			Spider = 0,
 			LetterR = 1,
