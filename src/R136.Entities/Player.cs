@@ -148,7 +148,6 @@ namespace R136.Entities
 		{
 			private const int BytesBaseSize = 1;
 
-			public int ID { get; set; }
 			public int? LifePoints { get; set; }
 			public int? LifePointsFromConfig { get; set; }
 			public RoomID Room { get; set; }
@@ -163,7 +162,6 @@ namespace R136.Entities
 			public void AddBytes(List<byte> bytes)
 			{
 				Room.AddByte(bytes);
-				ID.AddBytes(bytes);
 				LifePoints.AddIntBytes(bytes);
 				LifePointsFromConfig.AddIntBytes(bytes);
 				Inventory.AddEnumsBytes(bytes);
@@ -180,9 +178,6 @@ namespace R136.Entities
 
 				int totalBytesRead = BytesBaseSize;
 				bool abort = false;
-
-				ID = bytes.ToInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
-				if (abort) return null;
 
 				LifePoints = bytes.ToNullableInt().ProcessIntermediateResult(ref bytes, ref totalBytesRead, ref abort);
 				if (abort) return null;

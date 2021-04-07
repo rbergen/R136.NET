@@ -103,29 +103,18 @@ namespace R136.Entities.CommandProcessors
 
 		public class Snapshot : ISnapshot
 		{
-			public int ID { get; set; }
 			public int PaperRouteIndex { get; set; }
 
 			public void AddBytes(List<byte> bytes)
-			{
-				ID.AddBytes(bytes);
-				PaperRouteIndex.AddBytes(bytes);
-			}
+				=> PaperRouteIndex.AddBytes(bytes);
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 			{
 				int? bytesRead;
-				int totalBytesRead = 0;
-
-				(ID, bytesRead) = bytes.ToInt();
-				if (bytesRead == null) return null;
-
-				bytes = bytes[bytesRead.Value..];
-				totalBytesRead += bytesRead.Value;
 
 				(PaperRouteIndex, bytesRead) = bytes.ToInt();
 
-				return bytesRead != null ? totalBytesRead + bytesRead.Value : null;
+				return bytesRead;
 			}
 		}
 
