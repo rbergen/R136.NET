@@ -23,10 +23,6 @@
 		public const string GameStatusCopyHoverText = nameof(GameStatusCopyHoverText);
 		public const string GameStatusLinkHoverText = nameof(GameStatusLinkHoverText);
 
-		public const string R136EngineBytesKey = "R136EngineBytes";
-		public const string ContinuationStatusBytesKey = "ContinuationStatusBytes";
-		public const string InputSpecsBytesKey = "InputSpecsBytes";
-
 		public const string R136EngineStorageKey = "R136EngineSnapshot";
 		public const string ContentLogStorageKey = "ContentLogSnapshot";
 		public const string ContinuationStatusStorageKey = "ContinuationStatusSnapshot";

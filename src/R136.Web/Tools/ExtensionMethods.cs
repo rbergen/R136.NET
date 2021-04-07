@@ -67,7 +67,7 @@ namespace R136.Web.Tools
 		}
 
 		public static async Task<bool> ContainsSavedGame(this ILocalStorageService storageService)
-			=> await storageService.ContainKeyAsync(Constants.R136EngineBytesKey) || await storageService.ContainKeyAsync(Constants.R136EngineStorageKey);
+			=> await storageService.ContainKeyAsync(Constants.R136EngineStorageKey);
 	}
 }
 

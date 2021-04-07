@@ -35,24 +35,7 @@ namespace R136.Shell.Tools
 
 		public static Status? Load(IServiceProvider? services)
 		{
-			Status? result = new();
-
-			try
-			{
-				if (result.LoadBytes(File.ReadAllBytes(GetFilename(services))) == null)
-					result = null;
-			}
-			catch (Exception e)
-			{
-				GetLogger(services)?.LogDebug($"Error while loading file as bytes: {e}");
-				result = null;
-			}
-
-			if (result?.IsLoaded ?? false)
-			{
-				result._services = services;
-				return result;
-			}
+			Status? result = null;
 
 			try
 			{
@@ -87,12 +70,9 @@ namespace R136.Shell.Tools
 
 		public void Save()
 		{
-			List<byte> bytes = new();
-			AddBytes(bytes);
-
 			try
 			{
-				File.WriteAllBytes(GetFilename(_services), bytes.ToArray());
+				File.WriteAllText(GetFilename(_services), JsonSerializer.Serialize(this), Encoding.UTF8);
 			}
 			catch (Exception e)
 			{
