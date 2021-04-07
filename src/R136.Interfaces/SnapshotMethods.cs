@@ -61,7 +61,7 @@ namespace R136.Interfaces
 		public static void AddIntBytes(this int? value, List<byte> bytes)
 		{
 			if (value.AddPresenceByte(bytes))
-				bytes.AddRange(BitConverter.GetBytes(value!.Value));
+				value!.Value.AddBytes(bytes);
 		}
 
 		public static (int? value, int? bytesRead) ToNullableInt(this ReadOnlyMemory<byte> bytes)
