@@ -16,6 +16,8 @@
 		public const string CloseText = nameof(CloseText);
 		public const string Languages = nameof(Languages);
 		public const string DefaultLanguage = nameof(DefaultLanguage);
+		public const string SwitchToEnglishText = nameof(SwitchToEnglishText);
+		public const string SwitchToDutchText = nameof(SwitchToDutchText);
 		public const string LanguageSwitchText = nameof(LanguageSwitchText);
 		public const string InvalidGameStatusError = nameof(InvalidGameStatusError);
 		public const string GameStatusCopyHoverText = nameof(GameStatusCopyHoverText);

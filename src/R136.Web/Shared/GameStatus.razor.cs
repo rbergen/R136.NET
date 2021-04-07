@@ -63,17 +63,29 @@ namespace R136.Web.Shared
 		private bool _visible = false;
 		private Tab? _displayedTab = null;
 
-		private void CopyTabClicked(MouseEventArgs e)
-			=> _selectedTab = Tab.Copy;
+		private async Task CopyTabClicked(MouseEventArgs e)
+		{
+			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
+			_selectedTab = Tab.Copy;
+		}
 
-		private void PasteTabClicked(MouseEventArgs e)
-			=> _selectedTab = Tab.Paste;
+		private async Task PasteTabClicked(MouseEventArgs e)
+		{
+			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
+			_selectedTab = Tab.Paste;
+		}
 
 		private async Task CopyClicked(MouseEventArgs e)
-			=> await JSRuntime.InvokeVoidAsync("R136JS.setClipboard", StatusText);
+		{
+			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
+			await JSRuntime.InvokeVoidAsync("R136JS.setClipboard", StatusText);
+		}
 
 		private async Task LinkClicked(MouseEventArgs e)
-			=> await JSRuntime.InvokeVoidAsync("R136JS.setClipboard", $"{NavigationManager.BaseUri}play/{HttpUtility.UrlEncode(StatusText)}");
+		{
+			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
+			await JSRuntime.InvokeVoidAsync("R136JS.setClipboard", $"{NavigationManager.BaseUri}play/{HttpUtility.UrlEncode(StatusText)}");
+		}
 
 		private async Task SubmitInput(EventArgs e)
 		{
@@ -81,14 +93,22 @@ namespace R136.Web.Shared
 
 			_selectedTab = Tab.Copy;
 			_enteredText = string.Empty;
+
+			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
 			Visible = false;
 
 			if (TextSubmitted.HasDelegate)
 				await TextSubmitted.InvokeAsync(text);
 		}
 
-		private void CancelClicked(MouseEventArgs e)
-			=> Visible = false;
+		private async Task CancelClicked(MouseEventArgs e)
+		{
+			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
+			Visible = false;
+		}
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+			=> await JSRuntime.InvokeVoidAsync("R136JS.enableTooltips");
 
 		public enum Tab
 		{

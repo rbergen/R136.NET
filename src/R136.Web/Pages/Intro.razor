@@ -5,7 +5,6 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject ILanguageProvider LanguageProvider
 
-
 <GameStatus ShowTab="GameStatus.Tab.Paste" TextSubmitted="StatusTextSubmitted" @bind-Visible="_showGameStatusModal" />
 
 <PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="@((e) => _showGameStatusModal = true)" />

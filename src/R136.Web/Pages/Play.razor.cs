@@ -115,7 +115,7 @@ namespace R136.Web.Pages
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
-			await JSRuntime.InvokeAsync<bool>("R136JS.stretchToHeight", "contentlog", "app");
+			await JSRuntime.InvokeVoidAsync("R136JS.enableTooltips");
 
 			try
 			{

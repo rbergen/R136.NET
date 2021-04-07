@@ -42,8 +42,8 @@
 								<textarea class="form-control" style="height: 200px" readonly>@StatusText</textarea><br />
 							</div>
 							<div class="col-md-auto ms-0 ps-0">
-								<div class="row"><div class="col"><i class="far fa-copy link-secondary text-decoration-none" role="button" @onclick="CopyClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusCopyHoverText)"></i></div></div>
-								<div class="row"><div class="col"><i class="fas fa-link link-secondary text-decoration-none" role="button" @onclick="LinkClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusLinkHoverText)"></i></div></div>
+								<div class="row"><div class="col"><i class="far fa-copy link-secondary text-decoration-none" role="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="left" @onclick="CopyClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusCopyHoverText)"></i></div></div>
+								<div class="row"><div class="col"><i class="fas fa-link link-secondary text-decoration-none" role="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="left" @onclick="LinkClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusLinkHoverText)"></i></div></div>
 							</div>
 						</div>
 					</div>

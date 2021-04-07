@@ -27,6 +27,17 @@ R136JS.setClipboard = function(text) {
   navigator.clipboard.writeText(text);
 }
 
+R136JS.enableTooltips = function () {
+  R136JS.tooltipList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]')).map((element) => new bootstrap.Tooltip(element));
+}
+
+R136JS.closeTooltips = function () {
+  if (!R136JS.tooltipList)
+    return;
+
+  R136JS.tooltipList.map((tooltip) => tooltip.hide());
+}
+
 R136JS.blinkTexts = [];
 R136JS.blinkCount = 0;
 
@@ -56,4 +67,3 @@ R136JS.blinkText = function() {
 
 if (R136JS.blinkInit())
   R136JS.blinkText();
-
