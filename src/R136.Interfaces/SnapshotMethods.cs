@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace R136.Interfaces
 {
 	public static class SnapshotMethods
 	{
-		private const byte NullValue = 255;
-		private const int SizeHeaderLength = 5;
+		private const int SizeBlockLength = 5;
 
 		private static bool AddPresenceByte<TValue>(this TValue? value, List<byte> bytes)
 		{
@@ -34,12 +31,12 @@ namespace R136.Interfaces
 		private static Presence ReadPresenceByte(this ReadOnlyMemory<byte> bytes)
 			=> bytes.Length == 0 ? Presence.Error : bytes.Span[0].To<Presence>();
 
-		private static (Presence presence, int count, int bytesRead) ReadSizeHeader(this ReadOnlyMemory<byte> bytes)
+		private static (Presence presence, int count, int bytesRead) ReadSizeBlock(this ReadOnlyMemory<byte> bytes)
 			=> bytes.ReadPresenceByte() switch
 			{
 				Presence.Null => (Presence.Null, 0, 1),
 				Presence.Empty => (Presence.Empty, 0, 1),
-				Presence.Present => bytes.Length < SizeHeaderLength ? (Presence.Error, 0, 0) : (Presence.Present, BitConverter.ToInt32(bytes[1..SizeHeaderLength].Span), SizeHeaderLength),
+				Presence.Present => bytes.Length < SizeBlockLength ? (Presence.Error, 0, 0) : (Presence.Present, BitConverter.ToInt32(bytes[1..SizeBlockLength].Span), SizeBlockLength),
 				_ => (Presence.Error, 0, 0)
 			};
 
@@ -50,10 +47,10 @@ namespace R136.Interfaces
 			=> (TEnum)Enum.ToObject(typeof(TEnum), value);
 
 		public static void AddEnumByte<TEnum>(this TEnum? value, List<byte> bytes) where TEnum : struct, Enum
-			=> bytes.Add(value != null ? Convert.ToByte(value.Value) : NullValue);
+			=> bytes.Add(value != null ? Convert.ToByte(value.Value) : (byte)Presence.Null);
 
 		public static TEnum? ToNullable<TEnum>(this byte value) where TEnum : struct, Enum
-			=> value == NullValue ? null : To<TEnum>(value);
+			=> value == (byte)Presence.Null ? null : To<TEnum>(value);
 
 		public static void AddBytes(this int value, List<byte> bytes)
 			=> bytes.AddRange(BitConverter.GetBytes(value));
@@ -69,7 +66,7 @@ namespace R136.Interfaces
 
 		public static (int? value, int? bytesRead) ToNullableInt(this ReadOnlyMemory<byte> bytes)
 		{
-			(Presence presence, int count, int bytesRead) = bytes.ReadSizeHeader();
+			(Presence presence, int count, int bytesRead) = bytes.ReadSizeBlock();
 
 			return presence switch
 			{
@@ -98,7 +95,7 @@ namespace R136.Interfaces
 
 		public static (string? text, int? readBytes) ToText(this ReadOnlyMemory<byte> bytes)
 		{
-			(Presence presence, int count, int bytesRead) = bytes.ReadSizeHeader();
+			(Presence presence, int count, int bytesRead) = bytes.ReadSizeBlock();
 
 			switch (presence)
 			{
@@ -165,7 +162,7 @@ namespace R136.Interfaces
 
 		private static (TValue[]? array, int? bytesRead) BytesToArray<TValue>(ReadOnlyMemory<byte> bytes, Func<ReadOnlyMemory<byte>, (TValue?, int?)> converter)
 		{
-			(Presence presence, int count, int? bytesRead) = bytes.ReadSizeHeader();
+			(Presence presence, int count, int? bytesRead) = bytes.ReadSizeBlock();
 
 			switch (presence)
 			{

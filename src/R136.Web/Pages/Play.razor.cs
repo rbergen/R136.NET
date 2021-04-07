@@ -4,7 +4,6 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using R136.Core;
 using R136.Interfaces;
-using R136.Web.Shared;
 using R136.Web.Tools;
 using System;
 using System.Collections.Generic;
