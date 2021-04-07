@@ -18,7 +18,7 @@ R136JS.stretchToHeight = function(from, to) {
   if (fromElement == null || toElement == null)
     return false;
 
-  toElement.height(fromElement.height());
+  toElement.height(fromElement.outerHeight());
 
   return true;
 }
