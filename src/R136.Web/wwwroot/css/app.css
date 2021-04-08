@@ -3,13 +3,13 @@
   height: 100%;
 }
 
-.floppy-icon {
+.modest-link {
   color: grey;
 }
 
-.floppy-icon:hover {
-  color: whitesmoke;
-}
+  .modest-link:hover {
+    color: whitesmoke;
+  }
 
 .content {
     padding-top: 1.1rem;

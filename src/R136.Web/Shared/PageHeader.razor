@@ -11,26 +11,28 @@
 					<h1><strong>@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.HeaderText))</strong></h1>
 				</div>
 				<div class="col-2 text-end">
-					@if (LanguageProvider.Language == Constants.Dutch)
-					{
-						<strong class="text-light">nl</strong>
-					}
-					else
-					{
-						<a class="text-decoration-none link-light" role="button" @onclick="DutchClicked" title="@Configuration[Constants.SwitchToDutchText]">nl</a>
-					}
-					<span class="text-white">&nbsp;&vert;&nbsp;</span>
-					@if (LanguageProvider.Language == Constants.English)
-					{
-						<strong class="text-light">en</strong>
-					}
-					else
-					{
-						<a class="text-decoration-none link-light" role="button" @onclick="EnglishClicked" title="@Configuration[Constants.SwitchToEnglishText]">en</a>
-					}
+					<span class="modest-link">
+						@if (LanguageProvider.Language == Constants.Dutch)
+						{
+							<strong>nl</strong>
+						}
+						else
+						{
+							<span role="button" @onclick="DutchClicked" title="@Configuration[Constants.SwitchToDutchText]">nl</span>
+						}
+						&vert;
+						@if (LanguageProvider.Language == Constants.English)
+						{
+							<strong>en</strong>
+						}
+						else
+						{
+							<span role="button" @onclick="EnglishClicked" title="@Configuration[Constants.SwitchToEnglishText]">en</span>
+						}
+					</span>
 					@if (ShowStatusIcon)
 					{
-						<i class="far fa-save ms-3 floppy-icon" role="button" @onclick="FloppyClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusHeaderText)"></i>
+						<i class="far fa-save ms-3 modest-link" role="button" @onclick="FloppyClicked" title="@LanguageProvider.GetConfigurationValue(Constants.GameStatusHeaderText)"></i>
 					}
 					else
 					{
