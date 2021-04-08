@@ -33,7 +33,7 @@
 				<div class="col">
 					<div class="input-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text">&gt;</span>
+							<span class="input-group-text" style="cursor: default;">&gt;</span>
 						</div>
 						<input @ref="_focusElement" type="text" maxlength="@(_inputSpecs?.MaxLength ?? 100)" style="text-transform: @((_inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)" />
 					</div>

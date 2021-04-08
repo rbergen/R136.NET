@@ -16,13 +16,27 @@
 					@if (_displayedTab == null || _displayedTab == Tab.Copy)
 					{
 						<li class="nav-item">
-							<a class="nav-link @(_selectedTab == Tab.Copy ? "active" : string.Empty)" role="@(_selectedTab != Tab.Copy ? "button" : "none")" @onclick="CopyTabClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CopyText))</a>
+							@if (_selectedTab == Tab.Copy)
+							{
+								<span class="nav-link active" style="cursor: default;">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CopyText))</span>
+							}
+							else
+							{
+								<a class="nav-link" role="button" @onclick="CopyTabClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CopyText))</a>
+							}
 						</li>
 					}
 					@if (_displayedTab == null || _displayedTab == Tab.Paste)
 					{
 						<li class="nav-item">
-							<a class="nav-link @(_selectedTab == Tab.Paste ? "active" : string.Empty)" role="@(_selectedTab != Tab.Paste ? "button" : "none")" @onclick="PasteTabClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.PasteText))</a>
+							@if (_selectedTab == Tab.Paste)
+							{
+								<span class="nav-link active" style="cursor: default;">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.PasteText))</span>
+							}
+							else
+							{
+								<a class="nav-link" role="button" @onclick="PasteTabClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.PasteText))</a>
+							}
 						</li>
 					}
 				</ul>

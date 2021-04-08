@@ -5,6 +5,7 @@
 
 .modest-link {
   color: grey;
+  cursor: default;
 }
 
   .modest-link:hover {
