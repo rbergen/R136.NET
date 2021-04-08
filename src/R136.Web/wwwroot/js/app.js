@@ -11,16 +11,19 @@ R136JS.scrollToElementId = function(elementId) {
   return true;
 }
 
-R136JS.stretchToHeight = function(from, to) {
-  var fromElement = $("#" + from);
-  var toElement = $("#" + to);
+R136JS.adoptVerticalPadding = function (targetId, headerId, footerId) {
+  var target = document.getElementById(targetId);
+  var header = document.getElementById(headerId);
+  var footer = document.getElementById(footerId);
 
-  if (fromElement == null || toElement == null)
-    return false;
+  if (!target)
+    return;
 
-  toElement.height(fromElement.outerHeight());
+  if (header)
+    target.style.paddingTop = header.offsetHeight + "px";
 
-  return true;
+  if (footer)
+    target.style.paddingBottom = footer.offsetHeight + "px";
 }
 
 R136JS.setClipboard = function(text) {

@@ -4,12 +4,13 @@
 @inject IConfiguration Configuration
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject ILanguageProvider LanguageProvider
+@inject IJSRuntime JSRuntime 
 
 <GameStatus ShowTab="GameStatus.Tab.Paste" TextSubmitted="StatusTextSubmitted" @bind-Visible="_showGameStatusModal" />
 
-<PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="@((e) => _showGameStatusModal = true)" />
+<PageHeader ID="top-bar" LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="@((e) => _showGameStatusModal = true)" />
 
-<div class="row bg-dark" style="padding-bottom: 50px">
+<div id="content-block" class="row bg-dark">
 	<div class="col text-light">
 		@if (LanguageProvider.Language == Constants.Dutch)
 		{
@@ -86,7 +87,7 @@
 	</div>
 </div>
 <div class="footer fixed-bottom">
-	<ProceedButtonBar OnProceedClicked="@((e) => NavigationManager.NavigateTo("/play"))" />
+	<ProceedButtonBar ID="bottom-bar" OnProceedClicked="@((e) => NavigationManager.NavigateTo("/play"))" />
 </div>
 
 @code
@@ -98,6 +99,13 @@
 
 	private void StatusTextSubmitted(string text)
 		=> NavigationManager.NavigateTo($"/play/{HttpUtility.UrlEncode(text)}");
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+			await JSRuntime.InvokeVoidAsync("R136JS.adoptVerticalPadding", "content-block", "top-bar", "bottom-bar");
+	}
+
 
 	protected override async Task OnInitializedAsync()
 	{

@@ -32,6 +32,9 @@
 	public EventCallback OnProceedClicked { get; set; }
 
 	[Parameter]
+	public string ID { get; set; } = string.Empty;
+
+	[Parameter]
 	public MarkupString? ButtonLabel { get; set; } = null;
 
 	protected async Task ReportProceedClick(MouseEventArgs e)

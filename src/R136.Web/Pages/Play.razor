@@ -4,9 +4,9 @@
 
 <GameStatus StatusText="@_statusText" TextSubmitted="StatusTextSubmitted" @bind-Visible="_showGameStatusModal"/>
 
-<PageHeader LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="ShowGameStatus" />
+<PageHeader ID="top-bar" LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="ShowGameStatus" />
 
-<div id="contentlog" class="row bg-dark" style="padding-bottom: 55px">
+<div id="content-block" class="row bg-dark" style="padding-top: 67px; padding-bottom: 55px">
 	<div class="col">
 		<ShowContentLog ContentLog="ContentLog" BlockIDStart="@("content-block-id")" />
 	</div>
@@ -16,11 +16,11 @@
 
 	@if (_isPaused)
 	{
-	<ProceedButtonBar OnProceedClicked="ProceedClickedAsync" />
+	<ProceedButtonBar ID="bottom-bar" OnProceedClicked="ProceedClickedAsync" />
 	}
 	else @if (_hasEnded)
 	{
-	<ProceedButtonBar OnProceedClicked="RestartClickedAsync" ButtonLabel="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel))" />
+	<ProceedButtonBar ID="bottom-bar" OnProceedClicked="RestartClickedAsync" ButtonLabel="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel))" />
 	}
 	else
 	{
@@ -28,7 +28,7 @@
 			@(_error ?? (MarkupString)"&nbsp")
 			<button type="button" class="btn-close" @onclick="@(() => _error = null)"></button>
 		</div>
-		<form class="container bg-dark border-top border-danger" @onsubmit="@SubmitInput">
+		<form id="bottom-bar" class="container bg-dark border-top border-danger" @onsubmit="@SubmitInput">
 			<div class="row pt-2 pb-2 gx-2">
 				<div class="col">
 					<div class="input-group">
