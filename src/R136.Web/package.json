@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "name": "r136.net",
+  "private": true,
+  "devDependencies": {
+    "@types/jquery": "3.5.5",
+    "@types/bootstrap": "5.0.12"
+  }
+}
