@@ -18,9 +18,10 @@ and by extension, [WebAssembly](https://webassembly.org/) in general.
 * .NET [configuration](https://docs.microsoft.com/en-us/dotnet/core/extensions/configuration-providers) 
 and [logging](https://docs.microsoft.com/en-us/dotnet/core/extensions/logging) extensions in both the web and console contexts.
 * [Serilog](https://serilog.net/)
-* [ASP.NET dependency injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0).
-* [Bootstrap 5.0](https://getbootstrap.com/docs/5.0/getting-started/introduction/).
+* [ASP.NET dependency injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0)
+* [Bootstrap 5.0](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
 * Browser local storage, via [Blazored LocalStorage](https://github.com/Blazored/LocalStorage).
+* [TypeScript](https://www.typescriptlang.org/)
 
 Concerning the the game itself:
 * It has been converted from a purely C-like procedural implementation to an object-oriented one.
@@ -28,11 +29,11 @@ Concerning the the game itself:
 * It now runs in English as well as Dutch, and features on-the-spot switching between those two languages.
 
 ## Building
-On any system that has a .NET 5.0 SDK installed, R136.NET can be built using Visual Studio 2019, the dotnet command line interface or another tool that uses the latter.
+On any system that has a .NET 5.0 SDK and node.js (npm) installed, R136.NET can be built using Visual Studio 2019, the dotnet command line interface or another tool that uses the latter.
 
 The Shell and Web projects have an optional build-time dependency on the BuildTool project; the latter takes care of processing the base .json files in the data directory structure to their production counterparts. The dependency is optional in the sense that the JSON processing is simply skipped if the BuildTool executable is not found when building the dependent projects.
 
-In case of Visual Studio 2019, this dependency is taken care of in the solution file. When building individual projects using the command-line, the BuildTool should be built first if JSON processing is desired. This can be done by running the following command from the src subdirectory before building a dependent project:
+When building the solution, this dependency is taken care of automatically. When building individual projects using the command-line, the BuildTool should be built first if JSON processing is desired. This can be done by running the following command from the src subdirectory before building a dependent project:
 
 ```
 $ dotnet build R136.BuildTool/R136.BuildTool.csproj
