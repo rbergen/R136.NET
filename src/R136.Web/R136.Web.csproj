@@ -81,16 +81,16 @@
     <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
   </ItemGroup>
 
-	<Target Name="NPM_Install" BeforeTargets="Build">
-		<Exec Command="npm install" />
-	</Target>
-
 	<Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
 		<Exec Command="call ..\buildtool.bat --nowait" />
 	</Target>
 
 	<Target Name="JSONConversion_Other" AfterTargets="Build" Condition=" '$(OS)' != 'Windows_NT' ">
 		<Exec Command="/bin/bash ../buildtool.sh --nowait" />
+	</Target>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="npm install" />
 	</Target>
 
 </Project>
