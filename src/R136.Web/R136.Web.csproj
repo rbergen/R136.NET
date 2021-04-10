@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
+		<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 	</PropertyGroup>
 
   <ItemGroup>
@@ -80,6 +80,10 @@
     <ProjectReference Include="..\R136.Core\R136.Core.csproj" />
     <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
   </ItemGroup>
+
+	<Target Name="NPM_Install" BeforeTargets="Build">
+		<Exec Command="npm install" />
+	</Target>
 
 	<Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
 		<Exec Command="call ..\buildtool.bat --nowait" />
