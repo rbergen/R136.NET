@@ -19,9 +19,6 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: R136.Web npm install 
-      run: npm install
-      working-directory: src/R136.Web
     - name: Build
       run: dotnet build --no-restore
     - name: Test
