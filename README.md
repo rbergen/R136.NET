@@ -18,8 +18,8 @@ and by extension, [WebAssembly](https://webassembly.org/) in general.
 * .NET [configuration](https://docs.microsoft.com/en-us/dotnet/core/extensions/configuration-providers) 
 and [logging](https://docs.microsoft.com/en-us/dotnet/core/extensions/logging) extensions in both the web and console contexts.
 * [Serilog](https://serilog.net/)
-* [ASP.NET dependency injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0).
-* [Bootstrap 5.0](https://getbootstrap.com/docs/5.0/getting-started/introduction/).
+* [ASP.NET dependency injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0)
+* [Bootstrap 5.0](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
 * Browser local storage, via [Blazored LocalStorage](https://github.com/Blazored/LocalStorage).
 * [TypeScript](https://www.typescriptlang.org/)
 
