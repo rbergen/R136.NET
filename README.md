@@ -23,7 +23,7 @@ and [logging](https://docs.microsoft.com/en-us/dotnet/core/extensions/logging) e
 * Browser local storage, via [Blazored LocalStorage](https://github.com/Blazored/LocalStorage).
 * [TypeScript](https://www.typescriptlang.org/)
 
-Concerning the the game itself:
+Concerning the game itself:
 * It has been converted from a purely C-like procedural implementation to an object-oriented one.
 * Much of it (including all visible texts) can now be configured through JSON files. 
 * It now runs in English as well as Dutch, and features on-the-spot switching between those two languages.
