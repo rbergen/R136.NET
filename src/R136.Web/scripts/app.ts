@@ -47,15 +47,14 @@
     blinkCount: number;
 
     blinkInit(): boolean {
-      if ($("#blinkTextMessage")) {
-        $(".blinkTextContent").each((_index, element) => {
-          this.blinkTexts.push($(element).text());
-        });
+      if (!$("#blinkTextMessage"))
+        return false;
 
-        return true;
-      }
+      $(".blinkTextContent").each((_index, element) => {
+        this.blinkTexts.push($(element).text());
+      });
 
-      return false;
+      return this.blinkTexts.length > 0;
     }
 
     blinkText(): void {
