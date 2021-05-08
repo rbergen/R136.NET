@@ -228,20 +228,20 @@ namespace R136.Entities
 
 		public class TextsInitializer : KeyedTextsMap<ItemID, TextType>.IInitializer
 		{
-			private readonly Initializer _initializer;
-			private readonly TextType _textType;
+			private readonly Initializer initializer;
+			private readonly TextType textType;
 
 			public TextsInitializer(TextType textType, Initializer initializer)
-				=> (_textType, _initializer) = (textType, initializer);
+				=> (this.textType, this.initializer) = (textType, initializer);
 
 			public TextType ID
-				=> _textType;
+				=> this.textType;
 
 			public string[]? Texts
-				=> _textType switch
+				=> this.textType switch
 				{
-					TextType.Combine => _initializer.CombineTexts,
-					TextType.Use => _initializer.UseTexts,
+					TextType.Combine => this.initializer.CombineTexts,
+					TextType.Use => this.initializer.UseTexts,
 					_ => null
 				};
 		}

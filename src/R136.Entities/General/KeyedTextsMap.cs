@@ -9,13 +9,13 @@ namespace R136.Entities.General
 		where TDictKey : notnull
 		where TTextKey : struct
 	{
-		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> _map = new();
+		private readonly Dictionary<TDictKey, IDictionary<TTextKey, StringValues>> map = new();
 
 		public IDictionary<TTextKey, StringValues>? this[TDictKey key]
 		{
 			get
 			{
-				_map.TryGetValue(key, out var textMap);
+				this.map.TryGetValue(key, out var textMap);
 
 				return textMap;
 			}
@@ -24,7 +24,7 @@ namespace R136.Entities.General
 				if (value == null)
 					throw new ArgumentNullException(nameof(value));
 
-				_map[key] = value;
+				this.map[key] = value;
 			}
 		}
 
@@ -67,10 +67,10 @@ namespace R136.Entities.General
 			=> this[key, initializer.ID] = initializer.Texts;
 
 		protected void Clear()
-			=> _map.Clear();
+			=> this.map.Clear();
 
-		public int TextsMapCount => _map.Count;
-		public int TextValueCount => _map.Aggregate(0, (count, pair) => count += pair.Value.Count, total => total);
+		public int TextsMapCount => this.map.Count;
+		public int TextValueCount => this.map.Aggregate(0, (count, pair) => count += pair.Value.Count, total => total);
 
 		public interface IInitializer
 		{

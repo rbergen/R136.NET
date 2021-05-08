@@ -9,6 +9,13 @@ namespace R136.Web.Shared
 {
 	public partial class GameStatus
 	{
+#pragma warning disable IDE0044 // Add readonly modifier
+		private string enteredText = string.Empty;
+#pragma warning restore IDE0044 // Add readonly modifier
+		private Tab selectedTab = Tab.Copy;
+		private bool visible = false;
+		private Tab? displayedTab = null;
+
 		[Inject]
 		public IJSRuntime JSRuntime { get; set; }
 
@@ -24,16 +31,16 @@ namespace R136.Web.Shared
 		[Parameter]
 		public bool Visible
 		{
-			get => _visible;
+			get => this.visible;
 			set
 			{
-				if (_visible == value)
+				if (this.visible == value)
 					return;
 
-				_visible = value;
+				this.visible = value;
 
 				if (VisibleChanged.HasDelegate)
-					VisibleChanged.InvokeAsync(_visible);
+					VisibleChanged.InvokeAsync(this.visible);
 			}
 		}
 
@@ -43,36 +50,29 @@ namespace R136.Web.Shared
 		[Parameter]
 		public Tab? ShowTab
 		{
-			get => _displayedTab;
+			get => this.displayedTab;
 			set
 			{
-				if (_displayedTab == value)
+				if (this.displayedTab == value)
 					return;
 
-				_displayedTab = value;
+				this.displayedTab = value;
 				
-				if (_displayedTab.HasValue)
-					_selectedTab = _displayedTab.Value;
+				if (this.displayedTab.HasValue)
+					this.selectedTab = this.displayedTab.Value;
 			}
 		}
-
-#pragma warning disable IDE0044 // Add readonly modifier
-		private string _enteredText = string.Empty;
-#pragma warning restore IDE0044 // Add readonly modifier
-		private Tab _selectedTab = Tab.Copy;
-		private bool _visible = false;
-		private Tab? _displayedTab = null;
 
 		private async Task CopyTabClicked(MouseEventArgs e)
 		{
 			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
-			_selectedTab = Tab.Copy;
+			this.selectedTab = Tab.Copy;
 		}
 
 		private async Task PasteTabClicked(MouseEventArgs e)
 		{
 			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
-			_selectedTab = Tab.Paste;
+			this.selectedTab = Tab.Paste;
 		}
 
 		private async Task CopyClicked(MouseEventArgs e)
@@ -89,10 +89,10 @@ namespace R136.Web.Shared
 
 		private async Task SubmitInput(EventArgs e)
 		{
-			string text = _enteredText;
+			string text = this.enteredText;
 
-			_selectedTab = Tab.Copy;
-			_enteredText = string.Empty;
+			this.selectedTab = Tab.Copy;
+			this.enteredText = string.Empty;
 
 			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
 			Visible = false;

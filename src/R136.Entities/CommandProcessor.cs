@@ -51,11 +51,11 @@ namespace R136.Entities
 
 	public class CommandProcessorMap : IGameServiceProvider, IGameServiceBasedConfigurator
 	{
-		private readonly Dictionary<(string command, bool fullMatch), CommandID> _commandIdMap;
-		private readonly ItemCommandProcessor _itemProcessor;
+		private readonly Dictionary<(string command, bool fullMatch), CommandID> commandIdMap;
+		private readonly ItemCommandProcessor itemProcessor;
 		public LocationCommandProcessor LocationProcessor { get; private set; }
-		private readonly GeneralCommandProcessor _generalProcessor;
-		private readonly InternalCommandProcessor _internalProcessor;
+		private readonly GeneralCommandProcessor generalProcessor;
+		private readonly InternalCommandProcessor internalProcessor;
 
 		public CommandProcessorMap
 			(
@@ -64,14 +64,14 @@ namespace R136.Entities
 				IReadOnlyDictionary<AnimateID, Animate> animates
 			)
 		{
-			_commandIdMap = new Dictionary<(string, bool), CommandID>();
-			_itemProcessor = new ItemCommandProcessor(items, animates);
+			this.commandIdMap = new Dictionary<(string, bool), CommandID>();
+			this.itemProcessor = new ItemCommandProcessor(items, animates);
 			LocationProcessor = new LocationCommandProcessor();
-			_generalProcessor = new GeneralCommandProcessor();
-			_internalProcessor = new InternalCommandProcessor();
+			this.generalProcessor = new GeneralCommandProcessor();
+			this.internalProcessor = new InternalCommandProcessor();
 
 			foreach (var initializer in initializers)
-				_commandIdMap[(initializer.Name, initializer.FullMatch)] = initializer.ID;
+				this.commandIdMap[(initializer.Name, initializer.FullMatch)] = initializer.ID;
 		}
 
 
@@ -84,30 +84,30 @@ namespace R136.Entities
 				CommandID.GoSouth => LocationProcessor,
 				CommandID.GoUp => LocationProcessor,
 				CommandID.GoDown => LocationProcessor,
-				CommandID.Use => _itemProcessor,
-				CommandID.Combine => _itemProcessor,
-				CommandID.Pickup => _itemProcessor,
-				CommandID.PutDown => _itemProcessor,
-				CommandID.Inspect => _itemProcessor,
-				CommandID.ConfigGet => _internalProcessor,
-				CommandID.ConfigSet => _internalProcessor,
-				CommandID.ConfigList => _internalProcessor,
-				_ => _generalProcessor
+				CommandID.Use => this.itemProcessor,
+				CommandID.Combine => this.itemProcessor,
+				CommandID.Pickup => this.itemProcessor,
+				CommandID.PutDown => this.itemProcessor,
+				CommandID.Inspect => this.itemProcessor,
+				CommandID.ConfigGet => this.internalProcessor,
+				CommandID.ConfigSet => this.internalProcessor,
+				CommandID.ConfigList => this.internalProcessor,
+				_ => this.generalProcessor
 			};
 
 		public CommandProcessor? this[CommandProcessorID id]
 			=> id switch
 			{
-				CommandProcessorID.General => _generalProcessor,
-				CommandProcessorID.Internal => _internalProcessor,
-				CommandProcessorID.Item => _itemProcessor,
+				CommandProcessorID.General => this.generalProcessor,
+				CommandProcessorID.Internal => this.internalProcessor,
+				CommandProcessorID.Item => this.itemProcessor,
 				CommandProcessorID.Location => LocationProcessor,
 				_ => null
 			};
 
 		public (CommandProcessor? processor, CommandID? id, string? command, FindResult result) FindByName(string s)
 		{
-			var foundItems = _commandIdMap.Where(pair => pair.Key.fullMatch ? pair.Key.command == s : pair.Key.command.StartsWith(s)).ToArray();
+			var foundItems = this.commandIdMap.Where(pair => pair.Key.fullMatch ? pair.Key.command == s : pair.Key.command.StartsWith(s)).ToArray();
 
 			FindResult result = foundItems.Length switch
 			{

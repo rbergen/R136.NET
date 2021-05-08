@@ -71,7 +71,7 @@ namespace R136.BuildTool
 			try
 			{
 				string jsonString = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-				var entity = JsonSerializer.Deserialize<T>(jsonString, _entityDeserializerOptions);
+				var entity = JsonSerializer.Deserialize<T>(jsonString, entityDeserializerOptions);
 
 				return (entity, jsonFilePath);
 			}

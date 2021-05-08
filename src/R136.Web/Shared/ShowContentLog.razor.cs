@@ -8,7 +8,7 @@ namespace R136.Web.Shared
 	public partial class ShowContentLog
 	{
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0044:Add readonly modifier", Justification = "Set in .razor file")]
-		private string _blockID = null;
+		private string blockID = null;
 
 		[Inject]
 		public IJSRuntime JSRuntime { get; set; }
@@ -21,10 +21,10 @@ namespace R136.Web.Shared
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
-			if (_blockID == null)
+			if (this.blockID == null)
 				return;
 
-			await JSRuntime.InvokeAsync<bool>("R136JS.scrollToElementId", _blockID);
+			await JSRuntime.InvokeAsync<bool>("R136JS.scrollToElementId", this.blockID);
 		}
 	}
 }

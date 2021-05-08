@@ -6,7 +6,7 @@ namespace R136.Shell.Tools
 {
 	public class LanguageProvider : ILanguageProvider
 	{
-		private string? _language = null;
+		private string? language = null;
 
 		public IServiceProvider? Services { private get; set; }
 
@@ -14,15 +14,15 @@ namespace R136.Shell.Tools
 		{
 			get
 			{
-				if (_language == null && Services != null)
-					_language = Services.GetService<Status>()?.Language ?? Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
+				if (this.language == null && Services != null)
+					this.language = Services.GetService<Status>()?.Language ?? Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
 
-				return _language ?? Constants.Dutch;
+				return this.language ?? Constants.Dutch;
 			}
 
 			set
 			{
-				if (_language != value && Services != null)
+				if (this.language != value && Services != null)
 				{
 					if (!Services.GetRequiredService<IConfiguration>().GetSection(Constants.Languages).GetSection(value).Exists())
 						return;
@@ -32,7 +32,7 @@ namespace R136.Shell.Tools
 						status.Language = value;
 				}
 
-				_language = value;
+				this.language = value;
 			}
 		}
 

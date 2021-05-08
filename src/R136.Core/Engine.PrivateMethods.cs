@@ -41,7 +41,7 @@ namespace R136.Core
 
 			try
 			{
-				var entityMap = _entityTaskMap[label];
+				var entityMap = this.entityTaskMap[label];
 				if (entityMap == null)
 					return false;
 
@@ -58,35 +58,35 @@ namespace R136.Core
 				if (rooms == null)
 					return false;
 
-				_rooms = Room.CreateMap(rooms);
+				this.rooms = Room.CreateMap(rooms);
 
 				var animates = await entityMap.Get<Animate.Initializer[]>();
 				if (animates == null)
 					return false;
 
-				_animates = Animate.UpdateOrCreateMap(_animates, animates);
+				this.animates = Animate.UpdateOrCreateMap(this.animates, animates);
 
 				var items = await entityMap.Get<Item.Initializer[]>();
 				if (items == null)
 					return false;
 
-				_items = Item.UpdateOrCreateMap(_items, items, _animates);
+				this.items = Item.UpdateOrCreateMap(this.items, items, this.animates);
 
 				var commands = await entityMap.Get<CommandInitializer[]>();
 				if (commands == null)
 					return false;
 
-				_processors = CommandProcessor.UpdateOrCreateMap(_processors, commands, _items, _animates);
+				this.processors = CommandProcessor.UpdateOrCreateMap(this.processors, commands, this.items, this.animates);
 
-				if (_player == null)
-					_player = new Player(_rooms, Facilities.Configuration.StartRoom);
+				if (this.player == null)
+					this.player = new Player(this.rooms, Facilities.Configuration.StartRoom);
 				
 				else
 				{
-					var snapshot = _player.TakeSnapshot();
-					snapshot.Items = _items;
-					snapshot.Rooms = _rooms;
-					_player.RestoreSnapshot(snapshot);
+					var snapshot = this.player.TakeSnapshot();
+					snapshot.Items = this.items;
+					snapshot.Rooms = this.rooms;
+					this.player.RestoreSnapshot(snapshot);
 				}
 
 				SetupServices();
@@ -102,21 +102,21 @@ namespace R136.Core
 
 		private void SetupServices()
 		{
-			_turnEndingNotifiees.Clear();
+			this.turnEndingNotifiees.Clear();
 
 			var serviceCollection = new ServiceCollection();
 			RegisterServices(serviceCollection);
-			RegisterServices(serviceCollection, _items!.Values.OfType<IGameServiceProvider>());
-			RegisterServices(serviceCollection, _animates!.Values.OfType<IGameServiceProvider>());
-			_processors!.RegisterServices(serviceCollection);
-			_player!.RegisterServices(serviceCollection);
+			RegisterServices(serviceCollection, this.items!.Values.OfType<IGameServiceProvider>());
+			RegisterServices(serviceCollection, this.animates!.Values.OfType<IGameServiceProvider>());
+			this.processors!.RegisterServices(serviceCollection);
+			this.player!.RegisterServices(serviceCollection);
 
 			var serviceProvider = serviceCollection.BuildServiceProvider();
 			Configure(serviceProvider);
-			Configure(serviceProvider, _items!.Values.OfType<IGameServiceBasedConfigurator>());
-			Configure(serviceProvider, _animates!.Values.OfType<IGameServiceBasedConfigurator>());
-			_processors!.Configure(serviceProvider);
-			_player!.Configure(serviceProvider);
+			Configure(serviceProvider, this.items!.Values.OfType<IGameServiceBasedConfigurator>());
+			Configure(serviceProvider, this.animates!.Values.OfType<IGameServiceBasedConfigurator>());
+			this.processors!.Configure(serviceProvider);
+			this.player!.Configure(serviceProvider);
 
 			EntityBase.GameServices = serviceProvider;
 		}
@@ -145,12 +145,12 @@ namespace R136.Core
 		{
 			texts.AddRangeIfNotNull(GetTexts(TextID.YouAreAt, "room", playerRoom.Name));
 
-			if (_player!.IsDark)
+			if (this.player!.IsDark)
 				texts.AddRangeIfNotNull(GetTexts(TextID.TooDarkToSee));
 
 			else
 			{
-				if (playerRoom.IsForest && _hasTreeBurned)
+				if (playerRoom.IsForest && this.hasTreeBurned)
 					texts.AddRangeIfNotNull(GetTexts(TextID.BurnedForestDescription));
 
 				else if (playerRoom.Description != null)
@@ -160,7 +160,7 @@ namespace R136.Core
 
 		private string? GetItemLine(Room room)
 		{
-			var items = _items!.Values.Where(item => item.CurrentRoom == room.ID).ToArray();
+			var items = this.items!.Values.Where(item => item.CurrentRoom == room.ID).ToArray();
 
 			if (items.Length == 0)
 				return null;
@@ -261,7 +261,7 @@ namespace R136.Core
 
 			texts.AddRangeIfNotNull(result.Message);
 
-			foreach (var notifiee in _turnEndingNotifiees)
+			foreach (var notifiee in this.turnEndingNotifiees)
 			{
 				var notifieeTexts = notifiee.Invoke();
 				if (notifieeTexts.Count > 0)
@@ -274,13 +274,13 @@ namespace R136.Core
 		}
 
 		private bool IsInCurrentRoom(Animate animate)
-			=> animate.CurrentRoom == _player!.CurrentRoom.ID;
+			=> animate.CurrentRoom == this.player!.CurrentRoom.ID;
 
 		private bool IsAnimatePresent
-			=> _animates!.Values.Any(IsInCurrentRoom);
+			=> this.animates!.Values.Any(IsInCurrentRoom);
 
 		private ICollection<Animate> PresentAnimates
-			=> _animates!.Values.Where(IsInCurrentRoom).ToArray();
+			=> this.animates!.Values.Where(IsInCurrentRoom).ToArray();
 
 		private StringValues GetTexts(TextID id)
 			=> Facilities.TextsMap.Get(this, id);
@@ -290,26 +290,26 @@ namespace R136.Core
 
 		private void PlaceAt(ItemID item, Room room)
 		{
-			if (_items![item].CurrentRoom == RoomID.None && !_player!.IsInPosession(item))
-				_items![item].CurrentRoom = room.ID;
+			if (this.items![item].CurrentRoom == RoomID.None && !this.player!.IsInPosession(item))
+				this.items![item].CurrentRoom = room.ID;
 		}
 
 		private TSnapshot AddEntities<TSnapshot>(TSnapshot snapshot)
 		{
 			if (snapshot is IRoomsReader roomsReader)
-				roomsReader.Rooms = _rooms;
+				roomsReader.Rooms = this.rooms;
 
 			if (snapshot is IItemsReader itemsReader)
-				itemsReader.Items = _items;
+				itemsReader.Items = this.items;
 
 			return snapshot;
 		}
 
 		private void HandleBurning()
 		{
-			_hasTreeBurned = true;
+			this.hasTreeBurned = true;
 
-			PlaceAt(ItemID.GreenCrystal, _rooms![Facilities.Configuration.GreenCrystalRoom]);
+			PlaceAt(ItemID.GreenCrystal, this.rooms![Facilities.Configuration.GreenCrystalRoom]);
 		}
 	}
 }

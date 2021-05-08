@@ -11,8 +11,8 @@ namespace R136.Entities.Items
 {
 	public class Flashlight : Item, ICompound<Item>, INotifyTurnEnding, ISnappable<Flashlight.Snapshot>, ILightsource, IGameServiceProvider, IGameServiceBasedConfigurator
 	{
-		private int? _lampPoints;
-		private int? _lampPointsFromConfig;
+		private int? lampPoints;
+		private int? lampPointsFromConfig;
 
 		public bool IsOn { get; private set; }
 		public bool HasBatteries { get; private set; }
@@ -51,20 +51,20 @@ namespace R136.Entities.Items
 				IReadOnlyDictionary<ItemID, Item> items,
 				ICollection<ItemID> components
 			) : base(id, name, description, startRoom, isWearable, isPutdownAllowed)
-			=> (IsOn, HasBatteries, _lampPoints, _lampPointsFromConfig, Components)
+			=> (IsOn, HasBatteries, this.lampPoints, this.lampPointsFromConfig, Components)
 			= (false, false, null, null, components.Select(itemID => itemID == id ? this : items[itemID]).ToArray());
 
 		public int? LampPoints
 		{
 			get
 			{
-				if (_lampPointsFromConfig != Facilities.Configuration.LampPoints)
-					_lampPoints = _lampPointsFromConfig = Facilities.Configuration.LampPoints;
+				if (this.lampPointsFromConfig != Facilities.Configuration.LampPoints)
+					this.lampPoints = this.lampPointsFromConfig = Facilities.Configuration.LampPoints;
 
-				return _lampPoints!.Value;
+				return this.lampPoints!.Value;
 			}
 
-			private set => _lampPoints = value;
+			private set => this.lampPoints = value;
 		}
 
 		public Item Self => this;
@@ -127,8 +127,8 @@ namespace R136.Entities.Items
 				snapshot = new();
 
 			base.TakeSnapshot(snapshot);
-			snapshot.LampPoints = _lampPoints;
-			snapshot.LampPointsFromConfig = _lampPointsFromConfig;
+			snapshot.LampPoints = this.lampPoints;
+			snapshot.LampPointsFromConfig = this.lampPointsFromConfig;
 			snapshot.IsOn = IsOn;
 			snapshot.HasBatteries = HasBatteries;
 
@@ -140,8 +140,8 @@ namespace R136.Entities.Items
 			if (!base.RestoreSnapshot(snapshot))
 				return false;
 
-			_lampPoints = snapshot.LampPoints;
-			_lampPointsFromConfig = snapshot.LampPointsFromConfig;
+			this.lampPoints = snapshot.LampPoints;
+			this.lampPointsFromConfig = snapshot.LampPointsFromConfig;
 			IsOn = snapshot.IsOn;
 			HasBatteries = snapshot.HasBatteries;
 

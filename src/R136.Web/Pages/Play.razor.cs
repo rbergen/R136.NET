@@ -13,17 +13,17 @@ namespace R136.Web.Pages
 {
 	public partial class Play
 	{
-		private string _input = string.Empty;
-		private ContinuationStatus _continuationStatus = null;
-		private InputSpecs _inputSpecs;
-		private MarkupString? _error = null;
-		private bool _hasEnded = false;
-		private bool _isPaused = false;
-		private string _statusText = string.Empty;
-		private bool _showGameStatusModal = false;
+		private string input = string.Empty;
+		private ContinuationStatus continuationStatus = null;
+		private InputSpecs inputSpecs;
+		private MarkupString? error = null;
+		private bool hasEnded = false;
+		private bool isPaused = false;
+		private string statusText = string.Empty;
+		private bool showGameStatusModal = false;
 
 #pragma warning disable IDE0044 // Add readonly modifier
-		private ElementReference _focusElement;
+		private ElementReference focusElement;
 #pragma warning restore IDE0044 // Add readonly modifier
 
 		[Parameter]
@@ -53,28 +53,28 @@ namespace R136.Web.Pages
 		private ConciseStatus ComposeStatus()
 			=> new()
 			{
-				IsPaused = _isPaused,
+				IsPaused = this.isPaused,
 				EngineSnapshot = Engine.TakeSnapshot(),
 				MarkupContentLog = ContentLog.TakeSnapshot(),
-				ContinuationStatus = _continuationStatus,
+				ContinuationStatus = this.continuationStatus,
 				Language = LanguageProvider.Language,
-				InputSpecs = _inputSpecs
+				InputSpecs = this.inputSpecs
 			};
 
 		private async Task ApplyStatus(ConciseStatus status)
 		{
-			_isPaused = status.IsPaused;
+			this.isPaused = status.IsPaused;
 			Engine.RestoreSnapshot(status.EngineSnapshot);
 			ContentLog.RestoreSnapshot(status.MarkupContentLog);
-			_continuationStatus = status.ContinuationStatus;
+			this.continuationStatus = status.ContinuationStatus;
 			LanguageProvider.Language = status.Language;
-			_inputSpecs = status.InputSpecs;
+			this.inputSpecs = status.InputSpecs;
 
 			await SaveSnapshot(Constants.R136EngineStorageKey, status.EngineSnapshot);
 			await SaveSnapshot(Constants.ContentLogStorageKey, status.MarkupContentLog);
 			await SaveSnapshot(Constants.ContinuationStatusStorageKey, status.ContinuationStatus);
 			await SaveSnapshot(Constants.InputSpecsStorageKey, status.InputSpecs);
-			await SaveSnapshot(Constants.IsPausedStorageKey, _isPaused);
+			await SaveSnapshot(Constants.IsPausedStorageKey, this.isPaused);
 		}
 
 		private void ShowGameStatus()
@@ -82,8 +82,8 @@ namespace R136.Web.Pages
 			List<byte> bytes = new();
 			ComposeStatus().AddBytes(bytes);
 
-			_statusText = Convert.ToBase64String(bytes.ToArray());
-			_showGameStatusModal = true;
+			this.statusText = Convert.ToBase64String(bytes.ToArray());
+			this.showGameStatusModal = true;
 		}
 
 		private async Task StatusTextSubmitted(string text)
@@ -104,7 +104,7 @@ namespace R136.Web.Pages
 
 			if (bytes == null || status.LoadBytes(bytes) == null || !status.IsLoaded)
 			{
-				_error = (MarkupString)LanguageProvider.GetConfigurationValue(Constants.InvalidGameStatusError);
+				this.error = (MarkupString)LanguageProvider.GetConfigurationValue(Constants.InvalidGameStatusError);
 				return false;
 			}
 
@@ -120,7 +120,7 @@ namespace R136.Web.Pages
 
 			try
 			{
-				await _focusElement.FocusAsync();
+				await this.focusElement.FocusAsync();
 			}
 			catch { }
 		}
@@ -134,9 +134,9 @@ namespace R136.Web.Pages
 				if (await LoadSnapshot<Engine.Snapshot>(Constants.R136EngineStorageKey, Engine.RestoreSnapshot))
 				{
 					await LoadSnapshot<MarkupContentLog.Snapshot>(Constants.ContentLogStorageKey, ContentLog.RestoreSnapshot);
-					await LoadSnapshot<ContinuationStatus>(Constants.ContinuationStatusStorageKey, snapshot => { _continuationStatus = snapshot; return true; });
-					await LoadSnapshot<InputSpecs>(Constants.InputSpecsStorageKey, snapshot => { _inputSpecs = snapshot; return true; });
-					await LoadSnapshot<bool>(Constants.IsPausedStorageKey, snapshot => { _isPaused = snapshot; return true; });
+					await LoadSnapshot<ContinuationStatus>(Constants.ContinuationStatusStorageKey, snapshot => { this.continuationStatus = snapshot; return true; });
+					await LoadSnapshot<InputSpecs>(Constants.InputSpecsStorageKey, snapshot => { this.inputSpecs = snapshot; return true; });
+					await LoadSnapshot<bool>(Constants.IsPausedStorageKey, snapshot => { this.isPaused = snapshot; return true; });
 				}
 				else
 					await RemoveSnapshots();
@@ -171,13 +171,13 @@ namespace R136.Web.Pages
 
 		private async Task ProceedClickedAsync()
 		{
-			_isPaused = false;
+			this.isPaused = false;
 			await CycleEngine();
 		}
 
 		private void RestartClickedAsync()
 		{
-			_hasEnded = false;
+			this.hasEnded = false;
 			NavigationManager.NavigateTo("/", true);
 		}
 
@@ -205,7 +205,7 @@ namespace R136.Web.Pages
 						break;
 
 					case NextStep.RunCommand:
-						_inputSpecs = Engine.CommandInputSpecs;
+						this.inputSpecs = Engine.CommandInputSpecs;
 						proceed = false;
 						await SaveSnapshots();
 
@@ -226,9 +226,9 @@ namespace R136.Web.Pages
 		{
 			await SaveSnapshot(Constants.R136EngineStorageKey, Engine.TakeSnapshot());
 			await SaveSnapshot(Constants.ContentLogStorageKey, ContentLog.TakeSnapshot());
-			await SaveSnapshot(Constants.ContinuationStatusStorageKey, _continuationStatus);
-			await SaveSnapshot(Constants.InputSpecsStorageKey, _inputSpecs);
-			await SaveSnapshot(Constants.IsPausedStorageKey, _isPaused);
+			await SaveSnapshot(Constants.ContinuationStatusStorageKey, this.continuationStatus);
+			await SaveSnapshot(Constants.InputSpecsStorageKey, this.inputSpecs);
+			await SaveSnapshot(Constants.IsPausedStorageKey, this.isPaused);
 		}
 
 		private async Task RemoveSnapshots()
@@ -242,23 +242,23 @@ namespace R136.Web.Pages
 
 		private async Task SubmitInput(EventArgs e)
 		{
-			_error = null;
+			this.error = null;
 
-			_input = ApplyInputSpecs(_input);
+			this.input = ApplyInputSpecs(this.input);
 
-			Result result = _continuationStatus != null
-				? Engine.Continue(_continuationStatus, _input)
-				: Engine.Run(_input);
+			Result result = this.continuationStatus != null
+				? Engine.Continue(this.continuationStatus, this.input)
+				: Engine.Run(this.input);
 
 			if (result.IsError)
 			{
-				_error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
+				this.error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
 				return;
 			}
 
-			ContentLog.Add(ContentBlockType.Input, _input);
-			_input = string.Empty;
-			_continuationStatus = null;
+			ContentLog.Add(ContentBlockType.Input, this.input);
+			this.input = string.Empty;
+			this.continuationStatus = null;
 
 			if (await ProcessResult(result, ContentBlockType.RunResult))
 				await CycleEngine();
@@ -266,11 +266,11 @@ namespace R136.Web.Pages
 
 		private string ApplyInputSpecs(string text)
 		{
-			if (_inputSpecs.IsLowerCase)
+			if (this.inputSpecs.IsLowerCase)
 				text = text.ToLower();
 
-			if (text.Length > _inputSpecs.MaxLength)
-				text = text[..^(_inputSpecs.MaxLength - 1)];
+			if (text.Length > this.inputSpecs.MaxLength)
+				text = text[..^(this.inputSpecs.MaxLength - 1)];
 
 			return text;
 		}
@@ -282,17 +282,17 @@ namespace R136.Web.Pages
 				case ResultCode.InputRequested:
 					ContentLog.Add(blockType, result.Code, result.Message);
 
-					_continuationStatus = result.ContinuationStatus;
-					_inputSpecs = result.InputSpecs;
+					this.continuationStatus = result.ContinuationStatus;
+					this.inputSpecs = result.InputSpecs;
 
 					await SaveSnapshots();
 					return false;
 
 				case ResultCode.EndRequested:
 					ContentLog.Add(blockType, result.Code, result.Message);
-					_error = null;
-					_continuationStatus = null;
-					_hasEnded = true;
+					this.error = null;
+					this.continuationStatus = null;
+					this.hasEnded = true;
 
 					await RemoveSnapshots();
 					return false;
@@ -303,7 +303,7 @@ namespace R136.Web.Pages
 
 					if (result.PauseRequested)
 					{
-						_isPaused = true;
+						this.isPaused = true;
 						await SaveSnapshots();
 						return false;
 					}

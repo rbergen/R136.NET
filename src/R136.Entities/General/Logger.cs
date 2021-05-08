@@ -9,22 +9,22 @@ namespace R136.Entities.General
 	{
 		public IServiceProvider? Services { private get; set; }
 
-		private readonly Dictionary<Type, ILogger> _loggerMap = new();
+		private readonly Dictionary<Type, ILogger> loggerMap = new();
 
 		public void Log<TCaller>(LogLevel level, string message)
 		{
-			if (!_loggerMap.TryGetValue(typeof(TCaller), out var _logger))
+			if (!this.loggerMap.TryGetValue(typeof(TCaller), out var logger))
 			{
 				if (Services != null)
-					_logger = Services.GetService<ILogger<TCaller>>();
+					logger = Services.GetService<ILogger<TCaller>>();
 
-				if (_logger == null)
+				if (logger == null)
 					return;
 
-				_loggerMap[typeof(TCaller)] = _logger;
+				this.loggerMap[typeof(TCaller)] = logger;
 			}
 
-			_logger.Log(level, message);
+			logger.Log(level, message);
 		}
 
 		public void LogDebug<TCaller>(string message)

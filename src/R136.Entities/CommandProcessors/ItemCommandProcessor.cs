@@ -12,12 +12,12 @@ namespace R136.Entities.CommandProcessors
 	{
 		private const string ContinuationKey = "M54ym08ugrEYkp4tpTu1";
 
-		protected IReadOnlyDictionary<ItemID, Item> _items;
-		protected IReadOnlyDictionary<AnimateID, Animate> _animates;
+		protected IReadOnlyDictionary<ItemID, Item> items;
+		protected IReadOnlyDictionary<AnimateID, Animate> animates;
 
 
 		public ItemCommandProcessor(IReadOnlyDictionary<ItemID, Item> items, IReadOnlyDictionary<AnimateID, Animate> animates) : base(CommandProcessorID.Item)
-			=> (_items, _animates) = (items, animates);
+			=> (this.items, this.animates) = (items, animates);
 
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
 			=> id switch
@@ -106,7 +106,7 @@ namespace R136.Entities.CommandProcessors
 			if (items.Distinct().Count() != items.Length)
 				return Result.Failure(GetTexts(CombineTextID.CantCombineWithItself), true);
 
-			var combineItem = _items.Values
+			var combineItem = this.items.Values
 				.OfType<ICompound<Item>>()
 				.FirstOrDefault(combineItem => combineItem.Components.Intersect(items).Count() == combineItem.Components.Count);
 
@@ -131,7 +131,7 @@ namespace R136.Entities.CommandProcessors
 			if (item == null)
 				return result;
 
-			var presentAnimate = _animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
+			var presentAnimate = this.animates.Values.FirstOrDefault(animate => animate.CurrentRoom == player.CurrentRoom.ID);
 
 			if (presentAnimate == null || item is not UsableItem usableItem || !usableItem.UsableOn.Contains(presentAnimate))
 				return item.Use().WrapInputRequest(ContinuationKey, (int)item.ID);
@@ -177,7 +177,7 @@ namespace R136.Entities.CommandProcessors
 			if (parameters == null || parameters == string.Empty)
 				return (null, Result.Error(GetTexts(TextID.NoParameterGiven, "command", command)));
 
-			(Item? item, FindResult result) = _items.Values.Where(item => item.CurrentRoom == player.CurrentRoom.ID).ToList().FindItemByName(parameters);
+			(Item? item, FindResult result) = this.items.Values.Where(item => item.CurrentRoom == player.CurrentRoom.ID).ToList().FindItemByName(parameters);
 
 			return result switch
 			{
@@ -193,7 +193,7 @@ namespace R136.Entities.CommandProcessors
 
 			Result DoContinuation(ContinuationStatus status, string input)
 			{
-				if (status.Number != null && _items[(ItemID)status.Number] is IContinuable item)
+				if (status.Number != null && this.items[(ItemID)status.Number] is IContinuable item)
 					return item.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, status.Number.Value);
 
 				return Result.Error();

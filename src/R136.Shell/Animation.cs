@@ -14,7 +14,7 @@ namespace R136.Shell
 		private const string ClearLeftLetterSection = "            ";
 		private const string ClearRightLetterSection = "                    ";
 
-		private readonly Blocks _blocks = new();
+		private readonly Blocks blocks = new();
 
 		public void Run()
 		{
@@ -27,11 +27,11 @@ namespace R136.Shell
 			Console.BackgroundColor = ConsoleColor.Gray;
 			Console.Clear();
 
-			int spiderX = (screenRightX - _blocks.GetWidth(Block.Spider)) / 2;
+			int spiderX = (screenRightX - this.blocks.GetWidth(Block.Spider)) / 2;
 
 			LowerSpider(spiderX);
 
-			int leftLetterFinalX = screenRightX / 2 - _blocks.GetWidth(Block.LetterR) - LetterSpaceWidth;
+			int leftLetterFinalX = screenRightX / 2 - this.blocks.GetWidth(Block.LetterR) - LetterSpaceWidth;
 
 			int screenMiddleX = screenRightX / 2;
 			if ((screenRightX % 2) == 0)
@@ -54,15 +54,15 @@ namespace R136.Shell
 
 		private void LowerSpider(int column)
 		{
-			int spiderBottomY = _blocks.BlockRowCount - 1;
-			int spiderRightX = _blocks.GetWidth(Block.Spider) - 1;
+			int spiderBottomY = this.blocks.BlockRowCount - 1;
+			int spiderRightX = this.blocks.GetWidth(Block.Spider) - 1;
 
 			// Introduce the spider from the top of the screen
-			for (int dropIndex = _blocks.BlockRowCount; dropIndex > 0; dropIndex--)
+			for (int dropIndex = this.blocks.BlockRowCount; dropIndex > 0; dropIndex--)
 			{
 				foreach (var position in Enum.GetValues<BlockPosition>())
 				{
-					WriteBlock(column, 0, ConsoleColor.Black, _blocks[Block.Spider, position], 0, dropIndex - 1, spiderRightX, spiderBottomY);
+					WriteBlock(column, 0, ConsoleColor.Black, this.blocks[Block.Spider, position], 0, dropIndex - 1, spiderRightX, spiderBottomY);
 
 					Thread.Sleep(50);
 				}
@@ -75,7 +75,7 @@ namespace R136.Shell
 
 				foreach (var position in Enum.GetValues<BlockPosition>())
 				{
-					WriteBlock(column, dropIndex + 1, ConsoleColor.Black, _blocks[Block.Spider, position]);
+					WriteBlock(column, dropIndex + 1, ConsoleColor.Black, this.blocks[Block.Spider, position]);
 
 					Thread.Sleep(50);
 				}
@@ -84,17 +84,17 @@ namespace R136.Shell
 
 		private void SwoopInLetters(int screenMiddleX, int leftLetterFinalX)
 		{
-			int letterWidth = _blocks.GetWidth(Block.LetterR);
-			int letterRightX = _blocks.GetWidth(Block.LetterR) - 1;
-			int letterBottomY = _blocks.BlockRowCount - 1;
+			int letterWidth = this.blocks.GetWidth(Block.LetterR);
+			int letterRightX = this.blocks.GetWidth(Block.LetterR) - 1;
+			int letterBottomY = this.blocks.BlockRowCount - 1;
 
 			int screenRightX = Console.WindowWidth - 1;
 
 			// Introduce letters from either side of the screen
 			for (int i = 0; i < letterWidth; i++)
 			{
-				WriteBlock(0, 2, ConsoleColor.Black, _blocks[Block.LetterR], letterRightX - i, 0, letterRightX, letterBottomY);
-				WriteBlock(screenRightX - i, 2, ConsoleColor.Black, _blocks[Block.LetterP], 0, 0, i, letterBottomY);
+				WriteBlock(0, 2, ConsoleColor.Black, this.blocks[Block.LetterR], letterRightX - i, 0, letterRightX, letterBottomY);
+				WriteBlock(screenRightX - i, 2, ConsoleColor.Black, this.blocks[Block.LetterP], 0, 0, i, letterBottomY);
 			}
 
 			int rightLetterFirstX = screenRightX - letterWidth;
@@ -103,33 +103,33 @@ namespace R136.Shell
 			// Bring the letters to the center
 			for (; flowIndex < leftLetterFinalX; flowIndex++)
 			{
-				WriteBlock(flowIndex, 2, ConsoleColor.Black, _blocks[Block.Space]);
-				WriteBlock(flowIndex + 1, 2, ConsoleColor.Black, _blocks[Block.LetterR]);
+				WriteBlock(flowIndex, 2, ConsoleColor.Black, this.blocks[Block.Space]);
+				WriteBlock(flowIndex + 1, 2, ConsoleColor.Black, this.blocks[Block.LetterR]);
 
-				WriteBlock(rightLetterFirstX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.LetterP]);
-				WriteBlock(screenRightX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.Space]);
+				WriteBlock(rightLetterFirstX - flowIndex, 2, ConsoleColor.Black, this.blocks[Block.LetterP]);
+				WriteBlock(screenRightX - flowIndex, 2, ConsoleColor.Black, this.blocks[Block.Space]);
 			}
 
 			// If the silk thread is just left of center due to screen width, bump the P one more place to the left
 			if ((screenRightX % 2) == 0)
 			{
-				WriteBlock(rightLetterFirstX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.LetterP]);
-				WriteBlock(screenRightX - flowIndex, 2, ConsoleColor.Black, _blocks[Block.Space]);
+				WriteBlock(rightLetterFirstX - flowIndex, 2, ConsoleColor.Black, this.blocks[Block.LetterP]);
+				WriteBlock(screenRightX - flowIndex, 2, ConsoleColor.Black, this.blocks[Block.Space]);
 			}
 
 			// Cut the silk thread to create the letter I
 			WriteSection(screenMiddleX, 1, ConsoleColor.Black, "▀");
-			WriteSection(screenMiddleX, 1 + _blocks.BlockRowCount, ConsoleColor.Black, "▄");
+			WriteSection(screenMiddleX, 1 + this.blocks.BlockRowCount, ConsoleColor.Black, "▄");
 		}
 
 		private void SwoopInDigits(int screenMiddleX, int spiderX, int leftLetterfinalX)
 		{
 			int screenRightX = Console.WindowWidth - 1;
 			int screenBottomY = Console.WindowHeight - 1;
-			int letterWidth = _blocks.GetWidth(Block.LetterR);
-			int digitsWidth = _blocks.GetWidth(Block.Digits);
+			int letterWidth = this.blocks.GetWidth(Block.LetterR);
+			int digitsWidth = this.blocks.GetWidth(Block.Digits);
 
-			int lettersTopY = (screenBottomY - _blocks.BlockRowCount) / 2;
+			int lettersTopY = (screenBottomY - this.blocks.BlockRowCount) / 2;
 			if (lettersTopY < 2)
 				lettersTopY = 2;
 
@@ -137,40 +137,40 @@ namespace R136.Shell
 			WriteSection(screenMiddleX, 0, ConsoleColor.Black, " ");
 			WriteSection(screenMiddleX, 1, ConsoleColor.Black, " ");
 
-			for (int i = 2; i < 2 + _blocks.BlockRowCount; i++)
+			for (int i = 2; i < 2 + this.blocks.BlockRowCount; i++)
 				WriteSection(screenMiddleX, i, ConsoleColor.Black, ClearRightLetterSection);
 
-			for (int i = 2 + _blocks.BlockRowCount; i < SpiderDropHeight; i++)
+			for (int i = 2 + this.blocks.BlockRowCount; i < SpiderDropHeight; i++)
 				WriteSection(screenMiddleX, i, ConsoleColor.Black, " ");
 
-			for (int i = SpiderDropHeight; i < SpiderDropHeight + _blocks.BlockRowCount; i++)
+			for (int i = SpiderDropHeight; i < SpiderDropHeight + this.blocks.BlockRowCount; i++)
 				WriteSection(spiderX, i, ConsoleColor.Black, ClearSpiderSection);
 
 			// Lower the R to the vertical middle of the screen
 			for (int i = 2; i < lettersTopY; i++)
 			{
-				WriteBlock(leftLetterfinalX, i, ConsoleColor.Black, _blocks[Block.LetterR, BlockPosition.Lower]);
+				WriteBlock(leftLetterfinalX, i, ConsoleColor.Black, this.blocks[Block.LetterR, BlockPosition.Lower]);
 
 				Thread.Sleep(5);
 
 				WriteSection(leftLetterfinalX, i, ConsoleColor.Black, ClearLeftLetterSection);
-				WriteBlock(leftLetterfinalX, i + 1, ConsoleColor.Black, _blocks[Block.LetterR, BlockPosition.Upper]);
+				WriteBlock(leftLetterfinalX, i + 1, ConsoleColor.Black, this.blocks[Block.LetterR, BlockPosition.Upper]);
 
 				Thread.Sleep(5);
 			}
 
 			int digitsFinalX = leftLetterfinalX + letterWidth + 3;
-			int digitsBottomY = _blocks.BlockRowCount - 1;
+			int digitsBottomY = this.blocks.BlockRowCount - 1;
 
 			// Introduce the digits from the right-hand side of the screen
 			for (int i = 0; i < digitsWidth; i++)
-				WriteBlock(screenRightX - i, lettersTopY, ConsoleColor.Red, _blocks[Block.Digits], 0, 0, i, digitsBottomY);
+				WriteBlock(screenRightX - i, lettersTopY, ConsoleColor.Red, this.blocks[Block.Digits], 0, 0, i, digitsBottomY);
 
 			// Bring the digits to the center
 			for (int i = screenRightX - digitsWidth; i >= digitsFinalX; i--)
 			{
-				WriteBlock(i, lettersTopY, ConsoleColor.Red, _blocks[Block.Digits]);
-				WriteBlock(i + digitsWidth, lettersTopY, ConsoleColor.Red, _blocks[Block.Space]);
+				WriteBlock(i, lettersTopY, ConsoleColor.Red, this.blocks[Block.Digits]);
+				WriteBlock(i + digitsWidth, lettersTopY, ConsoleColor.Red, this.blocks[Block.Space]);
 			}
 		}
 
@@ -221,22 +221,22 @@ namespace R136.Shell
 		private class Blocks
 		{
 			public readonly int BlockRowCount;
-			private readonly string[][][] _strings;
+			private readonly string[][][] strings;
 
 			public Blocks()
 			{
-				_strings = new string[Enum.GetValues<Block>().Length][][];
+				this.strings = new string[Enum.GetValues<Block>().Length][][];
 
 				int blockPositionCount = Enum.GetValues<BlockPosition>().Length;
 
-				_strings.Set(Block.Spider, new string[blockPositionCount][]);
-				_strings.Set(Block.LetterR, new string[blockPositionCount][]);
-				_strings.Set(Block.LetterP, new string[1][]);
-				_strings.Set(Block.Space, new string[1][]);
-				_strings.Set(Block.Digits, new string[1][]);
+				this.strings.Set(Block.Spider, new string[blockPositionCount][]);
+				this.strings.Set(Block.LetterR, new string[blockPositionCount][]);
+				this.strings.Set(Block.LetterP, new string[1][]);
+				this.strings.Set(Block.Space, new string[1][]);
+				this.strings.Set(Block.Digits, new string[1][]);
 
 
-				_strings.Set(Block.Spider, BlockPosition.Upper, new string[]
+				this.strings.Set(Block.Spider, BlockPosition.Upper, new string[]
 				{
 					"  ▄▄▄        ▄ █ ▄        ▄▄▄  ",
 					" ▄▀  ▀▀▄▄  ▄▀ ▀█▀ ▀▄  ▄▄▀▀  ▀▄ ",
@@ -248,7 +248,7 @@ namespace R136.Shell
 					" ▀▀                         ▀▀ ",
 				});
 
-				_strings.Set(Block.Spider, BlockPosition.Lower, new string[]
+				this.strings.Set(Block.Spider, BlockPosition.Lower, new string[]
 				{
 					"               █               ",
 					"  █▀▀▄▄     ▄▀▄█▄▀▄     ▄▄▀▀█  ",
@@ -260,7 +260,7 @@ namespace R136.Shell
 					" ▄█                         █▄ "
 				});
 
-				_strings.Set(Block.LetterR, BlockPosition.Upper, new string[]
+				this.strings.Set(Block.LetterR, BlockPosition.Upper, new string[]
 				{
 					"█▀▀▀▀▀▀▀▀▀▀▄",
 					"█          █",
@@ -272,7 +272,7 @@ namespace R136.Shell
 					"            "
 				});
 
-				_strings.Set(Block.LetterR, BlockPosition.Lower, new string[]
+				this.strings.Set(Block.LetterR, BlockPosition.Lower, new string[]
 				{
 					"▄▄▄▄▄▄▄▄▄▄▄ ",
 					"█          █",
@@ -284,7 +284,7 @@ namespace R136.Shell
 					"▀          ▀"
 				});
 
-				_strings.Get(Block.LetterP)[0] = new string[]
+				this.strings.Get(Block.LetterP)[0] = new string[]
 				{
 					"█▀▀▀▀▀▀▀▀▀▀▄",
 					"█          █",
@@ -296,7 +296,7 @@ namespace R136.Shell
 					"            "
 				};
 
-				_strings.Get(Block.Space)[0] = new string[]
+				this.strings.Get(Block.Space)[0] = new string[]
 				{
 					" ",
 					" ",
@@ -308,7 +308,7 @@ namespace R136.Shell
 					" "
 				};
 
-				_strings.Get(Block.Digits)[0] = new string[]
+				this.strings.Get(Block.Digits)[0] = new string[]
 				{
 					"▄█   ▄▀▀▀▀▀▄   ▄▀▀▀▀▀▄",
 					" █         █   █      ",
@@ -320,17 +320,17 @@ namespace R136.Shell
 					"                      "
 				};
 
-				BlockRowCount = _strings[0][0].Length;
+				BlockRowCount = this.strings[0][0].Length;
 			}
 
 			public string[] this[Block block, BlockPosition position]
-				=> _strings.Get(block, _strings.Get(block).Length == 1 ? 0 : position);
+				=> this.strings.Get(block, this.strings.Get(block).Length == 1 ? 0 : position);
 
 			public string[] this[Block block]
-				=> _strings.Get(block)[0];
+				=> this.strings.Get(block)[0];
 
 			public int GetWidth(Block block)
-				=> _strings.Get(block)[0][0].Length;
+				=> this.strings.Get(block)[0][0].Length;
 		}
 	}
 }

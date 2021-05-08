@@ -15,44 +15,44 @@ namespace R136.Shell
 		private const int Success = 0;
 		private const int Error = -1;
 
-		private readonly IServiceProvider _services;
-		private readonly IConfiguration _configuration;
-		private readonly ILanguageProvider? _languages;
-		private readonly IEngine _engine;
-		private Status? _status;
-		private readonly Queue<string> _texts = new();
-		private readonly List<StringValues> _messages = new();
+		private readonly IServiceProvider services;
+		private readonly IConfiguration configuration;
+		private readonly ILanguageProvider? languages;
+		private readonly IEngine engine;
+		private Status? status;
+		private readonly Queue<string> texts = new();
+		private readonly List<StringValues> messages = new();
 
 		public GameConsole(IServiceProvider services)
 		{
-			_services = services;
-			_configuration = _services.GetRequiredService<IConfiguration>();
-			_languages = _services.GetService<ILanguageProvider>();
-			_status = _services.GetService<Status>();
-			_engine = _services.GetRequiredService<IEngine>();
+			this.services = services;
+			this.configuration = this.services.GetRequiredService<IConfiguration>();
+			this.languages = this.services.GetService<ILanguageProvider>();
+			this.status = this.services.GetService<Status>();
+			this.engine = this.services.GetRequiredService<IEngine>();
 		}
 
 		private InputSpecs? InputSpecs
 		{
-			get => _status?.InputSpecs;
+			get => this.status?.InputSpecs;
 			set
 			{
-				if (_status == null)
-					_status = new();
+				if (this.status == null)
+					this.status = new();
 
-				_status.InputSpecs = value;
+				this.status.InputSpecs = value;
 			}
 		}
 
 		private ContinuationStatus? ContinuationStatus
 		{
-			get => _status?.ContinuationStatus;
+			get => this.status?.ContinuationStatus;
 			set
 			{
-				if (_status == null)
-					_status = new();
+				if (this.status == null)
+					this.status = new();
 
-				_status.ContinuationStatus = value;
+				this.status.ContinuationStatus = value;
 			}
 		}
 
@@ -60,9 +60,9 @@ namespace R136.Shell
 		{
 			Initialize();
 
-			string language = _languages?.Language ?? Constants.Dutch;
+			string language = this.languages?.Language ?? Constants.Dutch;
 
-			var task = _engine.Initialize(language);
+			var task = this.engine.Initialize(language);
 
 			HandleIntro(language);
 
@@ -76,13 +76,13 @@ namespace R136.Shell
 
 		private void HandleIntro(string language)
 		{
-			if (!(_status?.IsLoaded ?? false))
+			if (!(this.status?.IsLoaded ?? false))
 			{
-				if (_configuration?[Constants.IntroParam] != Constants.ParamNo)
+				if (this.configuration?[Constants.IntroParam] != Constants.ParamNo)
 				{
 					new Animation().Run();
 
-					WritePlainText(_introTexts[language]);
+					WritePlainText(this.introTexts[language]);
 					WaitForKey();
 				}
 
@@ -100,27 +100,27 @@ namespace R136.Shell
 
 			while (proceed)
 			{
-				switch (_engine.DoNext)
+				switch (this.engine.DoNext)
 				{
 					case NextStep.ShowStartMessage:
-						_messages.AddIfNotEmpty(_engine.StartMessage);
+						this.messages.AddIfNotEmpty(this.engine.StartMessage);
 
 						break;
 
 					case NextStep.ShowRoomStatus:
-						_messages.AddIfNotEmpty(_engine.RoomStatus);
+						this.messages.AddIfNotEmpty(this.engine.RoomStatus);
 
 						break;
 
 					case NextStep.ProgressAnimateStatus:
-						ProcessResult(_engine.ProgressAnimateStatus());
+						ProcessResult(this.engine.ProgressAnimateStatus());
 
 						break;
 
 					case NextStep.RunCommand:
 						WriteMessages();
 						if (!firstRun)
-							SaveStatus(_engine.CommandInputSpecs);
+							SaveStatus(this.engine.CommandInputSpecs);
 
 						proceed = await RunCommand();
 
@@ -143,8 +143,8 @@ namespace R136.Shell
 				input = ApplyInputSpecs(input);
 
 				Result result = ContinuationStatus != null
-					? _engine!.Continue(ContinuationStatus, input)
-					: _engine!.Run(input);
+					? this.engine!.Continue(ContinuationStatus, input)
+					: this.engine!.Run(input);
 
 				int top = Console.GetCursorPosition().Top;
 				ClearLine(top - 1, inputLineLength);
@@ -157,7 +157,7 @@ namespace R136.Shell
 
 				string finalInput = Constants.Prompt + input + '\n';
 				BPSPrint(finalInput + Console.Out.NewLine);
-				_texts.Enqueue(finalInput);
+				this.texts.Enqueue(finalInput);
 
 				ContinuationStatus = null;
 
@@ -202,26 +202,26 @@ namespace R136.Shell
 
 		private async Task<bool> ApplyLanguageChange(string input)
 		{
-			if (_languages == null)
+			if (this.languages == null)
 				return false;
 
 			string[] segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if ((segments?.Length ?? 0) != 2 || segments![0] != Constants.LanguageParam)
 				return false;
 
-			_languages.Language = segments![1];
+			this.languages.Language = segments![1];
 
-			Console.Title = _languages.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
-			var result = _engine!.SetEntityGroup(_languages.Language);
+			Console.Title = this.languages.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
+			var result = this.engine!.SetEntityGroup(this.languages.Language);
 
-			_texts.Enqueue(Constants.Prompt + input);
+			this.texts.Enqueue(Constants.Prompt + input);
 			WriteText(new string[] {
 				string.Empty,
-				_languages.GetConfigurationValue(Constants.LanguageSwitchText) ?? Constants.LanguageSwitchText,
+				this.languages.GetConfigurationValue(Constants.LanguageSwitchText) ?? Constants.LanguageSwitchText,
 				string.Empty
 			});
 
-			SaveStatus(_status?.InputSpecs);
+			SaveStatus(this.status?.InputSpecs);
 
 			await result;
 			return true;
@@ -241,24 +241,24 @@ namespace R136.Shell
 					break;
 
 				case ResultCode.EndRequested:
-					_messages.AddIfNotEmpty(result.Message);
+					this.messages.AddIfNotEmpty(result.Message);
 					WriteMessages();
 
-					_status?.Remove();
+					this.status?.Remove();
 
 					WaitForKey();
 					break;
 
 				case ResultCode.Success:
 				case ResultCode.Failure:
-					_messages.AddIfNotEmpty(result.Message);
+					this.messages.AddIfNotEmpty(result.Message);
 
 					if (result.PauseRequested)
 					{
 						WriteMessages();
 
-						if (_status != null)
-							_status.Pausing = true;
+						if (this.status != null)
+							this.status.Pausing = true;
 						
 						SaveStatus(null);
 						WaitForKey();
@@ -268,7 +268,7 @@ namespace R136.Shell
 			}
 		}
 
-		private readonly Dictionary<string, string> _introTexts = new()
+		private readonly Dictionary<string, string> introTexts = new()
 		{
 			[Constants.Dutch] =
 @"Terwijl je op het punt staat je avontuur te beginnen, denk je nog even na over waarom je hier, in deze verlaten, neertroostige omgeving staat.

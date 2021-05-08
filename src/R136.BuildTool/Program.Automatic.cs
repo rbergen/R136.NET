@@ -145,7 +145,7 @@ namespace R136.BuildTool
 
 			try
 			{
-				inputObject = JsonSerializer.Deserialize<TInput>(File.ReadAllText(inputPath, Encoding.UTF8), _entityDeserializerOptions);
+				inputObject = JsonSerializer.Deserialize<TInput>(File.ReadAllText(inputPath, Encoding.UTF8), entityDeserializerOptions);
 			}
 			catch (Exception e)
 			{

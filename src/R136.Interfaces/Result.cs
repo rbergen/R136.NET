@@ -14,19 +14,19 @@ namespace R136.Interfaces
 
 	public class Result
 	{
-		private static readonly Result _success = new(ResultCode.Success);
-		private static readonly Result _failure = new(ResultCode.Failure);
-		private static readonly Result _error = new(ResultCode.Error);
+		private static readonly Result success = new(ResultCode.Success);
+		private static readonly Result failure = new(ResultCode.Failure);
+		private static readonly Result error = new(ResultCode.Error);
 
-		public static Result Success() => _success;
+		public static Result Success() => success;
 		public static Result Success(StringValues message, bool pauseRequested = false) => new(ResultCode.Success, message, pauseRequested);
 		public static Result Success(string message, bool pauseRequested = false) => new(ResultCode.Success, new string[] { message }, pauseRequested);
 
-		public static Result Failure() => _failure;
+		public static Result Failure() => failure;
 		public static Result Failure(StringValues message, bool pauseRequested = false) => new(ResultCode.Failure, message, pauseRequested);
 		public static Result Failure(string message, bool pauseRequested = false) => new(ResultCode.Failure, new string[] { message }, pauseRequested);
 
-		public static Result Error() => _error;
+		public static Result Error() => error;
 		public static Result Error(StringValues message) => new(ResultCode.Error, message);
 		public static Result Error(string message) => new(ResultCode.Error, new string[] { message });
 

@@ -23,7 +23,7 @@ namespace R136.Core
 			{
 				var entities = LoadEntities(label);
 				if (entities != null)
-					_entityTaskMap[label] = entities;
+					this.entityTaskMap[label] = entities;
 			}
 		}
 
@@ -88,14 +88,14 @@ namespace R136.Core
 
 				List<string> texts = new();
 
-				Room playerRoom = _player!.CurrentRoom;
+				Room playerRoom = this.player!.CurrentRoom;
 				AddRoomInformation(texts, playerRoom);
 
 				string? wayLine = GetWayLine(playerRoom);
 				if (wayLine != null)
 					texts.Add(wayLine);
 
-				if (!_player!.IsDark)
+				if (!this.player!.IsDark)
 				{
 					string? itemLine = GetItemLine(playerRoom);
 					if (itemLine != null)
@@ -132,7 +132,7 @@ namespace R136.Core
 			if (!ValidateStep(NextStep.RunCommand))
 				return Result.Error(IncorrectNextStep);
 
-			if (_player!.IsDead)
+			if (this.player!.IsDead)
 				return Result.EndRequested(GetTexts(TextID.PlayerDead));
 
 			string[] terms = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
@@ -140,13 +140,13 @@ namespace R136.Core
 			if (terms.Length == 0)
 				return Result.Error(GetTexts(TextID.NoCommand));
 
-			(var processor, var id, string? command, var findResult) = _processors!.FindByName(terms[0]);
+			(var processor, var id, string? command, var findResult) = this.processors!.FindByName(terms[0]);
 
 			Result result = findResult switch
 			{
 				FindResult.Ambiguous => Result.Error(GetTexts(TextID.AmbiguousCommand, "command", input)),
 				FindResult.NotFound => Result.Error(GetTexts(TextID.InvalidCommand)),
-				_ => processor!.Execute(id!.Value, command!, terms.Length == 1 ? null : terms[1], _player!).WrapInputRequest(ContinuationKey, (int)processor!.ID)
+				_ => processor!.Execute(id!.Value, command!, terms.Length == 1 ? null : terms[1], this.player!).WrapInputRequest(ContinuationKey, (int)processor!.ID)
 			};
 
 			return DoPostRunProcessing(result);
@@ -161,7 +161,7 @@ namespace R136.Core
 
 			Result DoContinuation(ContinuationStatus status, string input)
 			{
-				if (status.Number != null && _processors![(CommandProcessorID)status.Number] is IContinuable processor)
+				if (status.Number != null && this.processors![(CommandProcessorID)status.Number] is IContinuable processor)
 					return processor.Continue(status.InnerStatus!, input).WrapInputRequest(ContinuationKey, status.Number.Value);
 
 				return Result.Error();

@@ -24,14 +24,14 @@ namespace R136.Core
 		private const string ItemsLabel = "items";
 		private const string ContinuationKey = "x8KQUbtDPZwlzWT5AOeJ";
 
-		private readonly Dictionary<string, TypedEntityTaskCollection> _entityTaskMap = new();
-		private IReadOnlyDictionary<RoomID, Room>? _rooms;
-		private IReadOnlyDictionary<ItemID, Item>? _items;
-		private IReadOnlyDictionary<AnimateID, Animate>? _animates;
-		private Player? _player;
-		private CommandProcessorMap? _processors;
-		private readonly List<Func<StringValues>> _turnEndingNotifiees = new();
-		private bool _hasTreeBurned = false;
+		private readonly Dictionary<string, TypedEntityTaskCollection> entityTaskMap = new();
+		private IReadOnlyDictionary<RoomID, Room>? rooms;
+		private IReadOnlyDictionary<ItemID, Item>? items;
+		private IReadOnlyDictionary<AnimateID, Animate>? animates;
+		private Player? player;
+		private CommandProcessorMap? processors;
+		private readonly List<Func<StringValues>> turnEndingNotifiees = new();
+		private bool hasTreeBurned = false;
 
 		public class Snapshot : Item.ISnapshotContainer, Animate.ISnapshotContainer, ISnapshot
 		{

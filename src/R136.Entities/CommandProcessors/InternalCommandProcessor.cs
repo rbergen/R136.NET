@@ -11,7 +11,7 @@ namespace R136.Entities.CommandProcessors
 	class InternalCommandProcessor : CommandProcessor
 	{
 		private const int Default = 0;
-		private Result? _invalidCommandResult = null;
+		private Result? invalidCommandResult = null;
 
 		public InternalCommandProcessor() : base(CommandProcessorID.Internal) { }
 
@@ -33,10 +33,10 @@ namespace R136.Entities.CommandProcessors
 		{
 			get
 			{
-				if (_invalidCommandResult == null)
-					_invalidCommandResult = Result.Error(Facilities.TextsMap[this, Default]);
+				if (this.invalidCommandResult == null)
+					this.invalidCommandResult = Result.Error(Facilities.TextsMap[this, Default]);
 
-				return _invalidCommandResult;
+				return this.invalidCommandResult;
 			}
 		}
 

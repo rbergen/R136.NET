@@ -6,17 +6,17 @@ namespace R136.BuildTool
 {
 	partial class Program
 	{
-		private static readonly JsonSerializerOptions _entityDeserializerOptions;
+		private static readonly JsonSerializerOptions entityDeserializerOptions;
 
 		static Program()
 		{
-			_entityDeserializerOptions = new()
+			entityDeserializerOptions = new()
 			{
 				ReadCommentHandling = JsonCommentHandling.Skip,
 				AllowTrailingCommas = true
 			};
 
-			_entityDeserializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
+			entityDeserializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
 		}
 
 		static void Main(string[] args)

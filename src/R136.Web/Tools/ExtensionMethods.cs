@@ -11,8 +11,8 @@ namespace R136.Web.Tools
 {
 	public static class ExtensionMethods
 	{
-		private static MarkdownPipeline? _pipeline = null;
-		private static readonly object _pipelineLock = new();
+		private static MarkdownPipeline? pipeline = null;
+		private static readonly object pipelineLock = new();
 
 		public static string ToMarkupString(this StringValues texts)
 		{
@@ -31,12 +31,12 @@ namespace R136.Web.Tools
 		{
 			get
 			{
-				lock (_pipelineLock)
+				lock (pipelineLock)
 				{
-					if (_pipeline == null)
-						_pipeline = new MarkdownPipelineBuilder().UseSoftlineBreakAsHardlineBreak().Build();
+					if (pipeline == null)
+						pipeline = new MarkdownPipelineBuilder().UseSoftlineBreakAsHardlineBreak().Build();
 
-					return _pipeline;
+					return pipeline;
 				}
 			}
 		}

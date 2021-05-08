@@ -18,10 +18,10 @@ namespace R136.Shell.Tools
 		private const int BytesBaseSize = 10;
 		private readonly static byte[] Watermark = { 18, 9, 16, 19, 20, 1, 20, 21, 19 };
 
-		private static string? _filename = null;
-		private static ILogger<Status>? _logger = null;
+		private static string? filename = null;
+		private static ILogger<Status>? logger = null;
 
-		private IServiceProvider? _services;
+		private IServiceProvider? services;
 
 		public ContinuationStatus? ContinuationStatus { get; set; }
 		public InputSpecs? InputSpecs { get; set; }
@@ -48,7 +48,7 @@ namespace R136.Shell.Tools
 
 			if (result != null)
 			{
-				result._services = services;
+				result.services = services;
 				result.IsLoaded = true;
 			}
 
@@ -60,11 +60,11 @@ namespace R136.Shell.Tools
 		{
 			try
 			{
-				File.Delete(GetFilename(_services));
+				File.Delete(GetFilename(this.services));
 			}
 			catch (Exception e)
 			{
-				GetLogger(_services)?.LogDebug($"Error while deleting file: {e}");
+				GetLogger(this.services)?.LogDebug($"Error while deleting file: {e}");
 			}
 		}
 
@@ -72,28 +72,28 @@ namespace R136.Shell.Tools
 		{
 			try
 			{
-				File.WriteAllText(GetFilename(_services), JsonSerializer.Serialize(this), Encoding.UTF8);
+				File.WriteAllText(GetFilename(this.services), JsonSerializer.Serialize(this), Encoding.UTF8);
 			}
 			catch (Exception e)
 			{
-				GetLogger(_services)?.LogDebug($"Error while writing file as bytes: {e}");
+				GetLogger(this.services)?.LogDebug($"Error while writing file as bytes: {e}");
 			}
 		}
 
 		private static string GetFilename(IServiceProvider? services)
 		{
-			if (_filename == null)
-				_filename = services?.GetService<IConfiguration>()?[Constants.StatusFilename];
+			if (filename == null)
+				filename = services?.GetService<IConfiguration>()?[Constants.StatusFilename];
 
-			return _filename ?? "r136.status";
+			return filename ?? "r136.status";
 		}
 
 		private static ILogger<Status>? GetLogger(IServiceProvider? services)
 		{
-			if (_logger == null)
-				_logger = services?.GetService<ILogger<Status>>();
+			if (logger == null)
+				logger = services?.GetService<ILogger<Status>>();
 
-			return _logger;
+			return logger;
 		}
 
 		public void AddBytes(List<byte> bytes)

@@ -12,65 +12,64 @@ namespace R136.Entities
 {
 	public class Player : EntityBase, IPlayer, IGameServiceProvider, IGameServiceBasedConfigurator, ISnappable<Player.Snapshot>
 	{
-		private int? _lifePoints;
-		private int? _lifePointsFromConfig;
-		private ILightsource? _lightsource;
-		private IReadOnlyDictionary<RoomID, Room> _rooms;
+		private int? lifePoints;
+		private int? lifePointsFromConfig;
+		private ILightsource? lightsource;
+		private IReadOnlyDictionary<RoomID, Room> rooms;
+		private readonly List<Item> inventory;
 
 		public Room CurrentRoom { get; set; }
 
-		public IReadOnlyList<Item> Inventory => _inventory;
-
-		private readonly List<Item> _inventory;
+		public IReadOnlyList<Item> Inventory => this.inventory;
 
 		public Player(IReadOnlyDictionary<RoomID, Room> rooms, RoomID startRoom)
-			=> (_lifePoints, _lifePointsFromConfig, _rooms, CurrentRoom, _inventory) = (null, null, rooms, rooms[startRoom], new List<Item>());
+			=> (this.lifePoints, this.lifePointsFromConfig, this.rooms, CurrentRoom, this.inventory) = (null, null, rooms, rooms[startRoom], new List<Item>());
 
 		public int LifePoints
 		{
 			get
 			{
-				if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)
-					_lifePoints = _lifePointsFromConfig = Facilities.Configuration.LifePoints;
+				if (this.lifePointsFromConfig != Facilities.Configuration.LifePoints)
+					this.lifePoints = this.lifePointsFromConfig = Facilities.Configuration.LifePoints;
 
-				return _lifePoints!.Value;
+				return this.lifePoints!.Value;
 			}
 
-			private set => _lifePoints = value;
+			private set => this.lifePoints = value;
 		}
 
 		public bool IsDark
-			=> CurrentRoom.IsDark && !(_lightsource?.IsOn ?? false);
+			=> CurrentRoom.IsDark && !(this.lightsource?.IsOn ?? false);
 
 		RoomID IPlayer.CurrentRoom 
 		{
 			get => CurrentRoom.ID; 
-			set => CurrentRoom = _rooms[value]; 
+			set => CurrentRoom = this.rooms[value]; 
 		}
 
 		private StringValues GetNamedTexts(TextID id, Item item) => Facilities.TextsMap.Get(this, id).ReplaceInAll("{item}", item.Name);
 
 		public Result AddToInventory(Item item)
 		{
-			if (Facilities.Configuration.MaxInventory != null && _inventory.Where(item => !item.IsWearable).ToArray().Length >= Facilities.Configuration.MaxInventory)
+			if (Facilities.Configuration.MaxInventory != null && this.inventory.Where(item => !item.IsWearable).ToArray().Length >= Facilities.Configuration.MaxInventory)
 				return Result.Failure(GetNamedTexts(TextID.InventoryFull, item));
 
-			_inventory.Add(item);
+			this.inventory.Add(item);
 
 			return Result.Success(GetNamedTexts(item.IsWearable ? TextID.StartedWearing : TextID.AddedToInventory, item));
 		}
 
 		public Item? FindInInventory(ItemID id)
-			=> _inventory.FirstOrDefault(item => item.ID == id);
+			=> this.inventory.FirstOrDefault(item => item.ID == id);
 
 		public bool RemoveFromInventory(Item item)
-			=> _inventory.Remove(item);
+			=> this.inventory.Remove(item);
 
 		public bool RemoveFromInventory(ItemID id)
-			=> _inventory.RemoveAll(item => item.ID == id) > 0;
+			=> this.inventory.RemoveAll(item => item.ID == id) > 0;
 
 		public (Item? item, FindResult result) FindInInventory(string s)
-			=> _inventory.FindItemByName(s);
+			=> this.inventory.FindItemByName(s);
 
 		public void DecreaseHealth()
 			=> DecreaseHealth(HealthImpact.Normal);
@@ -91,10 +90,10 @@ namespace R136.Entities
 
 		public void RestoreHealth()
 		{
-			if (_lifePointsFromConfig != Facilities.Configuration.LifePoints)
-				_lifePointsFromConfig = Facilities.Configuration.LifePoints;
+			if (this.lifePointsFromConfig != Facilities.Configuration.LifePoints)
+				this.lifePointsFromConfig = Facilities.Configuration.LifePoints;
 
-			_lifePoints = _lifePointsFromConfig;
+			this.lifePoints = this.lifePointsFromConfig;
 		}
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
@@ -102,10 +101,10 @@ namespace R136.Entities
 			if (snapshot == null)
 				snapshot = new();
 
-			snapshot.LifePoints = _lifePoints;
-			snapshot.LifePointsFromConfig = _lifePointsFromConfig;
+			snapshot.LifePoints = this.lifePoints;
+			snapshot.LifePointsFromConfig = this.lifePointsFromConfig;
 			snapshot.Room = CurrentRoom.ID;
-			snapshot.Inventory = _inventory.Select(item => item.ID).ToArray();
+			snapshot.Inventory = this.inventory.Select(item => item.ID).ToArray();
 
 			return snapshot;
 		}
@@ -115,14 +114,14 @@ namespace R136.Entities
 			if (snapshot.Rooms == null || snapshot.Items == null)
 				return false;
 
-			_rooms = snapshot.Rooms;
-			_lifePoints = snapshot.LifePoints;
-			_lifePointsFromConfig = snapshot.LifePointsFromConfig;
-			CurrentRoom = _rooms[snapshot.Room];
+			this.rooms = snapshot.Rooms;
+			this.lifePoints = snapshot.LifePoints;
+			this.lifePointsFromConfig = snapshot.LifePointsFromConfig;
+			CurrentRoom = this.rooms[snapshot.Room];
 
-			_inventory.Clear();
+			this.inventory.Clear();
 			if (snapshot.Inventory != null)
-				_inventory.AddRange(snapshot.Inventory.Select(itemId => snapshot.Items[itemId]));
+				this.inventory.AddRange(snapshot.Inventory.Select(itemId => snapshot.Items[itemId]));
 
 			return true;
 		}
@@ -142,7 +141,7 @@ namespace R136.Entities
 			=> serviceCollection.AddSingleton<IPlayer>(this);
 
 		public void Configure(IServiceProvider serviceProvider)
-			=> _lightsource = serviceProvider.GetService<ILightsource>();
+			=> this.lightsource = serviceProvider.GetService<ILightsource>();
 
 		public class Snapshot : IRoomsReader, IItemsReader, ISnapshot
 		{

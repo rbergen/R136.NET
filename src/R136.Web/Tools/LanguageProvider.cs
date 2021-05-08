@@ -10,7 +10,7 @@ namespace R136.Web.Tools
 {
 	public class LanguageProvider : ILanguageProvider
 	{
-		private string? _language = null;
+		private string? language = null;
 
 		public IServiceProvider? Services { private get; set; }
 
@@ -18,22 +18,22 @@ namespace R136.Web.Tools
 		{
 			get
 			{
-				if (_language == null && Services != null)
+				if (this.language == null && Services != null)
 				{
 					var localStorage = Services.GetService<ISyncLocalStorageService>();
 					if (localStorage != null && localStorage.ContainKey(Constants.LanguageStorageKey))
-						_language = localStorage.GetItem<string>(Constants.LanguageStorageKey);
+						this.language = localStorage.GetItem<string>(Constants.LanguageStorageKey);
 
-					if (_language == null)
-						_language = Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
+					if (this.language == null)
+						this.language = Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
 				}
 
-				return _language ?? Constants.Dutch;
+				return this.language ?? Constants.Dutch;
 			}
 
 			set
 			{
-				if (_language != value && Services != null)
+				if (this.language != value && Services != null)
 				{
 					if (!Services.GetRequiredService<IConfiguration>().GetSection(Constants.Languages).GetSection(value).Exists())
 						return;
@@ -43,7 +43,7 @@ namespace R136.Web.Tools
 						localStorage.SetItem(Constants.LanguageStorageKey, value);
 				}
 
-				_language = value;
+				this.language = value;
 			}
 		}
 

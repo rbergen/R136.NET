@@ -11,14 +11,14 @@ namespace R136.Shell.Tools
 {
 	public class FileSystemJsonEntityReader : IEntityReader
 	{
-		private readonly string _basePath;
-		private readonly ILogger<FileSystemJsonEntityReader>? _logger;
+		private readonly string basePath;
+		private readonly ILogger<FileSystemJsonEntityReader>? logger;
 
 		public FileSystemJsonEntityReader(IServiceProvider services, string basePath)
 		{
-			_logger = services.GetService<ILogger<FileSystemJsonEntityReader>>();
-			_basePath = basePath;
-			_logger?.LogDebug($"created with base URI {_basePath}");
+			this.logger = services.GetService<ILogger<FileSystemJsonEntityReader>>();
+			this.basePath = basePath;
+			this.logger?.LogDebug($"created with base URI {this.basePath}");
 		}
 
 		public async Task<TEntity?> ReadEntity<TEntity>(string? groupLabel, string label)
@@ -26,17 +26,17 @@ namespace R136.Shell.Tools
 			try
 			{
 				string fileName = $"{label}.json";
-				string jsonFilePath = groupLabel != null ? Path.Join(_basePath, groupLabel, fileName) : Path.Join(_basePath, fileName);
-				_logger?.LogDebug($"loading {groupLabel}.{label}...");
+				string jsonFilePath = groupLabel != null ? Path.Join(this.basePath, groupLabel, fileName) : Path.Join(this.basePath, fileName);
+				this.logger?.LogDebug($"loading {groupLabel}.{label}...");
 
 				var result = JsonSerializer.Deserialize<TEntity>(await File.ReadAllTextAsync(jsonFilePath, Encoding.UTF8));
-				_logger?.LogDebug($"{groupLabel}.{label} loaded successfully");
+				this.logger?.LogDebug($"{groupLabel}.{label} loaded successfully");
 
 				return result;
 			}
 			catch (Exception e)
 			{
-				_logger?.LogDebug($"loading of {groupLabel}.{label} failed with exception {e}");
+				this.logger?.LogDebug($"loading of {groupLabel}.{label} failed with exception {e}");
 
 				return default;
 			}

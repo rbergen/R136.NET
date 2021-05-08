@@ -14,7 +14,7 @@ namespace R136.Entities.CommandProcessors
 		public event Action<RoomChangeRequestedEventArgs>? RoomChanged;
 		public event Action<RoomChangeRequestedEventArgs>? RoomChangeRequested;
 
-		private int _paperrouteIndex = 0;
+		private int paperrouteIndex = 0;
 
 		public LocationCommandProcessor() : base(CommandProcessorID.Location) { }
 
@@ -63,14 +63,14 @@ namespace R136.Entities.CommandProcessors
 		private void CheckPaperRoute(RoomID toRoom)
 		{
 			var paperroute = Facilities.Configuration.PaperRoute;
-			if (_paperrouteIndex < paperroute.Length)
+			if (this.paperrouteIndex < paperroute.Length)
 			{
-				if (paperroute[_paperrouteIndex] == toRoom)
-					_paperrouteIndex++;
+				if (paperroute[this.paperrouteIndex] == toRoom)
+					this.paperrouteIndex++;
 				else
-					_paperrouteIndex = 0;
+					this.paperrouteIndex = 0;
 
-				if (_paperrouteIndex == paperroute.Length)
+				if (this.paperrouteIndex == paperroute.Length)
 					PaperRouteCompleted?.Invoke();
 			}
 		}
@@ -83,14 +83,14 @@ namespace R136.Entities.CommandProcessors
 			if (snapshot == null)
 				snapshot = new Snapshot();
 
-			snapshot.PaperRouteIndex = _paperrouteIndex;
+			snapshot.PaperRouteIndex = this.paperrouteIndex;
 
 			return snapshot;
 		}
 
 		public bool RestoreSnapshot(Snapshot snapshot)
 		{
-			_paperrouteIndex = snapshot.PaperRouteIndex;
+			this.paperrouteIndex = snapshot.PaperRouteIndex;
 
 			return true;
 		}

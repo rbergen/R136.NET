@@ -13,10 +13,10 @@
 					@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.GameStatusText))
 				</p>
 				<ul class="nav nav-tabs">
-					@if (_displayedTab == null || _displayedTab == Tab.Copy)
+					@if (displayedTab == null || displayedTab == Tab.Copy)
 					{
 						<li class="nav-item">
-							@if (_selectedTab == Tab.Copy)
+							@if (selectedTab == Tab.Copy)
 							{
 								<span class="nav-link active" style="cursor: default;">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CopyText))</span>
 							}
@@ -26,10 +26,10 @@
 							}
 						</li>
 					}
-					@if (_displayedTab == null || _displayedTab == Tab.Paste)
+					@if (displayedTab == null || displayedTab == Tab.Paste)
 					{
 						<li class="nav-item">
-							@if (_selectedTab == Tab.Paste)
+							@if (selectedTab == Tab.Paste)
 							{
 								<span class="nav-link active" style="cursor: default;">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.PasteText))</span>
 							}
@@ -40,11 +40,11 @@
 						</li>
 					}
 				</ul>
-				@if (_selectedTab == Tab.Paste)
+				@if (selectedTab == Tab.Paste)
 				{
 					<form @onsubmit="@SubmitInput">
-						<textarea class="form-control" id="status-text" style="height: 200px" @bind="@_enteredText" @bind:event="oninput"></textarea><br />
-						<input type="submit" class="btn btn-primary" disabled="@string.IsNullOrWhiteSpace(_enteredText)" value="@LanguageProvider.GetConfigurationValue(Constants.OKText)" />
+						<textarea class="form-control" id="status-text" style="height: 200px" @bind="@enteredText" @bind:event="oninput"></textarea><br />
+						<input type="submit" class="btn btn-primary" disabled="@string.IsNullOrWhiteSpace(enteredText)" value="@LanguageProvider.GetConfigurationValue(Constants.OKText)" />
 						<button class="btn btn-outline-secondary" @onclick="CancelClicked">@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.CancelText))</button>
 					</form>
 				}

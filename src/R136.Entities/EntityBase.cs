@@ -6,26 +6,26 @@ namespace R136.Entities
 {
 	public abstract class EntityBase
 	{
-		private static IServiceProvider? _gameServices;
+		private static IServiceProvider? gameServices;
 		
-		private static IPlayer? _player = null;
-		private static readonly object _playerLock = new();
+		private static IPlayer? player = null;
+		private static readonly object playerLock = new();
 		
-		private static IStatusManager? _statusManager = null;
-		private static readonly object _statusManagerLock = new();
+		private static IStatusManager? statusManager = null;
+		private static readonly object statusManagerLock = new();
 
 		public static IServiceProvider? GameServices 
 		{
 			set 
 			{
-				_gameServices = value;
-				lock (_playerLock)
+				gameServices = value;
+				lock (playerLock)
 				{
-					_player = null;
+					player = null;
 				}
-				lock (_statusManagerLock)
+				lock (statusManagerLock)
 				{
-					_statusManager = null;
+					statusManager = null;
 				}
 			} 
 		}
@@ -34,12 +34,12 @@ namespace R136.Entities
 		{
 			get
 			{
-				lock (_playerLock)
+				lock (playerLock)
 				{
-					if (_player == null && _gameServices != null)
-						_player = _gameServices.GetService<IPlayer>();
+					if (player == null && gameServices != null)
+						player = gameServices.GetService<IPlayer>();
 
-					return _player;
+					return player;
 				}
 			}
 		}
@@ -48,12 +48,12 @@ namespace R136.Entities
 		{
 			get
 			{
-				lock (_statusManagerLock)
+				lock (statusManagerLock)
 				{
-					if (_statusManager == null && _gameServices != null)
-						_statusManager = _gameServices.GetService<IStatusManager>();
+					if (statusManager == null && gameServices != null)
+						statusManager = gameServices.GetService<IStatusManager>();
 
-					return _statusManager;
+					return statusManager;
 				}
 			}
 		}

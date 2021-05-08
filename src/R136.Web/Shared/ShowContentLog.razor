@@ -10,7 +10,7 @@
 @for (int i = 0; i < ContentLog.Count; i++)
 {
 	var block = ContentLog[i];
-	_blockID = $"{BlockIDStart}-{i}";
+	blockID = $"{BlockIDStart}-{i}";
 
 	switch (block.Type)
 	{
@@ -18,7 +18,7 @@
 
 			<div class="row bg-dark p-0 m-0 g-0">
 				<div class="col p-0 m-0">
-					<div id="@(_blockID)" class="row border-top border-bottom border-light mb-2 pt-1 gx-2 align-items-bottom">
+					<div id="@(blockID)" class="row border-top border-bottom border-light mb-2 pt-1 gx-2 align-items-bottom">
 						<div class="col-md-auto text-white">
 							<h5>&gt;</h5>
 						</div>
@@ -33,7 +33,7 @@
 
 		case ContentBlockType.LanguageSwitch:
 
-			<div id="@(_blockID)" class="row bg-secondary border-top border-bottom border-light mb-2 gx-2 align-items-middle">
+			<div id="@(blockID)" class="row bg-secondary border-top border-bottom border-light mb-2 gx-2 align-items-middle">
 				<div class="col text-white">
 					@(block.Content)
 				</div>
@@ -43,7 +43,7 @@
 
 		default:
 
-			<div id="@(_blockID)" class="row bg-dark">
+			<div id="@(blockID)" class="row bg-dark">
 				<div class="col text-white">
 					<p>@(block.Content)</p>
 				</div>

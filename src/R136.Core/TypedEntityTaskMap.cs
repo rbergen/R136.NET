@@ -6,18 +6,18 @@ namespace R136.Core
 {
 	public class TypedEntityTaskCollection
 	{
-		private readonly Dictionary<Type, ValueType> _map = new();
+		private readonly Dictionary<Type, ValueType> map = new();
 
 		public void Add<TValue>(ValueTask<TValue> value)
-			=> _map[typeof(TValue)] = value;
+			=> this.map[typeof(TValue)] = value;
 
 		public void Add<TValue>(Task<TValue> value)
-			=> _map[typeof(TValue)] = new ValueTask<TValue>(value);
+			=> this.map[typeof(TValue)] = new ValueTask<TValue>(value);
 
 		public void Add<TValue>(TValue value)
-			=> _map[typeof(TValue)] = new ValueTask<TValue>(value);
+			=> this.map[typeof(TValue)] = new ValueTask<TValue>(value);
 
 		public ValueTask<TValue> Get<TValue>()
-			=> (ValueTask<TValue>)_map[typeof(TValue)];
+			=> (ValueTask<TValue>)this.map[typeof(TValue)];
 	}
 }

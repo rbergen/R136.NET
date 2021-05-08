@@ -11,40 +11,40 @@ namespace R136.Shell
 {
 	partial class GameConsole
 	{
-		private static readonly Random _random = new();
+		private static readonly Random random = new();
 
-		private long _bpsPrintDelay;
-		private int _bpsPrintCount;
-		private bool _bpsPrintEnabled;
+		private long bpsPrintDelay;
+		private int bpsPrintCount;
+		private bool bpsPrintEnabled;
 		
 		private void SaveStatus(InputSpecs? inputSpecs)
 		{
-			if (_status == null)
+			if (this.status == null)
 				return;
 
-			_status.InputSpecs = inputSpecs;
-			_status.EngineSnapshot = _engine!.TakeSnapshot();
-			_status.Texts = _texts.ToArray();
+			this.status.InputSpecs = inputSpecs;
+			this.status.EngineSnapshot = this.engine!.TakeSnapshot();
+			this.status.Texts = this.texts.ToArray();
 
-			_status.Save();
+			this.status.Save();
 		}
 
 		private void RestoreStatus()
 		{
-			if (_status?.EngineSnapshot != null && _engine != null)
-				_engine.RestoreSnapshot(_status.EngineSnapshot);
+			if (this.status?.EngineSnapshot != null && this.engine != null)
+				this.engine.RestoreSnapshot(this.status.EngineSnapshot);
 
-			if (_status?.Texts != null)
+			if (this.status?.Texts != null)
 			{
-				_texts.Clear();
-				foreach (string text in string.Join("\n", _status.Texts).Split('\n').TakeLast(Console.WindowHeight))
+				this.texts.Clear();
+				foreach (string text in string.Join("\n", this.status.Texts).Split('\n').TakeLast(Console.WindowHeight))
 				{
 					WritePlainText(text);
-					_texts.Enqueue(text);
+					this.texts.Enqueue(text);
 				}
 			}
 
-			if (_status?.Pausing ?? false)
+			if (this.status?.Pausing ?? false)
 				WaitForKey();
 		}
 
@@ -53,7 +53,7 @@ namespace R136.Shell
 			ConsoleColor color = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.White;
 
-			BPSPrint(_languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
+			BPSPrint(this.languages?.GetConfigurationValue(Constants.ProceedText) ?? Constants.ProceedText);
 			Console.ReadKey();
 
 			Console.ForegroundColor = color;
@@ -62,8 +62,8 @@ namespace R136.Shell
 
 			ClearLine(top, left + 1);
 
-			if (_status != null)
-				_status.Pausing = false;
+			if (this.status != null)
+				this.status.Pausing = false;
 		}
 
 		private void ClearLine(int row, int length)
@@ -113,14 +113,14 @@ namespace R136.Shell
 		private void WriteMessages()
 		{
 			List<string> lines = new();
-			foreach (var message in _messages)
+			foreach (var message in this.messages)
 			{
 				lines.AddRange(FilterHTML(message));
 				lines.Add(string.Empty);
 			}
 
 			WriteText(lines.ToArray());
-			_messages.Clear();
+			this.messages.Clear();
 		}
 
 		private void WriteText(StringValues texts)
@@ -130,10 +130,10 @@ namespace R136.Shell
 
 			string plainText = texts.ToPlainText();
 			WritePlainText(plainText);
-			_texts.Enqueue(plainText);
+			this.texts.Enqueue(plainText);
 
-			while (_texts.Count > 25)
-				_texts.Dequeue();
+			while (this.texts.Count > 25)
+				this.texts.Dequeue();
 		}
 
 		private void WritePlainText(string plainText)
@@ -175,7 +175,7 @@ namespace R136.Shell
 
 		private void BPSPrint(string text)
 		{
-			if (!_bpsPrintEnabled || text.Length == 0)
+			if (!this.bpsPrintEnabled || text.Length == 0)
 			{
 				Console.Write(text);
 				return;
@@ -183,14 +183,14 @@ namespace R136.Shell
 
 			Stopwatch stopwatch = new();
 			int i;
-			for (i = 0; i < (text.Length - _bpsPrintCount); i += _bpsPrintCount)
+			for (i = 0; i < (text.Length - this.bpsPrintCount); i += this.bpsPrintCount)
 			{
 				stopwatch.Restart();
-				while (stopwatch.ElapsedTicks < _bpsPrintDelay) { }
-				Console.Write(text.Substring(i, _bpsPrintCount));
+				while (stopwatch.ElapsedTicks < this.bpsPrintDelay) { }
+				Console.Write(text.Substring(i, this.bpsPrintCount));
 			}
 			stopwatch.Restart();
-			while (stopwatch.ElapsedTicks < _bpsPrintDelay) { }
+			while (stopwatch.ElapsedTicks < this.bpsPrintDelay) { }
 			Console.Write(text[i..]);
 		}
 
@@ -198,18 +198,18 @@ namespace R136.Shell
 		{
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Gray;
-			Console.Title = _languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
+			Console.Title = this.languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
 
-			var bpsConfig = _configuration[Constants.BPSParam];
+			var bpsConfig = this.configuration[Constants.BPSParam];
 			if (bpsConfig == null || bpsConfig == "off")
 			{
-				_bpsPrintEnabled = false;
+				this.bpsPrintEnabled = false;
 				return;
 			}
 
-			_bpsPrintEnabled = true;
-			_bpsPrintCount = 1;
-			_bpsPrintDelay = 0;
+			this.bpsPrintEnabled = true;
+			this.bpsPrintCount = 1;
+			this.bpsPrintDelay = 0;
 
 			int top = Console.GetCursorPosition().Top;
 			Console.SetCursorPosition(0, top);
@@ -231,29 +231,29 @@ namespace R136.Shell
 
 			if (neededTicksPerChar > measuredTicksPerChar)
 			{
-				_bpsPrintCount = 1;
-				_bpsPrintDelay = neededTicksPerChar - measuredTicksPerChar;
+				this.bpsPrintCount = 1;
+				this.bpsPrintDelay = neededTicksPerChar - measuredTicksPerChar;
 			}
 			else
 			{
-				_bpsPrintCount = (int)(measuredTicksPerChar / neededTicksPerChar) + 1;
-				_bpsPrintDelay = _bpsPrintCount * neededTicksPerChar - measuredTicksPerChar;
+				this.bpsPrintCount = (int)(measuredTicksPerChar / neededTicksPerChar) + 1;
+				this.bpsPrintDelay = this.bpsPrintCount * neededTicksPerChar - measuredTicksPerChar;
 			}
 		}
 
 		public static string RandomString(int length)
-			=> new(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", length).Select(s => s[_random.Next(s.Length)]).ToArray());
+			=> new(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", length).Select(s => s[random.Next(s.Length)]).ToArray());
 
 		private void ShowLanguageSwitchInstructions()
 		{
 			List<string> strings = new();
-			var languageSections = _configuration!.GetSection(Constants.Languages).GetChildren();
+			var languageSections = this.configuration!.GetSection(Constants.Languages).GetChildren();
 			string codes = string.Join(", ", languageSections.Select(cs => cs.Key));
 
 			foreach (var section in languageSections)
 				strings.Add(section[Constants.LanguageSwitchInstructionText].Replace("{codes}", codes));
 
-			_messages.Add(strings.ToArray());
+			this.messages.Add(strings.ToArray());
 		}
 	}
 }

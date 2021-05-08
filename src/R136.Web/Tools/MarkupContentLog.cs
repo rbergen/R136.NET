@@ -16,16 +16,16 @@ namespace R136.Web.Tools
 		private const int DefaultMaxBlockCount = 100;
 		private const int DefaultSaveBlockCount = 20;
 
-		private readonly List<ContentBlock> _blocks = new();
+		private readonly List<ContentBlock> blocks = new();
 		public int MaxBlockCount { get; set; } = DefaultMaxBlockCount;
 		public int SaveBlockCount { get; set; } = DefaultSaveBlockCount;
 		public bool IsTrimmed { get; private set; } = false;
 
 		public IEnumerator<ContentBlock> GetEnumerator()
-			=> _blocks.GetEnumerator();
+			=> this.blocks.GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator()
-			=> ((IEnumerable)_blocks).GetEnumerator();
+			=> ((IEnumerable)this.blocks).GetEnumerator();
 
 		public void Add(ContentBlockType type, ResultCode resultCode, StringValues texts)
 			=> AddBlock(type, resultCode, texts);
@@ -35,7 +35,7 @@ namespace R136.Web.Tools
 
 		public void AddRaw(ContentBlockType type, StringValues text)
 		{
-			_blocks.Add(new()
+			this.blocks.Add(new()
 			{
 				Type = type,
 				Text = text
@@ -49,7 +49,7 @@ namespace R136.Web.Tools
 			if (texts == StringValues.Empty)
 				return;
 
-			_blocks.Add(new()
+			this.blocks.Add(new()
 			{
 				Type = type,
 				ResultCode = resultCode,
@@ -60,13 +60,13 @@ namespace R136.Web.Tools
 		}
 
 		public int Count
-			=> _blocks.Count;
+			=> this.blocks.Count;
 
 		private void Trim()
 		{
-			while (_blocks.Count > MaxBlockCount)
+			while (this.blocks.Count > MaxBlockCount)
 			{
-				_blocks.RemoveAt(0);
+				this.blocks.RemoveAt(0);
 				IsTrimmed = true;
 			}
 		}
@@ -118,16 +118,16 @@ namespace R136.Web.Tools
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 			=> new()
 			{
-				ContentBlocks = _blocks.TakeLast(SaveBlockCount).ToArray(),
-				IsTrimmed = IsTrimmed || _blocks.Count > SaveBlockCount
+				ContentBlocks = this.blocks.TakeLast(SaveBlockCount).ToArray(),
+				IsTrimmed = IsTrimmed || this.blocks.Count > SaveBlockCount
 			};
 
 		public bool RestoreSnapshot(Snapshot snapshot)
 		{
-			_blocks.Clear();
+			this.blocks.Clear();
 
 			if (snapshot.ContentBlocks != null)
-				_blocks.AddRange(snapshot.ContentBlocks);
+				this.blocks.AddRange(snapshot.ContentBlocks);
 
 			IsTrimmed = snapshot.IsTrimmed;
 
@@ -135,7 +135,7 @@ namespace R136.Web.Tools
 		}
 
 		public ContentBlock this[int index]
-			=> _blocks[index];
+			=> this.blocks[index];
 	}
 
 	public class ContentBlock : ISnapshot

@@ -15,16 +15,16 @@ namespace R136.Entities.General
 		public static bool WriteClassType { get; set; } = true;
 		public static bool WriteBidirectionalReferences { get; set; } = true;
 
-		private int _level;
-		private readonly int _indentSize;
-		private readonly StringBuilder _stringBuilder;
-		private readonly List<int> _hashListOfFoundElements;
+		private int level;
+		private readonly int indentSize;
+		private readonly StringBuilder stringBuilder;
+		private readonly List<int> hashListOfFoundElements;
 
 		private ObjectDumper(int indentSize)
 		{
-			_indentSize = indentSize;
-			_stringBuilder = new StringBuilder();
-			_hashListOfFoundElements = new List<int>();
+			this.indentSize = indentSize;
+			this.stringBuilder = new StringBuilder();
+			this.hashListOfFoundElements = new List<int>();
 		}
 
 		public static string Dump(object? element)
@@ -46,8 +46,8 @@ namespace R136.Entities.General
 					if (WriteClassType)
 						Write($"{{{objectType.FullName}}}");
 
-					_hashListOfFoundElements.Add(element.GetHashCode());
-					_level++;
+					this.hashListOfFoundElements.Add(element.GetHashCode());
+					this.level++;
 				}
 
 				if (element is IEnumerable enumerableElement)
@@ -57,10 +57,10 @@ namespace R136.Entities.General
 					WriteElement(element);
 
 				if (!typeof(IEnumerable).IsAssignableFrom(objectType))
-					_level--;
+					this.level--;
 			}
 
-			return _stringBuilder.ToString();
+			return this.stringBuilder.ToString();
 		}
 
 		private void WriteElement(object element)
@@ -96,7 +96,7 @@ namespace R136.Entities.General
 					Write($"{memberInfo.Name}: {(isEnumerable ? EnumerableMarker : ClassMarker)}");
 
 					bool alreadyTouched = !isEnumerable && AlreadyTouched(value);
-					_level++;
+					this.level++;
 
 					if (!alreadyTouched)
 						DumpElement(value);
@@ -104,7 +104,7 @@ namespace R136.Entities.General
 					else if (WriteBidirectionalReferences)
 						Write($"{{{value!.GetType().FullName}}} {BidirectionalReferenceMarker}");
 
-					_level--;
+					this.level--;
 				}
 			}
 		}
@@ -115,9 +115,9 @@ namespace R136.Entities.General
 			{
 				if (item is IEnumerable && !(item is string))
 				{
-					_level++;
+					this.level++;
 					DumpElement(item);
-					_level--;
+					this.level--;
 				}
 				else
 				{
@@ -136,9 +136,9 @@ namespace R136.Entities.General
 				return false;
 
 			var hash = value.GetHashCode();
-			for (int i = 0; i < _hashListOfFoundElements.Count; i++)
+			for (int i = 0; i < this.hashListOfFoundElements.Count; i++)
 			{
-				if (_hashListOfFoundElements[i] == hash)
+				if (this.hashListOfFoundElements[i] == hash)
 					return true;
 			}
 
@@ -146,7 +146,7 @@ namespace R136.Entities.General
 		}
 
 		private void Write(string value)
-			=> _stringBuilder.AppendLine(new string(' ', _level * _indentSize) + value);
+			=> this.stringBuilder.AppendLine(new string(' ', this.level * this.indentSize) + value);
 
 		private static string FormatValue(object? o)
 			=> o == null ? Null : o switch

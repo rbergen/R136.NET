@@ -13,7 +13,7 @@ namespace R136.Core
 			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
-			PlaceAt(item, _player!.CurrentRoom);
+			PlaceAt(item, this.player!.CurrentRoom);
 		}
 
 		public void OpenConnection(Direction direction, RoomID toRoom)
@@ -21,8 +21,8 @@ namespace R136.Core
 			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
-			if (!_player!.CurrentRoom.Connections.ContainsKey(direction))
-				_player!.CurrentRoom.Connections[direction] = _rooms![toRoom];
+			if (!this.player!.CurrentRoom.Connections.ContainsKey(direction))
+				this.player!.CurrentRoom.Connections[direction] = this.rooms![toRoom];
 		}
 
 		public void RegisterServices(IServiceCollection serviceCollection)
@@ -40,7 +40,7 @@ namespace R136.Core
 		}
 
 		public void RegisterListener(INotifyTurnEnding listener)
-		=> _turnEndingNotifiees.Add(listener.TurnEnding);
+		=> this.turnEndingNotifiees.Add(listener.TurnEnding);
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
@@ -51,12 +51,12 @@ namespace R136.Core
 				snapshot = new Snapshot();
 
 			snapshot.Configuration = Facilities.Configuration;
-			snapshot.HasTreeBurned = _hasTreeBurned;
+			snapshot.HasTreeBurned = this.hasTreeBurned;
 			snapshot.DoNext = DoNext;
-			snapshot.LocationCommandProcessor = _processors!.LocationProcessor.TakeSnapshot();
-			Item.TakeSnapshots(snapshot, _items!);
-			Animate.TakeSnapshots(snapshot, _animates!);
-			snapshot.Player = _player!.TakeSnapshot();
+			snapshot.LocationCommandProcessor = this.processors!.LocationProcessor.TakeSnapshot();
+			Item.TakeSnapshots(snapshot, this.items!);
+			Animate.TakeSnapshots(snapshot, this.animates!);
+			snapshot.Player = this.player!.TakeSnapshot();
 
 			return snapshot;
 		}
@@ -71,27 +71,27 @@ namespace R136.Core
 			if (snapshot.Configuration != null)
 				Facilities.Configuration.Load(snapshot.Configuration);
 
-			_hasTreeBurned = snapshot.HasTreeBurned;
+			this.hasTreeBurned = snapshot.HasTreeBurned;
 			DoNext = snapshot.DoNext;
 
 			if (snapshot.LocationCommandProcessor != null)
-				result &= _processors!.LocationProcessor.RestoreSnapshot(AddEntities(snapshot.LocationCommandProcessor));
+				result &= this.processors!.LocationProcessor.RestoreSnapshot(AddEntities(snapshot.LocationCommandProcessor));
 			else
 				result = false;
 
-			Item.RestoreSnapshots(snapshot, _items!);
-			Animate.RestoreSnapshots(snapshot, _animates!);
+			Item.RestoreSnapshots(snapshot, this.items!);
+			Animate.RestoreSnapshots(snapshot, this.animates!);
 
 			if (snapshot.Animates != null)
 			{
 				foreach (var animate in snapshot.Animates)
-					result &= _animates![animate.ID].RestoreSnapshot(AddEntities(animate));
+					result &= this.animates![animate.ID].RestoreSnapshot(AddEntities(animate));
 			}
 			else
 				result = false;
 
 			if (snapshot.Player != null)
-				result &= _player!.RestoreSnapshot(AddEntities(snapshot.Player));
+				result &= this.player!.RestoreSnapshot(AddEntities(snapshot.Player));
 			else
 				result = false;
 

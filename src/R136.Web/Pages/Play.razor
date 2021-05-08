@@ -2,7 +2,7 @@
 
 @inject IConfiguration Configuration 
 
-<GameStatus StatusText="@_statusText" TextSubmitted="StatusTextSubmitted" @bind-Visible="_showGameStatusModal"/>
+<GameStatus StatusText="@statusText" TextSubmitted="StatusTextSubmitted" @bind-Visible="showGameStatusModal"/>
 
 <PageHeader ID="top-bar" LanguageChanged="LanguageChanged" ShowStatusIcon="true" StatusIconClicked="ShowGameStatus" />
 
@@ -14,19 +14,19 @@
 
 <div class="footer fixed-bottom">
 
-	@if (_isPaused)
+	@if (isPaused)
 	{
 	<ProceedButtonBar ID="bottom-bar" OnProceedClicked="ProceedClickedAsync" />
 	}
-	else @if (_hasEnded)
+	else @if (hasEnded)
 	{
 	<ProceedButtonBar ID="bottom-bar" OnProceedClicked="RestartClickedAsync" ButtonLabel="@((MarkupString)LanguageProvider.GetConfigurationValue(Constants.RestartButtonLabel))" />
 	}
 	else
 	{
-		<div class="container my-0 alert alert-danger alert-dismissible fade show @(_error != null ? "visible" : "hidden")">
-			@(_error ?? (MarkupString)"&nbsp")
-			<button type="button" class="btn-close" @onclick="@(() => _error = null)"></button>
+		<div class="container my-0 alert alert-danger alert-dismissible fade show @(error != null ? "visible" : "hidden")">
+			@(error ?? (MarkupString)"&nbsp")
+			<button type="button" class="btn-close" @onclick="@(() => error = null)"></button>
 		</div>
 		<form id="bottom-bar" class="container bg-dark border-top border-danger" @onsubmit="@SubmitInput">
 			<div class="row pt-2 pb-2 gx-2">
@@ -35,7 +35,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text" style="cursor: default;">&gt;</span>
 						</div>
-						<input @ref="_focusElement" type="text" maxlength="@(_inputSpecs?.MaxLength ?? 100)" style="text-transform: @((_inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" @bind="@_input" @onkeypress="@(() => _error = null)" />
+						<input @ref="focusElement" type="text" maxlength="@(inputSpecs?.MaxLength ?? 100)" style="text-transform: @((inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" @bind="@input" @onkeypress="@(() => error = null)" />
 					</div>
 				</div>
 				<div class="col-md-auto">
