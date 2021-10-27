@@ -46,3 +46,5 @@ $ dotnet build R136.Shell/R136.Shell.csproj
 ```
 
 I've successfully built the Shell project on Windows and Linux (Cloud9 Amazon Linux 2, to be precise), following these instructions.
+
+_- Rutger van Bergen - [github.com/rbergen](https://github.com/rbergen)_
