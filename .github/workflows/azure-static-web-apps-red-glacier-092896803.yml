@@ -32,8 +32,7 @@ jobs:
           output_location: "wwwroot" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          ENABLE_MULTIPLATFORM_BUILD: true
-          CUSTOM_BUILD_COMMAND: echo Skipping node.js build
+          PLATFORM_NAME: dotnet
           PRE_BUILD_COMMAND: dotnet publish -c Debug --self-contained true -r linux-x64 -o ${GITHUB_WORKSPACE}/src/R136.BuildTool/bin/Debug/net6.0/publish ${GITHUB_WORKSPACE}/src/R136.BuildTool/R136.BuildTool.csproj
 
   close_pull_request_job:
