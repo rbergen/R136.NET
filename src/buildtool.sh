@@ -8,10 +8,10 @@ cd $(dirname "${BASH_SOURCE[0]}")
 
 unset BUILDTOOL_PATH
 
-if [[ -x ${BUILDTOOL_PUBLISH_PATH} ]]; then
+if [[ -f ${BUILDTOOL_PUBLISH_PATH} ]]; then
   echo "BuildTool found at publish path"
   BUILDTOOL_PATH=${BUILDTOOL_PUBLISH_PATH}
-elif [[ -x ${BUILDTOOL_BUILD_PATH} ]]; then
+elif [[ -f ${BUILDTOOL_BUILD_PATH} ]]; then
   echo "BuildTool found at build path"
   BUILDTOOL_PATH=${BUILDTOOL_BUILD_PATH}
 fi
