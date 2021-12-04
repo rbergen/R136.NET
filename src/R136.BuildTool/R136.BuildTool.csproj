@@ -1,9 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <UseAppHost>false</UseAppHost>
+	  <OutputType>Exe</OutputType>
 	  <TargetFramework>net6.0</TargetFramework>
-	  <RunAOTCompilation>true</RunAOTCompilation>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>

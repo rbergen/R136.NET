@@ -33,7 +33,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           PLATFORM_NAME: dotnet
-          #PRE_BUILD_COMMAND: dotnet publish --nologo --no-self-contained -c Debug -o ${GITHUB_WORKSPACE}/src/R136.BuildTool/bin/Debug/net6.0/publish ${GITHUB_WORKSPACE}/src/R136.BuildTool/R136.BuildTool.csproj
+          PRE_BUILD_COMMAND: dotnet build --no-logo -c Debug ${GITHUB_WORKSPACE}/src/R136.BuildTool/R136.BuildTool.csproj
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
