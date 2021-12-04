@@ -201,7 +201,7 @@ namespace R136.Shell
 			Console.Title = this.languages?.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
 
 			var bpsConfig = this.configuration[Constants.BPSParam];
-			if (bpsConfig == null || bpsConfig == "off")
+			if (bpsConfig == "off")
 			{
 				this.bpsPrintEnabled = false;
 				return;
@@ -224,7 +224,7 @@ namespace R136.Shell
 			Console.SetCursorPosition(0, top);
 
 			if (!int.TryParse(bpsConfig, out int bpsRate) || bpsRate < Constants.BPSMinimum)
-				bpsRate = Constants.BPSDefault;
+				bpsRate = int.Parse(configuration[Constants.BPSDefault] ?? "2400");
 
 			long neededTicksPerChar = 10000 * 1000 / (bpsRate / 10);
 			long measuredTicksPerChar = stopwatch.ElapsedTicks / width;

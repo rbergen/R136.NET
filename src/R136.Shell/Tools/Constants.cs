@@ -17,6 +17,7 @@
 
 		public const string Languages = nameof(Languages);
 		public const string DefaultLanguage = nameof(DefaultLanguage);
+		public const string BPSDefault = nameof(BPSDefault);
 
 		public const string Dutch = "nl-NL";
 		public const string English = "en-GB";
@@ -24,6 +25,5 @@
 		public const string ReversePrompt = "< ";
 
 		public const int BPSMinimum = 110;
-		public const int BPSDefault = 2400;
 	}
 }
