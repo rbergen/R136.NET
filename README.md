@@ -29,7 +29,12 @@ Concerning the game itself:
 * It now runs in English as well as Dutch, and features on-the-spot switching between those two languages.
 
 ## Building
-On any system that has a .NET 5.0 SDK and node.js (npm) installed, R136.NET can be built using Visual Studio 2019, the dotnet command line interface or another tool that uses the latter.
+On any system that has a .NET 6.0 SDK and node.js (npm) installed, R136.NET can be built using Visual Studio 2022, the dotnet command line interface or another tool that uses the latter.
+
+The Web project is a Blazor WebAssembly project with AOT compilation enabled. This means that the following command must be issued once before building it for the first time:
+```
+$ dotnet workload install wasm-tools
+```
 
 The Shell and Web projects have an optional build-time dependency on the BuildTool project; the latter takes care of processing the base .json files in the data directory structure to their production counterparts. The dependency is optional in the sense that the JSON processing is simply skipped if the BuildTool executable is not found when building the dependent projects.
 
@@ -46,3 +51,5 @@ $ dotnet build R136.Shell/R136.Shell.csproj
 ```
 
 I've successfully built the Shell project on Windows and Linux (Cloud9 Amazon Linux 2, to be precise), following these instructions.
+
+_- Rutger van Bergen - [github.com/rbergen](https://github.com/rbergen)_

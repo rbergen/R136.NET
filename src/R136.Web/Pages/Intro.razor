@@ -1,8 +1,9 @@
 ﻿@page "/"
 
+@using Blazored.LocalStorage
+
 @inject NavigationManager NavigationManager
-@inject IConfiguration Configuration
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject ILocalStorageService LocalStorage
 @inject ILanguageProvider LanguageProvider
 @inject IJSRuntime JSRuntime 
 

@@ -20,7 +20,7 @@ jobs:
           submodules: true
       - name: Build And Deploy
         id: builddeploy
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_GLACIER_092896803 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
@@ -34,7 +34,7 @@ jobs:
         env:
           ENABLE_MULTIPLATFORM_BUILD: true
           CUSTOM_BUILD_COMMAND: echo Skipping node.js build
-          PRE_BUILD_COMMAND: dotnet publish -c Debug --self-contained true -r linux-x64 -o ${GITHUB_WORKSPACE}/src/R136.BuildTool/bin/Debug/net5.0/publish ${GITHUB_WORKSPACE}/src/R136.BuildTool/R136.BuildTool.csproj
+          PRE_BUILD_COMMAND: dotnet publish -c Debug --self-contained true -r linux-x64 -o ${GITHUB_WORKSPACE}/src/R136.BuildTool/bin/Debug/net6.0/publish ${GITHUB_WORKSPACE}/src/R136.BuildTool/R136.BuildTool.csproj
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Close Pull Request
         id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_GLACIER_092896803 }}
           action: "close"

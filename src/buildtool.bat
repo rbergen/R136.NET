@@ -1,7 +1,7 @@
 @echo off
 
-set BUILDTOOL_PUBLISH_PATH=R136.BuildTool\bin\Debug\net5.0\publish\R136.BuildTool.exe
-set BUILDTOOL_BUILD_PATH=R136.BuildTool\bin\Debug\net5.0\R136.BuildTool.exe
+set BUILDTOOL_PUBLISH_PATH=R136.BuildTool\bin\Debug\net6.0\publish\R136.BuildTool.exe
+set BUILDTOOL_BUILD_PATH=R136.BuildTool\bin\Debug\net6.0\R136.BuildTool.exe
 
 setlocal enableextensions
 

@@ -87,9 +87,7 @@ namespace R136.Web.Pages
 		}
 
 		private async Task StatusTextSubmitted(string text)
-		{
-			await ProcessStatusText(text);
-		}
+			=> await ProcessStatusText(text);
 
 		private async Task<bool> ProcessStatusText(string text)
 		{
