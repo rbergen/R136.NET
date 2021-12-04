@@ -1,4 +1,6 @@
 # R136.NET
+[![Plain .NET build](https://github.com/rbergen/R136.NET/actions/workflows/dotnet.yml/badge.svg)](https://github.com/rbergen/R136.NET/actions/workflows/dotnet.yml) [![Azure Static Web Apps CI/CD](https://github.com/rbergen/R136.NET/actions/workflows/azure-static-web-apps-red-glacier-092896803.yml/badge.svg)](https://github.com/rbergen/R136.NET/actions/workflows/azure-static-web-apps-red-glacier-092896803.yml)
+
 This is a .NET web and console version of a text adventure a friend and I created all the way back in 1998. 
 More information about the game and its history can be found in the README of the 
 [original C(++) version GitHub repo](https://github.com/rbergen/R136).
