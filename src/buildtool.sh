@@ -1,7 +1,7 @@
 #/bin/bash
 
-BUILDTOOL_PUBLISH_PATH=R136.BuildTool/bin/Debug/net6.0/publish/R136.BuildTool
-BUILDTOOL_BUILD_PATH=R136.BuildTool/bin/Debug/net6.0/R136.BuildTool
+BUILDTOOL_PUBLISH_PATH=R136.BuildTool/bin/Debug/net6.0/publish/R136.BuildTool.dll
+BUILDTOOL_BUILD_PATH=R136.BuildTool/bin/Debug/net6.0/R136.BuildTool.dll
 START_DIRECTORY=$(pwd)
 
 cd $(dirname "${BASH_SOURCE[0]}")
@@ -17,7 +17,7 @@ elif [[ -x ${BUILDTOOL_BUILD_PATH} ]]; then
 fi
 
 if [[ -n ${BUILDTOOL_PATH} ]]; then
-  ${BUILDTOOL_PATH} "$@" ./conversions.json
+  dotnet ${BUILDTOOL_PATH} "$@" ./conversions.json
 else
   echo "BuildTool not available at ${BUILDTOOL_PUBLISH_PATH} or ${BUILDTOOL_BUILD_PATH}, skipping JSON conversion"
 fi

@@ -1,7 +1,7 @@
 @echo off
 
-set BUILDTOOL_PUBLISH_PATH=R136.BuildTool\bin\Debug\net6.0\publish\R136.BuildTool.exe
-set BUILDTOOL_BUILD_PATH=R136.BuildTool\bin\Debug\net6.0\R136.BuildTool.exe
+set BUILDTOOL_PUBLISH_PATH=R136.BuildTool\bin\Debug\net6.0\publish\R136.BuildTool.dll
+set BUILDTOOL_BUILD_PATH=R136.BuildTool\bin\Debug\net6.0\R136.BuildTool.dll
 
 setlocal enableextensions
 
@@ -20,7 +20,7 @@ if exist %BUILDTOOL_PUBLISH_PATH% (
 )
 
 if defined BUILDTOOL_PATH (
-	%BUILDTOOL_PATH% %* .\conversions.json
+	dotnet %BUILDTOOL_PATH% %* .\conversions.json
 ) else (
 	echo BuildTool not available at %BUILDTOOL_PUBLISH_PATH% or %BUILDTOOL_BUILD_PATH%, skipping JSON conversion.
 )
