@@ -30,33 +30,21 @@
 	{
 		"ID": "Combine",
 		"Name": "combineer",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Syntax: {command} \\<voorwerp\\> en/met \\<voorwerp\\>"
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					" en ",
-					" met "
-				]
-			},
-			{
-				"ID": 2,
-				"Texts": [
-					"Je kunt een voorwerp niet met zichzelf combineren."
-				]
-			},
-			{
-				"ID": 3,
-				"Texts": [
-					"Dat levert niets bruikbaars op."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Syntax: {command} \\<voorwerp\\> en/met \\<voorwerp\\>"
+			],
+			"1": [
+				" en ",
+				" met "
+			],
+			"2": [
+				"Je kunt een voorwerp niet met zichzelf combineren."
+			],
+			"3": [
+				"Dat levert niets bruikbaars op."
+			]
+		}
 	},
 	{
 		"ID": "Pickup",
@@ -65,195 +53,138 @@
 	{
 		"ID": "PutDown",
 		"Name": "leg",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Je bent inmiddels zo aan {item} gehecht geraakt dat je deze niet meer kunt missen."
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					"Je legt {item} neer."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Je bent inmiddels zo aan {item} gehecht geraakt dat je deze niet meer kunt missen."
+			],
+			"1": [
+				"Je legt {item} neer."
+			]
+		}
 	},
 	{
 		"ID": "Inspect",
 		"Name": "bekijk",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Het is veel te donker om wat dan ook te bekijken."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Het is veel te donker om wat dan ook te bekijken."
+			]
+		}
 	},
 	{
 		"ID": "Wait",
 		"Name": "afwachten",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Je pulkt wat in je neus.",
-					"Je krabt wat achter je oren.",
-					"Je gaapt even uitgebreid.",
-					"Je trekt je broek even op.",
-					"Je pulkt wat smeer uit je oren."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Je pulkt wat in je neus.",
+				"Je krabt wat achter je oren.",
+				"Je gaapt even uitgebreid.",
+				"Je trekt je broek even op.",
+				"Je pulkt wat smeer uit je oren."
+			]
+		}
 	},
 	{
 		"ID": "End",
 		"Name": "einde",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Weet je zeker dat je de aarde laat vergaan? [j/n]"
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					"Mooi zo!"
-				]
-			},
-			{
-				"ID": 2,
-				"Texts": [
-					"Dat snap ik niet. Antwoord alsjeblieft met j of n."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Weet je zeker dat je de aarde laat vergaan? [j/n]"
+			],
+			"1": [
+				"Mooi zo!"
+			],
+			"2": [
+				"Dat snap ik niet. Antwoord alsjeblieft met j of n."
+			]
+		}
 	},
 	{
 		"ID": "Status",
 		"Name": "status",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"**STATUSRAPPORT**",
-					""
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					"Je hebt nog {lifepoints} levenspunten."
-				]
-			},
-			{
-				"ID": 2,
-				"Texts": [
-					"Je zaklamp staat aan."
-				]
-			},
-			{
-				"ID": 3,
-				"Texts": [
-					"Je zaklamp staat uit."
-				]
-			},
-			{
-				"ID": 4,
-				"Texts": [
-					"Je draagt niets."
-				]
-			},
-			{
-				"ID": 5,
-				"Texts": [
-					"Je hebt in je bezit:"
-				]
-			},
-			{
-				"ID": 6,
-				"Texts": [
-					"* {item}"
-				]
-			},
-			{
-				"ID": 7,
-				"Texts": [
-					"Je zaklamp bevat \"trommelbatterijen\"."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"**STATUSRAPPORT**",
+				""
+			],
+			"1": [
+				"Je hebt nog {lifepoints} levenspunten."
+			],
+			"2": [
+				"Je zaklamp staat aan."
+			],
+			"3": [
+				"Je zaklamp staat uit."
+			],
+			"4": [
+				"Je draagt niets."
+			],
+			"5": [
+				"Je hebt in je bezit:"
+			],
+			"6": [
+				"* {item}"
+			],
+			"7": [
+				"Je zaklamp bevat \"trommelbatterijen\"."
+			]
+		}
 	},
 	{
 		"ID": "Help",
 		"Name": "help",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"**HELP**",
-					"",
-					"Commando's:",
-					"* oost",
-					"* west",
-					"* noord",
-					"* zuid",
-					"* klim",
-					"* daal",
-					"* gebruik \\<voorwerp\\>",
-					"* combineer \\<voorwerp\\> en/met \\<voorwerp\\>",
-					"* pak \\<voorwerp\\>",
-					"* leg \\<voorwerp\\>",
-					"* bekijk \\<voorwerp\\>",
-					"* afwachten",
-					"* einde",
-					"* status",
-					"* help",
-					"* info"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"**HELP**",
+				"",
+				"Commando's:",
+				"* oost",
+				"* west",
+				"* noord",
+				"* zuid",
+				"* klim",
+				"* daal",
+				"* gebruik \\<voorwerp\\>",
+				"* combineer \\<voorwerp\\> en/met \\<voorwerp\\>",
+				"* pak \\<voorwerp\\>",
+				"* leg \\<voorwerp\\>",
+				"* bekijk \\<voorwerp\\>",
+				"* afwachten",
+				"* einde",
+				"* status",
+				"* help",
+				"* info"
+			]
+		}
 	},
 	{
 		"ID": "ConfigGet",
 		"Name": "configget",
 		"FullMatch": true,
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"{setting}: {value}"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"{setting}: {value}"
+			]
+		}
 	},
 	{
 		"ID": "ConfigSet",
 		"Name": "configset",
 		"FullMatch": true,
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"{setting}: {oldvalue} => {newvalue}"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"{setting}: {oldvalue} => {newvalue}"
+			]
+		}
 	},
 	{
 		"ID": "Info",
 		"Name": "info",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Ontwerp:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testen:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.NET\">https:\/\/github.com\/rbergen\/R136.NET<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br \/>Versie {version}<br \/>{copyright}<\/td><\/tr><\/table>"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Ontwerp:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testen:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.NET\">https:\/\/github.com\/rbergen\/R136.NET<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br \/>Versie {version}<br \/>{copyright}<\/td><\/tr><\/table>"
+			]
+		}
 	},
 	{
 		"ID": "ConfigList",

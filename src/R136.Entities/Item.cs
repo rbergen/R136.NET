@@ -161,8 +161,8 @@ namespace R136.Entities
 		public class Initializer
 		{
 			public ItemID ID { get; set; }
-			public string Name { get; set; } = "";
-			public string Description { get; set; } = "";
+			public string Name { get; set; } = string.Empty;
+			public string Description { get; set; } = string.Empty;
 			public RoomID StartRoom { get; set; }
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

@@ -19,16 +19,16 @@ namespace R136.BuildTool
 			entityDeserializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
 		}
 
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
 			var arguments = Arguments.Parse(args);
 
 			if (arguments.ConfigFileName != null)
-				RunAutomatic(arguments);
+				return RunAutomatic(arguments) ? 0 : -1;
 
-			else
-				RunManual();
+			RunManual();
 
+			return 0;
 		}
 
 	}

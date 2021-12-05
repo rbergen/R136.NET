@@ -48,7 +48,7 @@ namespace R136.Entities.General
 
 		public class Initializer
 		{
-			public string Type { get; set; } = "";
+			public string Type { get; set; } = string.Empty;
 			public TTextKey ID { get; set; }
 			public string[]? Texts { get; set; }
 		}

@@ -43,7 +43,7 @@ namespace R136.Entities
 		public class Initializer
 		{
 			public RoomID ID { get; set; }
-			public string Name { get; set; } = "";
+			public string Name { get; set; } = string.Empty;
 
 			[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 			public string? Description { get; set; }

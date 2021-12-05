@@ -1,5 +1,6 @@
 ﻿using R136.BuildTool.Rooms;
 using R136.BuildTool.Tasks;
+using R136.BuildTool.Texts;
 using R136.BuildTool.Tools;
 using R136.Entities;
 using R136.Entities.General;
@@ -18,7 +19,7 @@ namespace R136.BuildTool
 	{
 		private const string IndentSection = "   ";
 
-		private static void RunAutomatic(Arguments arguments)
+		private static bool RunAutomatic(Arguments arguments)
 		{
 			Console.WriteLine($"{Tags.Info} Starting processing from configuration file {arguments.ConfigFileName}...");
 
@@ -35,13 +36,13 @@ namespace R136.BuildTool
 			catch (Exception e)
 			{
 				Console.Error.WriteLine($"{Tags.Error} Error reading configuration file {arguments.ConfigFileName}, aborting: {e.Message}.");
-				return;
+				return false;
 			}
 
 			if (tasks == null)
 			{
 				Console.WriteLine($"{Tags.Warning} No tasks read from configuration file {arguments.ConfigFileName}, so nothing to process.");
-				return;
+				return true;
 			}
 
 			Console.WriteLine($"{Tags.Info} Read {tasks.Length} tasks from configuration file {arguments.ConfigFileName}. Starting task processing.");
@@ -67,6 +68,8 @@ namespace R136.BuildTool
 
 				Console.ReadKey();
 			}
+
+			return errorCount == 0;
 		}
 
 		private static string ExecuteTask(bool readOnly, string indent, ConversionTask task)
@@ -134,6 +137,18 @@ namespace R136.BuildTool
 			{
 				Console.WriteLine($"{indent}{Tags.Info} Setting up connections between {entity}.");
 				return data.CompileConnections($"{indent}{IndentSection}");
+			}
+		}
+
+		private static string ProcessTexts(bool readOnly, string indent, Entity entity, string inputPath, string outputPath)
+		{
+			return ProcessEntity<TypeTexts[], TypedTextsMap<int>.Initializer[]>(readOnly, indent, entity, inputPath, outputPath, UnrollTypeTexts);
+
+			TypedTextsMap<int>.Initializer[]? UnrollTypeTexts(string indent, TypeTexts[] typeTextsSet)
+			{
+				var initializers = typeTextsSet.ToInitializers()?.ToArray();
+				Console.WriteLine($"{indent}{Tags.Info} Unrolled {typeTextsSet.Length} input objects to {initializers?.Length ?? 0} {entity}.");
+				return initializers;
 			}
 		}
 
@@ -205,8 +220,8 @@ namespace R136.BuildTool
 				Entity.Items => ProcessEntity<Item.Initializer[]>,
 				Entity.Properties => ProcessEntity<LayoutProperties>,
 				Entity.Rooms => ProcessRooms,
-				Entity.Texts => ProcessEntity<TypedTextsMap<int>.Initializer[]>,
-				_ => throw new ArgumentException("Unknown entity", nameof(entity))
+				Entity.Texts => ProcessTexts,
+                _ => throw new ArgumentException("Unknown entity", nameof(entity))
 			};
 	}
 }

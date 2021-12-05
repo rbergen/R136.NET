@@ -1,249 +1,160 @@
 ﻿[
 	{
 		"Type": "Bandage",
-		"ID": 0,
-		"Texts": [
-			"You're still in one piece!"
-		]
+		"Texts": {
+			"0": [
+				"You're still in one piece!"
+			]
+		}
 	},
 	{
 		"Type": "Flashlight",
-		"ID": 0,
-		"Texts": [
-			"You turn off the flashlight."
-		]
-	},
-	{
-		"Type": "Flashlight",
-		"ID": 1,
-		"Texts": [
-			"You turn off the flashlight. You don't see a thing anymore."
-		]
-	},
-	{
-		"Type": "Flashlight",
-		"ID": 2,
-		"Texts": [
-			"You turn on the flashlight. The beam lights up your surroundings."
-		]
-	},
-	{
-		"Type": "Flashlight",
-		"ID": 3,
-		"Texts": [
-			"It won't work without new batteries..."
-		]
-	},
-	{
-		"Type": "Flashlight",
-		"ID": 4,
-		"Texts": [
-			"The light of the flashlight starts to dim."
-		]
-	},
-	{
-		"Type": "Flashlight",
-		"ID": 5,
-		"Texts": [
-			"The batteries in the flaslight are depleted. Slowly, it goes out."
-		]
+		"Texts": {
+			"0": [
+				"You turn off the flashlight."
+			],
+			"1": [
+				"You turn off the flashlight. You don't see a thing anymore."
+			],
+			"2": [
+				"You turn on the flashlight. The beam lights up your surroundings."
+			],
+			"3": [
+				"It won't work without new batteries..."
+			],
+			"4": [
+				"The light of the flashlight starts to dim."
+			],
+			"5": [
+				"The batteries in the flaslight are depleted. Slowly, it goes out."
+			]
+		}
 	},
 	{
 		"Type": "Sword",
-		"ID": 0,
-		"Texts": [
-			"You strike with your sword, but the monster dodges it."
-		]
-	},
-	{
-		"Type": "Sword",
-		"ID": 1,
-		"Texts": [
-			"You strike with your sword and you hit the monster hard."
-		]
-	},
-	{
-		"Type": "Sword",
-		"ID": 2,
-		"Texts": [
-			"The monster is badly injured and you're soaked with its blood."
-		]
-	},
-	{
-		"Type": "Sword",
-		"ID": 3,
-		"Texts": [
-			"You can strike again. Do you want to? [y/n]"
-		]
-	},
-	{
-		"Type": "Sword",
-		"ID": 4,
-		"Texts": [
-			"I didn't catch that. Please answer with y or n."
-		]
+		"Texts": {
+			"0": [
+				"You strike with your sword, but the monster dodges it."
+			],
+			"1": [
+				"You strike with your sword and you hit the monster hard."
+			],
+			"2": [
+				"The monster is badly injured and you're soaked with its blood."
+			],
+			"3": [
+				"You can strike again. Do you want to? [y/n]"
+			],
+			"4": [
+				"I didn't catch that. Please answer with y or n."
+			]
+		}
 	},
 	{
 		"Type": "Player",
-		"ID": 0,
-		"Texts": [
-			"Your pockets are filled to the brim and you can't fit {item} in them."
-		]
-	},
-	{
-		"Type": "Player",
-		"ID": 1,
-		"Texts": [
-			"You pick up {item} and put it in one of your pockets."
-		]
-	},
-	{
-		"Type": "Player",
-		"ID": 2,
-		"Texts": [
-			"You pick up {item} and put it on."
-		]
+		"Texts": {
+			"0": [
+				"Your pockets are filled to the brim and you can't fit {item} in them."
+			],
+			"1": [
+				"You pick up {item} and put it in one of your pockets."
+			],
+			"2": [
+				"You pick up {item} and put it on."
+			]
+		}
 	},
 	{
 		"Type": "GeneralCommandProcessor",
-		"ID": 0,
-		"Texts": [
-			"Syntax: {command}"
-		]
+		"Texts": {
+			"0": [
+				"Syntax: {command}"
+			]
+		}
 	},
 	{
 		"Type": "LocationCommandProcessor",
-		"ID": 0,
-		"Texts": [
-			"Syntax: {command}"
-		]
-	},
-	{
-		"Type": "LocationCommandProcessor",
-		"ID": 1,
-		"Texts": [
-			"You can't go there."
-		]
+		"Texts": {
+			"0": [
+				"Syntax: {command}"
+			],
+			"1": [
+				"You can't go there."
+			]
+		}
 	},
 	{
 		"Type": "ItemCommandProcessor",
-		"ID": 0,
-		"Texts": [
-			"Syntax: {command} \\<object\\>"
-		]
-	},
-	{
-		"Type": "ItemCommandProcessor",
-		"ID": 1,
-		"Texts": [
-			"You don't have a \"{param}\""
-		]
-	},
-	{
-		"Type": "ItemCommandProcessor",
-		"ID": 2,
-		"Texts": [
-			"The abbreviation \"{param}\" is ambiguous"
-		]
-	},
-	{
-		"Type": "ItemCommandProcessor",
-		"ID": 3,
-		"Texts": [
-			"You don't see a \"{param}\" that you can pick up."
-		]
+		"Texts": {
+			"0": [
+				"Syntax: {command} \\<object\\>"
+			],
+			"1": [
+				"You don't have a \"{param}\""
+			],
+			"2": [
+				"The abbreviation \"{param}\" is ambiguous"
+			],
+			"3": [
+				"You don't see a \"{param}\" that you can pick up."
+			]
+		}
 	},
 	{
 		"Type": "Engine",
-		"ID": 0,
-		"Texts": [
-			"No command entered"
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 1,
-		"Texts": [
-			"Invalid command entered"
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 2,
-		"Texts": [
-			"The abbreviation \"{command}\" is ambiguous"
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 3,
-		"Texts": [
-			"Type h for help."
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 4,
-		"Texts": [
-			"You're {room}."
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 5,
-		"Texts": [
-			"It's pitch black and you can't see your hand in front of your face."
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 6,
-		"Texts": [
-			"Around you, you see the smoldering remains of what used to be a forest."
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 7,
-		"Texts": [
-			"You see that {item} is here.",
-			"You see that {items} are here.",
-			"{firstitem} and {seconditem}",
-			"{item}, "
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 8,
-		"Texts": [
-			"east",
-			"west",
-			"north",
-			"south",
-			"up",
-			"down",
-			"You can go {way}.",
-			"You can go {ways}.",
-			"{firstway} and {secondway}",
-			"{way}, "
-		]
-	},
-	{
-		"Type": "Engine",
-		"ID": 9,
-		"Texts": [
-			"Bathing in your own blood, you succumb to your injuries. While you're gasping for air on the ground, you hear loud laughter from a distance.",
-			"Then your eyes close and your heart stops beating.",
-			"At the same time, the bomb explodes and the earth dies with you."
-		]
+		"Texts": {
+			"0": [
+				"No command entered"
+			],
+			"1": [
+				"Invalid command entered"
+			],
+			"2": [
+				"The abbreviation \"{command}\" is ambiguous"
+			],
+			"3": [
+				"Type h for help."
+			],
+			"4": [
+				"You're {room}."
+			],
+			"5": [
+				"It's pitch black and you can't see your hand in front of your face."
+			],
+			"6": [
+				"Around you, you see the smoldering remains of what used to be a forest."
+			],
+			"7": [
+				"You see that {item} is here.",
+				"You see that {items} are here.",
+				"{firstitem} and {seconditem}",
+				"{item}, "
+			],
+			"8": [
+				"east",
+				"west",
+				"north",
+				"south",
+				"up",
+				"down",
+				"You can go {way}.",
+				"You can go {ways}.",
+				"{firstway} and {secondway}",
+				"{way}, "
+			],
+			"9": [
+				"Bathing in your own blood, you succumb to your injuries. While you're gasping for air on the ground, you hear loud laughter from a distance.",
+				"Then your eyes close and your heart stops beating.",
+				"At the same time, the bomb explodes and the earth dies with you."
+			]
+		}
 	},
 	{
 		"Type": "InternalCommandProcessor",
-		"ID": 0,
-		"Texts": [
-			"Invalid command entered"
-		]
+		"Texts": {
+			"0": [
+				"Invalid command entered"
+			]
+		}
 	}
-
-
 ]

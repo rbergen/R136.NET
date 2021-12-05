@@ -2,13 +2,10 @@ name: Plain .NET build
 
 on:
   push:
-    branches: 
-      - staging
-      - main
   pull_request:
     branches: 
       - staging
-      - main
+      - production
 
 jobs:
   build:
