@@ -30,33 +30,21 @@
 	{
 		"ID": "Combine",
 		"Name": "combine",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Syntax: {command} \\<object\\> and/with \\<object\\>"
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					" and ",
-					" with "
-				]
-			},
-			{
-				"ID": 2,
-				"Texts": [
-					"You can't combine an object with itself."
-				]
-			},
-			{
-				"ID": 3,
-				"Texts": [
-					"That doesn't yield anything useful."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Syntax: {command} \\<object\\> and/with \\<object\\>"
+			],
+			"1": [
+				" and ",
+				" with "
+			],
+			"2": [
+				"You can't combine an object with itself."
+			],
+			"3": [
+				"That doesn't yield anything useful."
+			]
+		}
 	},
 	{
 		"ID": "Pickup",
@@ -65,195 +53,138 @@
 	{
 		"ID": "PutDown",
 		"Name": "lay",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"You've become so attached to {item} that you can't part from it anymore."
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					"You put {item} down."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"You've become so attached to {item} that you can't part from it anymore."
+			],
+			"1": [
+				"You put {item} down."
+			]
+		}
 	},
 	{
 		"ID": "Inspect",
 		"Name": "inspect",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"It's way too dark to look at anything."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"It's way too dark to look at anything."
+			]
+		}
 	},
 	{
 		"ID": "Wait",
 		"Name": "bide",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"You pick your nose a little.",
-					"You scratch a little behind your ears.",
-					"You yawn extensively.",
-					"You pull up your pants.",
-					"You pick some grease from your ears."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"You pick your nose a little.",
+				"You scratch a little behind your ears.",
+				"You yawn extensively.",
+				"You pull up your pants.",
+				"You pick some grease from your ears."
+			]
+		}
 	},
 	{
 		"ID": "End",
 		"Name": "finish",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"Are you sure you want to leave the earth to die? [y/n]"
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					"Good!"
-				]
-			},
-			{
-				"ID": 2,
-				"Texts": [
-					"I didn't catch that. Please answer with y or n."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"Are you sure you want to leave the earth to die? [y/n]"
+			],
+			"1": [
+				"Good!"
+			],
+			"2": [
+				"I didn't catch that. Please answer with y or n."
+			]
+		}
 	},
 	{
 		"ID": "Status",
 		"Name": "report",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"**STATUS REPORT**",
-					""
-				]
-			},
-			{
-				"ID": 1,
-				"Texts": [
-					"You have {lifepoints} life points left."
-				]
-			},
-			{
-				"ID": 2,
-				"Texts": [
-					"Your flashlight is on."
-				]
-			},
-			{
-				"ID": 3,
-				"Texts": [
-					"Your flashlight is off."
-				]
-			},
-			{
-				"ID": 4,
-				"Texts": [
-					"You have nothing on you."
-				]
-			},
-			{
-				"ID": 5,
-				"Texts": [
-					"You have in your posession:"
-				]
-			},
-			{
-				"ID": 6,
-				"Texts": [
-					"* {item}"
-				]
-			},
-			{
-				"ID": 7,
-				"Texts": [
-					"Your flashlight contains \"bunny batteries\"."
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"**STATUS REPORT**",
+				""
+			],
+			"1": [
+				"You have {lifepoints} life points left."
+			],
+			"2": [
+				"Your flashlight is on."
+			],
+			"3": [
+				"Your flashlight is off."
+			],
+			"4": [
+				"You have nothing on you."
+			],
+			"5": [
+				"You have in your posession:"
+			],
+			"6": [
+				"* {item}"
+			],
+			"7": [
+				"Your flashlight contains \"bunny batteries\"."
+			]
+		}
 	},
 	{
 		"ID": "Help",
 		"Name": "help",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"**HELP**",
-					"",
-					"Commands:",
-					"* east",
-					"* west",
-					"* north",
-					"* south",
-					"* ascend",
-					"* descend",
-					"* use \\<object\\>",
-					"* combine \\<object\\> and/with \\<object\\>",
-					"* pickup \\<object\\>",
-					"* lay \\<object\\>",
-					"* inspect \\<object\\>",
-					"* bide",
-					"* finish",
-					"* report",
-					"* help",
-					"* info"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"**HELP**",
+				"",
+				"Commands:",
+				"* east",
+				"* west",
+				"* north",
+				"* south",
+				"* ascend",
+				"* descend",
+				"* use \\<object\\>",
+				"* combine \\<object\\> and/with \\<object\\>",
+				"* pickup \\<object\\>",
+				"* lay \\<object\\>",
+				"* inspect \\<object\\>",
+				"* bide",
+				"* finish",
+				"* report",
+				"* help",
+				"* info"
+			]
+		}
 	},
 	{
 		"ID": "ConfigGet",
 		"Name": "configget",
 		"FullMatch":  true,
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"{setting}: {value}"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"{setting}: {value}"
+			]
+		}
 	},
 	{
 		"ID": "ConfigSet",
 		"Name": "configset",
 		"FullMatch": true,
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"{setting}: {oldvalue} => {newvalue}"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"{setting}: {oldvalue} => {newvalue}"
+			]
+		}
 	},
 	{
 		"ID": "Info",
 		"Name": "info",
-		"TextMap": [
-			{
-				"ID": 0,
-				"Texts": [
-					"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Design:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testing:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.NET\">https:\/\/github.com\/rbergen\/R136.NET<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br \/>Version {version}<br \/>{copyright}<\/td><\/tr><\/table>"
-				]
-			}
-		]
+		"Texts": {
+			"0": [
+				"<table><tr><td colspan=\"2\" align=\"center\"><h1>R136<\/h1><\/td><\/tr><tr valign=\"top\"><td><b>Design:&nbsp;<\/b><\/td><td>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Code:&nbsp;<\/td><td>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Testing:&nbsp;<\/td><td>Machiel Keizer<br\/>Peter Wouda<br\/>Rutger van Bergen<\/td><\/tr><tr valign=\"top\"><td><b>Github:&nbsp;<\/b><\/td><td><a href=\"https:\/\/github.com\/rbergen\/R136\">https:\/\/github.com\/rbergen\/R136<\/a><br\/><a href=\"https:\/\/github.com\/rbergen\/R136.NET\">https:\/\/github.com\/rbergen\/R136.NET<\/a><\/td><\/tr><tr><td colspan=\"2\" align=\"center\"><br \/>Version {version}<br \/>{copyright}<\/td><\/tr><\/table>"
+			]
+		}
 	},
 	{
 		"ID": "ConfigList",

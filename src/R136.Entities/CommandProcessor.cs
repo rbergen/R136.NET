@@ -130,9 +130,13 @@ namespace R136.Entities
 	public class CommandInitializer
 	{
 		public CommandID ID { get; set; }
-		public string Name { get; set; } = "";
+		public string Name { get; set; } = string.Empty;
 		public bool FullMatch { get; set; } = false;
-		public IDTextMap[]? TextMap { get; set; }
+
+		public Dictionary<int, string[]>? Texts { get; set; }
+
+		public IDTextMap[]? TextMap
+			=> Texts?.Select(pair => new IDTextMap() { ID = pair.Key, Texts = pair.Value }).ToArray();
 
 		public class IDTextMap : KeyedTextsMap<CommandID, int>.IInitializer
 		{
