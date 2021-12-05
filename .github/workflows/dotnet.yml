@@ -1,7 +1,7 @@
 name: Plain .NET build
 
 on:
-  push
+  push:
   pull_request:
     branches: 
       - staging
