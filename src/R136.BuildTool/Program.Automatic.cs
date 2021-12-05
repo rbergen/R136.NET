@@ -1,5 +1,6 @@
 ﻿using R136.BuildTool.Rooms;
 using R136.BuildTool.Tasks;
+using R136.BuildTool.Texts;
 using R136.BuildTool.Tools;
 using R136.Entities;
 using R136.Entities.General;
@@ -137,6 +138,18 @@ namespace R136.BuildTool
 			}
 		}
 
+		private static string ProcessTexts(bool readOnly, string indent, Entity entity, string inputPath, string outputPath)
+		{
+			return ProcessEntity<TypeTexts[], TypedTextsMap<int>.Initializer[]>(readOnly, indent, entity, inputPath, outputPath, UnrollTypeTexts);
+
+			TypedTextsMap<int>.Initializer[]? UnrollTypeTexts(string indent, TypeTexts[] typeTextsSet)
+			{
+				var initializers = typeTextsSet.ToInitializers()?.ToArray();
+				Console.WriteLine($"{indent}{Tags.Info} Unrolled {typeTextsSet.Length} input objects to {initializers?.Length ?? 0} {entity}.");
+				return initializers;
+			}
+		}
+
 		private static string ProcessEntity<TInput, TOutput>(bool readOnly, string indent, Entity entity, string inputPath, string outputPath, Func<string, TInput, TOutput?>? processor) 
 			where TInput : class
 			where TOutput : class
@@ -205,8 +218,8 @@ namespace R136.BuildTool
 				Entity.Items => ProcessEntity<Item.Initializer[]>,
 				Entity.Properties => ProcessEntity<LayoutProperties>,
 				Entity.Rooms => ProcessRooms,
-				Entity.Texts => ProcessEntity<TypedTextsMap<int>.Initializer[]>,
-				_ => throw new ArgumentException("Unknown entity", nameof(entity))
+				Entity.Texts => ProcessTexts,
+                _ => throw new ArgumentException("Unknown entity", nameof(entity))
 			};
 	}
 }
