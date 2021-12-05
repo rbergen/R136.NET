@@ -6,6 +6,7 @@ using R136.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace R136.Entities
 {
@@ -135,6 +136,7 @@ namespace R136.Entities
 
 		public Dictionary<int, string[]>? Texts { get; set; }
 
+		[JsonIgnore]
 		public IDTextMap[]? TextMap
 			=> Texts?.Select(pair => new IDTextMap() { ID = pair.Key, Texts = pair.Value }).ToArray();
 
