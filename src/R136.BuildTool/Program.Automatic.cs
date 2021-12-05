@@ -19,7 +19,7 @@ namespace R136.BuildTool
 	{
 		private const string IndentSection = "   ";
 
-		private static void RunAutomatic(Arguments arguments)
+		private static bool RunAutomatic(Arguments arguments)
 		{
 			Console.WriteLine($"{Tags.Info} Starting processing from configuration file {arguments.ConfigFileName}...");
 
@@ -36,13 +36,13 @@ namespace R136.BuildTool
 			catch (Exception e)
 			{
 				Console.Error.WriteLine($"{Tags.Error} Error reading configuration file {arguments.ConfigFileName}, aborting: {e.Message}.");
-				return;
+				return false;
 			}
 
 			if (tasks == null)
 			{
 				Console.WriteLine($"{Tags.Warning} No tasks read from configuration file {arguments.ConfigFileName}, so nothing to process.");
-				return;
+				return true;
 			}
 
 			Console.WriteLine($"{Tags.Info} Read {tasks.Length} tasks from configuration file {arguments.ConfigFileName}. Starting task processing.");
@@ -68,6 +68,8 @@ namespace R136.BuildTool
 
 				Console.ReadKey();
 			}
+
+			return errorCount == 0;
 		}
 
 		private static string ExecuteTask(bool readOnly, string indent, ConversionTask task)
