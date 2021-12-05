@@ -3,7 +3,7 @@ name: Azure SWA production CD
 on:
   push:
     branches:
-      - main
+      - production
 
 jobs:
   build_and_deploy_job:
