@@ -10,9 +10,8 @@
 		{
 			Arguments arguments = new();
 
-			for (int i = 0; i < args.Length; i++)
+			foreach (string arg in args)
 			{
-				string arg = args[i];
 				if (arg == "--test" || arg == "-t")
 				{
 					arguments.IsTest = true;

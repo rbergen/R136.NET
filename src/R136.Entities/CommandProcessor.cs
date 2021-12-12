@@ -132,8 +132,11 @@ namespace R136.Entities
 	{
 		public CommandID ID { get; set; }
 		public string Name { get; set; } = string.Empty;
+
+		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 		public bool FullMatch { get; set; } = false;
 
+		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 		public Dictionary<int, string[]>? Texts { get; set; }
 
 		[JsonIgnore]

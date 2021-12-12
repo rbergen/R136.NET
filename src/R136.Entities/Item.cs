@@ -115,7 +115,7 @@ namespace R136.Entities
 				initializer.StartRoom,
 				initializer.Wearable,
 				!initializer.BlockPutdown
-				);
+			);
 
 		protected Item(ItemID id, string name, string description, RoomID startRoom, bool isWearable, bool isPutdownAllowed)
 			=> (ID, Name, Description, CurrentRoom, IsWearable, IsPutdownAllowed)
