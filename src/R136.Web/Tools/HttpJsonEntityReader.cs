@@ -31,13 +31,13 @@ namespace R136.Web.Tools
 				this.logger?.LogDebug($"loading {fullLabel}...");
 
 				var result = JsonSerializer.Deserialize<TEntity>(await this.client.GetStringAsync($"{fullLabel}.json"));
-				this.logger?.LogDebug($"{fullLabel} loaded successfully");
+				this.logger?.LogDebug($"loaded {fullLabel} successfully");
 
 				return result;
 			}
 			catch (Exception e)
 			{
-				this.logger?.LogDebug($"loading of {fullLabel} failed with exception {e}");
+				this.logger?.LogDebug(e, $"failed loading of {fullLabel}");
 
 				return default;
 			}
