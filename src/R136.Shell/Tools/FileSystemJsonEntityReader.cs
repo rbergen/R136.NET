@@ -23,20 +23,22 @@ namespace R136.Shell.Tools
 
 		public async Task<TEntity?> ReadEntity<TEntity>(string? groupLabel, string label)
 		{
+			string fullLabel = groupLabel != null ? $"{groupLabel}/{label}" : label;
+
 			try
 			{
 				string fileName = $"{label}.json";
 				string jsonFilePath = groupLabel != null ? Path.Join(this.basePath, groupLabel, fileName) : Path.Join(this.basePath, fileName);
-				this.logger?.LogDebug($"loading {groupLabel}.{label}...");
+				this.logger?.LogDebug($"loading {fullLabel}...");
 
 				var result = JsonSerializer.Deserialize<TEntity>(await File.ReadAllTextAsync(jsonFilePath, Encoding.UTF8));
-				this.logger?.LogDebug($"{groupLabel}.{label} loaded successfully");
+				this.logger?.LogDebug($"loaded {fullLabel} successfully");
 
 				return result;
 			}
 			catch (Exception e)
 			{
-				this.logger?.LogDebug($"loading of {groupLabel}.{label} failed with exception {e}");
+				this.logger?.LogDebug(e, $"failed loading of {fullLabel}");
 
 				return default;
 			}
