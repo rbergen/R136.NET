@@ -285,6 +285,7 @@ namespace R136.Web.Pages
 			if (result.IsError)
 			{
 				this.error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
+				this.currentHistoryCommand = this.commandHistory.Last;
 				return;
 			}
 
