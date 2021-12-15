@@ -259,9 +259,11 @@ namespace R136.Web.Pages
 				case "Up":
 					if (this.currentHistoryCommand == null)
 						this.currentHistoryCommand = this.commandHistory.Last;
-					else
+					else if (this.currentHistoryCommand.Previous != null)
 						this.currentHistoryCommand = this.currentHistoryCommand.Previous;
-					
+					else
+						break;
+
 					if (this.currentHistoryCommand != null)
 						this.input = this.currentHistoryCommand.Value;
 
