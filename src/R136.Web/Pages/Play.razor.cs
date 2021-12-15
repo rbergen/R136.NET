@@ -247,20 +247,24 @@ namespace R136.Web.Pages
             {
 				case "ArrowDown":
 				case "Down":
-					if (this.currentHistoryCommand?.Next != null)
-                    {
-						this.currentHistoryCommand = this.currentHistoryCommand.Next;
-						this.input = this.currentHistoryCommand.Value;
-                    }
+					if (this.currentHistoryCommand == null)
+						break;
+
+					this.currentHistoryCommand = this.currentHistoryCommand.Next;
+					this.input = this.currentHistoryCommand?.Value ?? string.Empty;
+
 					break;
 
 				case "ArrowUp":
 				case "Up":
-					if (this.currentHistoryCommand?.Previous != null)
-					{
+					if (this.currentHistoryCommand == null)
+						this.currentHistoryCommand = this.commandHistory.Last;
+					else
 						this.currentHistoryCommand = this.currentHistoryCommand.Previous;
+					
+					if (this.currentHistoryCommand != null)
 						this.input = this.currentHistoryCommand.Value;
-					}
+
 					break;
 
 			}
@@ -270,7 +274,7 @@ namespace R136.Web.Pages
 		{
 			this.error = null;
 			this.commandHistory.AddLast(this.input);
-			this.currentHistoryCommand = this.commandHistory.Last;
+			this.currentHistoryCommand = null;
 
 			this.input = ApplyInputSpecs(this.input);
 
