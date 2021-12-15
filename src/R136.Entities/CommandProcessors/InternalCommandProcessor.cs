@@ -133,7 +133,7 @@ namespace R136.Entities.CommandProcessors
 		private static StringValues GetTexts(string propertyName, object? oldValue, object? newValue)
 			=> Facilities.CommandTextsMap[CommandID.ConfigSet, Default]
 			.ReplaceInAll("{setting}", propertyName)
-			.ReplaceInAll("{oldvalue}", ObjectDumper.Dump(oldValue)[..^1])
+			.ReplaceInAll("{oldvalue}", ObjectDumper.Dump(oldValue))
 			.ReplaceInAll("{newvalue}", ObjectDumper.Dump(newValue));
 
 		public static string[] GetPublicPropertyNames<TType>()

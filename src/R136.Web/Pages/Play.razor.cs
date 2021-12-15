@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using R136.Core;
@@ -21,6 +22,8 @@ namespace R136.Web.Pages
 		private bool isPaused = false;
 		private string statusText = string.Empty;
 		private bool showGameStatusModal = false;
+		private LinkedList<string> commandHistory = new();
+		private LinkedListNode<string> currentHistoryCommand = null;
 
 #pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference focusElement;
@@ -238,9 +241,36 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
+		private void ProcessArrows(KeyboardEventArgs e)
+        {
+			switch (e.Key)
+            {
+				case "ArrowDown":
+				case "Down":
+					if (this.currentHistoryCommand?.Next != null)
+                    {
+						this.currentHistoryCommand = this.currentHistoryCommand.Next;
+						this.input = this.currentHistoryCommand.Value;
+                    }
+					break;
+
+				case "ArrowUp":
+				case "Up":
+					if (this.currentHistoryCommand?.Previous != null)
+					{
+						this.currentHistoryCommand = this.currentHistoryCommand.Previous;
+						this.input = this.currentHistoryCommand.Value;
+					}
+					break;
+
+			}
+		}
+
 		private async Task SubmitInput(EventArgs e)
 		{
 			this.error = null;
+			this.commandHistory.AddLast(this.input);
+			this.currentHistoryCommand = this.commandHistory.Last;
 
 			this.input = ApplyInputSpecs(this.input);
 
