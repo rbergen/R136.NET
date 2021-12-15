@@ -273,7 +273,8 @@ namespace R136.Web.Pages
 		private async Task SubmitInput(EventArgs e)
 		{
 			this.error = null;
-			this.commandHistory.AddLast(this.input);
+			if (this.input != string.Empty)
+				this.commandHistory.AddLast(this.input);
 
 			this.input = ApplyInputSpecs(this.input);
 
@@ -284,7 +285,8 @@ namespace R136.Web.Pages
 			if (result.IsError)
 			{
 				this.error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
-				this.currentHistoryCommand = this.commandHistory.Last;
+				if (this.input != string.Empty)
+					this.currentHistoryCommand = this.commandHistory.Last;
 				return;
 			}
 
