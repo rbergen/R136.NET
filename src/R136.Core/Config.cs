@@ -8,7 +8,7 @@ namespace R136.Core
 	{
 		public static IServiceCollection AddR136(this IServiceCollection serviceCollection, Func<IServiceProvider, IEntityReader> entityReaderFactory)
 		{
-			serviceCollection.AddSingleton<IEntityReader>(entityReaderFactory);
+			serviceCollection.AddSingleton(entityReaderFactory);
 			AddR136(serviceCollection);
 			return serviceCollection;
 		}
@@ -21,7 +21,7 @@ namespace R136.Core
 		}
 
 		private static IServiceCollection AddR136(IServiceCollection serviceCollection)
-			=> serviceCollection.AddSingleton<IEngine>(sp => new Engine {	ContextServices = sp });
+			=> serviceCollection.AddSingleton<IEngine>(sp => new Engine { ContextServices = sp });
 
 		public static void PreLoadR136Async(this IServiceProvider serviceProvider, string[] entityGroups)
 			=> serviceProvider.GetRequiredService<IEngine>().StartLoadEntities(entityGroups);
