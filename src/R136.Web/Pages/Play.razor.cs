@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using R136.Core;
@@ -21,6 +22,8 @@ namespace R136.Web.Pages
 		private bool isPaused = false;
 		private string statusText = string.Empty;
 		private bool showGameStatusModal = false;
+		private LinkedList<string> commandHistory = new();
+		private LinkedListNode<string> currentHistoryCommand = null;
 
 #pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference focusElement;
@@ -238,9 +241,40 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
+		private void ProcessArrows(KeyboardEventArgs e)
+        {
+			switch (e.Key)
+            {
+				case "ArrowDown":
+				case "Down":
+					if (this.currentHistoryCommand == null)
+						break;
+
+					this.currentHistoryCommand = this.currentHistoryCommand.Next;
+					this.input = this.currentHistoryCommand?.Value ?? string.Empty;
+
+					break;
+
+				case "ArrowUp":
+				case "Up":
+					if (this.currentHistoryCommand == null)
+						this.currentHistoryCommand = this.commandHistory.Last;
+					else
+						this.currentHistoryCommand = this.currentHistoryCommand.Previous;
+					
+					if (this.currentHistoryCommand != null)
+						this.input = this.currentHistoryCommand.Value;
+
+					break;
+
+			}
+		}
+
 		private async Task SubmitInput(EventArgs e)
 		{
 			this.error = null;
+			if (this.input != string.Empty)
+				this.commandHistory.AddLast(this.input);
 
 			this.input = ApplyInputSpecs(this.input);
 
@@ -251,11 +285,14 @@ namespace R136.Web.Pages
 			if (result.IsError)
 			{
 				this.error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
+				if (this.input != string.Empty)
+					this.currentHistoryCommand = this.commandHistory.Last;
 				return;
 			}
 
 			ContentLog.Add(ContentBlockType.Input, this.input);
 			this.input = string.Empty;
+			this.currentHistoryCommand = null;
 			this.continuationStatus = null;
 
 			if (await ProcessResult(result, ContentBlockType.RunResult))

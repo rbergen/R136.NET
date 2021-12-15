@@ -60,7 +60,7 @@ namespace R136.Entities.General
 					this.level--;
 			}
 
-			return this.stringBuilder.ToString();
+			return this.stringBuilder.ToString().Trim();
 		}
 
 		private void WriteElement(object element)
