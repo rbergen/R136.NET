@@ -274,7 +274,6 @@ namespace R136.Web.Pages
 		{
 			this.error = null;
 			this.commandHistory.AddLast(this.input);
-			this.currentHistoryCommand = null;
 
 			this.input = ApplyInputSpecs(this.input);
 
@@ -285,11 +284,13 @@ namespace R136.Web.Pages
 			if (result.IsError)
 			{
 				this.error = (MarkupString)(result.Message != StringValues.Empty ? result.Message.ToMarkupString() : "An unspecified error occurred");
+				this.currentHistoryCommand = this.commandHistory.Last;
 				return;
 			}
 
 			ContentLog.Add(ContentBlockType.Input, this.input);
 			this.input = string.Empty;
+			this.currentHistoryCommand = null;
 			this.continuationStatus = null;
 
 			if (await ProcessResult(result, ContentBlockType.RunResult))
