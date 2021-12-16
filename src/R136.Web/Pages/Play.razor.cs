@@ -241,7 +241,7 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
-		private void ProcessArrows(KeyboardEventArgs e)
+		private async Task ProcessArrows(KeyboardEventArgs e)
         {
 			switch (e.Key)
             {
@@ -252,6 +252,7 @@ namespace R136.Web.Pages
 
 					this.currentHistoryCommand = this.currentHistoryCommand.Next;
 					this.input = this.currentHistoryCommand?.Value ?? string.Empty;
+					await JSRuntime.InvokeVoidAsync("R136JS.caretToEnd", focusElement);
 
 					break;
 
@@ -265,10 +266,12 @@ namespace R136.Web.Pages
 						break;
 
 					if (this.currentHistoryCommand != null)
+					{
 						this.input = this.currentHistoryCommand.Value;
-
+						await JSRuntime.InvokeVoidAsync("R136JS.caretToEnd", focusElement);
+					}
+					
 					break;
-
 			}
 		}
 
