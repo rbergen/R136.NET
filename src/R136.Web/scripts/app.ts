@@ -1,10 +1,6 @@
 ﻿namespace R136.Interop {
 
     class Tools {
-        public caretToEnd(element: HTMLInputElement): void {
-            element.selectionStart = element.selectionEnd = element.value.length;
-        }
-
         public scrollToElementId(elementId: string): boolean {
             let element: HTMLElement = document.getElementById(elementId);
 
