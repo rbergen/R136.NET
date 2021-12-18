@@ -242,8 +242,10 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
-		private async Task ProcessChange(ChangeEventArgs e)
+		private async Task ProcessInputChange(ChangeEventArgs e)
         {
+			input = e.Value?.ToString() ?? string.Empty;
+
 			if (!moveCaretToEnd)
 				return;
 
