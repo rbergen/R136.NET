@@ -24,6 +24,7 @@ namespace R136.Web.Pages
 		private bool showGameStatusModal = false;
 		private LinkedList<string> commandHistory = new();
 		private LinkedListNode<string> currentHistoryCommand = null;
+		private bool moveCaretToEnd = false;
 
 #pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference focusElement;
@@ -241,7 +242,18 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
-		private async Task ProcessArrows(KeyboardEventArgs e)
+		private async Task ProcessInputChange(ChangeEventArgs e)
+        {
+			input = e.Value?.ToString() ?? string.Empty;
+
+			if (!moveCaretToEnd)
+				return;
+
+			await JSRuntime.InvokeVoidAsync("R136JS.caretToEnd", focusElement);
+			moveCaretToEnd = false;
+		}
+
+		private void ProcessArrows(KeyboardEventArgs e)
         {
 			switch (e.Key)
             {
@@ -252,7 +264,7 @@ namespace R136.Web.Pages
 
 					this.currentHistoryCommand = this.currentHistoryCommand.Next;
 					this.input = this.currentHistoryCommand?.Value ?? string.Empty;
-					await JSRuntime.InvokeVoidAsync("R136JS.caretToEnd", focusElement);
+					moveCaretToEnd = true;
 
 					break;
 
@@ -268,7 +280,7 @@ namespace R136.Web.Pages
 					if (this.currentHistoryCommand != null)
 					{
 						this.input = this.currentHistoryCommand.Value;
-						await JSRuntime.InvokeVoidAsync("R136JS.caretToEnd", focusElement);
+						moveCaretToEnd = true;
 					}
 					
 					break;
