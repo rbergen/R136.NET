@@ -90,13 +90,13 @@
 				"Syntax: {command} \\<object\\>"
 			],
 			"1": [
-				"You don't have a \"{param}\""
+				"You don't have any \"{param}\""
 			],
 			"2": [
 				"The abbreviation \"{param}\" is ambiguous"
 			],
 			"3": [
-				"You don't see a \"{param}\" that you can pick up."
+				"You don't see any \"{param}\" that you can pick up."
 			]
 		}
 	},
