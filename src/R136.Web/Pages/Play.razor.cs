@@ -242,8 +242,10 @@ namespace R136.Web.Pages
 			await LocalStorage.RemoveItemAsync(Constants.IsPausedStorageKey);
 		}
 
-		private void ProcessArrows(KeyboardEventArgs e)
+		private void ProcessKeyDown(KeyboardEventArgs e)
         {
+			error = null;
+
 			switch (e.Key)
             {
 			case "ArrowDown":
