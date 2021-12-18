@@ -35,7 +35,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text" style="cursor: default;">&gt;</span>
 						</div>
-						<input @ref="focusElement" type="text" maxlength="@(inputSpecs?.MaxLength ?? 100)" style="text-transform: @((inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" value="@input" @onkeydown="ProcessArrows" @onkeypress="@(() => error = null)" @onchange="ProcessInputChange"/>
+						<input @ref="focusElement" type="text" maxlength="@(inputSpecs?.MaxLength ?? 100)" style="text-transform: @((inputSpecs?.IsLowerCase ?? false) ? "lowercase" : "none")" class="form-control" @bind="input" @onkeydown="ProcessArrows" @onkeydown:preventDefault="preventKeyDownDefault" @onkeypress="@(() => error = null)" />
 					</div>
 				</div>
 				<div class="col-md-auto">
