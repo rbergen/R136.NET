@@ -24,6 +24,7 @@ namespace R136.Web.Pages
 		private bool showGameStatusModal = false;
 		private LinkedList<string> commandHistory = new();
 		private LinkedListNode<string> currentHistoryCommand = null;
+		private bool preventKeyDownDefault = false;
 
 #pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference focusElement;
@@ -245,30 +246,35 @@ namespace R136.Web.Pages
         {
 			switch (e.Key)
             {
-				case "ArrowDown":
-				case "Down":
-					if (this.currentHistoryCommand == null)
-						break;
-
-					this.currentHistoryCommand = this.currentHistoryCommand.Next;
-					this.input = this.currentHistoryCommand?.Value ?? string.Empty;
-
+			case "ArrowDown":
+			case "Down":
+				if (this.currentHistoryCommand == null)
 					break;
 
-				case "ArrowUp":
-				case "Up":
-					if (this.currentHistoryCommand == null)
-						this.currentHistoryCommand = this.commandHistory.Last;
-					else if (this.currentHistoryCommand.Previous != null)
-						this.currentHistoryCommand = this.currentHistoryCommand.Previous;
-					else
-						break;
+				this.currentHistoryCommand = this.currentHistoryCommand.Next;
+				this.input = this.currentHistoryCommand?.Value ?? string.Empty;
 
-					if (this.currentHistoryCommand != null)
-						this.input = this.currentHistoryCommand.Value;
+				preventKeyDownDefault = true;
+				break;
 
+			case "ArrowUp":
+			case "Up":
+				if (this.currentHistoryCommand == null)
+					this.currentHistoryCommand = this.commandHistory.Last;
+				else if (this.currentHistoryCommand.Previous != null)
+					this.currentHistoryCommand = this.currentHistoryCommand.Previous;
+				else
 					break;
 
+				if (this.currentHistoryCommand != null)
+					this.input = this.currentHistoryCommand.Value;
+
+				preventKeyDownDefault = true;
+				break;
+				
+			default:
+				preventKeyDownDefault = false;
+				break;
 			}
 		}
 
