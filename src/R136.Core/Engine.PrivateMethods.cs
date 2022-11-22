@@ -290,7 +290,7 @@ namespace R136.Core
 
 		private void PlaceAt(ItemID item, Room room)
 		{
-			if (this.items![item].CurrentRoom == RoomID.None && !this.player!.IsInPosession(item))
+			if (this.items![item].CurrentRoom == RoomID.None && !this.player!.IsInPossession(item))
 				this.items![item].CurrentRoom = room.ID;
 		}
 

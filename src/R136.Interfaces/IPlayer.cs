@@ -10,7 +10,7 @@
 		RoomID CurrentRoom { get; set; }
 		bool IsDark { get; }
 
-		bool IsInPosession(ItemID item);
+		bool IsInPossession(ItemID item);
 		void RemoveFromPossession(ItemID item);
 
 	}

@@ -25,7 +25,7 @@ namespace R136.Entities.Animates
 
 			if (Status == AnimateStatus.Operating)
 			{
-				if (!(Player?.IsInPosession(ItemID.HeatSuit) ?? false))
+				if (!(Player?.IsInPossession(ItemID.HeatSuit) ?? false))
 				{
 					statusTexts = GetTextsForStatus(AnimateStatus.SelfInjury);
 					if (statusTexts.Count > 0)
