@@ -74,7 +74,9 @@ namespace R136.Web.Pages
 			LanguageProvider.Language = status.Language;
 			this.inputSpecs = status.InputSpecs;
 
-			await SaveSnapshot(Constants.R136EngineStorageKey, status.EngineSnapshot);
+            await Engine.SetEntityGroup(status.Language);
+
+            await SaveSnapshot(Constants.R136EngineStorageKey, status.EngineSnapshot);
 			await SaveSnapshot(Constants.ContentLogStorageKey, status.MarkupContentLog);
 			await SaveSnapshot(Constants.ContinuationStatusStorageKey, status.ContinuationStatus);
 			await SaveSnapshot(Constants.InputSpecsStorageKey, status.InputSpecs);
