@@ -16,7 +16,7 @@ namespace R136.Entities.Animates
 			var textStatus = Status;
 
 			if (!Facilities.Configuration.FreezeAnimates && textStatus == AnimateStatus.Initial
-				&& Player != null && !Player.IsInPosession(ItemID.HeatSuit))
+				&& Player != null && !Player.IsInPossession(ItemID.HeatSuit))
 			{
 				Trigger();
 

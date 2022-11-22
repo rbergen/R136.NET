@@ -27,7 +27,7 @@ namespace R136.Entities.Animates
 					break;
 
 				case AnimateStatus.Dying:
-					if (!(Player?.IsInPosession(ItemID.GasMask) ?? false))
+					if (!(Player?.IsInPossession(ItemID.GasMask) ?? false))
 						textStatus = AnimateStatus.SelfInjury;
 
 					StatusManager?.OpenConnection(Direction.North, RoomID.DamnationCave);

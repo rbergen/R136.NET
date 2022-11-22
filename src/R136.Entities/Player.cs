@@ -126,7 +126,7 @@ namespace R136.Entities
 			return true;
 		}
 
-		public bool IsInPosession(ItemID item)
+		public bool IsInPossession(ItemID item)
 			=> FindInInventory(item) != null;
 
 		public void RemoveFromPossession(ItemID id)
