@@ -53,7 +53,7 @@ namespace R136.Shell
 				if (status == null)
 					status = new();
 
-				string language = configuration[Constants.LanguageParam];
+				string? language = configuration[Constants.LanguageParam];
 
 				if (language != null && GetAvailableLanguages().Contains(language))
 					status.Language = language;

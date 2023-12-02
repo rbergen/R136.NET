@@ -90,10 +90,10 @@ namespace R136.Shell
 
 		private static StringValues FilterHTML(StringValues message)
 		{
-			if (message.Count != 1 || !((string)message).StartsWith("<table>"))
+			if (message.Count != 1 || !((string)message!).StartsWith("<table>"))
 				return message;
 
-			string messageText = message;
+			string messageText = message!;
 
 			messageText = Regex.Replace(messageText, @"<h\d>", "**");
 			messageText = Regex.Replace(messageText, @"</h\d>", "**\n");
@@ -251,7 +251,7 @@ namespace R136.Shell
 			string codes = string.Join(", ", languageSections.Select(cs => cs.Key));
 
 			foreach (var section in languageSections)
-				strings.Add(section[Constants.LanguageSwitchInstructionText].Replace("{codes}", codes));
+				strings.Add(section[Constants.LanguageSwitchInstructionText]?.Replace("{codes}", codes) ?? string.Empty);
 
 			this.messages.Add(strings.ToArray());
 		}
