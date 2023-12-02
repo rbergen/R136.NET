@@ -36,9 +36,9 @@ namespace R136.Entities.CommandProcessors
 		private static StringValues GetTexts<TIndex>(TIndex id) where TIndex : Enum
 			=> GetTexts(CommandID.End, id);
 
-		private static void AddStatusTexts(List<string> list, StatusTextID id)
+		private static void AddStatusTexts(List<string?> list, StatusTextID id)
 			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, id));
-		private static void AddStatusTexts(List<string> list, StatusTextID id, string tag, string content)
+		private static void AddStatusTexts(List<string?> list, StatusTextID id, string tag, string content)
 			=> list.AddRangeIfNotNull(GetTexts(CommandID.Status, id, tag, content));
 
 		private Result? ValidateEmptyParameters(string command, string? parameters)
@@ -71,7 +71,7 @@ namespace R136.Entities.CommandProcessors
 
 			var waitTexts = GetTexts(CommandID.Wait, TextID.Default).ToArray();
 
-			return waitTexts == null ? Result.Success() : Result.Success(waitTexts[Facilities.Randomizer.Next(waitTexts.Length)]);
+			return waitTexts == null ? Result.Success() : Result.Success(waitTexts[Facilities.Randomizer.Next(waitTexts.Length)] ?? string.Empty);
 		}
 
 		private Result ExecuteStatus(string command, string? parameters, Player player)
@@ -81,7 +81,7 @@ namespace R136.Entities.CommandProcessors
 			if (validateResult != null)
 				return validateResult;
 
-			List<string> texts = new();
+			List<string?> texts = new();
 
 			AddStatusTexts(texts, StatusTextID.Header);
 			AddStatusTexts(texts, StatusTextID.LifePoints, "lifepoints", player.LifePoints.ToString());

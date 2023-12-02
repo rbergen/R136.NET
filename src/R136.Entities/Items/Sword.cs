@@ -43,7 +43,7 @@ namespace R136.Entities.Items
 			if (animate is not StrikableAnimate strikable || !UsableOn.Contains(animate))
 				return Use();
 
-			List<string> texts = new();
+			List<string?> texts = new();
 
 			if (Facilities.Randomizer.NextDouble() > .7)
 				AddTexts(texts, TextID.Miss);
@@ -76,7 +76,7 @@ namespace R136.Entities.Items
 			);
 		}
 
-		private void AddTexts(List<string> texts, TextID id)
+		private void AddTexts(List<string?> texts, TextID id)
 			=> texts.AddRangeIfNotNull(Facilities.TextsMap.Get(this, id));
 
 		public Result Continue(ContinuationStatus status, string input)
