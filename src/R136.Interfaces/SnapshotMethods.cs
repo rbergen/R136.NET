@@ -9,21 +9,21 @@ namespace R136.Interfaces
 	{
 		private const int SizeBlockLength = 5;
 
-		private static bool AddPresenceByte<TValue>(this TValue? value, List<byte> bytes)
+		private static bool AddPresenceByteTo<TValue>(this TValue? value, List<byte> bytes)
 		{
 			if (value == null)
 			{
-				Presence.Null.AddByte(bytes);
+				Presence.Null.AddByteTo(bytes);
 				return false;
 			}
 
 			if ((value is ICollection collection && collection.Count == 0) || (value is string text && text.Length == 0))
 			{
-				Presence.Empty.AddByte(bytes);
+				Presence.Empty.AddByteTo(bytes);
 				return false;
 			}
 
-			Presence.Present.AddByte(bytes);
+			Presence.Present.AddByteTo(bytes);
 			
 			return true;
 		}
@@ -40,28 +40,28 @@ namespace R136.Interfaces
 				_ => (Presence.Error, 0, 0)
 			};
 
-		public static void AddByte<TEnum>(this TEnum value, List<byte> bytes) where TEnum : Enum
+		public static void AddByteTo<TEnum>(this TEnum value, List<byte> bytes) where TEnum : Enum
 			=> bytes.Add(Convert.ToByte(value));
 
 		public static TEnum To<TEnum>(this byte value) where TEnum : Enum
 			=> (TEnum)Enum.ToObject(typeof(TEnum), value);
 
-		public static void AddEnumByte<TEnum>(this TEnum? value, List<byte> bytes) where TEnum : struct, Enum
+		public static void AddEnumByteTo<TEnum>(this TEnum? value, List<byte> bytes) where TEnum : struct, Enum
 			=> bytes.Add(value != null ? Convert.ToByte(value.Value) : (byte)Presence.Null);
 
 		public static TEnum? ToNullable<TEnum>(this byte value) where TEnum : struct, Enum
 			=> value == (byte)Presence.Null ? null : To<TEnum>(value);
 
-		public static void AddBytes(this int value, List<byte> bytes)
+		public static void AddBytesTo(this int value, List<byte> bytes)
 			=> bytes.AddRange(BitConverter.GetBytes(value));
 
 		public static (int value, int? bytesRead) ToInt(this ReadOnlyMemory<byte> bytes)
 			=> bytes.Length >= 4 ? (BitConverter.ToInt32(bytes[0..4].Span), 4) : (0, null);
 
-		public static void AddIntBytes(this int? value, List<byte> bytes)
+		public static void AddIntBytesTo(this int? value, List<byte> bytes)
 		{
-			if (value.AddPresenceByte(bytes))
-				value!.Value.AddBytes(bytes);
+			if (value.AddPresenceByteTo(bytes))
+				value!.Value.AddBytesTo(bytes);
 		}
 
 		public static (int? value, int? bytesRead) ToNullableInt(this ReadOnlyMemory<byte> bytes)
@@ -76,15 +76,15 @@ namespace R136.Interfaces
 			}; 
 		}
 
-		public static void AddByte(this bool value, List<byte> bytes)
+		public static void AddByteTo(this bool value, List<byte> bytes)
 			=> bytes.Add((byte)(value ? 1 : 0));
 
 		public static bool ToBool(this byte value)
 			=> value != 0;
 
-		public static void AddTextBytes(this string? value, List<byte> bytes)
+		public static void AddTextBytesTo(this string? value, List<byte> bytes)
 		{
-			if (!value.AddPresenceByte(bytes))
+			if (!value.AddPresenceByteTo(bytes))
 				return;
 
 			byte[] textBytes = Encoding.UTF8.GetBytes(value!);
@@ -123,10 +123,10 @@ namespace R136.Interfaces
 			return (null, null);
 		}
 
-		public static void AddSnapshotBytes<TSnapshot>(this TSnapshot? value, List<byte> bytes) where TSnapshot : class, ISnapshot
+		public static void AddSnapshotBytesTo<TSnapshot>(this TSnapshot? value, List<byte> bytes) where TSnapshot : class, ISnapshot
 		{
-			if (value.AddPresenceByte(bytes))
-				value!.AddBytes(bytes);
+			if (value.AddPresenceByteTo(bytes))
+				value!.AddBytesTo(bytes);
 		}
 
 		public static (TSnapshot? snapshot, int? bytesRead) ToNullable<TSnapshot>(this ReadOnlyMemory<byte> bytes) where TSnapshot : class, ISnapshot, new()
@@ -149,9 +149,9 @@ namespace R136.Interfaces
 			return (null, null);
 		}
 
-		private static void AddArrayBytes<TValue>(this TValue[]? values, List<byte> bytes, Action<List<byte>, TValue> converter)
+		private static void AddArrayBytesTo<TValue>(this TValue[]? values, List<byte> bytes, Action<List<byte>, TValue> converter)
 		{
-			if (!values.AddPresenceByte(bytes))
+			if (!values.AddPresenceByteTo(bytes))
 				return;
 
 			bytes.AddRange(BitConverter.GetBytes(values!.Length));
@@ -203,26 +203,26 @@ namespace R136.Interfaces
 			return (null, null);
 		}
 
-		public static void AddEnumsBytes<TEnum>(this TEnum[]? values, List<byte> bytes) where TEnum : Enum
-			=> AddArrayBytes(values, bytes, (list, value) => value.AddByte(bytes));
+		public static void AddEnumsBytesTo<TEnum>(this TEnum[]? values, List<byte> bytes) where TEnum : Enum
+			=> AddArrayBytesTo(values, bytes, (list, value) => value.AddByteTo(bytes));
 
 		public static (TEnum[]? enums, int? bytesRead) ToEnumArrayOf<TEnum>(this ReadOnlyMemory<byte> bytes) where TEnum : Enum
 			=> BytesToArray(bytes, bytes => (bytes.Span[0].To<TEnum>(), 1));
 
-		public static void AddIntsBytes(this int[]? values, List<byte> bytes)
-			=> AddArrayBytes(values, bytes, (list, value) => value.AddBytes(bytes));
+		public static void AddIntsBytesTo(this int[]? values, List<byte> bytes)
+			=> AddArrayBytesTo(values, bytes, (list, value) => value.AddBytesTo(bytes));
 
 		public static (int[]? values, int? bytesRead) ToIntArray(this ReadOnlyMemory<byte> bytes)
 			=> BytesToArray(bytes, bytes => bytes.ToInt());
 
-		public static void AddTextsBytes(this string[]? values, List<byte> bytes)
-			=> AddArrayBytes(values, bytes, (list, value) => value.AddTextBytes(bytes));
+		public static void AddTextsBytesTo(this string[]? values, List<byte> bytes)
+			=> AddArrayBytesTo(values, bytes, (list, value) => value.AddTextBytesTo(bytes));
 
 		public static (string[]? texts, int? bytesRead) ToTextArray(this ReadOnlyMemory<byte> bytes)
 			=> BytesToArray(bytes, bytes => ToText(bytes));
 
-		public static void AddSnapshotsBytes<TSnapshot>(this TSnapshot[]? values, List<byte> bytes) where TSnapshot : ISnapshot
-			=> AddArrayBytes(values, bytes, (list, value) => value.AddBytes(bytes));
+		public static void AddSnapshotsBytesTo<TSnapshot>(this TSnapshot[]? values, List<byte> bytes) where TSnapshot : ISnapshot
+			=> AddArrayBytesTo(values, bytes, (list, value) => value.AddBytesTo(bytes));
 
 		public static (TSnapshot[]? snapshots, int? bytesRead) ToSnapshotArrayOf<TSnapshot>(this ReadOnlyMemory<byte> values) where TSnapshot : class, ISnapshot, new()
 			=> BytesToArray(values, bytes =>

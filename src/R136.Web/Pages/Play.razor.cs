@@ -86,7 +86,7 @@ namespace R136.Web.Pages
 		private void ShowGameStatus()
 		{
 			List<byte> bytes = new();
-			ComposeStatus().AddBytes(bytes);
+			ComposeStatus().AddBytesTo(bytes);
 
 			this.statusText = Convert.ToBase64String(bytes.ToArray());
 			this.showGameStatusModal = true;

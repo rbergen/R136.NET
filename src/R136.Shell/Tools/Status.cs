@@ -96,16 +96,16 @@ namespace R136.Shell.Tools
 			return logger;
 		}
 
-		public void AddBytes(List<byte> bytes)
+		public void AddBytesTo(List<byte> bytes)
 		{
 			bytes.AddRange(Watermark);
-			Pausing.AddByte(bytes);
-			ContinuationStatus.AddSnapshotBytes(bytes);
-			InputSpecs.AddSnapshotBytes(bytes);
-			EngineSnapshot.AddSnapshotBytes(bytes);
-			Language.AddTextBytes(bytes);
-			Texts.AddTextsBytes(bytes);
-			true.AddByte(bytes);
+			Pausing.AddByteTo(bytes);
+			ContinuationStatus.AddSnapshotBytesTo(bytes);
+			InputSpecs.AddSnapshotBytesTo(bytes);
+			EngineSnapshot.AddSnapshotBytesTo(bytes);
+			Language.AddTextBytesTo(bytes);
+			Texts.AddTextsBytesTo(bytes);
+			true.AddByteTo(bytes);
 		}
 
 		public int? LoadBytes(ReadOnlyMemory<byte> bytes)

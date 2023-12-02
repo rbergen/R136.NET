@@ -158,12 +158,12 @@ namespace R136.Entities
 			[JsonIgnore]
 			public IReadOnlyDictionary<RoomID, Room>? Rooms { get; set; }
 
-			public void AddBytes(List<byte> bytes)
+			public void AddBytesTo(List<byte> bytes)
 			{
-				Room.AddByte(bytes);
-				LifePoints.AddIntBytes(bytes);
-				LifePointsFromConfig.AddIntBytes(bytes);
-				Inventory.AddEnumsBytes(bytes);
+				Room.AddByteTo(bytes);
+				LifePoints.AddIntBytesTo(bytes);
+				LifePointsFromConfig.AddIntBytesTo(bytes);
+				Inventory.AddEnumsBytesTo(bytes);
 			}
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)

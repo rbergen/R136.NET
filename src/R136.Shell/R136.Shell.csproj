@@ -1,25 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-	  <TargetFramework>net6.0</TargetFramework>
-	  <RunAOTCompilation>true</RunAOTCompilation>
-	  <Nullable>enable</Nullable>
+    <TargetFramework>net8.0</TargetFramework>
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <Nullable>enable</Nullable>
     <StartupObject>R136.Shell.Program</StartupObject>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
-	</PropertyGroup>
-
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="data\en-GB\.gitignore" />
     <None Remove="data\nl-NL\.gitignore" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\..\data\configuration.json" Link="data\configuration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -64,28 +59,23 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.26.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\R136.Core\R136.Core.csproj" />
   </ItemGroup>
-
   <Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
     <Exec Command="call ..\buildtool.bat --nowait" />
   </Target>
-
-	<Target Name="JSONConversion_Other" AfterTargets="Build" Condition=" '$(OS)' != 'Windows_NT' ">
-		<Exec Command="/bin/bash ../buildtool.sh --nowait" />
-	</Target>
-
+  <Target Name="JSONConversion_Other" AfterTargets="Build" Condition=" '$(OS)' != 'Windows_NT' ">
+    <Exec Command="/bin/bash ../buildtool.sh --nowait" />
+  </Target>
 </Project>

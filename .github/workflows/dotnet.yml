@@ -3,7 +3,7 @@ name: Plain .NET build
 on:
   push:
   pull_request:
-    branches: 
+    branches:
       - staging
       - production
 
@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
     - name: Install wasm-tools for Blazor AOT compilation
       run: dotnet workload install wasm-tools
     - name: Restore dependencies

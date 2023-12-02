@@ -1,18 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-	  <TargetFramework>net6.0</TargetFramework>
-	  <Nullable>enable</Nullable>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	</PropertyGroup>
-
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\R136.Entities\R136.Entities.csproj" />
     <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
   </ItemGroup>
-
 </Project>

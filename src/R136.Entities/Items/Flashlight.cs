@@ -163,13 +163,13 @@ namespace R136.Entities.Items
 			public bool IsOn { get; set; }
 			public bool HasBatteries { get; set; }
 
-			public override void AddBytes(List<byte> bytes)
+			public override void AddBytesTo(List<byte> bytes)
 			{
-				base.AddBytes(bytes);
-				IsOn.AddByte(bytes);
-				HasBatteries.AddByte(bytes);
-				LampPoints.AddIntBytes(bytes);
-				LampPointsFromConfig.AddIntBytes(bytes);
+				base.AddBytesTo(bytes);
+				IsOn.AddByteTo(bytes);
+				HasBatteries.AddByteTo(bytes);
+				LampPoints.AddIntBytesTo(bytes);
+				LampPointsFromConfig.AddIntBytesTo(bytes);
 			}
 
 			public override int? LoadBytes(ReadOnlyMemory<byte> bytes)

@@ -13,7 +13,7 @@ namespace R136.Interfaces
 
 	public interface ISnapshot
 	{
-		void AddBytes(List<byte> bytes);
+		void AddBytesTo(List<byte> bytes);
 
 		int? LoadBytes(ReadOnlyMemory<byte> bytes);
 	}

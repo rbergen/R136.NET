@@ -78,12 +78,12 @@ namespace R136.Web.Tools
 			public bool IsTrimmed { get; set; }
 			public ContentBlock[]? ContentBlocks { get; set; }
 
-			public void AddBytes(List<byte> bytes)
+			public void AddBytesTo(List<byte> bytes)
 			{
 				if (ContentBlocks == null)
 				{
-					IsTrimmed.AddByte(bytes);
-					ContentBlocks.AddSnapshotsBytes(bytes);
+					IsTrimmed.AddByteTo(bytes);
+					ContentBlocks.AddSnapshotsBytesTo(bytes);
 					return;
 				}
 
@@ -97,8 +97,8 @@ namespace R136.Web.Tools
 				if (ContentBlocks.Length > 0 && ContentBlocks[^1].Type == ContentBlockType.LanguageSwitch)
 					blocks.Add(ContentBlocks[^1]);
 
-				(IsTrimmed || blocks.FirstOrDefault() != ContentBlocks.FirstOrDefault()).AddByte(bytes);
-				blocks.ToArray().AddSnapshotsBytes(bytes);
+				(IsTrimmed || blocks.FirstOrDefault() != ContentBlocks.FirstOrDefault()).AddByteTo(bytes);
+				blocks.ToArray().AddSnapshotsBytesTo(bytes);
 			}
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
@@ -149,11 +149,11 @@ namespace R136.Web.Tools
 		[JsonIgnore]
 		public MarkupString Content => (MarkupString)(Text ?? string.Empty);
 
-		public void AddBytes(List<byte> bytes)
+		public void AddBytesTo(List<byte> bytes)
 		{
-			Type.AddByte(bytes);
-			ResultCode.AddEnumByte(bytes);
-			Text.AddTextBytes(bytes);
+			Type.AddByteTo(bytes);
+			ResultCode.AddEnumByteTo(bytes);
+			Text.AddTextBytesTo(bytes);
 		}
 
 		public int? LoadBytes(ReadOnlyMemory<byte> bytes)
