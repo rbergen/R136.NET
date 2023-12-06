@@ -86,7 +86,7 @@ namespace R136.Core
 				if (!ValidateStep(NextStep.ShowRoomStatus))
 					return StringValues.Empty;
 
-				List<string> texts = new();
+				List<string?> texts = new();
 
 				Room playerRoom = this.player!.CurrentRoom;
 				AddRoomInformation(texts, playerRoom);

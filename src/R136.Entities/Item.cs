@@ -194,10 +194,10 @@ namespace R136.Entities
 			public ItemID ID { get; set; }
 			public RoomID Room { get; set; }
 
-			public virtual void AddBytes(List<byte> bytes)
+			public virtual void AddBytesTo(List<byte> bytes)
 			{
-				ID.AddByte(bytes);
-				Room.AddByte(bytes);
+				ID.AddByteTo(bytes);
+				Room.AddByteTo(bytes);
 			}
 
 			public virtual int? LoadBytes(ReadOnlyMemory<byte> bytes)

@@ -12,7 +12,7 @@ namespace R136.Shell.Tools
 			if (texts == StringValues.Empty)
 				return string.Empty;
 
-			return string.Join('\n', texts.Select(t => t.Replace("\\", string.Empty)));
+			return string.Join('\n', texts.Select(t => t?.Replace("\\", string.Empty)));
 		}
 
 		public static void AddIfNotEmpty(this IList<StringValues> list, StringValues value)

@@ -31,12 +31,12 @@ namespace R136.Interfaces
 			}
 		}
 
-		public void AddBytes(List<byte> bytes)
+		public void AddBytesTo(List<byte> bytes)
 		{
-			Key.AddTextBytes(bytes);
-			Texts.AddTextsBytes(bytes);
-			Numbers.AddIntsBytes(bytes);
-			InnerStatus.AddSnapshotBytes(bytes);
+			Key.AddTextBytesTo(bytes);
+			Texts.AddTextsBytesTo(bytes);
+			Numbers.AddIntsBytesTo(bytes);
+			InnerStatus.AddSnapshotBytesTo(bytes);
 		}
 
 		public int? LoadBytes(ReadOnlyMemory<byte> bytes)

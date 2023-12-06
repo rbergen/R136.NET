@@ -48,18 +48,18 @@ namespace R136.Core
 			public Animate.Snapshot[]? Animates { get; set; }
 			public Player.Snapshot? Player { get; set; }
 
-			public void AddBytes(List<byte> bytes)
+			public void AddBytesTo(List<byte> bytes)
 			{
-				HasTreeBurned.AddByte(bytes);
-				IsAnimateTriggered.AddByte(bytes);
-				DoNext.AddByte(bytes);
+				HasTreeBurned.AddByteTo(bytes);
+				IsAnimateTriggered.AddByteTo(bytes);
+				DoNext.AddByteTo(bytes);
 
-				Configuration.AddSnapshotBytes(bytes);
-				LocationCommandProcessor.AddSnapshotBytes(bytes);
-				Items.AddSnapshotsBytes(bytes);
-				Flashlight.AddSnapshotBytes(bytes);
-				Animates.AddSnapshotsBytes(bytes);
-				Player.AddSnapshotBytes(bytes);
+				Configuration.AddSnapshotBytesTo(bytes);
+				LocationCommandProcessor.AddSnapshotBytesTo(bytes);
+				Items.AddSnapshotsBytesTo(bytes);
+				Flashlight.AddSnapshotBytesTo(bytes);
+				Animates.AddSnapshotsBytesTo(bytes);
+				Player.AddSnapshotBytesTo(bytes);
 			}
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)

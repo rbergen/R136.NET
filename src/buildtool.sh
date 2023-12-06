@@ -1,7 +1,7 @@
 #/bin/bash
 
-BUILDTOOL_PUBLISH_PATH=R136.BuildTool/bin/Debug/net6.0/publish/R136.BuildTool.dll
-BUILDTOOL_BUILD_PATH=R136.BuildTool/bin/Debug/net6.0/R136.BuildTool.dll
+BUILDTOOL_PUBLISH_PATH=R136.BuildTool/bin/Debug/net8.0/publish/R136.BuildTool.dll
+BUILDTOOL_BUILD_PATH=R136.BuildTool/bin/Debug/net8.0/R136.BuildTool.dll
 START_DIRECTORY=$(pwd)
 
 cd $(dirname "${BASH_SOURCE[0]}")

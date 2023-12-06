@@ -105,8 +105,8 @@ namespace R136.Entities.CommandProcessors
 		{
 			public int PaperRouteIndex { get; set; }
 
-			public void AddBytes(List<byte> bytes)
-				=> PaperRouteIndex.AddBytes(bytes);
+			public void AddBytesTo(List<byte> bytes)
+				=> PaperRouteIndex.AddBytesTo(bytes);
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)
 			{

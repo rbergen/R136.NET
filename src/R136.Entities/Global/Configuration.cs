@@ -17,16 +17,16 @@ namespace R136.Entities.Global
 		public bool AutoOpenConnections { get; set; } = false;
 		public bool EnableConfigList { get; set; } = false;
 
-		public void AddBytes(List<byte> bytes)
+		public void AddBytesTo(List<byte> bytes)
 		{
-			Immortal.AddByte(bytes);
-			FreezeAnimates.AddByte(bytes);
-			AutoPlaceItems.AddByte(bytes);
-			AutoOpenConnections.AddByte(bytes);
-			EnableConfigList.AddByte(bytes);
-			LifePoints.AddBytes(bytes);
-			LampPoints.AddIntBytes(bytes);
-			MaxInventory.AddIntBytes(bytes);
+			Immortal.AddByteTo(bytes);
+			FreezeAnimates.AddByteTo(bytes);
+			AutoPlaceItems.AddByteTo(bytes);
+			AutoOpenConnections.AddByteTo(bytes);
+			EnableConfigList.AddByteTo(bytes);
+			LifePoints.AddBytesTo(bytes);
+			LampPoints.AddIntBytesTo(bytes);
+			MaxInventory.AddIntBytesTo(bytes);
 		}
 
 

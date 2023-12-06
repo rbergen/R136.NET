@@ -1,11 +1,11 @@
 @echo off
 
-set BUILDTOOL_PUBLISH_PATH=R136.BuildTool\bin\Debug\net6.0\publish\R136.BuildTool.dll
-set BUILDTOOL_BUILD_PATH=R136.BuildTool\bin\Debug\net6.0\R136.BuildTool.dll
+set BUILDTOOL_PUBLISH_PATH=R136.BuildTool\bin\Debug\net8.0\publish\R136.BuildTool.dll
+set BUILDTOOL_BUILD_PATH=R136.BuildTool\bin\Debug\net8.0\R136.BuildTool.dll
 
 setlocal enableextensions
 
-pushd %~dp0 
+pushd %~dp0
 
 set BUILDTOOL_PATH=
 

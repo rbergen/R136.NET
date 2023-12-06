@@ -1,6 +1,7 @@
 name: Azure SWA staging CD
 
 on:
+  workflow_dispatch: 
   push:
     branches:
       - staging

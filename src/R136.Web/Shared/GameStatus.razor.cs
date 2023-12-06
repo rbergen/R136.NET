@@ -28,7 +28,8 @@ namespace R136.Web.Shared
 		[Parameter]
 		public EventCallback<string> TextSubmitted { get; set; }
 
-		[Parameter]
+		#pragma warning disable BL0007
+        [Parameter]
 		public bool Visible
 		{
 			get => this.visible;
@@ -45,9 +46,6 @@ namespace R136.Web.Shared
 		}
 
 		[Parameter]
-		public EventCallback<bool> VisibleChanged { get; set; }
-
-		[Parameter]
 		public Tab? ShowTab
 		{
 			get => this.displayedTab;
@@ -62,8 +60,12 @@ namespace R136.Web.Shared
 					this.selectedTab = this.displayedTab.Value;
 			}
 		}
+		#pragma warning restore BL0007
 
-		private async Task CopyTabClicked(MouseEventArgs e)
+        [Parameter]
+        public EventCallback<bool> VisibleChanged { get; set; }
+
+        private async Task CopyTabClicked(MouseEventArgs e)
 		{
 			await JSRuntime.InvokeVoidAsync("R136JS.closeTooltips");
 			this.selectedTab = Tab.Copy;

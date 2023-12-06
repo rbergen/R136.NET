@@ -21,16 +21,16 @@ namespace R136.Web.Tools
 		public bool IsLoaded { get; set; }
 		public string? Language { get; set; }
 
-		public void AddBytes(List<byte> bytes)
+		public void AddBytesTo(List<byte> bytes)
 		{
 			bytes.AddRange(Watermark);
-			IsPaused.AddByte(bytes);
-			EngineSnapshot.AddSnapshotBytes(bytes);
-			MarkupContentLog.AddSnapshotBytes(bytes);
-			ContinuationStatus.AddSnapshotBytes(bytes);
-			Language.AddTextBytes(bytes);
-			InputSpecs.AddSnapshotBytes(bytes);
-			true.AddByte(bytes);
+			IsPaused.AddByteTo(bytes);
+			EngineSnapshot.AddSnapshotBytesTo(bytes);
+			MarkupContentLog.AddSnapshotBytesTo(bytes);
+			ContinuationStatus.AddSnapshotBytesTo(bytes);
+			Language.AddTextBytesTo(bytes);
+			InputSpecs.AddSnapshotBytesTo(bytes);
+			true.AddByteTo(bytes);
 		}
 
 		public int? LoadBytes(ReadOnlyMemory<byte> bytes)

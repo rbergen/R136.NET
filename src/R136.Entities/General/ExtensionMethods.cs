@@ -15,7 +15,7 @@ namespace R136.Entities.General
 		}
 
 		public static StringValues ReplaceInAll(this StringValues collection, string from, string to)
-			=> collection.Select(s => s.Replace(from, to)).ToArray();
+			=> collection.Select(s => (s ?? string.Empty).Replace(from, to)).ToArray();
 
 		public static (Item? item, FindResult result) FindItemByName(this List<Item> list, string s)
 		{
@@ -38,6 +38,8 @@ namespace R136.Entities.General
 
 			foreach (var substring in substrings)
 			{
+				if (substring == null) 
+					continue;
 				int index = subject.IndexOf(substring);
 				if (index >= 0)
 					return (index, substring);

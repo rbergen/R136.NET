@@ -72,8 +72,8 @@ Options:
 			{
 				{ "command", Path.GetFileName(Process.GetCurrentProcess().MainModule!.FileName ?? string.Empty) },
 				{ "languages", string.Join(", ", configuration.GetSection(Constants.Languages).GetChildren().Select(cs => cs.Key)) },
-				{ "defaultlanguage", configuration[Constants.DefaultLanguage] },
-				{ "bpsdefault", configuration[Constants.BPSDefault] },
+				{ "defaultlanguage", configuration[Constants.DefaultLanguage] ?? string.Empty },
+				{ "bpsdefault", configuration[Constants.BPSDefault] ?? string.Empty },
 				{ "bpsminimum", Constants.BPSMinimum }
 			});
 

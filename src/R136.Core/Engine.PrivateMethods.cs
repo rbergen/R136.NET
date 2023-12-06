@@ -141,7 +141,7 @@ namespace R136.Core
 			return DoNext == step;
 		}
 
-		private void AddRoomInformation(List<string> texts, Room playerRoom)
+		private void AddRoomInformation(List<string?> texts, Room playerRoom)
 		{
 			texts.AddRangeIfNotNull(GetTexts(TextID.YouAreAt, "room", playerRoom.Name));
 
@@ -173,25 +173,25 @@ namespace R136.Core
 			var itemLineTextList = itemLineTexts.ToArray();
 
 			if (items.Length == 1)
-				return itemLineTextList.Get(ItemLineText.SingleItem).Replace("{item}", items[0].Name);
+				return itemLineTextList?.Get(ItemLineText.SingleItem)?.Replace("{item}", items[0].Name);
 
-			string itemSection = itemLineTextList.Get(ItemLineText.LastTwoItems).ReplacePlaceholders(new Dictionary<string, object>
+			string itemSection = itemLineTextList.Get(ItemLineText.LastTwoItems)?.ReplacePlaceholders(new Dictionary<string, object>
 			{
 				{ "firstitem", items[^2].Name },
 				{ "seconditem", items[^1].Name }
-			});
+			}) ?? string.Empty;
 
 			if (items.Length > 2)
 			{
 				StringBuilder itemSectionBuilder = new();
-				foreach (var component in items[..^2].Select(item => itemLineTextList.Get(ItemLineText.EarlierItem).Replace("{item}", item.Name)))
+				foreach (var component in items[..^2].Select(item => itemLineTextList.Get(ItemLineText.EarlierItem)?.Replace("{item}", item.Name)))
 					itemSectionBuilder.Append(component);
 
 				itemSectionBuilder.Append(itemSection);
 				itemSection = itemSectionBuilder.ToString();
 			}
 
-			return itemLineTextList.Get(ItemLineText.MultipleItemsFormat).Replace("{items}", itemSection);
+			return itemLineTextList?.Get(ItemLineText.MultipleItemsFormat)?.Replace("{items}", itemSection);
 		}
 
 		private string? GetWayLine(Room room)
@@ -209,30 +209,30 @@ namespace R136.Core
 			var wayLineTextList = wayLineTexts.ToArray();
 
 			if (ways.Length == 1)
-				return wayLineTextList.Get(WayLineText.SingleWay).Replace("{way}", wayLineTextList.Get(ways[0]));
+				return wayLineTextList.Get(WayLineText.SingleWay)?.Replace("{way}", wayLineTextList.Get(ways[0]));
 
-			string waySection = wayLineTextList.Get(WayLineText.LastTwoWays).ReplacePlaceholders(new Dictionary<string, object>
+			string waySection = wayLineTextList.Get(WayLineText.LastTwoWays)?.ReplacePlaceholders(new Dictionary<string, object>
 			{
-				{ "firstway", wayLineTextList.Get(ways[^2]) },
-				{ "secondway", wayLineTextList.Get(ways[^1]) }
-			});
+				{ "firstway", wayLineTextList?.Get(ways[^2]) ?? string.Empty },
+				{ "secondway", wayLineTextList?.Get(ways[^1]) ?? string.Empty }
+			}) ?? string.Empty;
 
 			if (ways.Length > 2)
 			{
 				StringBuilder waySectionBuilder = new();
-				foreach (var component in ways[..^2].Select(way => wayLineTextList.Get(WayLineText.EarlierWay).Replace("{way}", wayLineTextList.Get(way))))
+				foreach (var component in ways[..^2].Select(way => wayLineTextList?.Get(WayLineText.EarlierWay)?.Replace("{way}", wayLineTextList.Get(way))))
 					waySectionBuilder.Append(component);
 
 				waySectionBuilder.Append(waySection);
 				waySection = waySectionBuilder.ToString();
 			}
 
-			return wayLineTextList.Get(WayLineText.MultipleWayFormat).Replace("{ways}", waySection);
+			return wayLineTextList?.Get(WayLineText.MultipleWayFormat)?.Replace("{ways}", waySection);
 		}
 
-		private static (List<string> texts, bool isAnimateTriggered) ProgressPresentAnimateStatuses(ICollection<Animate> presentAnimates)
+		private static (List<string?> texts, bool isAnimateTriggered) ProgressPresentAnimateStatuses(ICollection<Animate> presentAnimates)
 		{
-			var texts = new List<string>();
+			var texts = new List<string?>();
 			bool isAnimateTriggered = false;
 
 			foreach (var animate in presentAnimates)
@@ -257,7 +257,7 @@ namespace R136.Core
 			if (!result.IsSuccess && !result.IsFailure)
 				return result;
 
-			var texts = new List<string>();
+			var texts = new List<string?>();
 
 			texts.AddRangeIfNotNull(result.Message);
 

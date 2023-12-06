@@ -171,13 +171,13 @@ namespace R136.Entities
 			public int StrikesLeft { get; set; }
 			public bool IsTriggered { get; set; }
 
-			public void AddBytes(List<byte> bytes)
+			public void AddBytesTo(List<byte> bytes)
 			{
-				ID.AddByte(bytes);
-				Room.AddByte(bytes);
-				Status.AddByte(bytes);
-				IsTriggered.AddByte(bytes);
-				StrikesLeft.AddBytes(bytes);
+				ID.AddByteTo(bytes);
+				Room.AddByteTo(bytes);
+				Status.AddByteTo(bytes);
+				IsTriggered.AddByteTo(bytes);
+				StrikesLeft.AddBytesTo(bytes);
 			}
 
 			public int? LoadBytes(ReadOnlyMemory<byte> bytes)

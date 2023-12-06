@@ -18,11 +18,11 @@ namespace R136.Interfaces
 
 		public InputSpecs() { }
 
-		public void AddBytes(List<byte> bytes)
+		public void AddBytesTo(List<byte> bytes)
 		{
-			IsLowerCase.AddByte(bytes);
-			MaxLength.AddBytes(bytes);
-			Permitted.AddTextBytes(bytes);
+			IsLowerCase.AddByteTo(bytes);
+			MaxLength.AddBytesTo(bytes);
+			Permitted.AddTextBytesTo(bytes);
 		}
 
 		public int? LoadBytes(ReadOnlyMemory<byte> bytes)

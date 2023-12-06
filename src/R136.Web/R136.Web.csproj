@@ -1,26 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-
   <PropertyGroup>
-	  <TargetFramework>net6.0</TargetFramework>
-	  <RunAOTCompilation>true</RunAOTCompilation>
-	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
-	</PropertyGroup>
-
+    <TargetFramework>net8.0</TargetFramework>
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\data\en-GB\.gitignore" />
     <Content Remove="wwwroot\data\nl-NL\.gitignore" />
   </ItemGroup>
-
   <ItemGroup>
     <None Remove="scripts\file.ts" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\..\data\configuration.json" Link="wwwroot\data\configuration.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -62,40 +57,32 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.4" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
     <PackageReference Include="Markdig" Version="0.26.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.5.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\R136.Core\R136.Core.csproj" />
     <ProjectReference Include="..\R136.Interfaces\R136.Interfaces.csproj" />
   </ItemGroup>
-
-	<Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
-		<Exec Command="call ..\buildtool.bat --nowait" />
-	</Target>
-
-	<Target Name="JSONConversion_Other" AfterTargets="Build" Condition=" '$(OS)' != 'Windows_NT' ">
-		<Exec Command="/bin/bash ../buildtool.sh --nowait" />
-	</Target>
-
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="npm install" />
-	</Target>
-
+  <Target Name="JSONConversion_Windows" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
+    <Exec Command="call ..\buildtool.bat --nowait" />
+  </Target>
+  <Target Name="JSONConversion_Other" AfterTargets="Build" Condition=" '$(OS)' != 'Windows_NT' ">
+    <Exec Command="/bin/bash ../buildtool.sh --nowait" />
+  </Target>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" />
+  </Target>
 </Project>
