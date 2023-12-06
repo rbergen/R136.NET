@@ -1,6 +1,7 @@
 name: Azure SWA production CD
 
 on:
+  workflow_dispatch: 
   push:
     branches:
       - production
