@@ -5,8 +5,8 @@
 // Revision
 using System.Reflection;
 
-[assembly: AssemblyVersion("4.4.0.0")]
-[assembly: AssemblyFileVersion("4.4.0.0")]
+[assembly: AssemblyVersion("4.5.0.0")]
+[assembly: AssemblyFileVersion("4.5.0.0")]
 [assembly: AssemblyCompany("R.I.P.")]
 [assembly: AssemblyProduct("R136")]
-[assembly: AssemblyCopyright("© Copyright R.I.P. 1998, 2021")]
+[assembly: AssemblyCopyright("© Copyright R.I.P. 1998, 2023")]
