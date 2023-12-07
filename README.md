@@ -7,7 +7,7 @@ More information about the game and its history can be found in the README of th
 
 Since its resurrection, R136 has become a willing vehicle for me to try new things. This single-pager "static" web app, 
 console application and shared game engine blend, marks my first dabble with developing for/in/using:
-* [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0) and [.NET 6.0](https://dotnet.microsoft.com/download/dotnet/6.0)
+* [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0), [.NET 6.0](https://dotnet.microsoft.com/download/dotnet/6.0) and [.NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
 * Version 9.0 of C#. For one, I've quickly developed a liking for 
 [switch expressions](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression) 
 and [range operators](https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/ranges-indexes).
