@@ -21,8 +21,7 @@ namespace R136.BuildTool.Rooms
 
 		public Room.Initializer[]? CompileConnections(string? indent = null)
 		{
-			if (indent == null)
-				indent = string.Empty;
+			indent ??= string.Empty;
 
 			if (Rooms == null)
 			{

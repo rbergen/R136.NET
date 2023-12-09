@@ -7,7 +7,6 @@ namespace R136.Web.Shared
 {
 	public partial class ShowContentLog
 	{
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0044:Add readonly modifier", Justification = "Set in .razor file")]
 		private string blockID = null;
 
 		[Inject]

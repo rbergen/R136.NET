@@ -17,9 +17,16 @@ namespace R136.BuildTool
 {
 	partial class Program
 	{
+		private readonly static JsonSerializerOptions serializerOptions = new()
+		{
+			AllowTrailingCommas = true,
+			ReadCommentHandling = JsonCommentHandling.Skip,
+		};
+
 		private const string IndentSection = "   ";
 
-		private static bool RunAutomatic(Arguments arguments)
+
+        private static bool RunAutomatic(Arguments arguments)
 		{
 			Console.WriteLine($"{Tags.Info} Starting processing from configuration file {arguments.ConfigFileName}...");
 
@@ -27,11 +34,7 @@ namespace R136.BuildTool
 			try
 			{
 				string jsonString = File.ReadAllText(arguments.ConfigFileName!, Encoding.UTF8);
-				tasks = JsonSerializer.Deserialize<ConversionTask[]>(jsonString, new JsonSerializerOptions()
-				{
-					AllowTrailingCommas = true,
-					ReadCommentHandling = JsonCommentHandling.Skip,
-				});
+				tasks = JsonSerializer.Deserialize<ConversionTask[]>(jsonString, serializerOptions);
 			}
 			catch (Exception e)
 			{
@@ -48,7 +51,7 @@ namespace R136.BuildTool
 			Console.WriteLine($"{Tags.Info} Read {tasks.Length} tasks from configuration file {arguments.ConfigFileName}. Starting task processing.");
 			Console.WriteLine();
 
-			List<string> taskTags = new();
+			List<string> taskTags = [];
 
 			foreach (var task in tasks)
 			{
@@ -80,7 +83,7 @@ namespace R136.BuildTool
 				return Tags.Warning;
 			}
 
-			List<string> conversionTags = new();
+			List<string> conversionTags = [];
 
 			foreach (var conversion in task.Conversions)
 			{

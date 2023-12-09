@@ -56,7 +56,7 @@ namespace R136.BuildTool
 		{
 			Console.Write($"{prompt} [y/N]: ");
 			string? input = Console.ReadLine();
-			return input != null && input.Trim().ToLower() == "y";
+			return input != null && input.Trim().Equals("y", StringComparison.OrdinalIgnoreCase);
 		}
 
 		private static (T? entity, string? path) ReadEntity<T>(string name) where T : class

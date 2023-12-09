@@ -139,9 +139,7 @@ namespace R136.Entities
 
 		public virtual Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
-			if (snapshot == null)
-				snapshot = new();
-
+			snapshot ??= new();
 			snapshot.ID = ID;
 			snapshot.Room = CurrentRoom;
 

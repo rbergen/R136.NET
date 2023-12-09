@@ -33,8 +33,7 @@ namespace R136.Web.Tools
 			{
 				lock (pipelineLock)
 				{
-					if (pipeline == null)
-						pipeline = new MarkdownPipelineBuilder().UseSoftlineBreakAsHardlineBreak().Build();
+					pipeline ??= new MarkdownPipelineBuilder().UseSoftlineBreakAsHardlineBreak().Build();
 
 					return pipeline;
 				}
@@ -43,10 +42,9 @@ namespace R136.Web.Tools
 
 		public static IEnumerable<T> DropLast<T>(this IEnumerable<T> source, int n)
 		{
-			if (source == null)
-				throw new ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
 
-			if (n < 0)
+            if (n < 0)
 				throw new ArgumentOutOfRangeException(nameof(n),
 						"Argument n should be non-negative.");
 

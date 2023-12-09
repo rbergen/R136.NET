@@ -21,7 +21,7 @@ namespace R136.Shell
 		private readonly IEngine engine;
 		private Status? status;
 		private readonly Queue<string> texts = new();
-		private readonly List<StringValues> messages = new();
+		private readonly List<StringValues> messages = [];
 
 		public GameConsole(IServiceProvider services)
 		{
@@ -37,9 +37,7 @@ namespace R136.Shell
 			get => this.status?.InputSpecs;
 			set
 			{
-				if (this.status == null)
-					this.status = new();
-
+				this.status ??= new();
 				this.status.InputSpecs = value;
 			}
 		}
@@ -49,9 +47,7 @@ namespace R136.Shell
 			get => this.status?.ContinuationStatus;
 			set
 			{
-				if (this.status == null)
-					this.status = new();
-
+				this.status ??= new();
 				this.status.ContinuationStatus = value;
 			}
 		}
@@ -67,6 +63,8 @@ namespace R136.Shell
 			HandleIntro(language);
 
 			await task;
+
+			this.engine.CommandCallbacks = this;
 			RestoreStatus();
 
 			await RunEngineLoop();
@@ -76,21 +74,15 @@ namespace R136.Shell
 
 		private void HandleIntro(string language)
 		{
-			if (!(this.status?.IsLoaded ?? false))
+			if (!(this.status?.IsLoaded ?? false) && this.configuration?[Constants.IntroParam] != Constants.ParamNo)
 			{
-				if (this.configuration?[Constants.IntroParam] != Constants.ParamNo)
-				{
-					new Animation().Run();
+				new Animation().Run();
 
-					WritePlainText(this.introTexts[language]);
-					WaitForKey();
-				}
-
-				Console.Clear();
-				ShowLanguageSwitchInstructions();
+				WritePlainText(this.introTexts[language]);
+				WaitForKey();
 			}
-			else
-				Console.Clear();
+
+			Console.Clear();
 		}
 
 		private async Task RunEngineLoop()
@@ -206,10 +198,11 @@ namespace R136.Shell
 				return false;
 
 			string[] segments = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			if ((segments?.Length ?? 0) != 2 || segments![0] != Constants.LanguageParam)
+			if (segments.Length != 2 || segments[0] != Constants.LanguageParam)
 				return false;
 
-			this.languages.Language = segments![1];
+			if ((this.languages.Language = segments[1]) != segments[1])
+				return false;
 
 			Console.Title = this.languages.GetConfigurationValue(Constants.TitleText) ?? Constants.TitleText;
 			var result = this.engine!.SetEntityGroup(this.languages.Language);

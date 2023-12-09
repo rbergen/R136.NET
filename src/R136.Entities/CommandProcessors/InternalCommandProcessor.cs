@@ -33,8 +33,7 @@ namespace R136.Entities.CommandProcessors
 		{
 			get
 			{
-				if (this.invalidCommandResult == null)
-					this.invalidCommandResult = Result.Error(Facilities.TextsMap[this, Default]);
+				this.invalidCommandResult ??= Result.Error(Facilities.TextsMap[this, Default]);
 
 				return this.invalidCommandResult;
 			}

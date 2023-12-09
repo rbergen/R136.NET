@@ -16,6 +16,7 @@ namespace R136.Core
 		Result ProgressAnimateStatus();
 		NextStep DoNext { get; }
 		Result Run(string input);
+		ICommandCallbacks? CommandCallbacks { get; set; }
 	}
 
 	public enum NextStep : byte

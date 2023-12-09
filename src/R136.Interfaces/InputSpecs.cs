@@ -38,7 +38,8 @@ namespace R136.Interfaces
 			int totalBytesRead = BytesBaseSize;
 
 			(MaxLength, bytesRead) = bytes.ToInt();
-			if (bytesRead == null) return null;
+			if (bytesRead == null) 
+				return null;
 
 			bytes = bytes[bytesRead.Value..];
 			totalBytesRead += bytesRead.Value;

@@ -16,7 +16,7 @@ namespace R136.Web.Tools
 		private const int DefaultMaxBlockCount = 100;
 		private const int DefaultSaveBlockCount = 20;
 
-		private readonly List<ContentBlock> blocks = new();
+		private readonly List<ContentBlock> blocks = [];
 		public int MaxBlockCount { get; set; } = DefaultMaxBlockCount;
 		public int SaveBlockCount { get; set; } = DefaultSaveBlockCount;
 		public bool IsTrimmed { get; private set; } = false;

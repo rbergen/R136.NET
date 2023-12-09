@@ -50,8 +50,7 @@ namespace R136.Shell
 				if (configuration[Constants.LoadParam] != Constants.ParamNo)
 					status = Status.Load(serviceProvider);
 
-				if (status == null)
-					status = new();
+				status ??= new();
 
 				string? language = configuration[Constants.LanguageParam];
 

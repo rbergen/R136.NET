@@ -14,6 +14,8 @@ namespace R136.Entities.CommandProcessors
 	{
 		private const string ContinuationKey = "QkztbraYG4TCSdtqayuU";
 
+		public ICommandCallbacks? CommandCallbacks { get; set; }
+
 		public GeneralCommandProcessor() : base(CommandProcessorID.General) { }
 
 		public override Result Execute(CommandID id, string command, string? parameters, Player player)
@@ -44,8 +46,14 @@ namespace R136.Entities.CommandProcessors
 		private Result? ValidateEmptyParameters(string command, string? parameters)
 			=> parameters == null ? null : Result.Error(Facilities.TextsMap.Get(this, TextID.Default).ReplaceInAll("{command}", command));
 
-		private static Result ExecuteHelp()
-			=> Result.Success(GetTexts(CommandID.Help, TextID.Default));
+		private Result ExecuteHelp()
+		{
+			var helpTexts = GetTexts(CommandID.Help, TextID.Default);
+			if (CommandCallbacks != null)
+				helpTexts = StringValues.Concat(helpTexts, CommandCallbacks.AdditionalHelpTexts);
+
+            return Result.Success(helpTexts);
+		}
 
 		private Result ExecuteInfo(string command, string? parameters)
 		{
