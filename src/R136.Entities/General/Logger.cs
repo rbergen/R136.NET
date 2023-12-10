@@ -24,7 +24,7 @@ namespace R136.Entities.General
 				this.loggerMap[typeof(TCaller)] = logger;
 			}
 
-			logger.Log(level, message);
+			logger.Log(level, "{Message}", message);
 		}
 
 		public void LogDebug<TCaller>(string message)

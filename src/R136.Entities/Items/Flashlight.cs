@@ -123,9 +123,7 @@ namespace R136.Entities.Items
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
-			if (snapshot == null)
-				snapshot = new();
-
+			snapshot ??= new();
 			base.TakeSnapshot(snapshot);
 			snapshot.LampPoints = this.lampPoints;
 			snapshot.LampPointsFromConfig = this.lampPointsFromConfig;
@@ -190,7 +188,8 @@ namespace R136.Entities.Items
 				bytes = bytes[totalBytesRead..];
 
 				(LampPoints, bytesRead) = bytes.ToNullableInt();
-				if (bytesRead == null) return null;
+				if (bytesRead == null) 
+					return null;
 
 				bytes = bytes[bytesRead.Value..];
 				totalBytesRead += bytesRead.Value;

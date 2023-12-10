@@ -78,9 +78,7 @@ namespace R136.Entities.General
 				object? value;
 				try
 				{
-					value = fieldInfo != null
-														? fieldInfo.GetValue(element)
-														: propertyInfo!.GetValue(element, null);
+					value = fieldInfo != null ? fieldInfo.GetValue(element) : propertyInfo!.GetValue(element, null);
 				}
 				catch (Exception)
 				{
@@ -113,7 +111,7 @@ namespace R136.Entities.General
 		{
 			foreach (object item in enumerableElement)
 			{
-				if (item is IEnumerable && !(item is string))
+				if (item is IEnumerable && item is not string)
 				{
 					this.level++;
 					DumpElement(item);

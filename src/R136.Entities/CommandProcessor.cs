@@ -126,6 +126,12 @@ namespace R136.Entities
 			=> LocationProcessor.RegisterServices(serviceCollection);
 
 		public void Configure(IServiceProvider serviceProvider) {}
+
+		public ICommandCallbacks? CommandCallbacks 
+		{
+			get => this.generalProcessor.CommandCallbacks;
+			set => this.generalProcessor.CommandCallbacks = value;
+		}
 	}
 
 	public class CommandInitializer

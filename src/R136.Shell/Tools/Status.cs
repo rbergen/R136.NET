@@ -16,7 +16,7 @@ namespace R136.Shell.Tools
 	class Status : ISnapshot
 	{
 		private const int BytesBaseSize = 10;
-		private readonly static byte[] Watermark = { 18, 9, 16, 19, 20, 1, 20, 21, 19 };
+		private readonly static byte[] Watermark = [18, 9, 16, 19, 20, 1, 20, 21, 19];
 
 		private static string? filename = null;
 		private static ILogger<Status>? logger = null;
@@ -43,7 +43,7 @@ namespace R136.Shell.Tools
 			}
 			catch (Exception e)
 			{
-				GetLogger(services)?.LogDebug($"Error while loading file as JSON: {e}");
+				GetLogger(services)?.LogDebug("Error while loading file as JSON: {Exception}", e);
 			}
 
 			if (result != null)
@@ -64,7 +64,7 @@ namespace R136.Shell.Tools
 			}
 			catch (Exception e)
 			{
-				GetLogger(this.services)?.LogDebug($"Error while deleting file: {e}");
+				GetLogger(this.services)?.LogDebug("Error while deleting file: {Exception}", e);
 			}
 		}
 
@@ -76,22 +76,20 @@ namespace R136.Shell.Tools
 			}
 			catch (Exception e)
 			{
-				GetLogger(this.services)?.LogDebug($"Error while writing file as bytes: {e}");
+				GetLogger(this.services)?.LogDebug("Error while writing file as bytes: {Exception}", e);
 			}
 		}
 
 		private static string GetFilename(IServiceProvider? services)
 		{
-			if (filename == null)
-				filename = services?.GetService<IConfiguration>()?[Constants.StatusFilename];
+			filename ??= services?.GetService<IConfiguration>()?[Constants.StatusFilename];
 
 			return filename ?? "r136.status";
 		}
 
 		private static ILogger<Status>? GetLogger(IServiceProvider? services)
 		{
-			if (logger == null)
-				logger = services?.GetService<ILogger<Status>>();
+			logger ??= services?.GetService<ILogger<Status>>();
 
 			return logger;
 		}
