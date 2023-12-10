@@ -98,9 +98,7 @@ namespace R136.Entities
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
-			if (snapshot == null)
-				snapshot = new();
-
+			snapshot ??= new();
 			snapshot.LifePoints = this.lifePoints;
 			snapshot.LifePointsFromConfig = this.lifePointsFromConfig;
 			snapshot.Room = CurrentRoom.ID;

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace R136.Shell
 {
-	partial class GameConsole
+	partial class GameConsole : ICommandCallbacks
 	{
 		private static readonly Random random = new();
 
@@ -24,7 +24,7 @@ namespace R136.Shell
 
 			this.status.InputSpecs = inputSpecs;
 			this.status.EngineSnapshot = this.engine!.TakeSnapshot();
-			this.status.Texts = this.texts.ToArray();
+			this.status.Texts = [.. this.texts];
 
 			this.status.Save();
 		}
@@ -95,14 +95,14 @@ namespace R136.Shell
 
 			string messageText = message!;
 
-			messageText = Regex.Replace(messageText, @"<h\d>", "**");
-			messageText = Regex.Replace(messageText, @"</h\d>", "**\n");
-			messageText = Regex.Replace(messageText, @"<br />", "\n");
-			messageText = Regex.Replace(messageText, @"<br/>", ", ");
-			messageText = Regex.Replace(messageText, @"<tr.*?>", "\n");
-			messageText = Regex.Replace(messageText, @"&nbsp;", " ");
-			messageText = Regex.Replace(messageText, @"&[a-zA-Z]+?;", string.Empty);
-			messageText = Regex.Replace(messageText, @"<[^>]+?>", string.Empty);
+			messageText = HeaderStartRegex().Replace(messageText, "**");
+			messageText = HeaderEndRegex().Replace(messageText, "**\n");
+			messageText = NextLineRegex().Replace(messageText, "\n");
+			messageText = ValueSplitRegex().Replace(messageText, ", ");
+			messageText = LineSplitRegex().Replace(messageText, "\n");
+			messageText = SpaceRegex().Replace(messageText, " ");
+			messageText = EntityRegex().Replace(messageText, string.Empty);
+			messageText = TagRegex().Replace(messageText, string.Empty);
 
 			return messageText.Split('\n');
 		}
@@ -112,7 +112,7 @@ namespace R136.Shell
 
 		private void WriteMessages()
 		{
-			List<string> lines = new();
+			List<string> lines = [];
 			foreach (var message in this.messages)
 			{
 				lines.AddRange(FilterHTML(message));
@@ -244,16 +244,39 @@ namespace R136.Shell
 		public static string RandomString(int length)
 			=> new(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", length).Select(s => s[random.Next(s.Length)]).ToArray());
 
-		private void ShowLanguageSwitchInstructions()
+		public StringValues AdditionalHelpTexts
 		{
-			List<string> strings = new();
-			var languageSections = this.configuration!.GetSection(Constants.Languages).GetChildren();
-			string codes = string.Join(", ", languageSections.Select(cs => cs.Key));
+			get
+			{
+				var languageSections = this.configuration!.GetSection(Constants.Languages).GetChildren();
+				string codes = string.Join("/", languageSections.Select(cs => cs.Key));
 
-			foreach (var section in languageSections)
-				strings.Add(section[Constants.LanguageSwitchInstructionText]?.Replace("{codes}", codes) ?? string.Empty);
-
-			this.messages.Add(strings.ToArray());
+				return languages?.GetConfigurationValue(Constants.LanguageSwitchInstructionText)?.Replace("{codes}", codes);
+            }
 		}
-	}
+
+        [GeneratedRegex(@"<h\d>")]
+        private static partial Regex HeaderStartRegex();
+
+        [GeneratedRegex(@"</h\d>")]
+        private static partial Regex HeaderEndRegex();
+        
+		[GeneratedRegex(@"<br />")]
+        private static partial Regex NextLineRegex();
+        
+		[GeneratedRegex(@"<br/>")]
+        private static partial Regex ValueSplitRegex();
+        
+		[GeneratedRegex(@"<tr.*?>")]
+        private static partial Regex LineSplitRegex();
+        
+		[GeneratedRegex(@"&nbsp;")]
+        private static partial Regex SpaceRegex();
+        
+		[GeneratedRegex(@"&[a-zA-Z]+?;")]
+        private static partial Regex EntityRegex();
+        
+		[GeneratedRegex(@"<[^>]+?>")]
+        private static partial Regex TagRegex();
+    }
 }

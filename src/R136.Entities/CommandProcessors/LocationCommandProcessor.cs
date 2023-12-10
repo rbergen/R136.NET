@@ -80,9 +80,7 @@ namespace R136.Entities.CommandProcessors
 
 		public Snapshot TakeSnapshot(Snapshot? snapshot = null)
 		{
-			if (snapshot == null)
-				snapshot = new Snapshot();
-
+			snapshot ??= new Snapshot();
 			snapshot.PaperRouteIndex = this.paperrouteIndex;
 
 			return snapshot;

@@ -47,9 +47,7 @@ namespace R136.Entities.General
 
 				if (value.Count == 0)
 				{
-					if (textMap != null)
-						textMap.Remove(id);
-
+					textMap?.Remove(id);
 					return;
 				}
 

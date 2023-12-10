@@ -22,13 +22,11 @@ namespace R136.Web.Pages
 		private bool isPaused = false;
 		private string statusText = string.Empty;
 		private bool showGameStatusModal = false;
-		private LinkedList<string> commandHistory = new();
+		private readonly LinkedList<string> commandHistory = new();
 		private LinkedListNode<string> currentHistoryCommand = null;
 		private bool preventKeyDownDefault = false;
 
-#pragma warning disable IDE0044 // Add readonly modifier
 		private ElementReference focusElement;
-#pragma warning restore IDE0044 // Add readonly modifier
 
 		[Parameter]
 		public string Language { get; set; }
@@ -85,7 +83,7 @@ namespace R136.Web.Pages
 
 		private void ShowGameStatus()
 		{
-			List<byte> bytes = new();
+			List<byte> bytes = [];
 			ComposeStatus().AddBytesTo(bytes);
 
 			this.statusText = Convert.ToBase64String(bytes.ToArray());

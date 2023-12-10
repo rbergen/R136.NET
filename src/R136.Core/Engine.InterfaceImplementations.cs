@@ -47,9 +47,7 @@ namespace R136.Core
 			if (!IsInitialized)
 				throw new InvalidOperationException(EngineNotInitialized);
 
-			if (snapshot == null)
-				snapshot = new Snapshot();
-
+			snapshot ??= new Snapshot();
 			snapshot.Configuration = Facilities.Configuration;
 			snapshot.HasTreeBurned = this.hasTreeBurned;
 			snapshot.DoNext = DoNext;

@@ -86,7 +86,7 @@ namespace R136.Core
 				if (!ValidateStep(NextStep.ShowRoomStatus))
 					return StringValues.Empty;
 
-				List<string?> texts = new();
+				List<string?> texts = [];
 
 				Room playerRoom = this.player!.CurrentRoom;
 				AddRoomInformation(texts, playerRoom);
@@ -166,6 +166,16 @@ namespace R136.Core
 
 				return Result.Error();
 			}
+		}
+
+		public ICommandCallbacks? CommandCallbacks
+		{
+			get => this.processors?.CommandCallbacks;
+			set 
+			{
+                if (this.processors != null)
+                    this.processors.CommandCallbacks = value;
+            }
 		}
 	}
 }

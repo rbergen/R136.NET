@@ -13,11 +13,13 @@ namespace R136.Shell
 {
 	class Program
 	{
-		static async Task<int> Main(string[] args)
+        internal static readonly string[] helpFlags = ["--help", "-h", "/h"];
+
+        static async Task<int> Main(string[] args)
 		{
 			var services = Environment.Setup(args);
 
-			if (args.Any(a => a.EqualsAny(new string[] { "--help", "-h", "/h" }, StringComparison.OrdinalIgnoreCase)))
+			if (args.Any(a => a.EqualsAny(helpFlags, StringComparison.OrdinalIgnoreCase)))
 				return ShowHelp(services.GetRequiredService<IConfiguration>());
 
 			return await new GameConsole(services).Play();
@@ -70,7 +72,7 @@ Options:
 
 			helpText = helpText.ReplacePlaceholders(new Dictionary<string, object>
 			{
-				{ "command", Path.GetFileName(Process.GetCurrentProcess().MainModule!.FileName ?? string.Empty) },
+				{ "command", Path.GetFileName(System.Environment.ProcessPath ?? string.Empty) },
 				{ "languages", string.Join(", ", configuration.GetSection(Constants.Languages).GetChildren().Select(cs => cs.Key)) },
 				{ "defaultlanguage", configuration[Constants.DefaultLanguage] ?? string.Empty },
 				{ "bpsdefault", configuration[Constants.BPSDefault] ?? string.Empty },

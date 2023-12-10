@@ -24,8 +24,7 @@ namespace R136.Web.Tools
 					if (localStorage != null && localStorage.ContainKey(Constants.LanguageStorageKey))
 						this.language = localStorage.GetItem<string>(Constants.LanguageStorageKey);
 
-					if (this.language == null)
-						this.language = Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
+					this.language ??= Services.GetRequiredService<IConfiguration>()[Constants.DefaultLanguage];
 				}
 
 				return this.language ?? Constants.Dutch;
@@ -39,8 +38,7 @@ namespace R136.Web.Tools
 						return;
 
 					var localStorage = Services.GetService<ISyncLocalStorageService>();
-					if (localStorage != null)
-						localStorage.SetItem(Constants.LanguageStorageKey, value);
+					localStorage?.SetItem(Constants.LanguageStorageKey, value);
 				}
 
 				this.language = value;
