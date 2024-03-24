@@ -31,7 +31,7 @@ Concerning the game itself:
 * It now runs in English as well as Dutch, and features on-the-spot switching between those two languages.
 
 ## Building
-On any system that has a .NET 6.0 SDK and node.js (npm) installed, R136.NET can be built using Visual Studio 2022, the dotnet command line interface or another tool that uses the latter.
+On any system that has a .NET 8.0 SDK and node.js (npm) installed, R136.NET can be built using Visual Studio 2022, the dotnet command line interface or another tool that uses the latter.
 
 The Web project is a Blazor WebAssembly project with AOT compilation enabled. This means that the following command must be issued once before building it for the first time:
 ```
